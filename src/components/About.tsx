@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, Target, Shield } from "lucide-react";
-import marshallCasual from "@/assets/marshall-casual.png";
+import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallSignature from "@/assets/marshall-signature.png";
 
 const highlights = [
