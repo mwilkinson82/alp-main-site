@@ -16,9 +16,13 @@ const Hero = () => {
   const { toast } = useToast();
   const hasVisitedBefore = useRef(false);
 
-  // Check if user has visited before
+  // Check if user has visited before and if video has been played
   useEffect(() => {
     hasVisitedBefore.current = localStorage.getItem('alp-visited') === 'true';
+    const hasPlayedVideo = localStorage.getItem('alp-video-played') === 'true';
+    if (hasPlayedVideo) {
+      setVideoEnded(true);
+    }
   }, []);
 
   // Show skip button after 1 second (only for returning visitors)
@@ -85,6 +89,7 @@ const Hero = () => {
 
   const handleVideoEnd = () => {
     setVideoEnded(true);
+    localStorage.setItem('alp-video-played', 'true');
   };
 
   return (
