@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, Calendar, Volume2, VolumeX } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 import marshallSuit from "@/assets/marshall-suit.png";
 import alpLogo from "@/assets/alp-logo.png";
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,15 +27,23 @@ const Hero = () => {
   // Video darkening overlay reduces from 100-600px scroll
   const videoDarkOverlay = Math.max(0.3, 0.8 - (scrollY / 600) * 0.5);
   
-  // Hero content fades in from 400-600px scroll
-  const contentOpacity = Math.min(1, Math.max(0, (scrollY - 400) / 200));
-  const contentTranslateY = Math.max(0, 20 - (scrollY - 400) / 10);
+  // Hero content fades in from 800-1000px scroll (delayed to allow video viewing)
+  const contentOpacity = Math.min(1, Math.max(0, (scrollY - 800) / 200));
+  const contentTranslateY = Math.max(0, 20 - (scrollY - 800) / 10);
+
+  const toggleAudio = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
   return (
     <section className="relative min-h-[200vh] overflow-hidden">
       {/* Video Background - Always Playing */}
       <div className="fixed inset-0 z-0">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
@@ -67,6 +77,20 @@ const Hero = () => {
         />
       </div>
 
+      {/* Audio Control Button - Visible After Logo Fades */}
+      <button
+        onClick={toggleAudio}
+        className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
+        style={{ opacity: Math.min(1, Math.max(0, (scrollY - 200) / 200)) }}
+        aria-label={isMuted ? "Unmute video" : "Mute video"}
+      >
+        {isMuted ? (
+          <VolumeX className="w-6 h-6 text-primary" />
+        ) : (
+          <Volume2 className="w-6 h-6 text-primary" />
+        )}
+      </button>
+
       {/* Scroll Indicator - Visible Initially */}
       <div 
         className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce transition-opacity duration-500"
@@ -87,7 +111,9 @@ const Hero = () => {
         }}
       >
         <div className="container mx-auto px-4 text-center">
-          <div className="max-w-5xl mx-auto space-y-8">
+          {/* Semi-transparent background for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background/90 backdrop-blur-sm"></div>
+          <div className="max-w-5xl mx-auto space-y-8 relative z-10">
             {/* Overline */}
             <div className="inline-block">
               <span className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
