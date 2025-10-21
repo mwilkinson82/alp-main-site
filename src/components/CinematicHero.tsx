@@ -91,9 +91,9 @@ const CinematicHero = () => {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Video Background (Muted Loop) */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative overflow-hidden">
+      {/* Video/Image Hero - Full height, no overlay */}
+      <div className="relative h-[70vh] md:h-[80vh]">
         {!videoError ? (
           <video
             ref={videoRef}
@@ -117,8 +117,8 @@ const CinematicHero = () => {
           />
         )}
         
-        {/* Lighter gradient overlay - let more video show through */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background/80"></div>
+        {/* Subtle gradient only at bottom for blend */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
       </div>
 
       {/* Black Screen with Logo Intro */}
@@ -142,7 +142,7 @@ const CinematicHero = () => {
       {showContent && !videoError && (
         <button
           onClick={toggleAudio}
-          className="fixed bottom-8 right-8 z-30 p-4 glass rounded-full hover:bg-background/60 hover-glow transition-smooth group"
+          className="fixed top-24 right-8 z-30 p-4 glass rounded-full hover:bg-background/60 hover-glow transition-smooth group"
           aria-label={isMuted ? "Unmute video" : "Mute video"}
         >
           {isMuted ? (
@@ -158,26 +158,26 @@ const CinematicHero = () => {
         </button>
       )}
 
-      {/* Hero Content Overlay - Bottom aligned to show more video */}
+      {/* Hero Content - Below video, not overlaying */}
       {showContent && (
-        <div className="absolute inset-0 z-10 flex items-end pb-32 md:pb-40 animate-fade-in">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-5xl mx-auto space-y-6 mb-24 md:mb-32">
+        <div className="relative bg-background py-16 md:py-20 animate-fade-in">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto space-y-8 text-center">
               {/* Overline */}
               <div className="inline-block">
-                <span className="text-primary text-xs md:text-sm font-bold tracking-widest uppercase px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
+                <span className="text-primary text-xs md:text-sm font-bold tracking-widest uppercase px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20">
                   Altitude Logic Pressure
                 </span>
               </div>
 
-              {/* Main Headline - Smaller to show more video */}
-              <h1 className="text-4xl md:text-6xl lg:text-7xl text-white leading-tight drop-shadow-2xl">
+              {/* Main Headline */}
+              <h1 className="text-5xl md:text-6xl lg:text-7xl text-foreground leading-tight">
                 Transform Your Business with
                 <span className="text-gradient-gold block mt-2">Proven Expertise</span>
               </h1>
 
               {/* Subheadline */}
-              <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Over <span className="text-primary font-bold">$2.5 Billion</span> in construction success. 
                 Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
               </p>
@@ -197,7 +197,7 @@ const CinematicHero = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="glass hover-lift border-white/20 text-white hover:bg-white/10"
+                  className="border-primary/20 hover:bg-primary/10"
                   asChild
                 >
                   <Link to="/coaching">
@@ -213,48 +213,32 @@ const CinematicHero = () => {
                   href="https://marshallwilkinson.mykajabi.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white/80 hover:text-primary transition-colors text-xs md:text-sm font-semibold underline underline-offset-4 drop-shadow-lg"
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold underline underline-offset-4"
                 >
                   Existing Client? Login to ALP Portal →
                 </a>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Trust Indicators - Separate section below hero */}
-      {showContent && (
-        <div className="absolute bottom-0 left-0 right-0 z-20 pb-6 animate-fade-in">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-4xl mx-auto">
-              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
-                <div className="text-2xl md:text-4xl font-bold text-primary">1 on 1</div>
-                <div className="text-xs md:text-base text-white/80">Elite Coaching</div>
-              </div>
-              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
-                <div className="text-2xl md:text-4xl font-bold text-primary">1000s</div>
-                <div className="text-xs md:text-base text-white/80">Training Hours</div>
-              </div>
-              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
-                <div className="text-2xl md:text-4xl font-bold text-primary">Daily</div>
-                <div className="text-xs md:text-base text-white/80">Power Hour</div>
+              {/* Trust Indicators */}
+              <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">
+                <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-3xl md:text-5xl font-bold text-primary">1 on 1</div>
+                  <div className="text-sm md:text-base text-muted-foreground">Elite Coaching</div>
+                </div>
+                <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-3xl md:text-5xl font-bold text-primary">1000s</div>
+                  <div className="text-sm md:text-base text-muted-foreground">Training Hours</div>
+                </div>
+                <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-3xl md:text-5xl font-bold text-primary">Daily</div>
+                  <div className="text-sm md:text-base text-muted-foreground">Power Hour</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Scroll Indicator */}
-      {showContent && scrollY < 300 && (
-        <div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce"
-        >
-          <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
-            <div className="w-1.5 h-3 bg-white rounded-full mt-2"></div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
