@@ -17,39 +17,6 @@ const CinematicHero = () => {
   useEffect(() => {
     const hasVisited = localStorage.getItem('alp-visited') === 'true';
     
-    if (!hasVisited) {
-      // First-time visitor: Full cinematic sequence
-      const timeline = gsap.timeline();
-      
-      // Black screen → Logo appears
-      timeline.to(logoRef.current, {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        duration: 1,
-        ease: "power2.out",
-      });
-
-      // Logo holds for 1.5s
-      timeline.to({}, { duration: 1.5 });
-
-      // Logo fades out
-      timeline.to(logoRef.current, {
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.in",
-        onComplete: () => {
-          setShowLogo(false);
-          setShowContent(true);
-          localStorage.setItem('alp-visited', 'true');
-        },
-      });
-    } else {
-      // Returning visitor: Skip to content
-      setShowLogo(false);
-      setShowContent(true);
-    }
-
     // Detect AI browsers and disable video
     const ua = (navigator?.userAgent || '').toLowerCase();
     const isAiBrowser = /chatgpt|atlas|openai|bot|crawler/i.test(ua);
@@ -57,6 +24,50 @@ const CinematicHero = () => {
     
     if (isAiBrowser || prefersReducedMotion) {
       setVideoError(true);
+    }
+    
+    if (!hasVisited) {
+      // First-time visitor: Full cinematic sequence
+      if (logoRef.current) {
+        const timeline = gsap.timeline();
+        
+        // Black screen → Logo appears
+        timeline.to(logoRef.current, {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power2.out",
+        });
+
+        // Logo holds for 1s
+        timeline.to({}, { duration: 1 });
+
+        // Logo fades out
+        timeline.to(logoRef.current, {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.in",
+          onComplete: () => {
+            setShowLogo(false);
+            setShowContent(true);
+            localStorage.setItem('alp-visited', 'true');
+          },
+        });
+      }
+      
+      // Safety fallback: ensure intro completes even if animations fail
+      const fallbackTimer = setTimeout(() => {
+        setShowLogo(false);
+        setShowContent(true);
+        localStorage.setItem('alp-visited', 'true');
+      }, 3000);
+      
+      return () => clearTimeout(fallbackTimer);
+    } else {
+      // Returning visitor: Skip to content immediately
+      setShowLogo(false);
+      setShowContent(true);
     }
   }, []);
 
