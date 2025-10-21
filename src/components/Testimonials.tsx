@@ -14,14 +14,15 @@ const Testimonials = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
-          {/* Video Testimonial - Beau Monde Builders */}
+          {/* Video Testimonial */}
           <Card className="overflow-hidden md:col-span-2">
             <video 
               controls 
               className="w-full aspect-video"
               poster="/placeholder.svg"
             >
-              <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
+              <source src="/videos/testimonials.mov" type="video/quicktime" />
+              <source src="/videos/testimonials.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </Card>
