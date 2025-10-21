@@ -15,7 +15,8 @@ const services = [
       "Real-world construction insights"
     ],
     cta: "Book Consultation",
-    ctaLink: "https://calendly.com/your-calendly-link"
+    ctaLink: "/coaching",
+    isInternal: true
   },
   {
     icon: Coffee,
