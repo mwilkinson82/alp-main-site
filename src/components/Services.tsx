@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Users, BookOpen, Clock } from "lucide-react";
+import { Video, Users, BookOpen, Clock, GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const services = [
   {
@@ -31,17 +32,18 @@ const services = [
     highlight: true
   },
   {
-    icon: BookOpen,
-    title: "Training Library",
-    description: "Thousands of hours of recorded sessions, masterclasses, and resources from decades of experience.",
+    icon: GraduationCap,
+    title: "ALP University",
+    description: "Access the complete training library plus recorded sessions from Power Hour, Contractor School, and Sales & Marketing School for $197/month.",
     features: [
-      "Construction & business mastery",
-      "Sales & negotiation tactics",
-      "Leadership development",
-      "Operational excellence"
+      "Complete video library access",
+      "Daily Power Hour recordings",
+      "Weekly Contractor School recordings",
+      "Weekly Sales & Marketing recordings"
     ],
-    cta: "Access Library",
-    ctaLink: "https://buy.stripe.com/your-library-link"
+    cta: "Join ALP University",
+    ctaLink: "/alp-university",
+    isInternal: true
   }
 ];
 
@@ -97,9 +99,15 @@ const Services = () => {
                     size="lg"
                     asChild
                   >
-                    <a href={service.ctaLink} target="_blank" rel="noopener noreferrer">
-                      {service.cta}
-                    </a>
+                    {service.isInternal ? (
+                      <Link to={service.ctaLink}>
+                        {service.cta}
+                      </Link>
+                    ) : (
+                      <a href={service.ctaLink} target="_blank" rel="noopener noreferrer">
+                        {service.cta}
+                      </a>
+                    )}
                   </Button>
                 </CardContent>
               </Card>
