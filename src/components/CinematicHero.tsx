@@ -24,7 +24,7 @@ const CinematicHero = () => {
     const isAiBrowser = /chatgpt|atlas|openai|bot|crawler/i.test(ua);
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     
-    if (isAiBrowser || prefersReducedMotion) {
+    if (isAiBrowser || prefersReducedMotion || hasVisited) {
       setVideoError(true);
     }
     
@@ -99,7 +99,6 @@ const CinematicHero = () => {
             ref={videoRef}
             autoPlay
             muted
-            loop
             playsInline
             preload="auto"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}
