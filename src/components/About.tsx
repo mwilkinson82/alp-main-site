@@ -68,7 +68,7 @@ const About = () => {
           <div className="space-y-6">
             <div className="text-lg text-secondary-foreground/90 space-y-4">
               <p>
-                Marshall Wilkinson is not just a business strategist. He is a builder of people, systems, and frameworks that win. With over <span className="text-primary font-bold">$2.5 billion in negotiated contracts by the age of 38</span> and a career forged in the trenches of high-stakes construction and enterprise, Marshall now teaches a philosophy that transcends industry.
+                Marshall Wilkinson is not just a business strategist. He is a builder of people, systems, and frameworks that win. With over <span className="text-primary font-bold">$2.5 billion in projects delivered by the age of 38</span> and a career forged in the trenches of high-stakes construction and enterprise, Marshall now teaches a philosophy that transcends industry.
               </p>
               <p>
                 Marshall built his reputation negotiating some of the most complex contracts in New York City. He mastered leverage, timing, and execution in environments where failure wasn't an option. But it wasn't just about construction—it was about the game of life.
