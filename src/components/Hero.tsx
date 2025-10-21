@@ -16,9 +16,28 @@ const Hero = () => {
   const [videoError, setVideoError] = useState(false);
   const [autoplayFailed, setAutoplayFailed] = useState(false);
   const [videoCanPlay, setVideoCanPlay] = useState(false);
+  const [forceStatic, setForceStatic] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasVisitedBefore = useRef(false);
+
+  // Detect AI browsers and force static mode
+  useEffect(() => {
+    const ua = (navigator?.userAgent || '').toLowerCase();
+    const isAiBrowser = /chatgpt|atlas|openai|bot|crawler/i.test(ua);
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    
+    if (isAiBrowser || prefersReducedMotion) {
+      console.log('Static mode enabled (AI browser or reduced motion detected)');
+      setForceStatic(true);
+      setVideoError(true);
+      setAutoplayFailed(false);
+      if (videoTimeoutRef.current) {
+        clearTimeout(videoTimeoutRef.current);
+        videoTimeoutRef.current = null;
+      }
+    }
+  }, []);
 
   // Check if user has visited before and if video has been played
   useEffect(() => {
@@ -51,6 +70,9 @@ const Hero = () => {
   const handleIntroComplete = () => {
     setShowIntro(false);
     localStorage.setItem('alp-visited', 'true');
+    
+    // Skip video logic if forcing static mode
+    if (forceStatic) return;
     
     // Attempt to play video after intro
     setTimeout(() => {
@@ -168,7 +190,7 @@ const Hero = () => {
     <section className="relative min-h-screen overflow-hidden">
       {/* Video Background or Image After Video Ends */}
       <div className="absolute inset-0 z-0">
-        {!videoEnded && !videoError ? (
+        {!forceStatic && !videoEnded && !videoError ? (
           <video
             ref={videoRef}
             autoPlay
@@ -239,7 +261,7 @@ const Hero = () => {
       </div>
 
       {/* Audio Control Button - Only show when video is playing */}
-      {!videoEnded && !videoError && (
+      {!forceStatic && !videoEnded && !videoError && (
         <button
           onClick={toggleAudio}
           className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
@@ -255,7 +277,7 @@ const Hero = () => {
       )}
 
       {/* Tap-to-Play overlay when autoplay is blocked */}
-      {!videoEnded && !videoError && !showIntro && autoplayFailed && (
+      {!forceStatic && !videoEnded && !videoError && !showIntro && autoplayFailed && (
         <div className="fixed inset-0 z-20 flex items-center justify-center">
           <Button
             onClick={tryPlayVideo}
@@ -265,6 +287,20 @@ const Hero = () => {
           >
             Tap to Play
           </Button>
+        </div>
+      )}
+
+      {/* Watch full intro link - Only in static mode */}
+      {forceStatic && !showIntro && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center pointer-events-none">
+          <a
+            href="/videos/welcome-background.mp4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3 rounded-full bg-background/70 border border-primary/30 text-primary font-semibold shadow-elegant backdrop-blur-md hover:bg-background/80 transition pointer-events-auto"
+          >
+            Watch Full Intro
+          </a>
         </div>
       )}
 
