@@ -104,10 +104,12 @@ const CinematicHero = () => {
             preload="auto"
             poster={marshallCasual}
             className="absolute inset-0 w-full h-full object-cover"
-            onError={() => setVideoError(true)}
+            onError={(e) => {
+              console.log('Video failed to load:', e);
+              setVideoError(true);
+            }}
           >
-            <source src="/videos/welcome-background.webm?v=2" type="video/webm" />
-            <source src="/videos/welcome-background.mp4?v=2" type="video/mp4" />
+            <source src="/videos/welcome-background.mp4?v=3" type="video/mp4" />
           </video>
         ) : (
           <img 
