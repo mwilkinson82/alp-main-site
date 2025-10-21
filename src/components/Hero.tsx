@@ -1,20 +1,41 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar } from "lucide-react";
-import heroBackground from "@/assets/hero-background.jpg";
+import { useEffect, useState } from "react";
+import marshallSuit from "@/assets/marshall-suit.png";
 
 const Hero = () => {
+  const [videoOpacity, setVideoOpacity] = useState(0.9);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const maxScroll = 500;
+      const newOpacity = Math.max(0.4, 0.9 - (scrollPosition / maxScroll) * 0.5);
+      setVideoOpacity(newOpacity);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url(${heroBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-dark opacity-90"></div>
+      {/* Video Background with Scroll-Reveal Effect */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={marshallSuit}
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/welcome-background.mp4" type="video/mp4" />
+        </video>
+        <div 
+          className="absolute inset-0 bg-gradient-dark transition-opacity duration-300"
+          style={{ opacity: videoOpacity }}
+        ></div>
         <div 
           className="absolute inset-0 opacity-30"
           style={{ backgroundImage: 'var(--gradient-gold-radial)' }}
