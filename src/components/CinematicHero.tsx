@@ -102,8 +102,7 @@ const CinematicHero = () => {
             loop
             playsInline
             preload="auto"
-            poster={marshallCasual}
-            className="absolute inset-0 w-full h-full object-cover"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}
             onError={(e) => {
               console.log('Video failed to load:', e);
               setVideoError(true);
@@ -119,8 +118,8 @@ const CinematicHero = () => {
           />
         )}
         
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background"></div>
+        {/* Lighter gradient overlay - let more video show through */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-background/80"></div>
       </div>
 
       {/* Black Screen with Logo Intro */}
@@ -160,26 +159,26 @@ const CinematicHero = () => {
         </button>
       )}
 
-      {/* Hero Content Overlay */}
+      {/* Hero Content Overlay - Bottom aligned to show more video */}
       {showContent && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center animate-fade-in">
+        <div className="absolute inset-0 z-10 flex items-end pb-20 animate-fade-in">
           <div className="container mx-auto px-4 text-center">
-            <div className="max-w-5xl mx-auto space-y-8">
+            <div className="max-w-5xl mx-auto space-y-6">
               {/* Overline */}
               <div className="inline-block">
-                <span className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
+                <span className="text-primary text-xs md:text-sm font-bold tracking-widest uppercase px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
                   Altitude Logic Pressure
                 </span>
               </div>
 
-              {/* Main Headline */}
-              <h1 className="text-5xl md:text-7xl lg:text-8xl text-white leading-tight drop-shadow-2xl">
+              {/* Main Headline - Smaller to show more video */}
+              <h1 className="text-4xl md:text-6xl lg:text-7xl text-white leading-tight drop-shadow-2xl">
                 Transform Your Business with
                 <span className="text-gradient-gold block mt-2">Proven Expertise</span>
               </h1>
 
               {/* Subheadline */}
-              <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+              <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
                 Over <span className="text-primary font-bold">$2.5 Billion</span> in construction success. 
                 Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
               </p>
@@ -210,31 +209,37 @@ const CinematicHero = () => {
               </div>
 
               {/* Client Login Link */}
-              <div className="pt-6">
+              <div className="pt-4">
                 <a 
                   href="https://marshallwilkinson.mykajabi.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white hover:text-primary transition-colors text-sm font-semibold underline underline-offset-4 drop-shadow-lg"
+                  className="text-white/80 hover:text-primary transition-colors text-xs md:text-sm font-semibold underline underline-offset-4 drop-shadow-lg"
                 >
                   Existing Client? Login to ALP Portal →
                 </a>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* Trust Indicators */}
-              <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div className="space-y-2 glass-card p-6 hover-lift">
-                  <div className="text-4xl font-bold text-primary">1 on 1</div>
-                  <div className="text-white/80">Elite Coaching and Consulting</div>
-                </div>
-                <div className="space-y-2 glass-card p-6 hover-lift">
-                  <div className="text-4xl font-bold text-primary">1000s</div>
-                  <div className="text-white/80">Hours of Training Content</div>
-                </div>
-                <div className="space-y-2 glass-card p-6 hover-lift">
-                  <div className="text-4xl font-bold text-primary">Daily</div>
-                  <div className="text-white/80">Power Hour at 8am EST</div>
-                </div>
+      {/* Trust Indicators - Separate section below hero */}
+      {showContent && (
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 animate-fade-in">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
+              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
+                <div className="text-2xl md:text-4xl font-bold text-primary">1 on 1</div>
+                <div className="text-xs md:text-base text-white/80">Elite Coaching</div>
+              </div>
+              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
+                <div className="text-2xl md:text-4xl font-bold text-primary">1000s</div>
+                <div className="text-xs md:text-base text-white/80">Training Hours</div>
+              </div>
+              <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
+                <div className="text-2xl md:text-4xl font-bold text-primary">Daily</div>
+                <div className="text-xs md:text-base text-white/80">Power Hour</div>
               </div>
             </div>
           </div>
