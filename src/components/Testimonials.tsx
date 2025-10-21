@@ -1,7 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Play } from "lucide-react";
+import { useState } from "react";
 
 const Testimonials = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
     <section className="py-20 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto px-4">
@@ -22,15 +25,20 @@ const Testimonials = () => {
                 controls 
                 className="w-full aspect-video"
                 preload="metadata"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
               >
                 <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-has-[:playing]:hidden">
-                <div className="bg-primary/90 rounded-full p-6 shadow-lg">
-                  <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
+              {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="bg-primary/90 rounded-full p-6 shadow-lg">
+                    <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </Card>
         </div>
