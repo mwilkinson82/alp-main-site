@@ -1,22 +1,70 @@
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, X } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import marshallSuit from "@/assets/marshall-suit.png";
 import alpLogo from "@/assets/alp-logo.png";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
+  const [showSkipButton, setShowSkipButton] = useState(false);
+  const [videoOpacity, setVideoOpacity] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { toast } = useToast();
+  const hasVisitedBefore = useRef(false);
+
+  // Check if user has visited before
+  useEffect(() => {
+    hasVisitedBefore.current = localStorage.getItem('alp-visited') === 'true';
+  }, []);
+
+  // Show skip button after 1 second (only for returning visitors)
+  useEffect(() => {
+    if (showIntro && hasVisitedBefore.current) {
+      const skipTimer = setTimeout(() => {
+        setShowSkipButton(true);
+      }, 1000);
+      return () => clearTimeout(skipTimer);
+    }
+  }, [showIntro]);
 
   // Timer-based intro: show logo for 2 seconds, then fade out
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowIntro(false);
+      handleIntroComplete();
     }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    localStorage.setItem('alp-visited', 'true');
+    
+    // Fade in video
+    setTimeout(() => setVideoOpacity(1), 100);
+    
+    // Auto-unmute and show toast after a brief delay
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+        toast({
+          title: "🔊 Audio Enabled",
+          description: "Welcome! Click the audio button to mute if needed.",
+          duration: 3000,
+        });
+      }
+    }, 800);
+  };
+
+  const skipIntro = () => {
+    setShowIntro(false);
+    setShowSkipButton(false);
+    handleIntroComplete();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,8 +90,11 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Video Background - Only visible in hero section */}
-      <div className="absolute inset-0 z-0">
+      {/* Video Background - Fades in after intro */}
+      <div 
+        className="absolute inset-0 z-0 transition-opacity duration-1000"
+        style={{ opacity: videoOpacity }}
+      >
         <video
           ref={videoRef}
           autoPlay
@@ -76,6 +127,19 @@ const Hero = () => {
           alt="ALP - Altitude Logic Pressure" 
           className="w-64 md:w-96 animate-fade-in"
         />
+        
+        {/* Skip Intro Button - Only for returning visitors */}
+        {showSkipButton && (
+          <Button
+            onClick={skipIntro}
+            variant="outline"
+            size="sm"
+            className="absolute bottom-8 right-8 gap-2 animate-fade-in"
+          >
+            Skip Intro
+            <X className="w-4 h-4" />
+          </Button>
+        )}
       </div>
 
       {/* Audio Control Button - Visible After Logo Fades */}
