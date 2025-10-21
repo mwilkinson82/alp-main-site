@@ -22,7 +22,7 @@ const PowerHour = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-background to-muted/20">
+      <section className="pt-32 pb-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
@@ -40,7 +40,7 @@ const PowerHour = () => {
       </section>
 
       {/* Video Section */}
-      <section className="py-16 bg-muted/20">
+      <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
@@ -75,7 +75,7 @@ const PowerHour = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">

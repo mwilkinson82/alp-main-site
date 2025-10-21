@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, Target, Shield } from "lucide-react";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallSignature from "@/assets/marshall-signature.png";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const highlights = [
   {
@@ -27,8 +28,16 @@ const highlights = [
 ];
 
 const About = () => {
+  const { ref, isVisible } = useScrollAnimation();
+  
   return (
-    <section id="about" className="py-24 bg-secondary text-secondary-foreground relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="about" 
+      className={`py-24 bg-secondary text-secondary-foreground relative overflow-hidden transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
       {/* Background accent */}
       <div 
         className="absolute bottom-0 left-0 w-full h-1/2 opacity-20"

@@ -3,8 +3,10 @@ import { Play } from "lucide-react";
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import groupPhoto from "@/assets/testimonials-group.jpg";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const Testimonials = () => {
+  const { ref, isVisible } = useScrollAnimation();
   const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({
     beauMonde: false,
     ahronGluck: false
@@ -19,7 +21,13 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-b from-background to-muted/20">
+    <section 
+      ref={ref}
+      id="testimonials" 
+      className={`py-20 bg-muted/30 transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">

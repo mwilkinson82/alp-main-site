@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const ContactForm = () => {
+  const { ref, isVisible } = useScrollAnimation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -33,7 +35,12 @@ const ContactForm = () => {
   };
 
   return (
-    <section className="py-20 bg-muted/20">
+    <section 
+      ref={ref}
+      className={`py-20 bg-background transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">

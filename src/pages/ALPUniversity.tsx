@@ -29,7 +29,7 @@ const ALPUniversity = () => {
       
       <main className="flex-grow pt-16">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-background via-primary/5 to-background overflow-hidden">
+        <section className="relative py-20 bg-background overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
@@ -60,7 +60,7 @@ const ALPUniversity = () => {
         </section>
 
         {/* What's Included Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">What's Included</h2>
@@ -134,7 +134,7 @@ const ALPUniversity = () => {
         </section>
 
         {/* Benefits Section with Images */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Why ALP University?</h2>
             
@@ -215,7 +215,7 @@ const ALPUniversity = () => {
         </section>
 
         {/* Weekly Schedule Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Weekly Live Classes</h2>
@@ -275,7 +275,7 @@ const ALPUniversity = () => {
         </section>
 
         {/* Pricing Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/5">
+        <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Join ALP University Today</h2>
