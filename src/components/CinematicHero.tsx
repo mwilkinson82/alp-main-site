@@ -160,9 +160,9 @@ const CinematicHero = () => {
 
       {/* Hero Content Overlay - Bottom aligned to show more video */}
       {showContent && (
-        <div className="absolute inset-0 z-10 flex items-end pb-20 animate-fade-in">
+        <div className="absolute inset-0 z-10 flex items-end pb-32 md:pb-40 animate-fade-in">
           <div className="container mx-auto px-4 text-center">
-            <div className="max-w-5xl mx-auto space-y-6">
+            <div className="max-w-5xl mx-auto space-y-6 mb-24 md:mb-32">
               {/* Overline */}
               <div className="inline-block">
                 <span className="text-primary text-xs md:text-sm font-bold tracking-widest uppercase px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
@@ -225,9 +225,9 @@ const CinematicHero = () => {
 
       {/* Trust Indicators - Separate section below hero */}
       {showContent && (
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-8 animate-fade-in">
+        <div className="absolute bottom-0 left-0 right-0 z-20 pb-6 animate-fade-in">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-4xl mx-auto">
               <div className="space-y-1 glass-card p-3 md:p-6 hover-lift">
                 <div className="text-2xl md:text-4xl font-bold text-primary">1 on 1</div>
                 <div className="text-xs md:text-base text-white/80">Elite Coaching</div>

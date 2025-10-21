@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
@@ -82,11 +84,32 @@ const Coaching = () => {
   ];
 
   return (
-    <main className="min-h-screen">
-      <Header />
+    <>
+      <SEO 
+        title="1-on-1 Business Coaching Sessions"
+        description="Get personalized business coaching from Marshall Wilkinson. Deep-dive sessions tailored to your challenges with lifetime recording access. Single sessions and ongoing support available."
+        keywords="1-on-1 coaching, business coaching, personalized coaching, executive coaching, business consulting, leadership coaching"
+        canonical="/coaching"
+      />
+      <StructuredData 
+        type="service" 
+        data={{
+          serviceType: "1-on-1 Business Coaching",
+          description: "Personalized coaching sessions with lifetime recording access",
+          price: "1000",
+          offers: {
+            "@type": "AggregateOffer",
+            "lowPrice": "1000",
+            "highPrice": "10000",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
+      <main className="min-h-screen">
+        <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-background">
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -321,14 +344,15 @@ const Coaching = () => {
         </div>
       </section>
 
-      <Footer />
-      
-      <CustomPricingForm 
-        open={customPricingOpen}
-        onOpenChange={setCustomPricingOpen}
-        packageType={selectedPackage}
-      />
-    </main>
+        <Footer />
+        
+        <CustomPricingForm 
+          open={customPricingOpen}
+          onOpenChange={setCustomPricingOpen}
+          packageType={selectedPackage}
+        />
+      </main>
+    </>
   );
 };
 

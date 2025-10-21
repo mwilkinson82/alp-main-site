@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check, Clock, Users, Video, Calendar, Play } from "lucide-react";
@@ -18,11 +20,26 @@ const PowerHour = () => {
 
 
   return (
-    <main className="min-h-screen">
-      <Header />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-background">
+    <>
+      <SEO 
+        title="Power Hour - Daily Morning Accountability"
+        description="Start every morning with focus, strategy, and community. Join the daily Power Hour live coaching call at 8:00 AM EST. Daily accountability, live coaching, and peer support."
+        keywords="power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community"
+        canonical="/power-hour"
+      />
+      <StructuredData 
+        type="service" 
+        data={{
+          serviceType: "Daily Accountability Coaching",
+          description: "Daily morning accountability and coaching calls at 8:00 AM EST",
+          price: "197"
+        }}
+      />
+      <main className="min-h-screen">
+        <Header />
+        
+        {/* Hero Section */}
+        <section className="pt-32 pb-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
@@ -192,8 +209,9 @@ const PowerHour = () => {
         </div>
       </section>
 
-      <Footer />
-    </main>
+        <Footer />
+      </main>
+    </>
   );
 };
 

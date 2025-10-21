@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BookOpen, Video, Users, Calendar, PlayCircle, GraduationCap } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
+import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
 import alpAudiosMockup from "@/assets/alp-audios-mockup.png";
 import consultingMockup from "@/assets/consulting-mockup.png";
@@ -24,10 +26,25 @@ const ALPUniversity = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-16">
+    <>
+      <SEO 
+        title="ALP University - Training Library & Courses"
+        description="Access 1,000+ hours of business, mindset, and sales training. Complete library of courses plus recordings from Power Hour, Contractor School, and Sales & Marketing School."
+        keywords="business training, sales training, online courses, business education, contractor training, sales mastery, mindset training"
+        canonical="/alp-university"
+      />
+      <StructuredData 
+        type="course" 
+        data={{
+          name: "ALP University",
+          description: "1,000+ hours of business, mindset, and sales mastery training with live class recordings",
+          price: "197"
+        }}
+      />
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        
+        <main className="flex-grow pt-16">
         {/* Hero Section */}
         <section className="relative py-20 bg-background overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -297,10 +314,11 @@ const ALPUniversity = () => {
             </div>
           </div>
         </section>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 };
 
