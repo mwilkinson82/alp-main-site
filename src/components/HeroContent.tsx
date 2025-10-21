@@ -14,13 +14,13 @@ const HeroContent = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl text-secondary-foreground leading-tight">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight">
             Transform Your Business with
             <span className="text-gradient-gold block mt-2">Proven Expertise</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-secondary-foreground/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Over <span className="text-primary font-bold">$2.5 Billion</span> in construction success. 
             Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
           </p>
@@ -54,15 +54,15 @@ const HeroContent = () => {
           <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="space-y-2">
               <div className="text-4xl font-bold text-primary">$2.5B+</div>
-              <div className="text-secondary-foreground/70">Construction Delivered</div>
+              <div className="text-muted-foreground">Construction Delivered</div>
             </div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-primary">1000s</div>
-              <div className="text-secondary-foreground/70">Hours of Training Content</div>
+              <div className="text-muted-foreground">Hours of Training Content</div>
             </div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-primary">Daily</div>
-              <div className="text-secondary-foreground/70">Power Hour at 8am EST</div>
+              <div className="text-muted-foreground">Power Hour at 8am EST</div>
             </div>
           </div>
         </div>
