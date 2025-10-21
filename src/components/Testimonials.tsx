@@ -24,15 +24,15 @@ const Testimonials = () => {
     <section 
       ref={sectionRef}
       id="testimonials" 
-      className="py-20 bg-muted/30"
+      className="py-20 md:py-32 bg-background"
     >
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Success is Engineered
+        <div className="text-center mb-20 space-y-6">
+          <h2 className="text-4xl md:text-6xl font-bold">
+            <span className="text-gradient-gold">Success Stories</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Hear from decision-makers who've transformed their businesses and lives
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            Real results from real entrepreneurs who transformed their businesses
           </p>
         </div>
 

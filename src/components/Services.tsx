@@ -56,18 +56,15 @@ const Services = () => {
   return (
     <section 
       id="services" 
-      className="py-24 bg-background"
+      className="py-20 md:py-32 bg-background"
     >
       <div className="container mx-auto px-4">
-        <header className="text-center mb-16">
-          <p className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20 inline-block">
-            Your Path Forward
-          </p>
-          <h2 className="mt-4 text-4xl md:text-6xl font-bold text-foreground">
-            Precision. Execution. Legacy.
+        <header className="text-center mb-20 space-y-6">
+          <h2 className="text-4xl md:text-6xl font-bold">
+            <span className="text-gradient-gold">Services</span>
           </h2>
-          <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Every decision is pressure. We teach you how to use it.
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            Choose your path to unprecedented success
           </p>
         </header>
 

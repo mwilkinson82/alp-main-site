@@ -34,7 +34,7 @@ const About = () => {
     <section 
       ref={sectionRef}
       id="about" 
-      className="py-24 bg-secondary text-secondary-foreground relative overflow-hidden"
+      className="py-20 md:py-32 bg-muted/30 relative overflow-hidden"
     >
       {/* Background accent */}
       <div 
@@ -44,16 +44,16 @@ const About = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="text-primary text-sm font-bold tracking-widest uppercase">
-            About Marshall
-          </span>
-          <h2 className="text-4xl md:text-6xl font-bold mt-4">
-            Meet Marshall Wilkinson
+        <div className="text-center mb-20 space-y-6">
+          <h2 className="text-4xl md:text-6xl font-bold">
+            <span className="text-gradient-gold">Meet Marshall</span>
           </h2>
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+            Builder of systems, strategist, and architect of transformation
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center mb-24">
           {/* Left - Photo */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-premium hover-lift">

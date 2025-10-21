@@ -108,50 +108,45 @@ const Coaching = () => {
       <main className="min-h-screen">
         <Header />
 
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="order-2 md:order-1">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
-                  <Star className="w-4 h-4" fill="currentColor" />
-                  <span className="text-sm font-semibold">Premium 1-on-1 Coaching</span>
-                </div>
-                
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                  Transform Your Business with Personalized Guidance
-                </h1>
-                
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                  Get exclusive access to expert coaching that delivers real results. 
-                  Deep-dive sessions tailored to your unique challenges with lifetime access to recordings.
-                </p>
+        {/* Hero Image Section */}
+        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${marshallSuit})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        </section>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" onClick={scrollToBooking} className="text-lg px-8">
-                    Book Your Session
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                  <Button size="lg" variant="outline" asChild className="text-lg px-8">
-                    <Link to={{ pathname: "/", hash: "#testimonials" }}>See Client Results</Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="order-1 md:order-2">
-                <div className="relative">
-                  <img 
-                    src={marshallSuit} 
-                    alt="Marshall Wilkinson - Business Coach" 
-                    className="rounded-2xl shadow-2xl w-full max-w-lg mx-auto"
-                  />
-                </div>
+        {/* Content Section */}
+        <section className="relative bg-background py-16 md:py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              <h1 className="text-5xl md:text-7xl font-bold">
+                <span className="text-gradient-gold">1-on-1 Coaching</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+                Elite business coaching for entrepreneurs, CEOs, and sales professionals ready to scale beyond limits
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                <Button
+                  size="lg"
+                  className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
+                  onClick={scrollToBooking}
+                >
+                  Book Your Session
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 h-12"
+                  asChild
+                >
+                  <Link to={{ pathname: "/", hash: "#testimonials" }}>See Client Results</Link>
+                </Button>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* What's Included */}
       <section className="py-20 bg-muted/30">

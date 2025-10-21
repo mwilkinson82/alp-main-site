@@ -38,59 +38,48 @@ const PowerHour = () => {
       <main className="min-h-screen">
         <Header />
         
-        {/* Hero Section */}
-        <section className="pt-32 pb-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              The <span className="text-gradient-gold">Power Hour</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-              Start Every Morning with Focus, Strategy, and Community
-            </p>
-            <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-4 mb-8">
-              <p className="text-sm text-muted-foreground mb-1">Daily Live Call</p>
-              <p className="text-3xl font-bold text-primary">8:00 AM EST • Every Morning</p>
+        {/* Video Hero Section */}
+        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            playsInline
+            muted
+          >
+            <source src="/videos/power-hour-explainer.mov" type="video/mp4" />
+          </video>
+          
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+          
+          {!isPlaying && (
+            <button
+              onClick={handlePlayVideo}
+              className="absolute inset-0 flex items-center justify-center group cursor-pointer"
+            >
+              <div className="w-24 h-24 rounded-full bg-gold/90 hover:bg-gold flex items-center justify-center transition-all group-hover:scale-110">
+                <Play className="h-12 w-12 text-black ml-1" fill="currentColor" />
+              </div>
+            </button>
+          )}
+        </section>
+
+        {/* Content Section */}
+        <section className="relative bg-background py-16 md:py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <h1 className="text-5xl md:text-7xl font-bold">
+                <span className="text-gradient-gold">Power Hour</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground">
+                Start Every Morning with Focus, Strategy, and Community
+              </p>
+              <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-4">
+                <p className="text-sm text-muted-foreground mb-1">Daily Live Call</p>
+                <p className="text-3xl font-bold text-primary">8:00 AM EST • Every Morning</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Video Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
-              What is Power Hour?
-            </h2>
-            <Card className="overflow-hidden relative bg-muted">
-              <video 
-                ref={videoRef}
-                controls 
-                className="w-full aspect-video"
-                preload="auto"
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-              >
-                <source src="/videos/power-hour-explainer.mov#t=0.1" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              
-              {/* Custom Play Button Overlay */}
-              {!isPlaying && (
-                <div 
-                  className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer group"
-                  onClick={handlePlayVideo}
-                >
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/90 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-primary shadow-lg">
-                    <Play className="w-10 h-10 md:w-12 md:h-12 text-primary-foreground ml-1" fill="currentColor" />
-                  </div>
-                </div>
-              )}
-            </Card>
-          </div>
-        </div>
-      </section>
+        </section>
 
       {/* Benefits Section */}
       <section className="py-16 bg-background">

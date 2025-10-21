@@ -45,32 +45,41 @@ const ALPUniversity = () => {
         <Header />
         
         <main className="flex-grow pt-16">
-        {/* Hero Section */}
-        <section className="relative py-20 bg-background overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full">
-                  <GraduationCap className="w-5 h-5" />
-                  <span className="font-semibold">Master Your Business & Mindset</span>
-                </div>
-                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
-                  ALP University
-                </h1>
-                <p className="text-xl md:text-2xl text-muted-foreground">
-                  1,000's of Hours of Business, Mindset & Sales Mastery Training + Live Class Recordings
-                </p>
-                <p className="text-lg text-muted-foreground">
-                  Get unlimited access to our complete training library and recorded sessions from Power Hour, Contractor School, and Sales & Marketing School.
-                </p>
-              </div>
-              <div className="relative">
-                <img 
-                  src={marshallOffice} 
-                  alt="Marshall Wilkinson coaching session" 
-                  className="rounded-lg shadow-2xl"
-                />
+        {/* Hero Image Section */}
+        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${alpAudiosMockup})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        </section>
+
+        {/* Content Section */}
+        <section className="relative bg-background py-16 md:py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              <h1 className="text-5xl md:text-7xl font-bold">
+                <span className="text-gradient-gold">ALP University</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+                1,000+ hours of transformative training in business, mindset, and sales mastery
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+                <Button
+                  size="lg"
+                  className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
+                  onClick={() => document.getElementById('curriculum')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Explore Curriculum
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 h-12"
+                  onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  View Pricing
+                </Button>
               </div>
             </div>
           </div>
