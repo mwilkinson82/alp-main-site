@@ -46,14 +46,12 @@ const Footer = () => {
             <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Connect</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a 
-                  href="https://calendly.com/your-calendly-link" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <Link 
+                  to="/coaching"
                   className="text-secondary-foreground/70 hover:text-primary transition-smooth"
                 >
                   Schedule Consultation
-                </a>
+                </Link>
               </li>
               <li className="text-secondary-foreground/70">
                 Power Hour: Daily at 8:00 AM EST
