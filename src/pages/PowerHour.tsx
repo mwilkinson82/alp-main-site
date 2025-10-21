@@ -1,10 +1,21 @@
+import { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Clock, Users, Video, Calendar } from "lucide-react";
+import { Check, Clock, Users, Video, Calendar, Play } from "lucide-react";
 
 const PowerHour = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -34,14 +45,29 @@ const PowerHour = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
               What is Power Hour?
             </h2>
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden relative">
               <video 
+                ref={videoRef}
                 controls 
                 className="w-full aspect-video"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
               >
                 <source src="/videos/power-hour-explainer.mov" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+              
+              {/* Custom Play Button Overlay */}
+              {!isPlaying && (
+                <div 
+                  className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer group"
+                  onClick={handlePlayVideo}
+                >
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/90 flex items-center justify-center transition-all group-hover:scale-110 group-hover:bg-primary shadow-lg">
+                    <Play className="w-10 h-10 md:w-12 md:h-12 text-primary-foreground ml-1" fill="currentColor" />
+                  </div>
+                </div>
+              )}
             </Card>
           </div>
         </div>
