@@ -114,15 +114,6 @@ const Hero = () => {
               alt="Marshall Wilkinson" 
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
-            <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 text-center px-4 max-w-3xl">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Ready to Elevate Your Business?
-              </h2>
-              <p className="text-xl text-white/90">
-                Let's build your success story together
-              </p>
-            </div>
           </div>
         )}
         {/* Overlays - fade out with intro */}
