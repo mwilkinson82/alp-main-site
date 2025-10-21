@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, Target, Shield } from "lucide-react";
+import marshallCasual from "@/assets/marshall-casual.png";
+import marshallSignature from "@/assets/marshall-signature.png";
 
 const highlights = [
   {
@@ -26,7 +28,7 @@ const highlights = [
 
 const About = () => {
   return (
-    <section className="py-24 bg-secondary text-secondary-foreground relative overflow-hidden">
+    <section id="about" className="py-24 bg-secondary text-secondary-foreground relative overflow-hidden">
       {/* Background accent */}
       <div 
         className="absolute bottom-0 left-0 w-full h-1/2 opacity-20"
@@ -34,19 +36,37 @@ const About = () => {
       ></div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Content */}
-          <div className="space-y-6">
-            <div>
-              <span className="text-primary text-sm font-bold tracking-widest uppercase">
-                About ALP
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-                Altitude. Logic. Pressure.
-              </h2>
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <span className="text-primary text-sm font-bold tracking-widest uppercase">
+            About Marshall
+          </span>
+          <h2 className="text-4xl md:text-6xl font-bold mt-4">
+            Meet Marshall Wilkinson
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
+          {/* Left - Photo */}
+          <div className="relative">
+            <div className="relative rounded-2xl overflow-hidden shadow-elegant">
+              <img 
+                src={marshallCasual} 
+                alt="Marshall Wilkinson" 
+                className="w-full h-auto object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>
-            
-            <div className="text-lg text-secondary-foreground/80 space-y-4">
+            {/* Floating accent */}
+            <div 
+              className="absolute -bottom-8 -right-8 w-64 h-64 opacity-30 blur-3xl"
+              style={{ background: 'var(--gradient-gold)' }}
+            ></div>
+          </div>
+
+          {/* Right - Content */}
+          <div className="space-y-6">
+            <div className="text-lg text-secondary-foreground/90 space-y-4">
               <p>
                 At ALP, we believe success requires three essential elements: the <span className="text-primary font-semibold">altitude</span> to see the bigger picture, 
                 the <span className="text-primary font-semibold">logic</span> to make sound decisions, and the <span className="text-primary font-semibold">pressure</span> to 
@@ -62,31 +82,41 @@ const About = () => {
               </p>
             </div>
 
-            <Button size="lg" variant="premium" asChild className="mt-4">
+            {/* Signature */}
+            <div className="pt-4">
+              <img 
+                src={marshallSignature} 
+                alt="Marshall Wilkinson Signature" 
+                className="h-16 opacity-80"
+              />
+              <p className="text-sm text-secondary-foreground/60 mt-2">Marshall Wilkinson</p>
+            </div>
+
+            <Button size="lg" variant="premium" asChild className="mt-6">
               <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
                 Work With Me
               </a>
             </Button>
           </div>
+        </div>
 
-          {/* Right Content - Highlights Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {highlights.map((highlight, index) => {
-              const Icon = highlight.icon;
-              return (
-                <div 
-                  key={index} 
-                  className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-3 hover:border-primary/40 transition-smooth"
-                >
-                  <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <h3 className="text-lg font-bold">{highlight.title}</h3>
-                  <p className="text-sm text-secondary-foreground/70">{highlight.description}</p>
+        {/* Highlights Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {highlights.map((highlight, index) => {
+            const Icon = highlight.icon;
+            return (
+              <div 
+                key={index} 
+                className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-3 hover:border-primary/40 transition-smooth"
+              >
+                <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center">
+                  <Icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-              );
-            })}
-          </div>
+                <h3 className="text-lg font-bold">{highlight.title}</h3>
+                <p className="text-sm text-secondary-foreground/70">{highlight.description}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
