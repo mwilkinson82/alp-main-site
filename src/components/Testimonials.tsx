@@ -67,7 +67,7 @@ const Testimonials = () => {
                 onPause={() => handlePauseOrEnd('ahronGluck')}
                 onEnded={() => handlePauseOrEnd('ahronGluck')}
               >
-                <source src="/videos/ahron-gluck-testimonial.mov" type="video/quicktime" />
+                <source src="/videos/ahron-gluck-testimonial.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               {!isPlaying.ahronGluck && (
