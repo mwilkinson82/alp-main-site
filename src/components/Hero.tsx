@@ -15,7 +15,9 @@ const Hero = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [autoplayFailed, setAutoplayFailed] = useState(false);
+  const [videoCanPlay, setVideoCanPlay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasVisitedBefore = useRef(false);
 
   // Check if user has visited before and if video has been played
@@ -54,17 +56,28 @@ const Hero = () => {
     setTimeout(() => {
       if (videoRef.current && videoLoaded && !videoError) {
         const video = videoRef.current;
+        
+        // Check if video has enough data loaded
+        console.log('Video ready state:', video.readyState);
+        if (video.readyState < 2) {
+          console.log('Video not ready, showing static image');
+          setVideoError(true);
+          return;
+        }
+        
         const initialTime = video.currentTime;
         
         video.muted = true;
         video.play().then(() => {
+          console.log('Video play succeeded');
           setAutoplayFailed(false);
+          setVideoCanPlay(true);
         }).catch((error) => {
           console.log('Video autoplay failed:', error);
           setAutoplayFailed(true);
         });
         
-        // Check if video is actually progressing (more robust than just checking paused state)
+        // Check if video is actually progressing
         setTimeout(() => {
           if (videoRef.current) {
             const hasProgressed = videoRef.current.currentTime > initialTime;
@@ -76,6 +89,14 @@ const Hero = () => {
           }
         }, 500);
       }
+      
+      // Aggressive timeout: if video hasn't started playing after 3 seconds, force fallback
+      videoTimeoutRef.current = setTimeout(() => {
+        if (videoRef.current && !videoCanPlay) {
+          console.log('Video timeout - forcing static image fallback');
+          setVideoError(true);
+        }
+      }, 3000);
     }, 300);
   };
 
@@ -110,6 +131,7 @@ const Hero = () => {
   };
 
   const handleVideoLoaded = () => {
+    console.log('Video metadata loaded');
     setVideoLoaded(true);
   };
 
@@ -120,7 +142,14 @@ const Hero = () => {
   };
 
   const handleVideoPlay = () => {
+    console.log('Video started playing');
     setAutoplayFailed(false);
+    setVideoCanPlay(true);
+    // Clear timeout since video is playing
+    if (videoTimeoutRef.current) {
+      clearTimeout(videoTimeoutRef.current);
+      videoTimeoutRef.current = null;
+    }
   };
 
   const tryPlayVideo = async () => {
@@ -153,7 +182,13 @@ const Hero = () => {
             onPlay={handleVideoPlay}
             onError={handleVideoError}
           >
+            <source src="/videos/welcome-background.webm" type="video/webm" />
             <source src="/videos/welcome-background.mp4" type="video/mp4" />
+            <img 
+              src={marshallCasual} 
+              alt="Marshall Wilkinson - ALP Welcome" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </video>
         ) : (
           <div className="absolute inset-0 w-full h-full">
