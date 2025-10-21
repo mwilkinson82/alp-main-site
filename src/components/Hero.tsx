@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import marshallSuit from "@/assets/marshall-suit.png";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import alpLogo from "@/assets/alp-logo.png";
-import { useToast } from "@/hooks/use-toast";
+
 import { Button } from "@/components/ui/button";
 
 const Hero = () => {
@@ -14,6 +14,7 @@ const Hero = () => {
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [autoplayFailed, setAutoplayFailed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const hasVisitedBefore = useRef(false);
 
@@ -52,9 +53,19 @@ const Hero = () => {
     // Attempt to play video after intro
     setTimeout(() => {
       if (videoRef.current && videoLoaded && !videoError) {
-        videoRef.current.play().catch((error) => {
+        videoRef.current.muted = true;
+        videoRef.current.play().then(() => {
+          setAutoplayFailed(false);
+        }).catch((error) => {
           console.log('Video autoplay failed:', error);
+          setAutoplayFailed(true);
         });
+        // If still paused shortly after, consider autoplay blocked
+        setTimeout(() => {
+          if (videoRef.current && videoRef.current.paused) {
+            setAutoplayFailed(true);
+          }
+        }, 800);
       }
     }, 300);
   };
@@ -99,6 +110,22 @@ const Hero = () => {
     setVideoEnded(true);
   };
 
+  const handleVideoPlay = () => {
+    setAutoplayFailed(false);
+  };
+
+  const tryPlayVideo = async () => {
+    if (!videoRef.current) return;
+    try {
+      videoRef.current.muted = true;
+      await videoRef.current.play();
+      setAutoplayFailed(false);
+    } catch (err) {
+      console.log('Manual play failed:', err);
+      setAutoplayFailed(true);
+    }
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Video Background or Image After Video Ends */}
@@ -114,6 +141,7 @@ const Hero = () => {
             className="absolute inset-0 w-full h-full object-cover"
             onEnded={handleVideoEnd}
             onLoadedData={handleVideoLoaded}
+            onPlay={handleVideoPlay}
             onError={handleVideoError}
           >
             <source src="/videos/welcome-background.mp4" type="video/mp4" />
@@ -180,6 +208,20 @@ const Hero = () => {
             <Volume2 className="w-6 h-6 text-primary" />
           )}
         </button>
+      )}
+
+      {/* Tap-to-Play overlay when autoplay is blocked */}
+      {!videoEnded && !videoError && !showIntro && autoplayFailed && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center">
+          <Button
+            onClick={tryPlayVideo}
+            size="lg"
+            variant="secondary"
+            className="gap-2 shadow-elegant backdrop-blur-sm bg-background/60"
+          >
+            Tap to Play
+          </Button>
+        </div>
       )}
 
       {/* Scroll Indicator - Visible After Intro */}
