@@ -29,10 +29,10 @@ const CTA = () => {
               </Link>
             </Button>
             <Button size="xl" variant="hero" asChild>
-              <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
+              <Link to="/coaching">
                 <Calendar className="mr-2" />
                 Book 1-on-1 Session
-              </a>
+              </Link>
             </Button>
           </div>
 
