@@ -121,7 +121,7 @@ const Coaching = () => {
                   <img 
                     src={marshallSuit} 
                     alt="Marshall Wilkinson - Business Coach" 
-                    className="rounded-2xl shadow-2xl w-full max-w-md mx-auto"
+                    className="rounded-2xl shadow-2xl w-full max-w-lg mx-auto"
                   />
                 </div>
               </div>
