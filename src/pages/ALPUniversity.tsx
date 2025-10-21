@@ -4,6 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BookOpen, Video, Users, Calendar, PlayCircle, GraduationCap } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import marshallOffice from "@/assets/marshall-office.jpg";
+import alpAudiosMockup from "@/assets/alp-audios-mockup.png";
+import consultingMockup from "@/assets/consulting-mockup.png";
 
 const ALPUniversity = () => {
   useEffect(() => {
@@ -29,20 +32,29 @@ const ALPUniversity = () => {
         <section className="relative py-20 bg-gradient-to-br from-background via-primary/5 to-background overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
-                <GraduationCap className="w-5 h-5" />
-                <span className="font-semibold">Master Your Business & Mindset</span>
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full">
+                  <GraduationCap className="w-5 h-5" />
+                  <span className="font-semibold">Master Your Business & Mindset</span>
+                </div>
+                <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
+                  ALP University
+                </h1>
+                <p className="text-xl md:text-2xl text-muted-foreground">
+                  1,000's of Hours of Business, Mindset & Sales Mastery Training + Live Class Recordings
+                </p>
+                <p className="text-lg text-muted-foreground">
+                  Get unlimited access to our complete training library and recorded sessions from Power Hour, Contractor School, and Sales & Marketing School.
+                </p>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary-glow to-primary bg-clip-text text-transparent">
-                ALP University
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8">
-                1,000's of Hours of Business, Mindset & Sales Mastery Training + Live Class Recordings
-              </p>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Get unlimited access to our complete training library and recorded sessions from Power Hour, Contractor School, and Sales & Marketing School.
-              </p>
+              <div className="relative">
+                <img 
+                  src={marshallOffice} 
+                  alt="Marshall Wilkinson coaching session" 
+                  className="rounded-lg shadow-2xl"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -121,12 +133,13 @@ const ALPUniversity = () => {
           </div>
         </section>
 
-        {/* Benefits Section */}
+        {/* Benefits Section with Images */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Why ALP University?</h2>
-              
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Why ALP University?</h2>
+            
+            {/* Content Row 1 */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto mb-16">
               <div className="space-y-8">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -151,7 +164,28 @@ const ALPUniversity = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+              
+              <div className="relative">
+                <img 
+                  src={alpAudiosMockup} 
+                  alt="ALP Training Content on Mobile" 
+                  className="rounded-lg shadow-2xl"
+                />
+              </div>
+            </div>
 
+            {/* Content Row 2 */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <div className="relative order-2 lg:order-1">
+                <img 
+                  src={consultingMockup} 
+                  alt="Strategic Growth and Marketing Plan" 
+                  className="rounded-lg shadow-2xl"
+                />
+              </div>
+              
+              <div className="space-y-8 order-1 lg:order-2">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                     <span className="text-primary font-bold text-xl">3</span>

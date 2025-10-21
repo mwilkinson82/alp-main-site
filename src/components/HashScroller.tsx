@@ -14,6 +14,9 @@ const HashScroller = () => {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 0);
       }
+    } else {
+      // If no hash, scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [location.pathname, location.hash]);
 

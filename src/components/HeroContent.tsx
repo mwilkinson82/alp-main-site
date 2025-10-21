@@ -64,9 +64,9 @@ const HeroContent = () => {
 
           {/* Trust Indicators */}
           <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">$2.5B+</div>
-              <div className="text-muted-foreground">Construction Delivered</div>
+          <div className="space-y-2">
+              <div className="text-4xl font-bold text-primary">1 on 1</div>
+              <div className="text-muted-foreground">Elite Coaching and Consulting</div>
             </div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-primary">1000s</div>

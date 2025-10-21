@@ -86,7 +86,7 @@ const Footer = () => {
           <img 
             src={marshallSignature} 
             alt="Marshall Wilkinson Signature" 
-            className="h-12 opacity-60"
+            className="h-20 md:h-24 opacity-60"
           />
         </div>
 

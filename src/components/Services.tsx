@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Users, BookOpen, Clock, GraduationCap } from "lucide-react";
+import { Handshake, Coffee, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
   {
-    icon: Users,
+    icon: Handshake,
     title: "1-on-1 Elite Coaching",
     description: "Personalized consulting sessions designed for entrepreneurs, CEOs, and business operators ready to scale.",
     features: [
@@ -18,7 +18,7 @@ const services = [
     ctaLink: "https://calendly.com/your-calendly-link"
   },
   {
-    icon: Clock,
+    icon: Coffee,
     title: "Power Hour Membership",
     description: "Join our exclusive daily 8am EST morning call and unlock the complete ALP training ecosystem.",
     features: [
@@ -32,7 +32,7 @@ const services = [
     highlight: true
   },
   {
-    icon: GraduationCap,
+    icon: Building2,
     title: "ALP University",
     description: "Access the complete training library plus recorded sessions from Power Hour, Contractor School, and Sales & Marketing School for $197/month.",
     features: [
