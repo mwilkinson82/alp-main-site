@@ -17,11 +17,11 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Logo fades out from 0-150px scroll (faster)
-  const logoOpacity = Math.max(0, 1 - (scrollY / 150));
+  // Logo fades out from 0-75px scroll (very fast)
+  const logoOpacity = Math.max(0, 1 - (scrollY / 75));
   
-  // Black overlay fades out from 0-200px scroll (faster)
-  const blackOverlayOpacity = Math.max(0, 1 - (scrollY / 200));
+  // Black overlay fades out from 0-75px scroll (very fast)
+  const blackOverlayOpacity = Math.max(0, 1 - (scrollY / 75));
   
   // Video darkening overlay reduces from 100-600px scroll
   const videoDarkOverlay = Math.max(0.3, 0.8 - (scrollY / 600) * 0.5);
