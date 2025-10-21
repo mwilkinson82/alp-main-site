@@ -245,7 +245,7 @@ const Coaching = () => {
             <div className="bg-background rounded-lg shadow-lg p-4 md:p-8">
               <div 
                 className="calendly-inline-widget" 
-                data-url="https://calendly.com/marshallwilkinson/60min" 
+                data-url="https://calendly.com/marshallwilkinson/60min?primary_color=ffc700" 
                 style={{ minWidth: '320px', height: '1000px' }}
               />
             </div>
