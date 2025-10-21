@@ -1,6 +1,7 @@
 import { Volume2, VolumeX, X } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import marshallSuit from "@/assets/marshall-suit.png";
+import marshallCasual from "@/assets/marshall-casual.jpg";
 import alpLogo from "@/assets/alp-logo.png";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ const Hero = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
   const [showSkipButton, setShowSkipButton] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
   const hasVisitedBefore = useRef(false);
@@ -81,20 +83,43 @@ const Hero = () => {
     }
   };
 
+  const handleVideoEnd = () => {
+    setVideoEnded(true);
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Video Background */}
+      {/* Video Background or Image After Video Ends */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/videos/welcome-background.mp4" type="video/mp4" />
-        </video>
+        {!videoEnded ? (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            onEnded={handleVideoEnd}
+          >
+            <source src="/videos/welcome-background.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <div className="absolute inset-0 w-full h-full">
+            <img 
+              src={marshallCasual} 
+              alt="Marshall Wilkinson" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+            <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 text-center px-4 max-w-3xl">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Ready to Elevate Your Business?
+              </h2>
+              <p className="text-xl text-white/90">
+                Let's build your success story together
+              </p>
+            </div>
+          </div>
+        )}
         {/* Overlays - fade out with intro */}
         <div 
           className="absolute inset-0 bg-gradient-dark transition-opacity duration-1000"
@@ -134,19 +159,21 @@ const Hero = () => {
         )}
       </div>
 
-      {/* Audio Control Button - Visible After Logo Fades */}
-      <button
-        onClick={toggleAudio}
-        className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
-        style={{ opacity: showIntro ? 0 : 1 }}
-        aria-label={isMuted ? "Unmute video" : "Mute video"}
-      >
-        {isMuted ? (
-          <VolumeX className="w-6 h-6 text-primary" />
-        ) : (
-          <Volume2 className="w-6 h-6 text-primary" />
-        )}
-      </button>
+      {/* Audio Control Button - Only show when video is playing */}
+      {!videoEnded && (
+        <button
+          onClick={toggleAudio}
+          className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
+          style={{ opacity: showIntro ? 0 : 1 }}
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+        >
+          {isMuted ? (
+            <VolumeX className="w-6 h-6 text-primary" />
+          ) : (
+            <Volume2 className="w-6 h-6 text-primary" />
+          )}
+        </button>
+      )}
 
       {/* Scroll Indicator - Visible After Intro */}
       <div 

@@ -46,15 +46,16 @@ const PowerHour = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-8">
               What is Power Hour?
             </h2>
-            <Card className="overflow-hidden relative">
+            <Card className="overflow-hidden relative bg-muted">
               <video 
                 ref={videoRef}
                 controls 
                 className="w-full aspect-video"
+                preload="auto"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
               >
-                <source src="/videos/power-hour-explainer.mov" type="video/mp4" />
+                <source src="/videos/power-hour-explainer.mov#t=0.1" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               
