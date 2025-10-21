@@ -3,7 +3,18 @@ import { Play } from "lucide-react";
 import { useState } from "react";
 
 const Testimonials = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({
+    beauMonde: false,
+    ahronGluck: false
+  });
+
+  const handlePlay = (videoKey: string) => {
+    setIsPlaying(prev => ({ ...prev, [videoKey]: true }));
+  };
+
+  const handlePauseOrEnd = (videoKey: string) => {
+    setIsPlaying(prev => ({ ...prev, [videoKey]: false }));
+  };
 
   return (
     <section id="testimonials" className="py-20 bg-gradient-to-b from-background to-muted/20">
@@ -25,14 +36,14 @@ const Testimonials = () => {
                 controls 
                 className="w-full aspect-video"
                 preload="metadata"
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnded={() => setIsPlaying(false)}
+                onPlay={() => handlePlay('beauMonde')}
+                onPause={() => handlePauseOrEnd('beauMonde')}
+                onEnded={() => handlePauseOrEnd('beauMonde')}
               >
                 <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              {!isPlaying && (
+              {!isPlaying.beauMonde && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="bg-primary/90 rounded-full p-6 shadow-lg">
                     <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
@@ -45,6 +56,31 @@ const Testimonials = () => {
 
         {/* Additional Testimonials */}
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* Video Testimonial - Ahron Gluck */}
+          <Card className="overflow-hidden md:col-span-2">
+            <div className="relative group">
+              <video 
+                controls 
+                className="w-full aspect-video"
+                preload="metadata"
+                onPlay={() => handlePlay('ahronGluck')}
+                onPause={() => handlePauseOrEnd('ahronGluck')}
+                onEnded={() => handlePauseOrEnd('ahronGluck')}
+              >
+                <source src="/videos/ahron-gluck-testimonial.mov" type="video/quicktime" />
+                Your browser does not support the video tag.
+              </video>
+              {!isPlaying.ahronGluck && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="bg-primary/90 rounded-full p-6 shadow-lg">
+                    <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* LinkedIn Embed */}
           <Card className="overflow-hidden">
             <div className="aspect-video">
               <iframe 
