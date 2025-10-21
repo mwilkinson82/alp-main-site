@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import marshallSuit from "@/assets/marshall-suit.png";
 import alpLogo from "@/assets/alp-logo.png";
@@ -26,10 +25,6 @@ const Hero = () => {
   
   // Video darkening overlay reduces from 100-600px scroll
   const videoDarkOverlay = Math.max(0.3, 0.8 - (scrollY / 600) * 0.5);
-  
-  // Hero content fades in from 800-1000px scroll (delayed to allow video viewing)
-  const contentOpacity = Math.min(1, Math.max(0, (scrollY - 800) / 200));
-  const contentTranslateY = Math.max(0, 20 - (scrollY - 800) / 10);
 
   const toggleAudio = () => {
     if (videoRef.current) {
@@ -39,7 +34,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[200vh] overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
       {/* Video Background - Always Playing */}
       <div className="fixed inset-0 z-0">
         <video
@@ -101,83 +96,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Hero Content - Fades In After Video Reveals */}
-      <div 
-        className="relative z-10 min-h-screen flex items-center justify-center"
-        style={{ 
-          opacity: contentOpacity,
-          transform: `translateY(${contentTranslateY}px)`,
-          transition: 'opacity 0.3s ease-out, transform 0.3s ease-out'
-        }}
-      >
-        <div className="container mx-auto px-4 text-center">
-          {/* Semi-transparent background for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background/90 backdrop-blur-sm"></div>
-          <div className="max-w-5xl mx-auto space-y-8 relative z-10">
-            {/* Overline */}
-            <div className="inline-block">
-              <span className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
-                Altitude Logic Pressure
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl text-secondary-foreground leading-tight">
-              Transform Your Business with
-              <span className="text-gradient-gold block mt-2">Proven Expertise</span>
-            </h1>
-
-            {/* Subheadline */}
-            <p className="text-xl md:text-2xl text-secondary-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              Over <span className="text-primary font-bold">$2.5 Billion</span> in construction success. 
-              Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Button 
-                size="xl" 
-                variant="premium"
-                className="group"
-                asChild
-              >
-                <a href="#services">
-                  Explore Services
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </Button>
-              <Button 
-                size="xl" 
-                variant="hero"
-                asChild
-              >
-                <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
-                  <Calendar className="mr-2" />
-                  Schedule 1-on-1
-                </a>
-              </Button>
-            </div>
-
-            {/* Trust Indicators */}
-            <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">$2.5B+</div>
-                <div className="text-secondary-foreground/70">Construction Delivered</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">1000s</div>
-                <div className="text-secondary-foreground/70">Hours of Training Content</div>
-              </div>
-              <div className="space-y-2">
-                <div className="text-4xl font-bold text-primary">Daily</div>
-                <div className="text-secondary-foreground/70">Power Hour at 8am EST</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Spacer for scroll height */}
+      {/* Just a spacer for the video section */}
       <div className="h-screen"></div>
     </section>
   );
