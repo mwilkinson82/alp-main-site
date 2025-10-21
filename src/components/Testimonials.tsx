@@ -13,22 +13,9 @@ const Testimonials = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          {/* Video Testimonial 1 */}
-          <Card className="overflow-hidden">
-            <video 
-              controls 
-              className="w-full aspect-video"
-              poster="/placeholder.svg"
-            >
-              <source src="/videos/testimonials.mov" type="video/quicktime" />
-              <source src="/videos/testimonials.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </Card>
-
-          {/* Video Testimonial 2 - Beau Monde Builders */}
-          <Card className="overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
+          {/* Video Testimonial - Beau Monde Builders */}
+          <Card className="overflow-hidden md:col-span-2">
             <video 
               controls 
               className="w-full aspect-video"
