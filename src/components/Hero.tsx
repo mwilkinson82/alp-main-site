@@ -73,9 +73,6 @@ const Hero = () => {
 
   // Logo and black overlay opacity based on timer
   const introOpacity = showIntro ? 1 : 0;
-  
-  // Video darkening overlay reduces from 100-600px scroll
-  const videoDarkOverlay = Math.max(0.3, 0.8 - (scrollY / 600) * 0.5);
 
   const toggleAudio = () => {
     if (videoRef.current) {
@@ -98,14 +95,17 @@ const Hero = () => {
         >
           <source src="/videos/welcome-background.mp4" type="video/mp4" />
         </video>
-        {/* Video darkening overlay */}
+        {/* Overlays - fade out with intro */}
         <div 
-          className="absolute inset-0 bg-gradient-dark transition-opacity duration-300"
-          style={{ opacity: videoDarkOverlay }}
+          className="absolute inset-0 bg-gradient-dark transition-opacity duration-1000"
+          style={{ opacity: showIntro ? 0.8 : 0 }}
         ></div>
         <div 
-          className="absolute inset-0 opacity-30"
-          style={{ backgroundImage: 'var(--gradient-gold-radial)' }}
+          className="absolute inset-0 transition-opacity duration-1000"
+          style={{ 
+            backgroundImage: 'var(--gradient-gold-radial)',
+            opacity: showIntro ? 0.3 : 0 
+          }}
         ></div>
       </div>
 
