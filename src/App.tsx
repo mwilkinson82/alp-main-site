@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
 import ALPUniversity from "./pages/ALPUniversity";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/power-hour" element={<PowerHour />} />
           <Route path="/coaching" element={<Coaching />} />
           <Route path="/alp-university" element={<ALPUniversity />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

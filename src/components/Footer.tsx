@@ -95,8 +95,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-secondary-foreground/60">
             <p>© {currentYear} Marshall Wilkinson - Altitude Logic Pressure. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-primary transition-smooth">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition-smooth">Terms of Service</a>
+              <Link to="/privacy-policy" className="hover:text-primary transition-smooth">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="hover:text-primary transition-smooth">Terms of Service</Link>
             </div>
           </div>
         </div>
