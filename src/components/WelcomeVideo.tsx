@@ -27,7 +27,8 @@ const WelcomeVideo = () => {
                 className="absolute inset-0 w-full h-full object-cover bg-background"
                 aria-label="Welcome video from Marshall Wilkinson"
               >
-                <source src="/videos/welcome-background.mp4" type="video/mp4" />
+                <source src="/videos/welcome-background.webm?v=2" type="video/webm" />
+                <source src="/videos/welcome-background.mp4?v=2" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>

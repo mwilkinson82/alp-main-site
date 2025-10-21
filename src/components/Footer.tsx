@@ -93,7 +93,10 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-primary/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-secondary-foreground/60">
-            <p>© {currentYear} Marshall Wilkinson - Altitude Logic Pressure. All rights reserved.</p>
+            <div className="flex flex-col md:flex-row items-center gap-2">
+              <p>© {currentYear} Marshall Wilkinson - Altitude Logic Pressure. All rights reserved.</p>
+              <span className="text-xs text-secondary-foreground/40">Build: 2025-10-21</span>
+            </div>
             <div className="flex gap-6">
               <Link to="/privacy-policy" className="hover:text-primary transition-smooth">Privacy Policy</Link>
               <Link to="/terms-of-service" className="hover:text-primary transition-smooth">Terms of Service</Link>
