@@ -24,14 +24,14 @@ const Footer = () => {
             <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#services" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                <Link to="/coaching" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
                   1-on-1 Coaching
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#services" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                <Link to="/power-hour" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
                   Power Hour Membership
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/alp-university" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
