@@ -38,8 +38,8 @@ const CTA = () => {
           {/* Client Login Link */}
           <div className="pt-8">
             <a 
-              href="https://marshallwilkinson.mykajabi.com" 
-              target="_blank" 
+              href="https://marshallwilkinson.mykajabi.com/login" 
+              target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:text-primary/80 transition-colors text-sm font-semibold underline underline-offset-4"
             >
