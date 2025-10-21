@@ -17,9 +17,9 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Header becomes visible after 100px scroll
-  const headerOpacity = Math.min(1, scrollY / 100);
-  const showBorder = scrollY > 100;
+  // Header becomes visible after scrolling past initial viewport (80vh ~ 600px)
+  const headerOpacity = Math.min(1, Math.max(0, (scrollY - 400) / 200));
+  const showBorder = scrollY > 600;
 
   return (
     <header 

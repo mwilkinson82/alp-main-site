@@ -6,7 +6,17 @@ import alpLogo from "@/assets/alp-logo.png";
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
+  const [showIntro, setShowIntro] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Timer-based intro: show logo for 2 seconds, then fade out
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,11 +27,8 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Logo fades out from 0-75px scroll (very fast)
-  const logoOpacity = Math.max(0, 1 - (scrollY / 75));
-  
-  // Black overlay fades out from 0-75px scroll (very fast)
-  const blackOverlayOpacity = Math.max(0, 1 - (scrollY / 75));
+  // Logo and black overlay opacity based on timer
+  const introOpacity = showIntro ? 1 : 0;
   
   // Video darkening overlay reduces from 100-600px scroll
   const videoDarkOverlay = Math.max(0.3, 0.8 - (scrollY / 600) * 0.5);
@@ -59,16 +66,15 @@ const Hero = () => {
         ></div>
       </div>
 
-      {/* Black Screen with Logo - Fades Out on Scroll */}
+      {/* Black Screen with Logo - Fades Out After 2 Seconds */}
       <div 
-        className="fixed inset-0 z-10 bg-black flex items-center justify-center transition-opacity duration-500"
-        style={{ opacity: blackOverlayOpacity, pointerEvents: blackOverlayOpacity > 0 ? 'auto' : 'none' }}
+        className="fixed inset-0 z-10 bg-black flex items-center justify-center transition-opacity duration-1000"
+        style={{ opacity: introOpacity, pointerEvents: introOpacity > 0 ? 'auto' : 'none' }}
       >
         <img 
           src={alpLogo} 
           alt="ALP - Altitude Logic Pressure" 
-          className="w-64 md:w-96 transition-opacity duration-500"
-          style={{ opacity: logoOpacity }}
+          className="w-64 md:w-96 animate-fade-in"
         />
       </div>
 
@@ -76,7 +82,7 @@ const Hero = () => {
       <button
         onClick={toggleAudio}
         className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
-        style={{ opacity: Math.min(1, Math.max(0, (scrollY - 200) / 200)) }}
+        style={{ opacity: showIntro ? 0 : 1 }}
         aria-label={isMuted ? "Unmute video" : "Mute video"}
       >
         {isMuted ? (
@@ -86,10 +92,10 @@ const Hero = () => {
         )}
       </button>
 
-      {/* Scroll Indicator - Visible Initially */}
+      {/* Scroll Indicator - Visible After Intro */}
       <div 
         className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce transition-opacity duration-500"
-        style={{ opacity: logoOpacity }}
+        style={{ opacity: showIntro ? 0 : (scrollY < 300 ? 1 : 0) }}
       >
         <div className="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
           <div className="w-1.5 h-3 bg-primary rounded-full mt-2"></div>
