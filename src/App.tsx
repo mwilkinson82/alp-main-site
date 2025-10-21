@@ -7,6 +7,7 @@ import HashScroller from "@/components/HashScroller";
 import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
+import ALPUniversity from "./pages/ALPUniversity";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/power-hour" element={<PowerHour />} />
           <Route path="/coaching" element={<Coaching />} />
+          <Route path="/alp-university" element={<ALPUniversity />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

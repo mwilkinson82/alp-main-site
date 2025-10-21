@@ -40,6 +40,12 @@ const Header = () => {
             >
               1-on-1 Coaching
             </Link>
+            <Link 
+              to="/alp-university" 
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              ALP University
+            </Link>
             <Button
               variant="premium" 
               size="sm"
@@ -88,6 +94,13 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               1-on-1 Coaching
+            </Link>
+            <Link 
+              to="/alp-university" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              ALP University
             </Link>
             <Button
               variant="premium" 
