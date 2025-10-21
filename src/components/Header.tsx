@@ -1,14 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { LogIn, Menu, X } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Header becomes visible after 100px scroll
+  const headerOpacity = Math.min(1, scrollY / 100);
+  const showBorder = scrollY > 100;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-300"
+      style={{
+        backgroundColor: `rgba(var(--background-rgb), ${headerOpacity * 0.8})`,
+        borderColor: showBorder ? 'hsl(var(--border))' : 'transparent'
+      }}
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
