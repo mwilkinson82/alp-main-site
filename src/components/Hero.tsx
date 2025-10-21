@@ -10,7 +10,6 @@ const Hero = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
   const [showSkipButton, setShowSkipButton] = useState(false);
-  const [videoOpacity, setVideoOpacity] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
   const hasVisitedBefore = useRef(false);
@@ -42,9 +41,6 @@ const Hero = () => {
   const handleIntroComplete = () => {
     setShowIntro(false);
     localStorage.setItem('alp-visited', 'true');
-    
-    // Fade in video
-    setTimeout(() => setVideoOpacity(1), 100);
     
     // Auto-unmute and show toast after a brief delay
     setTimeout(() => {
@@ -90,18 +86,14 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Video Background - Fades in after intro */}
-      <div 
-        className="absolute inset-0 z-0 transition-opacity duration-1000"
-        style={{ opacity: videoOpacity }}
-      >
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          poster={marshallSuit}
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/welcome-background.mp4" type="video/mp4" />
