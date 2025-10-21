@@ -1,37 +1,98 @@
 import { Button } from "@/components/ui/button";
-import { LogIn } from "lucide-react";
+import { LogIn, Menu, X } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img 
               src={alpLogo} 
               alt="ALP - Altitude Logic Pressure" 
               className="h-10 w-auto"
             />
-          </a>
+          </Link>
 
-          {/* Client Portal Button */}
-          <Button 
-            variant="premium" 
-            size="sm"
-            asChild
-          >
-            <a 
-              href="https://marshallwilkinson.mykajabi.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link 
+              to="/" 
+              className="text-foreground hover:text-primary transition-colors font-medium"
             >
-              <LogIn className="mr-2 h-4 w-4" />
-              Client Portal
-            </a>
-          </Button>
+              Home
+            </Link>
+            <Link 
+              to="/power-hour" 
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Power Hour
+            </Link>
+            <Button 
+              variant="premium" 
+              size="sm"
+              asChild
+            >
+              <a 
+                href="https://marshallwilkinson.mykajabi.com/login" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Client Portal
+              </a>
+            </Button>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden py-4 space-y-4">
+            <Link 
+              to="/" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/power-hour" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Power Hour
+            </Link>
+            <Button 
+              variant="premium" 
+              size="sm"
+              className="w-full"
+              asChild
+            >
+              <a 
+                href="https://marshallwilkinson.mykajabi.com/login" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Client Portal
+              </a>
+            </Button>
+          </nav>
+        )}
       </div>
     </header>
   );

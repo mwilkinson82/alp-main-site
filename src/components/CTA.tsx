@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
   return (
@@ -22,10 +23,10 @@ const CTA = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Button size="xl" variant="premium" asChild className="group">
-              <a href="https://buy.stripe.com/your-power-hour-link" target="_blank" rel="noopener noreferrer">
+              <Link to="/power-hour">
                 Join Power Hour
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </Link>
             </Button>
             <Button size="xl" variant="hero" asChild>
               <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
