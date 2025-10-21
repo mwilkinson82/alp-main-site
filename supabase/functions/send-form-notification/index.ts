@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend@3.2.0";
+import { Resend } from "npm:resend@4.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -111,11 +111,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email via Resend
     const emailResponse = await resend.emails.send({
-      from: "ALP Website <notifications@altitudelogicpressure.com>",
+      from: "ALP Website <onboarding@resend.dev>",
       to: [RECIPIENT_EMAIL],
       subject: subject,
       html: html,
-      reply_to: formData.email,
+      replyTo: formData.email,
     });
 
     console.log("Email sent successfully:", emailResponse);
