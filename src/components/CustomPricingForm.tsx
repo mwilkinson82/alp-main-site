@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CustomPricingFormProps {
   open: boolean;
@@ -32,22 +33,53 @@ const CustomPricingForm = ({ open, onOpenChange, packageType }: CustomPricingFor
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.functions.invoke('send-form-notification', {
+        body: {
+          formType: 'pricing',
+          name,
+          email,
+          phone,
+          frequency,
+          message,
+          packageType
+        }
+      });
 
-    toast({
-      title: "Request Received!",
-      description: "We'll be in touch within 24 hours to discuss your custom package.",
-    });
+      if (error) {
+        console.error("Error sending pricing request:", error);
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again or email us directly.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
 
-    // Reset form
-    setName("");
-    setEmail("");
-    setPhone("");
-    setFrequency("");
-    setMessage("");
-    setIsSubmitting(false);
-    onOpenChange(false);
+      console.log("Pricing request submitted successfully:", data);
+      toast({
+        title: "Request Received!",
+        description: "We'll be in touch within 24 hours to discuss your custom package.",
+      });
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setPhone("");
+      setFrequency("");
+      setMessage("");
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error submitting pricing request:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

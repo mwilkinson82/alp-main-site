@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -23,15 +24,45 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission - replace with actual backend call
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('send-form-notification', {
+        body: {
+          formType: 'contact',
+          name: formData.name,
+          email: formData.email,
+          category: formData.category,
+          message: formData.message
+        }
+      });
+
+      if (error) {
+        console.error("Error sending form:", error);
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again or email us directly.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log("Form submitted successfully:", data);
       toast({
         title: "Message Sent!",
         description: "We'll get back to you as soon as possible.",
       });
+
       setFormData({ name: "", email: "", category: "", message: "" });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
