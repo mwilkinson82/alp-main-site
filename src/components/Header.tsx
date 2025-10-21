@@ -34,7 +34,13 @@ const Header = () => {
             >
               Power Hour
             </Link>
-            <Button 
+            <Link 
+              to="/coaching" 
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              1-on-1 Coaching
+            </Link>
+            <Button
               variant="premium" 
               size="sm"
               asChild
@@ -76,7 +82,14 @@ const Header = () => {
             >
               Power Hour
             </Link>
-            <Button 
+            <Link 
+              to="/coaching" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              1-on-1 Coaching
+            </Link>
+            <Button
               variant="premium" 
               size="sm"
               className="w-full"
