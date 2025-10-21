@@ -35,8 +35,8 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* Video Background - Always Playing */}
-      <div className="fixed inset-0 z-0">
+      {/* Video Background - Only visible in hero section */}
+      <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
           autoPlay
