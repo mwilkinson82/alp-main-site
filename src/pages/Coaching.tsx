@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
 import CustomPricingForm from "@/components/CustomPricingForm";
+import marshallSuit from "@/assets/marshall-suit.png";
 
 const Coaching = () => {
   const [customPricingOpen, setCustomPricingOpen] = useState(false);
@@ -75,7 +76,7 @@ const Coaching = () => {
         "Exclusive access to network and resources",
         "VIP priority for all services"
       ],
-      cta: "Schedule Consultation"
+      cta: "Discuss Your Needs"
     }
   ];
 
@@ -86,29 +87,43 @@ const Coaching = () => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-primary/5 via-background to-primary/5">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
-              <Star className="w-4 h-4" fill="currentColor" />
-              <span className="text-sm font-semibold">Premium 1-on-1 Coaching</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Transform Your Business with Personalized Guidance
-            </h1>
-            
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Get exclusive access to expert coaching that delivers real results. 
-              Deep-dive sessions tailored to your unique challenges with lifetime access to recordings.
-            </p>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="order-2 md:order-1">
+                <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-6">
+                  <Star className="w-4 h-4" fill="currentColor" />
+                  <span className="text-sm font-semibold">Premium 1-on-1 Coaching</span>
+                </div>
+                
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                  Transform Your Business with Personalized Guidance
+                </h1>
+                
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                  Get exclusive access to expert coaching that delivers real results. 
+                  Deep-dive sessions tailored to your unique challenges with lifetime access to recordings.
+                </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={scrollToBooking} className="text-lg px-8">
-                Book Your Session
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg px-8">
-                <a href="/#testimonials">See Client Results</a>
-              </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" onClick={scrollToBooking} className="text-lg px-8">
+                    Book Your Session
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                  <Button size="lg" variant="outline" asChild className="text-lg px-8">
+                    <a href="/#testimonials">See Client Results</a>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="order-1 md:order-2">
+                <div className="relative">
+                  <img 
+                    src={marshallSuit} 
+                    alt="Marshall Wilkinson - Business Coach" 
+                    className="rounded-2xl shadow-2xl w-full max-w-md mx-auto"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
