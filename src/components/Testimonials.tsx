@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Play } from "lucide-react";
 import { useState } from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import groupPhoto from "@/assets/testimonials-group.jpg";
 
 const Testimonials = () => {
   const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({
@@ -78,6 +80,18 @@ const Testimonials = () => {
                 </div>
               )}
             </div>
+          </Card>
+
+          {/* Community Group Photo */}
+          <Card className="overflow-hidden md:col-span-2">
+            <AspectRatio ratio={16 / 9}>
+              <img
+                src={groupPhoto}
+                alt="ALP community group photo at live event - client testimonials"
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </AspectRatio>
           </Card>
 
           {/* LinkedIn Embed */}

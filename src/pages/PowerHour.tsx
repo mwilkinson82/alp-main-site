@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,23 +9,13 @@ const PowerHour = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://js.stripe.com/v3/pricing-table.js";
-    script.async = true;
-    document.body.appendChild(script);
-    
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   const handlePlayVideo = () => {
     if (videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
     }
   };
+
 
   return (
     <main className="min-h-screen">
@@ -186,15 +176,13 @@ const PowerHour = () => {
             </p>
             
             {/* Stripe Pricing Table */}
-            <div 
-              className="bg-background rounded-lg p-8"
-              dangerouslySetInnerHTML={{
-                __html: `<stripe-pricing-table 
-                  pricing-table-id="prctbl_1SKa3dJdDAUSVXbN5JNkigpq"
-                  publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi">
-                </stripe-pricing-table>`
-              }}
-            />
+            <div className="bg-background rounded-lg p-8">
+              <stripe-pricing-table 
+                pricing-table-id="prctbl_1SKa3dJdDAUSVXbN5JNkigpq"
+                publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi"
+              >
+              </stripe-pricing-table>
+            </div>
 
             <p className="text-sm text-secondary-foreground/60 mt-6">
               After payment, you'll receive immediate access to the member portal and your first call invitation
