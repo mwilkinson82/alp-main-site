@@ -73,7 +73,7 @@ const About = () => {
 
           {/* Right - Content */}
           <div className="space-y-6">
-            <div className="text-lg text-secondary-foreground/90 space-y-4">
+            <div className="text-lg text-foreground space-y-4">
               <p>
                 Marshall Wilkinson is not just a business strategist. He is a builder of people, systems, and frameworks that win. With over <span className="text-primary font-bold">$2.5 billion in projects delivered by the age of 38</span> and a career forged in the trenches of high-stakes construction and enterprise, Marshall now teaches a philosophy that transcends industry.
               </p>
@@ -92,7 +92,7 @@ const About = () => {
                 alt="Marshall Wilkinson Signature" 
                 className="h-16 opacity-80"
               />
-              <p className="text-sm text-secondary-foreground/60 mt-2">Marshall Wilkinson</p>
+              <p className="text-sm text-muted-foreground mt-2">Marshall Wilkinson</p>
             </div>
 
             <Button size="lg" variant="premium" asChild className="mt-6">
@@ -109,22 +109,22 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Business</h4>
-              <p className="text-secondary-foreground/80">Strategic growth, systems, and sales mastery</p>
+              <p className="text-muted-foreground">Strategic growth, systems, and sales mastery</p>
             </div>
             <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Fear & Trauma</h4>
-              <p className="text-secondary-foreground/80">Breaking limitations and restoring identity</p>
+              <p className="text-muted-foreground">Breaking limitations and restoring identity</p>
             </div>
             <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Relationships</h4>
-              <p className="text-secondary-foreground/80">Leadership, love, and high-trust communication</p>
+              <p className="text-muted-foreground">Leadership, love, and high-trust communication</p>
             </div>
           </div>
         </div>
 
         {/* Legacy Section */}
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <p className="text-xl text-secondary-foreground/90 leading-relaxed">
+          <p className="text-xl text-foreground leading-relaxed">
             <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building more than a coaching company. He is building an army of empowered individuals ready to master life at the highest level. His mission is simple: to awaken clarity, ignite strength, and unleash decisive action in every area that matters.
           </p>
         </div>
@@ -142,7 +142,7 @@ const About = () => {
                   <Icon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h3 className="text-lg font-bold">{highlight.title}</h3>
-                <p className="text-sm text-secondary-foreground/70">{highlight.description}</p>
+                <p className="text-sm text-muted-foreground">{highlight.description}</p>
               </div>
             );
           })}

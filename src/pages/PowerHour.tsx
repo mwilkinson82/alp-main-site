@@ -44,12 +44,15 @@ const PowerHour = () => {
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             playsInline
-            muted
+            controls
+            preload="auto"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
           >
             <source src="/videos/power-hour-explainer.mov" type="video/mp4" />
           </video>
           
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
           
           {!isPlaying && (
             <button
