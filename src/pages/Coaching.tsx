@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -110,7 +111,7 @@ const Coaching = () => {
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                   <Button size="lg" variant="outline" asChild className="text-lg px-8">
-                    <a href="/#testimonials">See Client Results</a>
+                    <Link to="/#testimonials">See Client Results</Link>
                   </Button>
                 </div>
               </div>
@@ -288,10 +289,10 @@ const Coaching = () => {
               Hear directly from business owners who've transformed their operations through personalized coaching
             </p>
             <Button size="lg" variant="outline" asChild className="text-lg px-8">
-              <a href="/#testimonials">
+              <Link to="/#testimonials">
                 View Client Testimonials
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+              </Link>
             </Button>
           </div>
         </div>
