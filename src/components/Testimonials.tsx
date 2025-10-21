@@ -16,14 +16,14 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
           {/* Video Testimonial - Beau Monde Builders */}
           <Card className="overflow-hidden md:col-span-2">
-            <video 
-              controls 
-              className="w-full aspect-video"
-              poster="/placeholder.svg"
-            >
-              <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+              <video 
+                controls 
+                className="w-full aspect-video"
+                preload="metadata"
+              >
+                <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
           </Card>
         </div>
 
@@ -55,6 +55,20 @@ const Testimonials = () => {
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 referrerPolicy="strict-origin-when-cross-origin" 
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          </Card>
+
+          <Card className="overflow-hidden">
+            <div className="aspect-video">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7271908156803301376?compact=1" 
+                title="LinkedIn embedded post - Beau Monde Builders testimonial" 
+                frameBorder="0" 
                 allowFullScreen
                 className="w-full h-full"
               />
