@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Handshake, Coffee, Building2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Clock, Users, GraduationCap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 
 const services = [
   {
-    icon: Handshake,
+    icon: Users,
     title: "1-on-1 Elite Coaching",
     description: "Personalized consulting sessions designed for entrepreneurs, CEOs, and business operators ready to scale.",
     features: [
@@ -20,7 +20,7 @@ const services = [
     isInternal: true
   },
   {
-    icon: Coffee,
+    icon: Clock,
     title: "Power Hour Membership",
     description: "Join our exclusive daily 8am EST morning call and unlock the complete ALP training ecosystem.",
     features: [
@@ -35,9 +35,9 @@ const services = [
     highlight: true
   },
   {
-    icon: Building2,
+    icon: GraduationCap,
     title: "ALP University",
-    description: "Access the complete training library plus recorded sessions from Power Hour, Contractor School, and Sales & Marketing School for $197/month.",
+    description: "Access the complete training library plus recorded sessions from Power Hour, Contractor School, and Sales & Marketing School.",
     features: [
       "Complete video library access",
       "Daily Power Hour recordings",
@@ -51,46 +51,48 @@ const services = [
 ];
 
 const Services = () => {
-  const { ref, isVisible } = useScrollAnimation();
+  const containerRef = useGsapStagger();
   
   return (
     <section 
-      ref={ref}
       id="services" 
-      className={`py-24 bg-background transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-24 bg-background"
     >
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-4xl md:text-6xl font-bold">
-            Choose Your <span className="text-gradient-gold">Path to Success</span>
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            Whether you need personal guidance or comprehensive training, ALP has the solution for your growth.
+        <header className="text-center mb-16">
+          <p className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20 inline-block">
+            Your Path Forward
           </p>
-        </div>
+          <h2 className="mt-4 text-4xl md:text-6xl font-bold text-foreground">
+            Precision. Execution. Legacy.
+          </h2>
+          <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            Every decision is pressure. We teach you how to use it.
+          </p>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div ref={containerRef as React.RefObject<HTMLDivElement>} className="grid md:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <Card 
-                key={index} 
-                className={`relative overflow-hidden transition-smooth hover:shadow-elegant ${
-                  service.highlight ? 'border-primary border-2 shadow-gold' : ''
+                key={index}
+                className={`glass-card hover-lift hover-glow group ${
+                  service.highlight ? 'border-primary/40' : ''
                 }`}
               >
                 {service.highlight && (
-                  <div className="absolute top-0 right-0 bg-gradient-gold text-primary-foreground px-4 py-1 text-xs font-bold">
+                  <div className="absolute top-0 right-0 bg-gradient-gold text-primary-foreground px-4 py-1 text-xs font-bold rounded-bl-lg">
                     MOST POPULAR
                   </div>
                 )}
-                <CardHeader className="space-y-4">
-                  <div className={`w-14 h-14 rounded-lg flex items-center justify-center ${
+                <CardHeader>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:shadow-glow transition-smooth ${
                     service.highlight ? 'bg-gradient-gold' : 'bg-primary/10'
                   }`}>
-                    <Icon className={`w-7 h-7 ${service.highlight ? 'text-primary-foreground' : 'text-primary'}`} />
+                    <Icon className={`w-6 h-6 group-hover:scale-110 transition-smooth ${
+                      service.highlight ? 'text-primary-foreground' : 'text-primary'
+                    }`} />
                   </div>
                   <CardTitle className="text-2xl">{service.title}</CardTitle>
                   <CardDescription className="text-base">{service.description}</CardDescription>
@@ -105,18 +107,20 @@ const Services = () => {
                     ))}
                   </ul>
                   <Button 
-                    className="w-full" 
-                    variant={service.highlight ? "premium" : "default"}
+                    className="w-full group/btn" 
+                    variant={service.highlight ? "default" : "outline"}
                     size="lg"
                     asChild
                   >
                     {service.isInternal ? (
-                      <Link to={service.ctaLink}>
+                      <Link to={service.ctaLink} className="gap-2">
                         {service.cta}
+                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-smooth" />
                       </Link>
                     ) : (
-                      <a href={service.ctaLink} target="_blank" rel="noopener noreferrer">
+                      <a href={service.ctaLink} target="_blank" rel="noopener noreferrer" className="gap-2">
                         {service.cta}
+                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-smooth" />
                       </a>
                     )}
                   </Button>

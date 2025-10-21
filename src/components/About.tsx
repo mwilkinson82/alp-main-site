@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, Target, Shield } from "lucide-react";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallSignature from "@/assets/marshall-signature.png";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useGsapScroll } from "@/hooks/use-gsap-scroll";
 
 const highlights = [
   {
@@ -28,15 +28,13 @@ const highlights = [
 ];
 
 const About = () => {
-  const { ref, isVisible } = useScrollAnimation();
+  const sectionRef = useGsapScroll();
   
   return (
     <section 
-      ref={ref}
+      ref={sectionRef}
       id="about" 
-      className={`py-24 bg-secondary text-secondary-foreground relative overflow-hidden transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-24 bg-secondary text-secondary-foreground relative overflow-hidden"
     >
       {/* Background accent */}
       <div 
@@ -58,7 +56,7 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
           {/* Left - Photo */}
           <div className="relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-elegant">
+            <div className="relative rounded-2xl overflow-hidden shadow-premium hover-lift">
               <img 
                 src={marshallCasual} 
                 alt="Marshall Wilkinson" 
@@ -68,7 +66,7 @@ const About = () => {
             </div>
             {/* Floating accent */}
             <div 
-              className="absolute -bottom-8 -right-8 w-64 h-64 opacity-30 blur-3xl"
+              className="absolute -bottom-8 -right-8 w-64 h-64 opacity-30 blur-3xl pointer-events-none"
               style={{ background: 'var(--gradient-gold)' }}
             ></div>
           </div>
@@ -107,17 +105,17 @@ const About = () => {
 
         {/* Three Routes Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h3 className="text-3xl font-bold mb-8 text-primary">Three Transformational Routes</h3>
+          <h3 className="text-3xl font-bold mb-8 text-primary">Results Aren't Random</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+            <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Business</h4>
               <p className="text-secondary-foreground/80">Strategic growth, systems, and sales mastery</p>
             </div>
-            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+            <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Fear & Trauma</h4>
               <p className="text-secondary-foreground/80">Breaking limitations and restoring identity</p>
             </div>
-            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+            <div className="glass-card hover-lift p-6 space-y-2">
               <h4 className="text-xl font-bold">Relationships</h4>
               <p className="text-secondary-foreground/80">Leadership, love, and high-trust communication</p>
             </div>
@@ -138,9 +136,9 @@ const About = () => {
             return (
               <div 
                 key={index} 
-                className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-3 hover:border-primary/40 transition-smooth"
+                className="glass-card hover-lift hover-glow p-6 space-y-3"
               >
-                <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-gold rounded-lg flex items-center justify-center group-hover:shadow-glow transition-smooth">
                   <Icon className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h3 className="text-lg font-bold">{highlight.title}</h3>

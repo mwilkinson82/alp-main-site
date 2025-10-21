@@ -3,10 +3,10 @@ import { Play } from "lucide-react";
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import groupPhoto from "@/assets/testimonials-group.jpg";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { useGsapScroll } from "@/hooks/use-gsap-scroll";
 
 const Testimonials = () => {
-  const { ref, isVisible } = useScrollAnimation();
+  const sectionRef = useGsapScroll();
   const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({
     beauMonde: false,
     ahronGluck: false
@@ -22,19 +22,17 @@ const Testimonials = () => {
 
   return (
     <section 
-      ref={ref}
+      ref={sectionRef}
       id="testimonials" 
-      className={`py-20 bg-muted/30 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className="py-20 bg-muted/30"
     >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Client Testimonials
+            Success is Engineered
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Hear from those who've transformed their businesses and lives
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Hear from decision-makers who've transformed their businesses and lives
           </p>
         </div>
 
