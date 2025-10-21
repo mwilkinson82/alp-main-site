@@ -68,17 +68,13 @@ const About = () => {
           <div className="space-y-6">
             <div className="text-lg text-secondary-foreground/90 space-y-4">
               <p>
-                At ALP, we believe success requires three essential elements: the <span className="text-primary font-semibold">altitude</span> to see the bigger picture, 
-                the <span className="text-primary font-semibold">logic</span> to make sound decisions, and the <span className="text-primary font-semibold">pressure</span> to 
-                execute with precision.
+                Marshall Wilkinson is not just a business strategist. He is a builder of people, systems, and frameworks that win. With over <span className="text-primary font-bold">$2.5 billion in negotiated contracts by the age of 38</span> and a career forged in the trenches of high-stakes construction and enterprise, Marshall now teaches a philosophy that transcends industry.
               </p>
               <p>
-                With over <span className="text-primary font-bold">$2.5 billion in construction</span> delivered throughout my career, I've mastered the art of building—not 
-                just structures, but businesses, teams, and leaders who dominate their markets.
+                Marshall built his reputation negotiating some of the most complex contracts in New York City. He mastered leverage, timing, and execution in environments where failure wasn't an option. But it wasn't just about construction—it was about the game of life.
               </p>
               <p>
-                Whether you're an entrepreneur scaling your operation, a CEO refining your strategy, or a sales professional looking to close bigger deals, 
-                ALP provides the proven frameworks and personal guidance to elevate your performance.
+                <span className="text-primary font-semibold">The Mission:</span> Marshall created ALP to help others take back control of their lives. Whether you're trying to scale a business, rebuild after trauma, or restore a broken relationship, ALP offers a path. Not just a mindset, but a <span className="text-primary font-semibold">system of strategic thinking</span> that leads to action and transformation.
               </p>
             </div>
 
@@ -93,11 +89,37 @@ const About = () => {
             </div>
 
             <Button size="lg" variant="premium" asChild className="mt-6">
-              <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
-                Work With Me
+              <a href="#services">
+                Explore Services
               </a>
             </Button>
           </div>
+        </div>
+
+        {/* Three Routes Section */}
+        <div className="max-w-4xl mx-auto mb-16 text-center">
+          <h3 className="text-3xl font-bold mb-8 text-primary">Three Transformational Routes</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+              <h4 className="text-xl font-bold">Business</h4>
+              <p className="text-secondary-foreground/80">Strategic growth, systems, and sales mastery</p>
+            </div>
+            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+              <h4 className="text-xl font-bold">Fear & Trauma</h4>
+              <p className="text-secondary-foreground/80">Breaking limitations and restoring identity</p>
+            </div>
+            <div className="bg-background/5 backdrop-blur-sm border border-primary/20 rounded-lg p-6 space-y-2">
+              <h4 className="text-xl font-bold">Relationships</h4>
+              <p className="text-secondary-foreground/80">Leadership, love, and high-trust communication</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Legacy Section */}
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <p className="text-xl text-secondary-foreground/90 leading-relaxed">
+            <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building more than a coaching company. He is building an army of empowered individuals ready to master life at the highest level. His mission is simple: to awaken clarity, ignite strength, and unleash decisive action in every area that matters.
+          </p>
         </div>
 
         {/* Highlights Grid */}
