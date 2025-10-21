@@ -249,11 +249,11 @@ const ALPUniversity = () => {
                 Get unlimited access to everything for just $197/month
               </p>
 
-              {/* Stripe Pricing Table - Replace with your actual pricing table ID */}
+              {/* Stripe Pricing Table */}
               <div className="bg-card rounded-lg p-8 shadow-lg">
                 <stripe-pricing-table 
-                  pricing-table-id="prctbl_YOUR_PRICING_TABLE_ID"
-                  publishable-key="pk_test_YOUR_PUBLISHABLE_KEY"
+                  pricing-table-id="prctbl_1SKaufJdDAUSVXbNTzAHj1Kl"
+                  publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi"
                 />
               </div>
 
