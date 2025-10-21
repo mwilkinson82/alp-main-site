@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { Play } from "lucide-react";
 
 const Testimonials = () => {
   return (
@@ -16,6 +17,7 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
           {/* Video Testimonial - Beau Monde Builders */}
           <Card className="overflow-hidden md:col-span-2">
+            <div className="relative group">
               <video 
                 controls 
                 className="w-full aspect-video"
@@ -24,6 +26,12 @@ const Testimonials = () => {
                 <source src="/videos/beau-monde-testimonial.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-has-[:playing]:hidden">
+                <div className="bg-primary/90 rounded-full p-6 shadow-lg">
+                  <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
+                </div>
+              </div>
+            </div>
           </Card>
         </div>
 
