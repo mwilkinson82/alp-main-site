@@ -38,9 +38,8 @@ const PowerHour = () => {
               <video 
                 controls 
                 className="w-full aspect-video"
-                poster="/placeholder.svg"
               >
-                <source src="/videos/power-hour-explainer.mp4" type="video/mp4" />
+                <source src="/videos/power-hour-explainer.mov" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </Card>
@@ -141,7 +140,7 @@ const PowerHour = () => {
       {/* Pricing & Sign Up Section */}
       <section className="py-20 bg-gradient-dark">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-secondary-foreground mb-6">
               Join Power Hour Today
             </h2>
@@ -149,18 +148,18 @@ const PowerHour = () => {
               Start transforming your mornings and your business
             </p>
             
-            {/* Stripe Payment Link - Replace with actual link */}
-            <div className="bg-background rounded-lg p-8 mb-6">
-              <p className="text-3xl font-bold mb-2">$97/month</p>
-              <p className="text-muted-foreground mb-6">Cancel anytime</p>
-              <Button size="xl" variant="premium" asChild className="w-full">
-                <a href="https://buy.stripe.com/your-power-hour-link" target="_blank" rel="noopener noreferrer">
-                  Join Power Hour Now
-                </a>
-              </Button>
-            </div>
+            {/* Stripe Pricing Table */}
+            <div 
+              className="bg-background rounded-lg p-8"
+              dangerouslySetInnerHTML={{
+                __html: `<stripe-pricing-table 
+                  pricing-table-id="prctbl_1SKa3dJdDAUSVXbN5JNkigpq"
+                  publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi">
+                </stripe-pricing-table>`
+              }}
+            />
 
-            <p className="text-sm text-secondary-foreground/60">
+            <p className="text-sm text-secondary-foreground/60 mt-6">
               After payment, you'll receive immediate access to the member portal and your first call invitation
             </p>
           </div>
