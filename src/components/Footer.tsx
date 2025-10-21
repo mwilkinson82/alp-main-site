@@ -1,4 +1,5 @@
 import { Instagram, Youtube } from "lucide-react";
+import { Link } from "react-router-dom";
 import marshallSignature from "@/assets/marshall-signature.png";
 
 const Footer = () => {
@@ -33,9 +34,9 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#services" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Training Library
-                </a>
+                <Link to="/alp-university" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  ALP University
+                </Link>
               </li>
             </ul>
           </div>
