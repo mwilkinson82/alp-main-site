@@ -12,8 +12,9 @@ const Hero = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showSkipButton, setShowSkipButton] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { toast } = useToast();
   const hasVisitedBefore = useRef(false);
 
   // Check if user has visited before and if video has been played
@@ -48,18 +49,14 @@ const Hero = () => {
     setShowIntro(false);
     localStorage.setItem('alp-visited', 'true');
     
-    // Auto-unmute and show toast after a brief delay
+    // Attempt to play video after intro
     setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.muted = false;
-        setIsMuted(false);
-        toast({
-          title: "🔊 Audio Enabled",
-          description: "Welcome! Click the audio button to mute if needed.",
-          duration: 3000,
+      if (videoRef.current && videoLoaded && !videoError) {
+        videoRef.current.play().catch((error) => {
+          console.log('Video autoplay failed:', error);
         });
       }
-    }, 800);
+    }, 300);
   };
 
   const skipIntro = () => {
@@ -92,18 +89,32 @@ const Hero = () => {
     localStorage.setItem('alp-video-played', 'true');
   };
 
+  const handleVideoLoaded = () => {
+    setVideoLoaded(true);
+  };
+
+  const handleVideoError = () => {
+    console.error('Video failed to load, falling back to static image');
+    setVideoError(true);
+    setVideoEnded(true);
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
       {/* Video Background or Image After Video Ends */}
       <div className="absolute inset-0 z-0">
-        {!videoEnded ? (
+        {!videoEnded && !videoError ? (
           <video
             ref={videoRef}
             autoPlay
             muted
             playsInline
+            preload="metadata"
+            poster={marshallCasual}
             className="absolute inset-0 w-full h-full object-cover"
             onEnded={handleVideoEnd}
+            onLoadedData={handleVideoLoaded}
+            onError={handleVideoError}
           >
             <source src="/videos/welcome-background.mp4" type="video/mp4" />
           </video>
@@ -156,7 +167,7 @@ const Hero = () => {
       </div>
 
       {/* Audio Control Button - Only show when video is playing */}
-      {!videoEnded && (
+      {!videoEnded && !videoError && (
         <button
           onClick={toggleAudio}
           className="fixed bottom-8 right-8 z-20 p-4 bg-background/20 backdrop-blur-sm border border-primary/30 rounded-full hover:bg-background/30 transition-all duration-300"
