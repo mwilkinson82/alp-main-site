@@ -1,8 +1,10 @@
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, ArrowRight, Calendar } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import alpLogo from "@/assets/alp-logo.png";
 import { gsap } from "gsap";
+import { Button } from "@/components/ui/button";
 
 const CinematicHero = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -156,19 +158,97 @@ const CinematicHero = () => {
         </button>
       )}
 
-      {/* Scroll Indicator */}
-      {showContent && scrollY < 300 && (
-        <div 
-          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce"
-        >
-          <div className="w-6 h-10 border-2 border-primary/60 rounded-full flex justify-center">
-            <div className="w-1.5 h-3 bg-primary rounded-full mt-2"></div>
+      {/* Hero Content Overlay */}
+      {showContent && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center animate-fade-in">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-5xl mx-auto space-y-8">
+              {/* Overline */}
+              <div className="inline-block">
+                <span className="text-primary text-sm font-bold tracking-widest uppercase px-4 py-2 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
+                  Altitude Logic Pressure
+                </span>
+              </div>
+
+              {/* Main Headline */}
+              <h1 className="text-5xl md:text-7xl lg:text-8xl text-white leading-tight drop-shadow-2xl">
+                Transform Your Business with
+                <span className="text-gradient-gold block mt-2">Proven Expertise</span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+                Over <span className="text-primary font-bold">$2.5 Billion</span> in construction success. 
+                Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                <Button 
+                  size="lg" 
+                  className="group bg-gradient-gold hover:shadow-glow hover-gold-edge"
+                  asChild
+                >
+                  <a href="#services">
+                    Explore Services
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="glass hover-lift border-white/20 text-white hover:bg-white/10"
+                  asChild
+                >
+                  <Link to="/coaching">
+                    <Calendar className="mr-2" />
+                    Schedule 1-on-1
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Client Login Link */}
+              <div className="pt-6">
+                <a 
+                  href="https://marshallwilkinson.mykajabi.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-primary transition-colors text-sm font-semibold underline underline-offset-4 drop-shadow-lg"
+                >
+                  Existing Client? Login to ALP Portal →
+                </a>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div className="space-y-2 glass-card p-6 hover-lift">
+                  <div className="text-4xl font-bold text-primary">1 on 1</div>
+                  <div className="text-white/80">Elite Coaching and Consulting</div>
+                </div>
+                <div className="space-y-2 glass-card p-6 hover-lift">
+                  <div className="text-4xl font-bold text-primary">1000s</div>
+                  <div className="text-white/80">Hours of Training Content</div>
+                </div>
+                <div className="space-y-2 glass-card p-6 hover-lift">
+                  <div className="text-4xl font-bold text-primary">Daily</div>
+                  <div className="text-white/80">Power Hour at 8am EST</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Spacer */}
-      <div className="h-screen"></div>
+      {/* Scroll Indicator */}
+      {showContent && scrollY < 300 && (
+        <div 
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce"
+        >
+          <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
+            <div className="w-1.5 h-3 bg-white rounded-full mt-2"></div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
