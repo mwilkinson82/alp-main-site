@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroContent = () => {
   return (
@@ -43,10 +44,10 @@ const HeroContent = () => {
               variant="hero"
               asChild
             >
-              <a href="https://calendly.com/your-calendly-link" target="_blank" rel="noopener noreferrer">
+              <Link to="/coaching">
                 <Calendar className="mr-2" />
                 Schedule 1-on-1
-              </a>
+              </Link>
             </Button>
           </div>
 
