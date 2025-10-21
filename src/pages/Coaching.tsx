@@ -111,7 +111,7 @@ const Coaching = () => {
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                   <Button size="lg" variant="outline" asChild className="text-lg px-8">
-                    <Link to="/#testimonials">See Client Results</Link>
+                    <Link to={{ pathname: "/", hash: "#testimonials" }}>See Client Results</Link>
                   </Button>
                 </div>
               </div>
@@ -289,7 +289,7 @@ const Coaching = () => {
               Hear directly from business owners who've transformed their operations through personalized coaching
             </p>
             <Button size="lg" variant="outline" asChild className="text-lg px-8">
-              <Link to="/#testimonials">
+              <Link to={{ pathname: "/", hash: "#testimonials" }}>
                 View Client Testimonials
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>

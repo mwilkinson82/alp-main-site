@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HashScroller from "@/components/HashScroller";
 import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
@@ -23,6 +24,10 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        {/* Smooth scroll to hash anchors across routes */}
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/* @ts-ignore - component returns null */}
+        <HashScroller />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
