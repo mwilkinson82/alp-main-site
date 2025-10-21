@@ -53,19 +53,28 @@ const Hero = () => {
     // Attempt to play video after intro
     setTimeout(() => {
       if (videoRef.current && videoLoaded && !videoError) {
-        videoRef.current.muted = true;
-        videoRef.current.play().then(() => {
+        const video = videoRef.current;
+        const initialTime = video.currentTime;
+        
+        video.muted = true;
+        video.play().then(() => {
           setAutoplayFailed(false);
         }).catch((error) => {
           console.log('Video autoplay failed:', error);
           setAutoplayFailed(true);
         });
-        // If still paused shortly after, consider autoplay blocked
+        
+        // Check if video is actually progressing (more robust than just checking paused state)
         setTimeout(() => {
-          if (videoRef.current && videoRef.current.paused) {
-            setAutoplayFailed(true);
+          if (videoRef.current) {
+            const hasProgressed = videoRef.current.currentTime > initialTime;
+            const isStuck = videoRef.current.paused || !hasProgressed;
+            if (isStuck) {
+              console.log('Video appears stuck, showing play button');
+              setAutoplayFailed(true);
+            }
           }
-        }, 800);
+        }, 500);
       }
     }, 300);
   };
