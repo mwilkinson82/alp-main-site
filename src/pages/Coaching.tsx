@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
+import CustomPricingForm from "@/components/CustomPricingForm";
 
 const Coaching = () => {
+  const [customPricingOpen, setCustomPricingOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("");
+
   // Load Calendly widget script
   useEffect(() => {
     const script = document.createElement('script');
@@ -23,6 +27,11 @@ const Coaching = () => {
     if (bookingSection) {
       bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const openCustomPricingForm = (packageName: string) => {
+    setSelectedPackage(packageName);
+    setCustomPricingOpen(true);
   };
 
   const packages = [
@@ -210,7 +219,7 @@ const Coaching = () => {
                     <Button 
                       className="w-full" 
                       variant={pkg.premium ? "default" : "outline"}
-                      onClick={scrollToBooking}
+                      onClick={() => pkg.price === "$1,000" ? scrollToBooking() : openCustomPricingForm(pkg.name)}
                       size="lg"
                     >
                       {pkg.cta}
@@ -297,6 +306,12 @@ const Coaching = () => {
       </section>
 
       <Footer />
+      
+      <CustomPricingForm 
+        open={customPricingOpen}
+        onOpenChange={setCustomPricingOpen}
+        packageType={selectedPackage}
+      />
     </main>
   );
 };
