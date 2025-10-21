@@ -29,7 +29,8 @@ const services = [
       "Private community support"
     ],
     cta: "Join Power Hour",
-    ctaLink: "https://buy.stripe.com/your-power-hour-link",
+    ctaLink: "/power-hour",
+    isInternal: true,
     highlight: true
   },
   {
