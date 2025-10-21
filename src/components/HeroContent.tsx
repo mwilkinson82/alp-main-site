@@ -50,6 +50,18 @@ const HeroContent = () => {
             </Button>
           </div>
 
+          {/* Client Login Link */}
+          <div className="pt-6">
+            <a 
+              href="https://marshallwilkinson.mykajabi.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 transition-colors text-sm font-semibold underline underline-offset-4"
+            >
+              Existing Client? Login to ALP Portal →
+            </a>
+          </div>
+
           {/* Trust Indicators */}
           <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="space-y-2">

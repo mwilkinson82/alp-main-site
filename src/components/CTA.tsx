@@ -35,6 +35,18 @@ const CTA = () => {
             </Button>
           </div>
 
+          {/* Client Login Link */}
+          <div className="pt-8">
+            <a 
+              href="https://marshallwilkinson.mykajabi.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 transition-colors text-sm font-semibold underline underline-offset-4"
+            >
+              Existing Client? Access ALP Portal →
+            </a>
+          </div>
+
           {/* Power Hour Info */}
           <div className="pt-12 border-t border-primary/20">
             <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-4">
