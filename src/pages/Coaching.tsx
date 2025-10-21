@@ -18,11 +18,10 @@ const Coaching = () => {
     };
   }, []);
 
-  const openCalendly = () => {
-    // @ts-ignore - Calendly is loaded via script
-    if (window.Calendly) {
-      // @ts-ignore
-      window.Calendly.initPopupWidget({ url: 'https://calendly.com/your-calendly-link' });
+  const scrollToBooking = () => {
+    const bookingSection = document.getElementById('booking-section');
+    if (bookingSection) {
+      bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -94,7 +93,7 @@ const Coaching = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={openCalendly} className="text-lg px-8">
+              <Button size="lg" onClick={scrollToBooking} className="text-lg px-8">
                 Book Your Session
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -211,7 +210,7 @@ const Coaching = () => {
                     <Button 
                       className="w-full" 
                       variant={pkg.premium ? "default" : "outline"}
-                      onClick={openCalendly}
+                      onClick={scrollToBooking}
                       size="lg"
                     >
                       {pkg.cta}
@@ -225,6 +224,31 @@ const Coaching = () => {
               * Custom packages are priced based on frequency, duration, and specific needs. 
               Book a consultation to discuss the perfect plan for you.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Book Your Session */}
+      <section id="booking-section" className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                Book Your Session
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Select a time that works best for you
+              </p>
+            </div>
+            
+            {/* Calendly Inline Widget */}
+            <div className="bg-background rounded-lg shadow-lg p-4 md:p-8">
+              <div 
+                className="calendly-inline-widget" 
+                data-url="https://calendly.com/marshallwilkinson/60min" 
+                style={{ minWidth: '320px', height: '700px' }}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -262,7 +286,7 @@ const Coaching = () => {
             <Button 
               size="lg" 
               variant="secondary"
-              onClick={openCalendly}
+              onClick={scrollToBooking}
               className="text-lg px-8"
             >
               Schedule Your Session Now
