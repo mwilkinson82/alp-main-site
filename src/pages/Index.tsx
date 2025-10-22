@@ -31,14 +31,14 @@ const Index = () => {
         <Services />
         <InlineTestimonial 
           quote="Marshall didn't just coach me—he rebuilt the way I think about business."
-          author="AJ Hoover"
-          role="CEO, Beau Monde Builders"
+          author="Ahron Gluck"
+          role="CEO, AG Builders"
         />
         <About />
         <InlineTestimonial 
           quote="The frameworks Marshall teaches have transformed how we scale and lead."
-          author="Business Owner"
-          role="Construction Industry"
+          author="AJ Hoover"
+          role="CEO, Beau Monde Builders"
         />
         <Testimonials />
         <ContactForm />
