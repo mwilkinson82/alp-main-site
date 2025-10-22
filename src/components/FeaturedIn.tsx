@@ -26,7 +26,7 @@ const FeaturedIn = () => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="text-foreground/60 hover:text-primary transition-smooth text-lg md:text-xl font-semibold"
+              className="text-foreground/60 text-lg md:text-xl font-semibold"
             >
               {feature}
             </div>

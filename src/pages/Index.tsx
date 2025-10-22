@@ -31,8 +31,8 @@ const Index = () => {
         <Services />
         <InlineTestimonial 
           quote="Marshall didn't just coach me—he rebuilt the way I think about business."
-          author="Ahron Gluck"
-          role="CEO, Beau Monde Construction"
+          author="AJ Hoover"
+          role="CEO, Beau Monde Builders"
         />
         <About />
         <InlineTestimonial 
