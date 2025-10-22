@@ -162,7 +162,7 @@ All colors MUST be HSL.
   }
   
   .glass-card {
-    @apply backdrop-blur-xl border border-primary/10 shadow-premium;
+    @apply backdrop-blur-xl border border-primary/10 shadow-premium rounded-xl;
     background: var(--gradient-subtle);
   }
   
