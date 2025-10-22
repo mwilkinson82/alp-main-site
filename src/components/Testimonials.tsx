@@ -1,24 +1,11 @@
 import { Card } from "@/components/ui/card";
-import { Play } from "lucide-react";
-import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import groupPhoto from "@/assets/testimonials-group.jpg";
 import { useGsapScroll } from "@/hooks/use-gsap-scroll";
+import { VideoTestimonial } from "./VideoTestimonial";
 
 const Testimonials = () => {
   const sectionRef = useGsapScroll();
-  const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({
-    beauMonde: false,
-    ahronGluck: false
-  });
-
-  const handlePlay = (videoKey: string) => {
-    setIsPlaying(prev => ({ ...prev, [videoKey]: true }));
-  };
-
-  const handlePauseOrEnd = (videoKey: string) => {
-    setIsPlaying(prev => ({ ...prev, [videoKey]: false }));
-  };
 
   return (
     <section 
@@ -39,26 +26,11 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
           {/* Video Testimonial - Beau Monde Builders */}
           <Card className="overflow-hidden md:col-span-2">
-            <div className="relative group bg-background">
-              <video 
-                controls 
-                className="w-full aspect-video"
-                preload="metadata"
-                onPlay={() => handlePlay('beauMonde')}
-                onPause={() => handlePauseOrEnd('beauMonde')}
-                onEnded={() => handlePauseOrEnd('beauMonde')}
-              >
-                <source src="/videos/beau-monde-testimonial.mp4#t=2" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              {!isPlaying.beauMonde && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="bg-primary/90 rounded-full p-6 shadow-lg">
-                    <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
-                  </div>
-                </div>
-              )}
-            </div>
+            <VideoTestimonial 
+              src="/videos/beau-monde-testimonial.mp4"
+              title="AJ Hoover — Beau Monde Builders"
+              captureAt={1.8}
+            />
           </Card>
         </div>
 
@@ -66,26 +38,11 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Video Testimonial - Ahron Gluck */}
           <Card className="overflow-hidden md:col-span-2">
-            <div className="relative group bg-muted">
-              <video 
-                controls 
-                className="w-full aspect-video"
-                preload="auto"
-                onPlay={() => handlePlay('ahronGluck')}
-                onPause={() => handlePauseOrEnd('ahronGluck')}
-                onEnded={() => handlePauseOrEnd('ahronGluck')}
-              >
-                <source src="/videos/ahron-gluck-testimonial.mp4#t=0.1" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              {!isPlaying.ahronGluck && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="bg-primary/90 rounded-full p-6 shadow-lg">
-                    <Play className="w-12 h-12 text-primary-foreground" fill="currentColor" />
-                  </div>
-                </div>
-              )}
-            </div>
+            <VideoTestimonial 
+              src="/videos/ahron-gluck-testimonial.mp4"
+              title="Ahron Gluck — AG Builders"
+              captureAt={1.5}
+            />
           </Card>
 
           {/* Community Group Photo */}
