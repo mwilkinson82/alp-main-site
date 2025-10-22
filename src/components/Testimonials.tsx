@@ -39,16 +39,16 @@ const Testimonials = () => {
         <div className="grid md:grid-cols-2 gap-8 mb-8 max-w-6xl mx-auto">
           {/* Video Testimonial - Beau Monde Builders */}
           <Card className="overflow-hidden md:col-span-2">
-            <div className="relative group bg-muted">
+            <div className="relative group bg-background">
               <video 
                 controls 
                 className="w-full aspect-video"
-                preload="auto"
+                preload="metadata"
                 onPlay={() => handlePlay('beauMonde')}
                 onPause={() => handlePauseOrEnd('beauMonde')}
                 onEnded={() => handlePauseOrEnd('beauMonde')}
               >
-                <source src="/videos/beau-monde-testimonial.mp4#t=0.1" type="video/mp4" />
+                <source src="/videos/beau-monde-testimonial.mp4#t=2" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               {!isPlaying.beauMonde && (
