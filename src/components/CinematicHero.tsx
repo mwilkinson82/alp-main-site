@@ -99,15 +99,16 @@ const CinematicHero = () => {
             ref={videoRef}
             autoPlay
             muted
+            loop
             playsInline
             preload="auto"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'}`}
+            className="absolute inset-0 w-full h-full object-cover"
             onError={(e) => {
               console.log('Video failed to load:', e);
               setVideoError(true);
             }}
           >
-            <source src="/videos/welcome-background.mp4?v=3" type="video/mp4" />
+            <source src="/videos/welcome-background.mp4" type="video/mp4" />
           </video>
         ) : (
           <img 
@@ -226,7 +227,7 @@ const CinematicHero = () => {
                   <div className="text-sm md:text-base text-muted-foreground">Elite Coaching</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-3xl md:text-5xl font-bold text-primary">1000s</div>
+                  <div className="text-3xl md:text-5xl font-bold text-primary">1,000s</div>
                   <div className="text-sm md:text-base text-muted-foreground">Training Hours</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
