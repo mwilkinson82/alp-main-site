@@ -70,7 +70,7 @@ const HeroContent = () => {
               <div className="text-muted-foreground">Elite Coaching and Consulting</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">1000s</div>
+              <div className="text-4xl font-bold text-primary">1,000s</div>
               <div className="text-muted-foreground">Hours of Training Content</div>
             </div>
             <div className="space-y-2">
