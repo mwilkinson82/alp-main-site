@@ -39,18 +39,19 @@ const PowerHour = () => {
         <Header />
         
         {/* Video Hero Section */}
-        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-muted">
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             playsInline
             webkit-playsinline="true"
             controls
-            preload="auto"
+            preload="metadata"
+            poster="/videos/power-hour-explainer.mp4#t=0.5"
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           >
-            <source src="/videos/power-hour-explainer.mp4" type="video/mp4" />
+            <source src="/videos/power-hour-explainer.mp4" />
           </video>
           
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
