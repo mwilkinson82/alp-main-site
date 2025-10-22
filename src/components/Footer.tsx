@@ -49,9 +49,9 @@ const Footer = () => {
                 <Link 
                   to="/coaching"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="text-secondary-foreground/70 hover:text-primary transition-smooth"
+                  className="text-primary hover:text-primary/80 transition-smooth font-semibold"
                 >
-                  Schedule Consultation
+                  Your next move deserves clarity →
                 </Link>
               </li>
               <li className="text-secondary-foreground/70">

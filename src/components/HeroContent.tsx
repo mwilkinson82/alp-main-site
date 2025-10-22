@@ -14,6 +14,11 @@ const HeroContent = () => {
             </span>
           </div>
 
+          {/* Transformation Tagline */}
+          <p className="text-lg md:text-xl text-primary font-semibold italic">
+            From chaos to clarity — for founders, operators, and decision-makers
+          </p>
+
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight">
             Transform Your Business with
