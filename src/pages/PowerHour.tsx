@@ -47,7 +47,7 @@ const PowerHour = () => {
             webkit-playsinline="true"
             controls
             preload="metadata"
-            poster="/videos/power-hour-explainer.mp4#t=0.5"
+            poster="/images/power-hour-thumbnail.jpg"
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           >
