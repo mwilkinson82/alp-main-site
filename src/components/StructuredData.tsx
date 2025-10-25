@@ -6,7 +6,7 @@ interface StructuredDataProps {
 }
 
 const StructuredData = ({ type, data }: StructuredDataProps) => {
-  const baseUrl = "https://marshallwilkinson.com";
+  const baseUrl = "https://altitudelogicpressure.com";
 
   const schemas = {
     organization: {

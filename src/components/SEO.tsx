@@ -9,7 +9,7 @@ interface SEOProps {
 }
 
 const SEO = ({ title, description, keywords, ogImage, canonical }: SEOProps) => {
-  const siteUrl = "https://marshallwilkinson.com";
+  const siteUrl = "https://altitudelogicpressure.com";
   const defaultImage = `${siteUrl}/og-image.jpg`;
   const fullTitle = title.includes("Marshall Wilkinson") ? title : `${title} | Marshall Wilkinson`;
 
