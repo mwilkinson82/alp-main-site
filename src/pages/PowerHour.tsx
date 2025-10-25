@@ -6,66 +6,38 @@ import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check, Clock, Users, Video, Calendar, Play } from "lucide-react";
-
 const PowerHour = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const handlePlayVideo = () => {
     if (videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
     }
   };
-
-
-  return (
-    <>
-      <SEO 
-        title="Power Hour - Daily Morning Accountability"
-        description="Start every morning with focus, strategy, and community. Join the daily Power Hour live coaching call at 8:00 AM EST. Daily accountability, live coaching, and peer support."
-        keywords="power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community"
-        canonical="/power-hour"
-      />
-      <StructuredData 
-        type="service" 
-        data={{
-          serviceType: "Daily Accountability Coaching",
-          description: "Daily morning accountability and coaching calls at 8:00 AM EST",
-          price: "197"
-        }}
-      />
+  return <>
+      <SEO title="Power Hour - Daily Morning Accountability" description="Start every morning with focus, strategy, and community. Join the daily Power Hour live coaching call at 8:00 AM EST. Daily accountability, live coaching, and peer support." keywords="power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community" canonical="/power-hour" />
+      <StructuredData type="service" data={{
+      serviceType: "Daily Accountability Coaching",
+      description: "Daily morning accountability and coaching calls at 8:00 AM EST",
+      price: "197"
+    }} />
       <main className="min-h-screen">
         <Header />
         
         {/* Video Hero Section */}
         <section className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-muted">
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
-            playsInline
-            webkit-playsinline="true"
-            controls
-            preload="metadata"
-            poster="/images/power-hour-thumbnail.jpg"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          >
+          <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline webkit-playsinline="true" controls preload="metadata" poster="/images/power-hour-thumbnail.jpg" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}>
             <source src="/videos/power-hour-explainer.mp4" />
           </video>
           
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
           
-          {!isPlaying && (
-            <button
-              onClick={handlePlayVideo}
-              className="absolute inset-0 flex items-center justify-center group cursor-pointer"
-            >
+          {!isPlaying && <button onClick={handlePlayVideo} className="absolute inset-0 flex items-center justify-center group cursor-pointer">
               <div className="w-24 h-24 rounded-full bg-gold/90 hover:bg-gold flex items-center justify-center transition-all group-hover:scale-110">
                 <Play className="h-12 w-12 text-black ml-1" fill="currentColor" />
               </div>
-            </button>
-          )}
+            </button>}
         </section>
 
         {/* Content Section */}
@@ -154,23 +126,12 @@ const PowerHour = () => {
               What's Included
             </h2>
             <div className="space-y-4">
-              {[
-                "Daily live coaching calls at 8:00 AM EST",
-                "Access to exclusive Power Hour community portal",
-                "Recordings of all sessions for flexibility",
-                "Weekly accountability check-ins",
-                "Direct access to Marshall during calls",
-                "Networking with successful entrepreneurs",
-                "Action-oriented daily exercises",
-                "Priority support and resources"
-              ].map((benefit, index) => (
-                <div key={index} className="flex items-start gap-4 p-4 bg-background rounded-lg">
+              {["Daily live coaching calls at 8:00 AM EST", "Access to exclusive Power Hour community portal", "Recordings of all sessions for flexibility", "Weekly accountability check-ins", "Direct access to Marshall during calls", "Networking with successful entrepreneurs", "Action-oriented daily exercises", "Priority support and resources"].map((benefit, index) => <div key={index} className="flex items-start gap-4 p-4 bg-background rounded-lg">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                     <Check className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <p className="text-lg">{benefit}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -189,24 +150,17 @@ const PowerHour = () => {
             
             {/* Stripe Pricing Table */}
             <div className="bg-background rounded-lg p-8">
-              <stripe-pricing-table 
-                pricing-table-id="prctbl_1SMAxRJdDAUSVXbNfb8IKJRM"
-                publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi"
-              >
+              <stripe-pricing-table pricing-table-id="prctbl_1SMAxRJdDAUSVXbNfb8IKJRM" publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi">
               </stripe-pricing-table>
             </div>
 
-            <p className="text-sm text-secondary-foreground/60 mt-6">
-              After payment, you'll receive immediate access to the member portal and your first call invitation
-            </p>
+            <p className="text-sm text-secondary-foreground/60 mt-6">After payment, you'll receive immediate access to the member portal and start receiving email invites to daily Power Hour</p>
           </div>
         </div>
       </section>
 
         <Footer />
       </main>
-    </>
-  );
+    </>;
 };
-
 export default PowerHour;
