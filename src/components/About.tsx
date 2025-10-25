@@ -3,6 +3,7 @@ import { Award, TrendingUp, Target, Shield } from "lucide-react";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallSignature from "@/assets/marshall-signature-black.png";
 import { useGsapScroll } from "@/hooks/use-gsap-scroll";
+import { VideoTestimonial } from "@/components/VideoTestimonial";
 
 const highlights = [
   {
@@ -51,6 +52,24 @@ const About = () => {
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Builder of systems, strategist, and architect of transformation
           </p>
+        </div>
+
+        {/* Origin Story Video */}
+        <div className="max-w-5xl mx-auto mb-24">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">The Origin Story</h3>
+            <p className="text-lg text-muted-foreground">
+              Discover how Marshall built a legacy of transformation
+            </p>
+          </div>
+          <div className="rounded-2xl overflow-hidden shadow-premium hover-lift">
+            <VideoTestimonial 
+              src="/videos/origin-story.mp4"
+              title="Marshall Wilkinson's Origin Story"
+              posterSrc="/images/marshall-origin-thumbnail.png"
+              captureAt={1.5}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center mb-24">
