@@ -17,9 +17,9 @@ const Index = () => {
   return (
     <>
       <SEO 
-        title="Business Coaching & Strategic Consulting for Leaders | ALP"
-        description="Elite coaching and consulting to transform your business, mindset, and execution. Join Power Hour or book 1-on-1 with Marshall Wilkinson. Over $2.5B in proven results."
-        keywords="business coaching, strategic consulting, executive coaching, leadership development, sales training, entrepreneur coaching, Marshall Wilkinson, ALP"
+        title="Marshall Wilkinson - Elite Business Coach & Strategic Consultant"
+        description="Marshall Wilkinson is an elite business coach and strategic consultant specializing in leadership, sales, and business transformation. Over $2.5B in proven results with ALP (Altitude Logic Pressure)."
+        keywords="Marshall Wilkinson, Marshall Wilkinson coach, Marshall Wilkinson ALP, Altitude Logic Pressure, business coaching, strategic consulting, executive coaching, leadership development, sales training, entrepreneur coaching"
         canonical="/"
       />
       <StructuredData type="organization" />

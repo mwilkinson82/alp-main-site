@@ -12,18 +12,22 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     organization: {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "ALP - Altitude Logic Pressure",
-      "alternateName": "Marshall Wilkinson Coaching",
+      "name": "Marshall Wilkinson - ALP (Altitude Logic Pressure)",
+      "alternateName": ["Marshall Wilkinson Coaching", "ALP", "Altitude Logic Pressure"],
       "url": baseUrl,
       "logo": `${baseUrl}/alp-logo.png`,
-      "description": "Elite business coaching and consulting services. Over $2.5 billion in construction success. Expert guidance for entrepreneurs, CEOs, and sales professionals.",
+      "description": "Marshall Wilkinson is an elite business coach and strategic consultant. Over $2.5 billion in proven results. Expert guidance for entrepreneurs, CEOs, and sales professionals through ALP (Altitude Logic Pressure).",
       "founder": {
         "@type": "Person",
         "name": "Marshall Wilkinson",
-        "jobTitle": "Business Coach & Consultant"
+        "jobTitle": "Business Coach, Strategic Consultant & Founder",
+        "url": baseUrl,
+        "sameAs": [
+          "https://www.marshallwilkinson.com"
+        ]
       },
       "areaServed": "US",
-      "serviceType": ["Business Coaching", "Executive Coaching", "Sales Training", "Leadership Development"],
+      "serviceType": ["Business Coaching", "Executive Coaching", "Sales Training", "Leadership Development", "Strategic Consulting"],
       "priceRange": "$$$$"
     },
     service: {
@@ -31,10 +35,14 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
       "@type": "Service",
       "serviceType": data?.serviceType || "Business Coaching",
       "provider": {
-        "@type": "ProfessionalService",
-        "name": "ALP - Altitude Logic Pressure"
+        "@type": "Person",
+        "name": "Marshall Wilkinson",
+        "brand": {
+          "@type": "Brand",
+          "name": "ALP - Altitude Logic Pressure"
+        }
       },
-      "description": data?.description || "Professional business coaching and consulting services",
+      "description": data?.description || "Professional business coaching and consulting services by Marshall Wilkinson",
       "areaServed": "US",
       "offers": data?.offers || {
         "@type": "Offer",
@@ -46,11 +54,19 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     course: {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": data?.name || "ALP University Training",
-      "description": data?.description || "Comprehensive business, mindset, and sales training",
+      "name": data?.name || "Marshall Wilkinson's ALP University",
+      "description": data?.description || "Comprehensive business, mindset, and sales training by Marshall Wilkinson",
       "provider": {
-        "@type": "Organization",
-        "name": "ALP - Altitude Logic Pressure"
+        "@type": "Person",
+        "name": "Marshall Wilkinson",
+        "brand": {
+          "@type": "Brand",
+          "name": "ALP - Altitude Logic Pressure"
+        }
+      },
+      "instructor": {
+        "@type": "Person",
+        "name": "Marshall Wilkinson"
       },
       "offers": {
         "@type": "Offer",

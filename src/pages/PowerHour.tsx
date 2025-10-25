@@ -16,7 +16,7 @@ const PowerHour = () => {
     }
   };
   return <>
-      <SEO title="Power Hour - Daily Morning Accountability" description="Start every morning with focus, strategy, and community. Join the daily Power Hour live coaching call at 8:00 AM EST. Daily accountability, live coaching, and peer support." keywords="power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community" canonical="/power-hour" />
+      <SEO title="Marshall Wilkinson's Power Hour - Daily Morning Accountability & Coaching" description="Join Marshall Wilkinson's daily Power Hour at 8:00 AM EST. Start every morning with focus, strategy, and community through live coaching calls and accountability support." keywords="Marshall Wilkinson Power Hour, Marshall Wilkinson coaching, power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community, Altitude Logic Pressure" canonical="/power-hour" />
       <StructuredData type="service" data={{
       serviceType: "Daily Accountability Coaching",
       description: "Daily morning accountability and coaching calls at 8:00 AM EST",

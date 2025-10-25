@@ -28,9 +28,9 @@ const ALPUniversity = () => {
   return (
     <>
       <SEO 
-        title="ALP University - Training Library & Courses"
-        description="Access 1,000+ hours of business, mindset, and sales training. Complete library of courses plus recordings from Power Hour, Contractor School, and Sales & Marketing School."
-        keywords="business training, sales training, online courses, business education, contractor training, sales mastery, mindset training"
+        title="Marshall Wilkinson's ALP University - Business Training & Courses"
+        description="Access Marshall Wilkinson's complete training library with 1,000+ hours of business, mindset, and sales training. Includes Power Hour recordings, Contractor School, and Sales & Marketing School from Altitude Logic Pressure."
+        keywords="Marshall Wilkinson training, Marshall Wilkinson courses, ALP University, Altitude Logic Pressure, business training, sales training, online courses, business education, contractor training, sales mastery, mindset training"
         canonical="/alp-university"
       />
       <StructuredData 
