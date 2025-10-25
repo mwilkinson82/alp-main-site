@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
 import CustomPricingForm from "@/components/CustomPricingForm";
-import marshallSuit from "@/assets/marshall-suit.png";
 
 const Coaching = () => {
   const [customPricingOpen, setCustomPricingOpen] = useState(false);
@@ -112,7 +111,7 @@ const Coaching = () => {
         <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${marshallSuit})` }}
+            style={{ backgroundImage: `url(/images/marshall-origin-thumbnail.png)` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
         </section>
