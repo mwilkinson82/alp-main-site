@@ -190,7 +190,7 @@ const PowerHour = () => {
             {/* Stripe Pricing Table */}
             <div className="bg-background rounded-lg p-8">
               <stripe-pricing-table 
-                pricing-table-id="prctbl_1SKa3dJdDAUSVXbN5JNkigpq"
+                pricing-table-id="prctbl_1SMAxRJdDAUSVXbNfb8IKJRM"
                 publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi"
               >
               </stripe-pricing-table>
