@@ -148,10 +148,24 @@ const PowerHour = () => {
               Start transforming your mornings and your business
             </p>
             
-            {/* Stripe Pricing Table */}
+            {/* Stripe Checkout Button */}
             <div className="bg-background rounded-lg p-8">
-              <stripe-pricing-table pricing-table-id="prctbl_1SMAxRJdDAUSVXbNfb8IKJRM" publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi">
-              </stripe-pricing-table>
+              <div className="max-w-md mx-auto space-y-6">
+                <div className="text-center">
+                  <p className="text-4xl font-bold text-foreground mb-2">$197<span className="text-lg font-normal text-muted-foreground">/month</span></p>
+                  <p className="text-muted-foreground">1 Month Power Hour Membership</p>
+                </div>
+                <Button 
+                  asChild 
+                  variant="premium" 
+                  size="xl" 
+                  className="w-full"
+                >
+                  <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
+                    Join Power Hour Now
+                  </a>
+                </Button>
+              </div>
             </div>
 
             <p className="text-sm text-secondary-foreground/60 mt-6">After payment, you'll receive immediate access to the member portal and start receiving email invites to daily Power Hour</p>
