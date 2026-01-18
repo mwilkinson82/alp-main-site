@@ -154,7 +154,7 @@ const PowerHour = () => {
                 {/* 1 Month Option */}
                 <div className="border border-border rounded-lg p-6 space-y-4">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-foreground mb-1">$197</p>
+                    <p className="text-3xl font-bold text-foreground mb-1">$1,000</p>
                     <p className="text-muted-foreground">1 Month</p>
                   </div>
                   <Button 
@@ -175,9 +175,9 @@ const PowerHour = () => {
                     BEST VALUE
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-foreground mb-1">$997</p>
+                    <p className="text-3xl font-bold text-foreground mb-1">$5,000</p>
                     <p className="text-muted-foreground">6 Months</p>
-                    <p className="text-sm text-primary">Save $185</p>
+                    <p className="text-sm text-primary">Save $1,000</p>
                   </div>
                   <Button 
                     asChild 
