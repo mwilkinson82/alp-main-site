@@ -137,28 +137,49 @@ const PowerHour = () => {
         </div>
       </section>
 
-      {/* Power Hour Success Story */}
+      {/* Power Hour Success Stories */}
       <section className="py-16 bg-muted/50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-background rounded-2xl p-8 md:p-12 shadow-lg border border-border">
-              <div className="flex flex-col md:flex-row gap-8 items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Users className="w-10 h-10 text-primary" />
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+              Power Hour Success Stories
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Testimonial 1 */}
+              <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-7 h-7 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">Jason R.</p>
+                      <p className="text-sm text-muted-foreground">Construction Business Owner</p>
+                    </div>
                   </div>
-                </div>
-                <div className="text-center md:text-left">
-                  <blockquote className="text-xl md:text-2xl font-medium text-foreground mb-4">
+                  <blockquote className="text-lg text-foreground">
                     "Power Hour completely transformed how I start my day. In just 3 months, I closed more deals than the entire previous year. The accountability and community support are game-changers."
                   </blockquote>
-                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                    <p className="font-bold text-foreground">Jason R.</p>
-                    <span className="hidden md:block text-muted-foreground">•</span>
-                    <p className="text-muted-foreground">Construction Business Owner</p>
-                    <span className="hidden md:block text-muted-foreground">•</span>
-                    <p className="text-primary font-medium">Power Hour Member since 2024</p>
+                  <p className="text-sm text-primary font-medium">Power Hour Member since 2024</p>
+                </div>
+              </div>
+
+              {/* Testimonial 2 */}
+              <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-7 h-7 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">Maria S.</p>
+                      <p className="text-sm text-muted-foreground">Real Estate Developer</p>
+                    </div>
                   </div>
+                  <blockquote className="text-lg text-foreground">
+                    "The daily structure and Marshall's insights have been invaluable. I've doubled my project pipeline and finally have the discipline to follow through on my goals every single day."
+                  </blockquote>
+                  <p className="text-sm text-primary font-medium">Power Hour Member since 2023</p>
                 </div>
               </div>
             </div>
