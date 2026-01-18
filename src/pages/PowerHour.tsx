@@ -148,23 +148,48 @@ const PowerHour = () => {
               Start transforming your mornings and your business
             </p>
             
-            {/* Stripe Checkout Button */}
+            {/* Pricing Options */}
             <div className="bg-background rounded-lg p-8">
-              <div className="max-w-md mx-auto space-y-6">
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-foreground mb-2">$197<span className="text-lg font-normal text-muted-foreground">/month</span></p>
-                  <p className="text-muted-foreground">1 Month Power Hour Membership</p>
+              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                {/* 1 Month Option */}
+                <div className="border border-border rounded-lg p-6 space-y-4">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-foreground mb-1">$197</p>
+                    <p className="text-muted-foreground">1 Month</p>
+                  </div>
+                  <Button 
+                    asChild 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full"
+                  >
+                    <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
+                      Get Started
+                    </a>
+                  </Button>
                 </div>
-                <Button 
-                  asChild 
-                  variant="premium" 
-                  size="xl" 
-                  className="w-full"
-                >
-                  <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
-                    Join Power Hour Now
-                  </a>
-                </Button>
+
+                {/* 6 Month Option - Best Value */}
+                <div className="border-2 border-primary rounded-lg p-6 space-y-4 relative">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                    BEST VALUE
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-foreground mb-1">$997</p>
+                    <p className="text-muted-foreground">6 Months</p>
+                    <p className="text-sm text-primary">Save $185</p>
+                  </div>
+                  <Button 
+                    asChild 
+                    variant="premium" 
+                    size="lg" 
+                    className="w-full"
+                  >
+                    <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
+                      Get 6 Months
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
 
