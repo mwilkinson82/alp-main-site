@@ -1,52 +1,53 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight } from "lucide-react";
+import { Clock, Users, GraduationCap, ArrowRight, HardHat, TrendingUp, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 
-const services = [
-  {
-    icon: Users,
-    title: "1-on-1 Elite Coaching",
-    description: "Personalized consulting sessions designed for entrepreneurs, CEOs, and business operators ready to scale.",
-    features: [
-      "Direct access to proven strategies",
-      "Custom business roadmaps",
-      "Accountability partnerships",
-      "Real-world construction insights"
-    ],
-    cta: "Book Consultation",
-    ctaLink: "/coaching",
-    isInternal: true
-  },
+const programs = [
   {
     icon: Clock,
-    title: "Power Hour Membership",
-    description: "Join our exclusive daily 8am EST morning call and unlock the complete ALP training ecosystem.",
-    features: [
-      "Daily live coaching calls",
-      "Complete video library access",
-      "Comprehensive ebooks & audio",
-      "Private community support"
-    ],
-    cta: "Join Power Hour",
-    ctaLink: "/power-hour",
-    isInternal: true,
-    highlight: true
+    title: "Power Hour",
+    tagline: "Daily Momentum",
+    description: "Start every day with Marshall at 8am EST. Live coaching, accountability, and the mindset to dominate.",
+    link: "/power-hour"
+  },
+  {
+    icon: HardHat,
+    title: "Contractor School",
+    tagline: "Build Your Empire",
+    description: "Weekly deep-dive into estimating, project management, and scaling your construction business.",
+    link: "/contractor-school"
+  },
+  {
+    icon: TrendingUp,
+    title: "Sales & Marketing School",
+    tagline: "Close More Deals",
+    description: "Master lead generation, sales psychology, and marketing systems that convert.",
+    link: "/sales-marketing-school"
   },
   {
     icon: GraduationCap,
     title: "ALP University",
-    description: "Access the complete training library plus recorded sessions from Power Hour, Contractor School, and Sales & Marketing School.",
-    features: [
-      "Complete video library access",
-      "Daily Power Hour recordings",
-      "Weekly Contractor School recordings",
-      "Weekly Sales & Marketing recordings"
-    ],
-    cta: "Join ALP University",
-    ctaLink: "/alp-university",
-    isInternal: true
+    tagline: "Complete Training Library",
+    description: "Access the full video library plus all recorded sessions from every program.",
+    link: "/alp-university"
+  }
+];
+
+const bundles = [
+  {
+    title: "Growth Academy",
+    price: "$2,000",
+    period: "/month",
+    description: "All 4 programs + community access",
+    highlight: true
+  },
+  {
+    title: "Full Access",
+    price: "$10,000",
+    period: "/6 months",
+    description: "Everything + 1-on-1 coaching sessions"
   }
 ];
 
@@ -59,72 +60,104 @@ const Services = () => {
       className="py-20 md:py-32 bg-background"
     >
       <div className="container mx-auto px-4">
-        <header className="text-center mb-20 space-y-6">
+        <header className="text-center mb-16 space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold">
-            <span className="text-gradient-gold">Services</span>
+            <span className="text-gradient-gold">Programs</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Choose your path to unprecedented success
           </p>
         </header>
 
-        <div ref={containerRef as React.RefObject<HTMLDivElement>} className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+        {/* Program Cards */}
+        <div ref={containerRef as React.RefObject<HTMLDivElement>} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {programs.map((program, index) => {
+            const Icon = program.icon;
             return (
+              <Link key={index} to={program.link}>
+                <Card className="h-full glass-card hover-lift hover-glow group cursor-pointer">
+                  <CardContent className="p-6 space-y-4">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:shadow-glow transition-smooth">
+                      <Icon className="w-6 h-6 text-primary group-hover:scale-110 transition-smooth" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">{program.title}</h3>
+                      <p className="text-primary text-sm font-medium mb-2">{program.tagline}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{program.description}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-primary font-medium pt-2">
+                      Learn More
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Bundle Options */}
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-4">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-primary font-medium">Bundle & Save</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold">Get Access to Everything</h3>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {bundles.map((bundle, index) => (
               <Card 
-                key={index}
-                className={`glass-card hover-lift hover-glow group ${
-                  service.highlight ? 'border-primary/40' : ''
-                }`}
+                key={index} 
+                className={`glass-card hover-lift ${bundle.highlight ? 'border-primary/40 relative' : ''}`}
               >
-                {service.highlight && (
+                {bundle.highlight && (
                   <div className="absolute top-0 right-0 bg-gradient-gold text-primary-foreground px-4 py-1 text-xs font-bold rounded-bl-lg">
                     MOST POPULAR
                   </div>
                 )}
-                <CardHeader>
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:shadow-glow transition-smooth ${
-                    service.highlight ? 'bg-gradient-gold' : 'bg-primary/10'
-                  }`}>
-                    <Icon className={`w-6 h-6 group-hover:scale-110 transition-smooth ${
-                      service.highlight ? 'text-primary-foreground' : 'text-primary'
-                    }`} />
+                <CardContent className="p-6 text-center space-y-4">
+                  <h4 className="text-xl font-bold">{bundle.title}</h4>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className="text-4xl font-bold text-primary">{bundle.price}</span>
+                    <span className="text-muted-foreground">{bundle.period}</span>
                   </div>
-                  <CardTitle className="text-2xl">{service.title}</CardTitle>
-                  <CardDescription className="text-base">{service.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <ul className="space-y-3">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button 
-                    className="w-full group/btn" 
-                    variant={service.highlight ? "default" : "outline"}
-                    size="lg"
-                    asChild
-                  >
-                    {service.isInternal ? (
-                      <Link to={service.ctaLink} className="gap-2">
-                        {service.cta}
-                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-smooth" />
-                      </Link>
-                    ) : (
-                      <a href={service.ctaLink} target="_blank" rel="noopener noreferrer" className="gap-2">
-                        {service.cta}
-                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-smooth" />
-                      </a>
-                    )}
-                  </Button>
+                  <p className="text-muted-foreground">{bundle.description}</p>
                 </CardContent>
               </Card>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Button size="lg" className="gap-2" asChild>
+              <Link to="/programs">
+                View All Programs & Pricing
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* 1-on-1 Coaching CTA */}
+        <div className="mt-20 text-center">
+          <Card className="glass-card border-primary/20 max-w-2xl mx-auto">
+            <CardContent className="p-8 space-y-4">
+              <div className="w-14 h-14 rounded-full bg-gradient-gold flex items-center justify-center mx-auto">
+                <Users className="w-7 h-7 text-primary-foreground" />
+              </div>
+              <h3 className="text-2xl font-bold">Need Personalized Guidance?</h3>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                Work directly with Marshall in exclusive 1-on-1 coaching sessions tailored to your specific business challenges.
+              </p>
+              <Button variant="outline" size="lg" className="gap-2" asChild>
+                <Link to="/coaching">
+                  Explore 1-on-1 Coaching
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
