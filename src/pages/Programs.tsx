@@ -8,12 +8,14 @@ import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 import InvestmentTable from "@/components/InvestmentTable";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
+import FullAccessModal from "@/components/FullAccessModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, HardHat, TrendingUp, Video, Check, Users, Sparkles, Crown, ArrowRight } from "lucide-react";
 
 const Programs = () => {
   const [growthModalOpen, setGrowthModalOpen] = useState(false);
+  const [fullAccessModalOpen, setFullAccessModalOpen] = useState(false);
   
   const programs = [
     {
@@ -323,10 +325,13 @@ const Programs = () => {
                       Just <span className="text-primary font-semibold">$1,000 more</span> than Growth Academy Annual — includes <span className="text-primary font-semibold">$10,000</span> in private 1:1 coaching sessions.
                     </p>
 
-                    <Button asChild variant="premium" size="lg" className="px-12">
-                      <a href="https://buy.stripe.com/full-access" target="_blank" rel="noopener noreferrer">
-                        Get Full ALP Access
-                      </a>
+                    <Button 
+                      variant="premium" 
+                      size="lg" 
+                      className="px-12"
+                      onClick={() => setFullAccessModalOpen(true)}
+                    >
+                      Get Full ALP Access
                     </Button>
                   </div>
                 </CardContent>
@@ -345,6 +350,9 @@ const Programs = () => {
         
         {/* Growth Academy Modal */}
         <GrowthAcademyModal open={growthModalOpen} onOpenChange={setGrowthModalOpen} />
+        
+        {/* Full Access Modal */}
+        <FullAccessModal open={fullAccessModalOpen} onOpenChange={setFullAccessModalOpen} />
       </main>
     </>
   );
