@@ -40,8 +40,7 @@ const SalesMarketingSchool = () => {
         type="service" 
         data={{
           serviceType: "Sales & Marketing Training",
-          description: "Weekly live training on sales, marketing, and lead generation",
-          price: "500"
+          description: "Weekly live training on sales, marketing, and lead generation"
         }}
       />
       
@@ -78,14 +77,6 @@ const SalesMarketingSchool = () => {
                   asChild
                 >
                   <Link to="/programs">View All Programs</Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 h-12"
-                  asChild
-                >
-                  <a href="#pricing">See Pricing</a>
                 </Button>
               </div>
             </div>
@@ -149,32 +140,16 @@ const SalesMarketingSchool = () => {
                 <Card className="border-2 border-primary/30">
                   <CardContent className="p-6 text-center space-y-4">
                     <TrendingUp className="w-16 h-16 text-primary mx-auto" />
-                    <h3 className="text-2xl font-bold">Join Sales & Marketing School</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span>Monthly</span>
-                        <span className="text-2xl font-bold">$500</span>
-                      </div>
-                      <div className="flex justify-between items-center border-t border-border pt-2">
-                        <span>6 Months</span>
-                        <span className="text-2xl font-bold">$2,500</span>
-                      </div>
-                      <div className="flex justify-between items-center border-t border-border pt-2">
-                        <span>Annual</span>
-                        <span className="text-2xl font-bold">$4,500</span>
-                      </div>
-                    </div>
-                    <div className="pt-4 border-t border-border">
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Or get access through ALP Growth Academy and include all programs
-                      </p>
-                      <Button asChild variant="premium" size="lg" className="w-full">
-                        <Link to="/programs">
-                          View All Programs
-                          <ArrowRight className="ml-2 w-5 h-5" />
-                        </Link>
-                      </Button>
-                    </div>
+                    <h3 className="text-2xl font-bold">Get Access to Sales & Marketing School</h3>
+                    <p className="text-muted-foreground">
+                      Sales & Marketing School is included in the ALP Growth Academy bundle along with Power Hour and Contractor School.
+                    </p>
+                    <Button asChild variant="premium" size="lg" className="w-full">
+                      <Link to="/programs">
+                        View All Programs
+                        <ArrowRight className="ml-2 w-5 h-5" />
+                      </Link>
+                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -189,14 +164,14 @@ const SalesMarketingSchool = () => {
         <ProgramTestimonials />
 
         {/* CTA Section */}
-        <section id="pricing" className="py-20 bg-primary text-primary-foreground">
+        <section className="py-20 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 Ready to Grow Your Revenue?
               </h2>
               <p className="text-xl mb-8 opacity-90">
-                Join Sales & Marketing School individually or get access through the ALP Growth Academy for the full training ecosystem.
+                Get access to Sales & Marketing School through the ALP Growth Academy for the full training ecosystem.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
