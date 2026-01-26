@@ -38,6 +38,11 @@ const Footer = () => {
                   ALP University
                 </Link>
               </li>
+              <li>
+                <Link to="/blog" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
