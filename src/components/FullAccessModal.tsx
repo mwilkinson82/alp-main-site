@@ -19,7 +19,7 @@ const packages = [
       "Direct text access to Marshall"
     ],
     buttonText: "Select 6 Months",
-    checkoutUrl: "#" // Replace with actual Stripe checkout URL
+    checkoutUrl: "https://buy.stripe.com/4gMaEY09r4qO67K8DoeQM0D"
   },
   {
     name: "Annual",
@@ -33,7 +33,7 @@ const packages = [
       "Maximum savings"
     ],
     buttonText: "Select Annual",
-    checkoutUrl: "#" // Replace with actual Stripe checkout URL
+    checkoutUrl: "https://buy.stripe.com/3cI8wQ7BT1eCbs4bPAeQM0E"
   }
 ];
 
