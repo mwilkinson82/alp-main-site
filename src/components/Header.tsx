@@ -71,6 +71,13 @@ const Header = () => {
               Home
             </Link>
             
+            <Link 
+              to="/blog" 
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              Blog
+            </Link>
+            
             {/* Programs Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
@@ -139,6 +146,14 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Home
+            </Link>
+            
+            <Link 
+              to="/blog" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Blog
             </Link>
             
             {/* Mobile Programs Section */}
