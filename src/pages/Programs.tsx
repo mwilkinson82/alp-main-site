@@ -184,6 +184,99 @@ const Programs = () => {
         {/* Weekly Schedule */}
         <WeeklySchedule />
 
+        {/* Power Hour Standalone Section */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <Card className="border-2 border-primary/30 overflow-hidden">
+                <CardContent className="p-8 md:p-12">
+                  <div className="grid lg:grid-cols-2 gap-8 items-center">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-sm">
+                        <Clock className="w-4 h-4 text-primary" />
+                        <span className="text-primary font-medium">Daily at 8am EST</span>
+                      </div>
+                      
+                      <h2 className="text-3xl md:text-4xl font-bold">
+                        Power Hour
+                      </h2>
+                      
+                      <p className="text-xl text-primary font-medium">
+                        Start every day with momentum.
+                      </p>
+                      
+                      <p className="text-muted-foreground">
+                        A morning call for entrepreneurship, inspiration, mindset, and business best practices. Realign yourself every morning to go out and be a high-performing entrepreneur.
+                      </p>
+
+                      <ul className="space-y-3">
+                        {[
+                          "Daily live coaching calls at 8:00 AM EST",
+                          "Access to exclusive Power Hour community",
+                          "Recordings of all sessions included",
+                          "Direct access to Marshall during calls",
+                          "Networking with successful entrepreneurs"
+                        ].map((feature, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                            <span className="text-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Card className="bg-background border-2 border-border">
+                        <CardContent className="p-6 space-y-4">
+                          <p className="text-sm text-muted-foreground text-center">Choose Your Commitment</p>
+                          
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center p-4 border border-border rounded-lg">
+                              <div>
+                                <p className="font-medium">1 Month</p>
+                                <p className="text-2xl font-bold">$1,000</p>
+                              </div>
+                              <Button variant="outline" asChild>
+                                <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
+                                  Get Started
+                                </a>
+                              </Button>
+                            </div>
+                            
+                            <div className="flex justify-between items-center p-4 border-2 border-primary rounded-lg bg-primary/5 relative">
+                              <div className="absolute -top-3 left-4 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                                BEST VALUE
+                              </div>
+                              <div>
+                                <p className="font-medium">6 Months</p>
+                                <p className="text-2xl font-bold text-primary">$5,000</p>
+                                <p className="text-xs text-primary">Save $1,000</p>
+                              </div>
+                              <Button variant="premium" asChild>
+                                <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
+                                  Get 6 Months
+                                </a>
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <p className="text-xs text-center text-muted-foreground pt-2">
+                            Immediate access after payment
+                          </p>
+                        </CardContent>
+                      </Card>
+                      
+                      <p className="text-sm text-center text-muted-foreground">
+                        Also included in <Link to="#growth-academy" className="text-primary hover:underline">ALP Growth Academy</Link>
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* Growth Academy Section */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
