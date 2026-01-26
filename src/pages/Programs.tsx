@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,11 +7,14 @@ import StructuredData from "@/components/StructuredData";
 import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 import InvestmentTable from "@/components/InvestmentTable";
+import GrowthAcademyModal from "@/components/GrowthAcademyModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, HardHat, TrendingUp, Video, Check, Users, Sparkles, Crown, ArrowRight } from "lucide-react";
 
 const Programs = () => {
+  const [growthModalOpen, setGrowthModalOpen] = useState(false);
+  
   const programs = [
     {
       title: "Power Hour",
@@ -222,10 +226,13 @@ const Programs = () => {
                             </p>
                           </div>
                           
-                          <Button asChild variant="premium" size="lg" className="w-full">
-                            <a href="https://buy.stripe.com/growth-academy" target="_blank" rel="noopener noreferrer">
-                              Choose Your Package
-                            </a>
+                          <Button 
+                            variant="premium" 
+                            size="lg" 
+                            className="w-full"
+                            onClick={() => setGrowthModalOpen(true)}
+                          >
+                            Choose Your Package
                           </Button>
                         </CardContent>
                       </Card>
@@ -335,6 +342,9 @@ const Programs = () => {
         <ProgramTestimonials />
 
         <Footer />
+        
+        {/* Growth Academy Modal */}
+        <GrowthAcademyModal open={growthModalOpen} onOpenChange={setGrowthModalOpen} />
       </main>
     </>
   );
