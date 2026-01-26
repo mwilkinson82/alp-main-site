@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
 import ALPUniversity from "./pages/ALPUniversity";
+import Programs from "./pages/Programs";
+import ContractorSchool from "./pages/ContractorSchool";
+import SalesMarketingSchool from "./pages/SalesMarketingSchool";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
@@ -22,9 +25,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/programs" element={<Programs />} />
           <Route path="/power-hour" element={<PowerHour />} />
           <Route path="/coaching" element={<Coaching />} />
           <Route path="/alp-university" element={<ALPUniversity />} />
+          <Route path="/contractor-school" element={<ContractorSchool />} />
+          <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

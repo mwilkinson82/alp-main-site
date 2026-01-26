@@ -1,12 +1,14 @@
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { LogIn, Menu, X } from "lucide-react";
+import { LogIn, Menu, X, ChevronDown } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [programsOpen, setProgramsOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,9 +19,29 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setProgramsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Header becomes visible after scrolling past initial viewport (80vh ~ 600px)
   const headerOpacity = Math.min(1, Math.max(0, (scrollY - 400) / 200));
   const showBorder = scrollY > 600;
+
+  const programLinks = [
+    { name: "All Programs", path: "/programs", highlight: true },
+    { name: "Power Hour", path: "/power-hour" },
+    { name: "Contractor School", path: "/contractor-school" },
+    { name: "Sales & Marketing School", path: "/sales-marketing-school" },
+    { name: "ALP University", path: "/alp-university" },
+  ];
 
   return (
     <header 
@@ -48,23 +70,40 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link 
-              to="/power-hour" 
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Power Hour
-            </Link>
+            
+            {/* Programs Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setProgramsOpen(!programsOpen)}
+                className="flex items-center gap-1 text-foreground hover:text-primary transition-colors font-medium"
+              >
+                Programs
+                <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {programsOpen && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
+                  {programLinks.map((link, index) => (
+                    <Link
+                      key={index}
+                      to={link.path}
+                      className={`block px-4 py-2 text-sm hover:bg-muted transition-colors ${
+                        link.highlight ? 'text-primary font-semibold border-b border-border mb-1 pb-3' : 'text-foreground'
+                      }`}
+                      onClick={() => setProgramsOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Link 
               to="/coaching" 
               className="text-foreground hover:text-primary transition-colors font-medium"
             >
               1-on-1 Coaching
-            </Link>
-            <Link 
-              to="/alp-university" 
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              ALP University
             </Link>
             <Button
               variant="premium" 
@@ -101,26 +140,32 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link 
-              to="/power-hour" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Power Hour
-            </Link>
+            
+            {/* Mobile Programs Section */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground font-medium">Programs</p>
+              <div className="pl-4 space-y-2 border-l border-border">
+                {programLinks.map((link, index) => (
+                  <Link
+                    key={index}
+                    to={link.path}
+                    className={`block text-foreground hover:text-primary transition-colors ${
+                      link.highlight ? 'font-semibold text-primary' : ''
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             <Link 
               to="/coaching" 
               className="block text-foreground hover:text-primary transition-colors font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
               1-on-1 Coaching
-            </Link>
-            <Link 
-              to="/alp-university" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              ALP University
             </Link>
             <Button
               variant="premium" 
