@@ -20,6 +20,7 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -64,7 +65,7 @@ const AdminLogin = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate input
@@ -81,46 +82,77 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        toast({
-          title: "Login Failed",
-          description: error.message,
-          variant: "destructive",
+      if (isSignUp) {
+        // Sign up flow
+        const redirectUrl = `${window.location.origin}/admin/login`;
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: redirectUrl
+          }
         });
-        setLoading(false);
-        return;
-      }
 
-      if (data.user) {
-        // Check if user has admin role
-        const { data: roleData, error: roleError } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", data.user.id)
-          .eq("role", "admin")
-          .maybeSingle();
-
-        if (roleError || !roleData) {
-          await supabase.auth.signOut();
+        if (error) {
           toast({
-            title: "Access Denied",
-            description: "You do not have admin privileges.",
+            title: "Sign Up Failed",
+            description: error.message,
             variant: "destructive",
           });
           setLoading(false);
           return;
         }
 
-        toast({
-          title: "Welcome back!",
-          description: "Successfully logged in.",
+        if (data.user) {
+          toast({
+            title: "Account Created!",
+            description: "Your account has been created. Please contact the site administrator to grant you admin access, or check back here once you've been added as an admin.",
+          });
+          setIsSignUp(false);
+        }
+      } else {
+        // Login flow
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
         });
-        navigate("/admin");
+
+        if (error) {
+          toast({
+            title: "Login Failed",
+            description: error.message,
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+
+        if (data.user) {
+          // Check if user has admin role
+          const { data: roleData, error: roleError } = await supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", data.user.id)
+            .eq("role", "admin")
+            .maybeSingle();
+
+          if (roleError || !roleData) {
+            await supabase.auth.signOut();
+            toast({
+              title: "Access Denied",
+              description: "You do not have admin privileges. Please contact the site administrator.",
+              variant: "destructive",
+            });
+            setLoading(false);
+            return;
+          }
+
+          toast({
+            title: "Welcome back!",
+            description: "Successfully logged in.",
+          });
+          navigate("/admin");
+        }
       }
     } catch (error) {
       toast({
@@ -148,13 +180,15 @@ const AdminLogin = () => {
           <div className="flex justify-center mb-4">
             <img src={alpLogo} alt="ALP" className="h-12" />
           </div>
-          <CardTitle className="text-2xl">Admin Login</CardTitle>
+          <CardTitle className="text-2xl">{isSignUp ? "Create Account" : "Admin Login"}</CardTitle>
           <CardDescription>
-            Enter your credentials to access the admin dashboard
+            {isSignUp 
+              ? "Create an account to request admin access" 
+              : "Enter your credentials to access the admin dashboard"}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -186,9 +220,18 @@ const AdminLogin = () => {
               </div>
             </div>
             <Button type="submit" variant="premium" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? (isSignUp ? "Creating account..." : "Signing in...") : (isSignUp ? "Create Account" : "Sign In")}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-muted-foreground hover:text-primary underline-offset-4 hover:underline"
+            >
+              {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>
