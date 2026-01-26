@@ -18,7 +18,7 @@ const packages = [
     ],
     buttonText: "Select 1 Month",
     variant: "outline" as const,
-    checkoutUrl: "#" // Replace with actual Stripe checkout URL
+    checkoutUrl: "https://buy.stripe.com/00wbJ23lDbTgfIk8DoeQM0z"
   },
   {
     name: "6 Months",
@@ -32,7 +32,7 @@ const packages = [
     buttonText: "Select 6 Months",
     variant: "default" as const,
     highlight: true,
-    checkoutUrl: "#" // Replace with actual Stripe checkout URL
+    checkoutUrl: "https://buy.stripe.com/eVq28sbS9cXkgMo6vgeQM0A"
   },
   {
     name: "Annual",
@@ -46,7 +46,7 @@ const packages = [
     buttonText: "Select Annual",
     variant: "default" as const,
     highlight: true,
-    checkoutUrl: "#" // Replace with actual Stripe checkout URL
+    checkoutUrl: "https://buy.stripe.com/6oUbJ2aO53mK53G9HseQM0C"
   }
 ];
 
