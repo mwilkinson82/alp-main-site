@@ -165,18 +165,43 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
-            {/* Bottom CTA */}
-            <div className="mt-16 pt-8 border-t border-border">
-              <div className="bg-secondary rounded-xl p-8 text-center">
-                <h3 className="text-2xl font-bold mb-4">
+            {/* Mid-Content CTA */}
+            <div className="my-12 relative">
+              <div className="absolute inset-0 bg-gradient-gold opacity-10 rounded-xl blur-xl"></div>
+              <div className="relative bg-secondary/80 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center">
+                <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+                  Take Action Now
+                </p>
+                <h3 className="text-xl md:text-2xl font-bold mb-3">
                   Ready to Transform Your Business?
                 </h3>
-                <p className="text-muted-foreground mb-6">
-                  Join thousands of entrepreneurs who have elevated their game with ALP.
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                  Discover proven strategies and elite coaching to elevate your game.
                 </p>
                 <Button variant="premium" size="lg" asChild>
-                  <Link to="/programs">Explore Programs</Link>
+                  <Link to="/programs">Explore Our Programs</Link>
                 </Button>
+              </div>
+            </div>
+
+            {/* Bottom CTA */}
+            <div className="mt-16 pt-8 border-t border-border">
+              <div className="bg-gradient-dark rounded-xl p-8 md:p-12 text-center relative overflow-hidden">
+                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'var(--gradient-gold-radial)' }}></div>
+                <div className="relative z-10">
+                  <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">
+                    Your Next Move
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4 text-secondary-foreground">
+                    Transform Your Business Today
+                  </h3>
+                  <p className="text-secondary-foreground/70 mb-8 max-w-lg mx-auto">
+                    Join thousands of entrepreneurs who have elevated their game with ALP's proven frameworks and elite coaching.
+                  </p>
+                  <Button variant="premium" size="lg" asChild className="shadow-glow">
+                    <Link to="/programs">Explore Programs</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
