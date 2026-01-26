@@ -24,7 +24,13 @@ const Programs = () => {
       description: "A morning call for entrepreneurship, inspiration, mindset, and business best practices. Realign yourself every morning to go out and be a high-performing entrepreneur. Includes full recording library.",
       schedule: "Live Daily at 8am EST",
       icon: Clock,
-      link: "/power-hour"
+      link: "/power-hour",
+      pricing: {
+        monthly: "$1,000",
+        sixMonth: "$5,000",
+        monthlyLink: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
+        sixMonthLink: "https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I"
+      }
     },
     {
       title: "Contractor School",
@@ -122,7 +128,33 @@ const Programs = () => {
                             <p className="text-muted-foreground leading-relaxed">{program.description}</p>
                           </div>
 
-                          {program.price ? (
+                          {program.pricing ? (
+                            <div className="pt-4 border-t border-border space-y-3">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <span className="text-lg font-bold">{program.pricing.monthly}</span>
+                                  <span className="text-muted-foreground text-sm">/month</span>
+                                </div>
+                                <Button size="sm" variant="outline" asChild onClick={(e) => e.stopPropagation()}>
+                                  <a href={program.pricing.monthlyLink} target="_blank" rel="noopener noreferrer">
+                                    Get Started
+                                  </a>
+                                </Button>
+                              </div>
+                              <div className="flex items-center justify-between bg-primary/5 rounded-lg p-2 -mx-2">
+                                <div>
+                                  <span className="text-lg font-bold text-primary">{program.pricing.sixMonth}</span>
+                                  <span className="text-muted-foreground text-sm">/6 months</span>
+                                  <span className="text-xs text-primary ml-2">Save $1,000</span>
+                                </div>
+                                <Button size="sm" variant="premium" asChild onClick={(e) => e.stopPropagation()}>
+                                  <a href={program.pricing.sixMonthLink} target="_blank" rel="noopener noreferrer">
+                                    Best Value
+                                  </a>
+                                </Button>
+                              </div>
+                            </div>
+                          ) : program.price ? (
                             <div className="pt-4 border-t border-border">
                               <div className="flex items-center justify-between">
                                 <span className="text-2xl font-bold text-primary">{program.price}</span>
