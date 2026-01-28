@@ -11,6 +11,7 @@ import ALPUniversity from "./pages/ALPUniversity";
 import Programs from "./pages/Programs";
 import ContractorSchool from "./pages/ContractorSchool";
 import SalesMarketingSchool from "./pages/SalesMarketingSchool";
+import HandbookSpecial from "./pages/HandbookSpecial";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Blog from "./pages/Blog";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/alp-university" element={<ALPUniversity />} />
           <Route path="/contractor-school" element={<ContractorSchool />} />
           <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
+          <Route path="/handbook-special" element={<HandbookSpecial />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/blog" element={<Blog />} />
