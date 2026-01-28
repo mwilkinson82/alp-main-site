@@ -179,7 +179,6 @@ const HandbookSpecial = () => {
                     <div className="mb-8">
                       <div className="flex items-baseline justify-center gap-2 mb-2">
                         <span className="text-5xl md:text-6xl font-bold text-primary">$999</span>
-                        <span className="text-xl text-muted-foreground">/month</span>
                       </div>
                       <p className="text-muted-foreground">
                         One month of Power Hour + Contractor School + Sales & Marketing School
