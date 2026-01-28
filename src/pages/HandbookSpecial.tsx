@@ -50,33 +50,33 @@ const HandbookSpecial = () => {
 
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section */}
-        <section className="relative py-16 md:py-24 overflow-hidden">
+        <section className="relative py-12 md:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
           <div className="container mx-auto px-4 relative">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-6 bg-primary/20 text-primary border-primary/30 text-sm px-4 py-2">
-                <BookOpen className="w-4 h-4 mr-2 inline" />
+              <Badge className="mb-4 md:mb-6 bg-primary/20 text-primary border-primary/30 text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2">
+                <BookOpen className="w-3 h-3 md:w-4 md:h-4 mr-1.5 md:mr-2 inline" />
                 Exclusive for ALP Handbook Purchasers
               </Badge>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 px-2">
                 Thank You for Getting the{" "}
                 <span className="text-primary">ALP Handbook</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              <p className="text-lg md:text-2xl text-muted-foreground mb-6 md:mb-8 max-w-3xl mx-auto px-2">
                 As a special thank you, you're invited to join our complete training program 
                 for one month at an exclusive rate.
               </p>
 
-              <div className="inline-flex items-center gap-4 bg-muted/50 backdrop-blur-sm rounded-2xl p-6 border border-border">
+              <div className="inline-flex items-center gap-3 md:gap-4 bg-muted/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 border border-border">
                 <div className="text-left">
-                  <p className="text-sm text-muted-foreground">Handbook Purchaser Special</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl md:text-5xl font-bold text-primary">$999</span>
-                    <span className="text-muted-foreground line-through">$2,000+ value</span>
+                  <p className="text-xs md:text-sm text-muted-foreground">Handbook Purchaser Special</p>
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className="text-3xl md:text-5xl font-bold text-primary">$999</span>
+                    <span className="text-sm md:text-base text-muted-foreground line-through">$2,000+ value</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">One month • Full access</p>
+                  <p className="text-xs md:text-sm text-muted-foreground">One month • Full access</p>
                 </div>
               </div>
             </div>
@@ -155,32 +155,32 @@ const HandbookSpecial = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20">
+        <section className="py-12 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                <CardContent className="p-8 md:p-12 relative">
+                <CardContent className="p-5 md:p-12 relative">
                   <div className="text-center">
-                    <Badge className="mb-4 bg-primary text-primary-foreground">
+                    <Badge className="mb-3 md:mb-4 bg-primary text-primary-foreground text-xs">
                       <Sparkles className="w-3 h-3 mr-1" />
                       Limited Time Offer
                     </Badge>
                     
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
                       Ready to Transform Your Business?
                     </h2>
                     
-                    <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+                    <p className="text-base md:text-lg text-muted-foreground mb-6 md:mb-8 max-w-xl mx-auto">
                       Join fellow handbook owners who are implementing what they learned 
                       with live coaching, accountability, and community support.
                     </p>
 
-                    <div className="mb-8">
+                    <div className="mb-6 md:mb-8">
                       <div className="flex items-baseline justify-center gap-2 mb-2">
-                        <span className="text-5xl md:text-6xl font-bold text-primary">$999</span>
+                        <span className="text-4xl md:text-6xl font-bold text-primary">$999</span>
                       </div>
-                      <p className="text-muted-foreground">
+                      <p className="text-sm md:text-base text-muted-foreground px-2">
                         One month of Power Hour + Contractor School + Sales & Marketing School
                       </p>
                     </div>
@@ -188,14 +188,14 @@ const HandbookSpecial = () => {
                     <Button 
                       size="xl" 
                       variant="premium"
-                      className="group"
+                      className="group w-full md:w-auto text-sm md:text-base px-6 md:px-8"
                       onClick={() => window.open('https://buy.stripe.com/8x2bJ28FXg9wgMo1aWeQM0K', '_blank')}
                     >
                       Claim Your Handbook Special
-                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
 
-                    <p className="text-sm text-muted-foreground mt-4">
+                    <p className="text-xs md:text-sm text-muted-foreground mt-3 md:mt-4">
                       Secure checkout • Cancel anytime • Instant access
                     </p>
                   </div>
