@@ -190,7 +190,7 @@ const HandbookSpecial = () => {
                       size="xl" 
                       variant="premium"
                       className="group"
-                      onClick={() => window.open('https://buy.stripe.com/handbook-special-999', '_blank')}
+                      onClick={() => window.open('https://buy.stripe.com/8x2bJ28FXg9wgMo1aWeQM0K', '_blank')}
                     >
                       Claim Your Handbook Special
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
