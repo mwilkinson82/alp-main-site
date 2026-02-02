@@ -233,8 +233,7 @@ const Programs = () => {
                           <div className="space-y-3">
                             <div className="flex justify-between items-center p-4 border border-border rounded-lg">
                               <div>
-                                <p className="font-medium">1 Month</p>
-                                <p className="text-2xl font-bold">$1,000</p>
+                                <p className="text-2xl font-bold">$1,000 <span className="text-base font-normal text-muted-foreground">for 1 month</span></p>
                               </div>
                               <Button variant="outline" asChild>
                                 <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
@@ -248,8 +247,7 @@ const Programs = () => {
                                 BEST VALUE
                               </div>
                               <div>
-                                <p className="font-medium">6 Months</p>
-                                <p className="text-2xl font-bold text-primary">$5,000</p>
+                                <p className="text-2xl font-bold text-primary">$5,000 <span className="text-base font-normal text-muted-foreground">for 6 months</span></p>
                                 <p className="text-xs text-primary">Save $1,000</p>
                               </div>
                               <Button variant="premium" asChild>
