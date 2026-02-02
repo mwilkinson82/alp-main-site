@@ -183,7 +183,7 @@ const BlogPost = () => {
                 <h3 className="text-xl md:text-2xl font-bold mb-3">
                   Ready to Transform Your Business?
                 </h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                <p className="text-white mb-6 max-w-md mx-auto">
                   Discover proven strategies and elite coaching to elevate your game.
                 </p>
                 <Button variant="premium" size="lg" asChild>
