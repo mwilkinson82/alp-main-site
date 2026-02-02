@@ -133,7 +133,7 @@ const Programs = () => {
                               <div className="flex items-center justify-between">
                                 <div>
                                   <span className="text-lg font-bold">{program.pricing.monthly}</span>
-                                  <span className="text-muted-foreground text-sm">/month</span>
+                                  <span className="text-muted-foreground text-sm"> for 1 month</span>
                                 </div>
                                 <Button size="sm" variant="outline" asChild onClick={(e) => e.stopPropagation()}>
                                   <a href={program.pricing.monthlyLink} target="_blank" rel="noopener noreferrer">
@@ -144,7 +144,7 @@ const Programs = () => {
                               <div className="flex items-center justify-between bg-primary/5 rounded-lg p-2 -mx-2">
                                 <div>
                                   <span className="text-lg font-bold text-primary">{program.pricing.sixMonth}</span>
-                                  <span className="text-muted-foreground text-sm">/6 months</span>
+                                  <span className="text-muted-foreground text-sm"> for 6 months</span>
                                   <span className="text-xs text-primary ml-2">Save $1,000</span>
                                 </div>
                                 <Button size="sm" variant="premium" asChild onClick={(e) => e.stopPropagation()}>
