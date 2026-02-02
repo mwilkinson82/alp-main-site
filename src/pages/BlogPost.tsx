@@ -175,8 +175,8 @@ const BlogPost = () => {
 
             {/* Mid-Content CTA */}
             <div className="my-12 relative">
-              <div className="absolute inset-0 bg-gradient-gold opacity-10 rounded-xl blur-xl"></div>
-              <div className="relative bg-secondary/80 backdrop-blur-sm border border-primary/20 rounded-xl p-8 text-center">
+              <div className="absolute inset-0 bg-[#FC3C15] opacity-20 rounded-xl blur-xl"></div>
+              <div className="relative bg-[#FC3C15] backdrop-blur-sm border border-white/20 rounded-xl p-8 text-center">
                 <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
                   Take Action Now
                 </p>
