@@ -161,14 +161,22 @@ const BlogPost = () => {
 
             {/* Content */}
             <div 
-              className="prose prose-lg md:prose-xl max-w-none 
-                prose-headings:text-foreground prose-headings:mt-8 prose-headings:mb-4
-                prose-p:text-foreground/80 prose-p:leading-8 prose-p:mb-7
+              className="prose prose-base sm:prose-lg md:prose-xl max-w-none 
+                prose-headings:text-foreground 
+                prose-headings:mt-6 prose-headings:mb-3 
+                md:prose-headings:mt-8 md:prose-headings:mb-4
+                prose-p:text-foreground/80 
+                prose-p:leading-7 prose-p:mb-5
+                md:prose-p:leading-8 md:prose-p:mb-7
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-foreground 
-                prose-blockquote:border-primary prose-blockquote:text-muted-foreground prose-blockquote:my-8
-                prose-ul:my-6 prose-ul:space-y-2 prose-ol:my-6 prose-ol:space-y-2
+                prose-blockquote:border-primary prose-blockquote:text-muted-foreground 
+                prose-blockquote:my-5 md:prose-blockquote:my-8
+                prose-blockquote:pl-4 prose-blockquote:text-base md:prose-blockquote:text-lg
+                prose-ul:my-4 prose-ol:my-4 md:prose-ul:my-6 md:prose-ol:my-6
+                prose-ul:space-y-1.5 prose-ol:space-y-1.5 md:prose-ul:space-y-2 md:prose-ol:space-y-2
                 prose-li:text-foreground/80 prose-li:leading-relaxed
+                prose-img:rounded-lg prose-img:my-4 md:prose-img:my-6
                 [&>*:first-child]:mt-0"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
