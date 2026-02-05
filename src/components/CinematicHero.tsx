@@ -1,7 +1,7 @@
 import { Volume2, VolumeX, ArrowRight, Calendar } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import marshallCasual from "@/assets/marshall-casual.jpg";
+import marshallHero from "@/assets/marshall-hero.png";
 import alpLogo from "@/assets/alp-logo.png";
 import { gsap } from "gsap";
 import { Button } from "@/components/ui/button";
@@ -95,7 +95,7 @@ const CinematicHero = () => {
         setVideoError(true);
       }}>
             <source src="/videos/welcome-background.mp4" type="video/mp4" />
-          </video> : <img src={marshallCasual} alt="Marshall Wilkinson" className="absolute inset-0 w-full h-full object-cover" />}
+          </video> : <img src={marshallHero} alt="Marshall Wilkinson" className="absolute inset-0 w-full h-full object-cover" />}
         
         {/* Subtle gradient only at bottom for blend */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
