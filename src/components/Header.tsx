@@ -2,13 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { LogIn, Menu, X, ChevronDown } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programsOpen, setProgramsOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  // Pages that should always have black text (no dark hero)
+  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university'];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +40,9 @@ const Header = () => {
   const showBorder = scrollY > 600;
   
   // Text color transitions from white (on dark hero) to foreground as you scroll
-  const isAtTop = scrollY < 300;
+  // Force black text on pages without dark heroes
+  const shouldForceBlack = forceBlackTextPages.includes(location.pathname);
+  const isAtTop = scrollY < 300 && !shouldForceBlack;
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
 
