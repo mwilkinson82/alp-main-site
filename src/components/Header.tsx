@@ -31,9 +31,14 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Header becomes visible after scrolling past initial viewport (80vh ~ 600px)
+  // Header background becomes visible after scrolling past initial viewport
   const headerOpacity = Math.min(1, Math.max(0, (scrollY - 400) / 200));
   const showBorder = scrollY > 600;
+  
+  // Text color transitions from white (on dark hero) to foreground as you scroll
+  const isAtTop = scrollY < 300;
+  const textColorClass = isAtTop ? "text-white" : "text-foreground";
+  const iconColorClass = isAtTop ? "text-white" : "";
 
   const programLinks = [
     { name: "All Programs", path: "/programs", highlight: true },
@@ -66,14 +71,14 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-6">
             <Link 
               to="/" 
-              className="text-foreground hover:text-primary transition-colors font-medium"
+              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
               Home
             </Link>
             
             <Link 
               to="/blog" 
-              className="text-foreground hover:text-primary transition-colors font-medium"
+              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
               Blog
             </Link>
@@ -82,7 +87,7 @@ const Header = () => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProgramsOpen(!programsOpen)}
-                className="flex items-center gap-1 text-foreground hover:text-primary transition-colors font-medium"
+                className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
               >
                 Programs
                 <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
@@ -108,7 +113,7 @@ const Header = () => {
 
             <Link 
               to="/coaching" 
-              className="text-foreground hover:text-primary transition-colors font-medium"
+              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
               1-on-1 Coaching
             </Link>
@@ -130,10 +135,10 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className={`md:hidden ${iconColorClass}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X /> : <Menu />}
+            {mobileMenuOpen ? <X className={iconColorClass} /> : <Menu className={iconColorClass} />}
           </button>
         </div>
 
