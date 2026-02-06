@@ -235,7 +235,7 @@ const handler = async (req: Request): Promise<Response> => {
       
       // Only notify Marshall — no email to the customer for custom/ad-hoc purchases
       await resend.emails.send({
-        from: "ALP Website <onboarding@resend.dev>",
+        from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
         to: ["marshall@marshallwilkinson.com"],
         subject: `💰 New Purchase (Custom) — ${customerName}`,
         html: `
@@ -262,7 +262,7 @@ const handler = async (req: Request): Promise<Response> => {
     // 1. Send welcome email to customer
     console.log("Sending welcome email to:", customerEmail);
     const emailResult = await resend.emails.send({
-      from: "ALP — Marshall Wilkinson <onboarding@resend.dev>",
+      from: "ALP — Marshall Wilkinson <marshall@notifications.marshallwilkinson.com>",
       to: [customerEmail],
       subject: product.welcomeSubject,
       html: getWelcomeEmailHtml(productKey, customerName),
@@ -284,7 +284,7 @@ const handler = async (req: Request): Promise<Response> => {
         console.error("Kajabi automation failed:", kajabiError.message);
         // Notify Marshall about the Kajabi failure
         await resend.emails.send({
-          from: "ALP Website <onboarding@resend.dev>",
+           from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
           to: ["marshall@marshallwilkinson.com"],
           subject: `⚠️ Kajabi Automation Failed — ${customerName}`,
           html: `
@@ -303,7 +303,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // 3. Notify Marshall of the sale
     await resend.emails.send({
-      from: "ALP Website <onboarding@resend.dev>",
+      from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
       to: ["marshall@marshallwilkinson.com"],
       subject: `🎉 New Sale: ${product.name} — ${customerName}`,
       html: `
