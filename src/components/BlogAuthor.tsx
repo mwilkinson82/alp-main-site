@@ -5,7 +5,7 @@ const BlogAuthor = () => {
   return (
     <div className="flex items-center gap-4 py-6 border-t border-b border-border my-8">
       <Avatar className="h-14 w-14">
-        <AvatarImage src={marshallCasual} alt="Marshall Wilkinson" />
+        <AvatarImage src={marshallCasual} alt="Marshall Wilkinson" className="object-cover" />
         <AvatarFallback>MW</AvatarFallback>
       </Avatar>
       <div>
