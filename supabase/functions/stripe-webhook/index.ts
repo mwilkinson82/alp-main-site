@@ -150,6 +150,7 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
         email,
         first_name: firstName,
         last_name: lastName,
+        subscribed: true,
       },
     }),
   });
@@ -157,7 +158,7 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
   const data = await resp.json();
   
   if (!resp.ok) {
-    // If contact already exists, try to find them
+    // If contact already exists, find them and ensure they're subscribed
     if (resp.status === 422 || resp.status === 409) {
       console.log("Contact may already exist, searching...");
       const searchResp = await fetch(`https://api.kajabi.com/api/v1/contacts?filter[email]=${encodeURIComponent(email)}`, {
@@ -165,15 +166,30 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
       });
       const searchData = await searchResp.json();
       if (searchData.data && searchData.data.length > 0) {
-        console.log("Found existing Kajabi contact:", searchData.data[0].id);
-        return searchData.data[0].id;
+        const contactId = searchData.data[0].id;
+        console.log("Found existing Kajabi contact:", contactId);
+        
+        // Ensure existing contact is subscribed to marketing emails
+        console.log("Ensuring contact is subscribed to marketing emails...");
+        await fetch(`https://api.kajabi.com/api/v1/contacts/${contactId}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contact: { subscribed: true },
+          }),
+        });
+        
+        return contactId;
       }
     }
     console.error("Kajabi contact creation error:", resp.status, JSON.stringify(data));
     throw new Error(`Kajabi contact creation failed: ${resp.status}`);
   }
   
-  console.log("Kajabi contact created:", data.id || data.data?.id);
+  console.log("Kajabi contact created with marketing subscription:", data.id || data.data?.id);
   return data.id || data.data?.id;
 }
 
