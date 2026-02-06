@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   // Pages that should always have black text (no dark hero)
-  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university', '/programs'];
+  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university', '/programs', '/blog'];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +41,7 @@ const Header = () => {
   
   // Text color transitions from white (on dark hero) to foreground as you scroll
   // Force black text on pages without dark heroes
-  const shouldForceBlack = forceBlackTextPages.includes(location.pathname);
+  const shouldForceBlack = forceBlackTextPages.includes(location.pathname) || location.pathname.startsWith('/blog/');
   const isAtTop = scrollY < 300 && !shouldForceBlack;
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
