@@ -1,4 +1,5 @@
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { getWelcomeEmailHtml } from "./email-templates.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -83,10 +84,10 @@ function getProductFromPaymentLink(paymentLinkUrl: string | null): typeof PRODUC
 }
 
 // Get product from Stripe metadata or line items description
-function getProductFromSession(session: any): typeof PRODUCT_MAP[string] | null {
+function getProductFromSession(session: any): { product: typeof PRODUCT_MAP[string]; key: string } | null {
   // 1. Check metadata for product_key
   if (session.metadata?.product_key && PRODUCT_MAP[session.metadata.product_key]) {
-    return PRODUCT_MAP[session.metadata.product_key];
+    return { product: PRODUCT_MAP[session.metadata.product_key], key: session.metadata.product_key };
   }
   
   // 2. Check payment_link
@@ -94,7 +95,7 @@ function getProductFromSession(session: any): typeof PRODUCT_MAP[string] | null 
     const linkId = typeof session.payment_link === 'string' ? session.payment_link : session.payment_link.id;
     for (const key of Object.keys(PRODUCT_MAP)) {
       if (linkId?.includes(key)) {
-        return PRODUCT_MAP[key];
+        return { product: PRODUCT_MAP[key], key };
       }
     }
   }
@@ -191,56 +192,7 @@ async function grantKajabiOffer(token: string, contactId: string, offerId: strin
   }
 }
 
-// --- Welcome Email ---
-function buildWelcomeEmail(name: string, productName: string): string {
-  const firstName = name.split(" ")[0];
-  return `
-    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
-      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 40px 30px; text-align: center;">
-        <h1 style="color: #c9a44a; font-size: 28px; margin: 0 0 10px;">Welcome to ALP</h1>
-        <p style="color: #ffffff; font-size: 16px; margin: 0;">You're in, ${firstName}.</p>
-      </div>
-      
-      <div style="padding: 30px;">
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          Hey ${firstName},
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          Thank you for investing in yourself and joining <strong>${productName}</strong>. 
-          This is the beginning of something powerful.
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          You'll receive a separate email from Kajabi shortly with your login credentials and access to your courses. 
-          Keep an eye on your inbox.
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          <strong>What to expect:</strong>
-        </p>
-        <ul style="font-size: 16px; color: #333; line-height: 1.8; padding-left: 20px;">
-          <li>Your Kajabi access email will arrive within a few minutes</li>
-          <li>Live session notifications will be sent directly to your email</li>
-          <li>Click "Join Session" in any notification to hop on live</li>
-          <li>All recordings are available in your Kajabi dashboard</li>
-        </ul>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          If you have any questions, reply directly to this email — I read everything.
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          Let's build something great together.
-        </p>
-        <p style="font-size: 16px; color: #333; line-height: 1.6;">
-          — Marshall Wilkinson
-        </p>
-      </div>
-      
-      <div style="background: #f5f5f5; padding: 20px 30px; text-align: center; font-size: 12px; color: #999;">
-        <p style="margin: 0;">ALP — Accelerated Learning Program</p>
-        <p style="margin: 5px 0 0;">marshallwilkinson.com</p>
-      </div>
-    </div>
-  `;
-}
-
+// (Welcome email templates moved to email-templates.ts)
 // --- Main Handler ---
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -276,16 +228,16 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Identify the product
-    const product = getProductFromSession(session);
+    const result = getProductFromSession(session);
     
-    if (!product) {
+    if (!result) {
       console.error("Could not identify product — sending generic welcome email");
       // Still send a generic welcome email
       await resend.emails.send({
         from: "ALP — Marshall Wilkinson <onboarding@resend.dev>",
         to: [customerEmail],
         subject: "Welcome to ALP! 🚀",
-        html: buildWelcomeEmail(customerName, "ALP"),
+        html: getWelcomeEmailHtml("unknown", customerName),
         replyTo: "marshall@marshallwilkinson.com",
       });
       
@@ -309,6 +261,7 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
+    const { product, key: productKey } = result;
     console.log("Product identified:", product.name);
 
     // 1. Send welcome email to customer
@@ -317,7 +270,7 @@ const handler = async (req: Request): Promise<Response> => {
       from: "ALP — Marshall Wilkinson <onboarding@resend.dev>",
       to: [customerEmail],
       subject: product.welcomeSubject,
-      html: buildWelcomeEmail(customerName, product.name),
+      html: getWelcomeEmailHtml(productKey, customerName),
       replyTo: "marshall@marshallwilkinson.com",
     });
     console.log("Welcome email sent:", emailResult.data?.id);
