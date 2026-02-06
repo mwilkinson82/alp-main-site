@@ -2,15 +2,16 @@
 function wrapEmail(content: string): string {
   return `
     <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
-      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 40px 30px; text-align: center;">
-        <h1 style="color: #c9a44a; font-size: 28px; margin: 0 0 10px;">ALP</h1>
+      <div style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%); padding: 48px 30px; text-align: center; border-bottom: 3px solid #c9a44a;">
+        <h1 style="color: #c9a44a; font-size: 36px; font-weight: 800; letter-spacing: 6px; margin: 0; text-transform: uppercase;">ALP</h1>
+        <p style="color: #888; font-size: 11px; letter-spacing: 3px; margin: 8px 0 0; text-transform: uppercase;">Altitude Logic Pressure</p>
       </div>
       <div style="padding: 30px;">
         ${content}
       </div>
-      <div style="background: #f5f5f5; padding: 20px 30px; text-align: center; font-size: 12px; color: #999;">
-        <p style="margin: 0;">ALP — Accelerated Learning Program</p>
-        <p style="margin: 5px 0 0;">marshallwilkinson.com</p>
+      <div style="background: #1a1a1a; padding: 24px 30px; text-align: center; font-size: 12px; color: #888;">
+        <p style="margin: 0; color: #c9a44a; font-weight: 600;">ALP — Altitude Logic Pressure</p>
+        <p style="margin: 8px 0 0;"><a href="https://altitudelogicpressure.com" style="color: #888; text-decoration: none;">altitudelogicpressure.com</a></p>
       </div>
     </div>
   `;
@@ -23,6 +24,7 @@ const bullet = (text: string) => `<li style="margin-bottom: 6px;">${text}</li>`;
 const bulletList = (items: string[]) => `<ul style="font-size: 16px; color: #333; line-height: 1.8; padding-left: 20px;">${items.map(bullet).join("")}</ul>`;
 const kajabiNote = `
   ${p(`For the best experience, we strongly recommend downloading the ${bold("Kajabi App")} from the iOS or Android app store. This gives you seamless, mobile, on-the-go access to every ALP program directly from your phone.`)}
+  ${p(`Be sure to join the ${bold("ALP Discord")} and introduce yourself to the group: <a href="https://discord.gg/EjqADW3y" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
   ${p("Welcome to the next level.")}
   ${p("ALP Team")}
 `;
