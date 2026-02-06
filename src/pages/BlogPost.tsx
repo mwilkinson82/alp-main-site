@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowLeft, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import BlogAuthor from "@/components/BlogAuthor";
+import BlogArticleSchema from "@/components/BlogArticleSchema";
 
 interface BlogPost {
   id: string;
@@ -19,6 +21,7 @@ interface BlogPost {
   meta_title: string | null;
   meta_description: string | null;
   published_at: string | null;
+  updated_at: string;
   created_at: string;
 }
 
@@ -114,6 +117,14 @@ const BlogPost = () => {
         ogImage={post.featured_image_url || undefined}
         canonical={`/blog/${post.slug}`}
       />
+      <BlogArticleSchema
+        title={post.title}
+        description={post.meta_description || post.excerpt || `Read ${post.title} on the ALP Blog`}
+        slug={post.slug}
+        publishedAt={post.published_at}
+        updatedAt={post.updated_at}
+        featuredImage={post.featured_image_url}
+      />
       <main className="min-h-screen">
         <Header />
         
@@ -158,6 +169,9 @@ const BlogPost = () => {
                 />
               </div>
             )}
+
+            {/* Author Byline */}
+            <BlogAuthor />
 
             {/* Content */}
             <div 
