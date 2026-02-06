@@ -231,31 +231,26 @@ const handler = async (req: Request): Promise<Response> => {
     const result = getProductFromSession(session);
     
     if (!result) {
-      console.error("Could not identify product — sending generic welcome email");
-      // Still send a generic welcome email
-      await resend.emails.send({
-        from: "ALP — Marshall Wilkinson <onboarding@resend.dev>",
-        to: [customerEmail],
-        subject: "Welcome to ALP! 🚀",
-        html: getWelcomeEmailHtml("unknown", customerName),
-        replyTo: "marshall@marshallwilkinson.com",
-      });
+      console.log("Unrecognized product — skipping customer email, notifying Marshall only");
       
-      // Notify Marshall
+      // Only notify Marshall — no email to the customer for custom/ad-hoc purchases
       await resend.emails.send({
         from: "ALP Website <onboarding@resend.dev>",
         to: ["marshall@marshallwilkinson.com"],
-        subject: `⚠️ New Purchase — Unknown Product — ${customerName}`,
+        subject: `💰 New Purchase (Custom) — ${customerName}`,
         html: `
-          <h2>New Purchase — Could Not Auto-Identify Product</h2>
+          <h2>New Purchase — Custom / Ad-Hoc Product</h2>
           <p><strong>Customer:</strong> ${customerName}</p>
-          <p><strong>Email:</strong> ${customerEmail}</p>
+          <p><strong>Email:</strong> <a href="mailto:${customerEmail}">${customerEmail}</a></p>
+          <p><strong>Amount:</strong> $${(session.amount_total / 100).toFixed(2)}</p>
           <p><strong>Stripe Session ID:</strong> ${session.id}</p>
-          <p>Please check Stripe and manually add this customer to Kajabi.</p>
+          <p>This purchase didn't match a known product. No welcome email was sent to the customer.</p>
+          <p>Follow up with them directly if needed.</p>
         `,
+        replyTo: customerEmail,
       });
       
-      return new Response(JSON.stringify({ received: true, warning: "unknown_product" }), {
+      return new Response(JSON.stringify({ received: true, warning: "custom_product" }), {
         status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
