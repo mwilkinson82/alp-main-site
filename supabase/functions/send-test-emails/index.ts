@@ -192,7 +192,9 @@ Deno.serve(async (req) => {
     ];
 
     const results = [];
-    for (const t of testEmails) {
+    for (let i = 0; i < testEmails.length; i++) {
+      if (i > 0) await new Promise(r => setTimeout(r, 600));
+      const t = testEmails[i];
       const { error } = await resend.emails.send({
         from: "ALP — Marshall Wilkinson <marshall@notifications.marshallwilkinson.com>",
         to: [email],
