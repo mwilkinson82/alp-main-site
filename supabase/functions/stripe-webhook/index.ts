@@ -115,14 +115,14 @@ function getProductFromSession(session: any): { product: typeof PRODUCT_MAP[stri
 // --- Kajabi API ---
 async function getKajabiAccessToken(): Promise<string> {
   console.log("Requesting Kajabi access token...");
-  const resp = await fetch("https://api.kajabi.com/oauth/token", {
+  const resp = await fetch("https://api.kajabi.com/v1/oauth/token", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
       grant_type: "client_credentials",
-      client_id: KAJABI_CLIENT_ID,
-      client_secret: KAJABI_CLIENT_SECRET,
-    }),
+      client_id: KAJABI_CLIENT_ID!,
+      client_secret: KAJABI_CLIENT_SECRET!,
+    }).toString(),
   });
   if (!resp.ok) {
     const text = await resp.text();
@@ -134,35 +134,64 @@ async function getKajabiAccessToken(): Promise<string> {
   return data.access_token;
 }
 
-async function createOrUpdateKajabiContact(token: string, name: string, email: string): Promise<string> {
-  console.log("Creating/updating Kajabi contact:", email);
-  const [firstName, ...lastParts] = name.split(" ");
-  const lastName = lastParts.join(" ") || "";
+async function getKajabiSiteId(token: string): Promise<string> {
+  console.log("Fetching Kajabi site ID...");
+  const resp = await fetch("https://api.kajabi.com/v1/sites", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    console.error("Kajabi sites error:", resp.status, text);
+    throw new Error(`Failed to fetch Kajabi sites: ${resp.status}`);
+  }
+  const data = await resp.json();
+  const siteId = data.data?.[0]?.id;
+  if (!siteId) throw new Error("No Kajabi site found");
+  console.log("Kajabi site ID:", siteId);
+  return siteId;
+}
 
-  const resp = await fetch("https://api.kajabi.com/api/v1/contacts", {
+async function createOrUpdateKajabiContact(token: string, name: string, email: string, siteId: string): Promise<string> {
+  console.log("Creating/updating Kajabi contact:", email);
+
+  const resp = await fetch("https://api.kajabi.com/v1/contacts", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/vnd.api+json",
     },
     body: JSON.stringify({
-      contact: {
-        email,
-        first_name: firstName,
-        last_name: lastName,
-        subscribed: true,
+      data: {
+        type: "contacts",
+        attributes: {
+          name,
+          email,
+          subscribed: true,
+        },
+        relationships: {
+          site: {
+            data: { id: siteId, type: "sites" },
+          },
+        },
       },
     }),
   });
 
   const data = await resp.json();
+  console.log("Kajabi contact creation response:", resp.status, JSON.stringify(data));
   
   if (!resp.ok) {
     // If contact already exists, find them and ensure they're subscribed
     if (resp.status === 422 || resp.status === 409) {
-      console.log("Contact may already exist, searching...");
-      const searchResp = await fetch(`https://api.kajabi.com/api/v1/contacts?filter[email]=${encodeURIComponent(email)}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      console.log("Contact creation returned", resp.status, "- searching for existing contact...");
+      const searchResp = await fetch(`https://api.kajabi.com/v1/contacts?filter[email]=${encodeURIComponent(email)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.api+json",
+        },
       });
       const searchData = await searchResp.json();
       if (searchData.data && searchData.data.length > 0) {
@@ -171,14 +200,18 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
         
         // Ensure existing contact is subscribed to marketing emails
         console.log("Ensuring contact is subscribed to marketing emails...");
-        await fetch(`https://api.kajabi.com/api/v1/contacts/${contactId}`, {
+        await fetch(`https://api.kajabi.com/v1/contacts/${contactId}`, {
           method: "PATCH",
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "application/vnd.api+json",
           },
           body: JSON.stringify({
-            contact: { subscribed: true },
+            data: {
+              type: "contacts",
+              id: contactId,
+              attributes: { subscribed: true },
+            },
           }),
         });
         
@@ -189,19 +222,24 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
     throw new Error(`Kajabi contact creation failed: ${resp.status}`);
   }
   
-  console.log("Kajabi contact created with marketing subscription:", data.id || data.data?.id);
-  return data.id || data.data?.id;
+  console.log("Kajabi contact created with marketing subscription:", data.data?.id);
+  return data.data?.id;
 }
 
 async function grantKajabiOffer(token: string, contactId: string, offerId: string): Promise<void> {
   console.log(`Granting Kajabi offer ${offerId} to contact ${contactId}`);
-  const resp = await fetch(`https://api.kajabi.com/api/v1/contacts/${contactId}/offers`, {
+  const resp = await fetch(`https://api.kajabi.com/v1/contacts/${contactId}/offers`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/vnd.api+json",
     },
-    body: JSON.stringify({ offer_id: offerId }),
+    body: JSON.stringify({
+      data: {
+        type: "offers",
+        id: offerId,
+      },
+    }),
   });
   
   if (!resp.ok) {
@@ -315,7 +353,8 @@ const handler = async (req: Request): Promise<Response> => {
     if (KAJABI_CLIENT_ID && KAJABI_CLIENT_SECRET) {
       try {
         const kajabiToken = await getKajabiAccessToken();
-        const contactId = await createOrUpdateKajabiContact(kajabiToken, customerName, customerEmail);
+        const siteId = await getKajabiSiteId(kajabiToken);
+        const contactId = await createOrUpdateKajabiContact(kajabiToken, customerName, customerEmail, siteId);
         
         for (const offerId of product.kajabiOfferIds) {
           await grantKajabiOffer(kajabiToken, contactId, offerId);
