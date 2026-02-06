@@ -1,7 +1,12 @@
 import { Resend } from "https://esm.sh/resend@4.0.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { getWelcomeEmailHtml } from "./email-templates.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -249,6 +254,16 @@ const handler = async (req: Request): Promise<Response> => {
         `,
         replyTo: customerEmail,
       });
+      // Log custom purchase
+      await supabase.from("purchase_log").insert({
+        customer_name: customerName,
+        customer_email: customerEmail,
+        product_name: "Custom / Ad-Hoc",
+        stripe_session_id: session.id,
+        amount_cents: session.amount_total,
+        welcome_email_sent: false,
+        kajabi_provisioned: false,
+      });
       
       return new Response(JSON.stringify({ received: true, warning: "custom_product" }), {
         status: 200,
@@ -260,15 +275,25 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Product identified:", product.name);
 
     // 1. Send welcome email to customer
+    let welcomeEmailSent = false;
+    let kajabiProvisioned = false;
+    let errorMessage = "";
+
     console.log("Sending welcome email to:", customerEmail);
-    const emailResult = await resend.emails.send({
-      from: "ALP — Marshall Wilkinson <marshall@notifications.marshallwilkinson.com>",
-      to: [customerEmail],
-      subject: product.welcomeSubject,
-      html: getWelcomeEmailHtml(productKey, customerName),
-      replyTo: "marshall@marshallwilkinson.com",
-    });
-    console.log("Welcome email sent:", emailResult.data?.id);
+    try {
+      const emailResult = await resend.emails.send({
+        from: "ALP — Marshall Wilkinson <marshall@notifications.marshallwilkinson.com>",
+        to: [customerEmail],
+        subject: product.welcomeSubject,
+        html: getWelcomeEmailHtml(productKey, customerName),
+        replyTo: "marshall@marshallwilkinson.com",
+      });
+      console.log("Welcome email sent:", emailResult.data?.id);
+      welcomeEmailSent = true;
+    } catch (emailError: any) {
+      console.error("Welcome email failed:", emailError.message);
+      errorMessage += `Email: ${emailError.message}. `;
+    }
 
     // 2. Create Kajabi contact and grant offers
     if (KAJABI_CLIENT_ID && KAJABI_CLIENT_SECRET) {
@@ -280,9 +305,10 @@ const handler = async (req: Request): Promise<Response> => {
           await grantKajabiOffer(kajabiToken, contactId, offerId);
         }
         console.log("Kajabi automation complete for:", customerEmail);
+        kajabiProvisioned = true;
       } catch (kajabiError: any) {
         console.error("Kajabi automation failed:", kajabiError.message);
-        // Notify Marshall about the Kajabi failure
+        errorMessage += `Kajabi: ${kajabiError.message}. `;
         await resend.emails.send({
            from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
           to: ["marshall@marshallwilkinson.com"],
@@ -312,9 +338,21 @@ const handler = async (req: Request): Promise<Response> => {
         <p><strong>Customer:</strong> ${customerName}</p>
         <p><strong>Email:</strong> <a href="mailto:${customerEmail}">${customerEmail}</a></p>
         <p><strong>Amount:</strong> $${(session.amount_total / 100).toFixed(2)}</p>
-        <p><strong>Kajabi:</strong> Contact created & offers granted automatically</p>
+        <p><strong>Kajabi:</strong> ${kajabiProvisioned ? "✅ Provisioned" : "❌ Failed or skipped"}</p>
       `,
       replyTo: customerEmail,
+    });
+
+    // 4. Log purchase to database
+    await supabase.from("purchase_log").insert({
+      customer_name: customerName,
+      customer_email: customerEmail,
+      product_name: product.name,
+      stripe_session_id: session.id,
+      amount_cents: session.amount_total,
+      welcome_email_sent: welcomeEmailSent,
+      kajabi_provisioned: kajabiProvisioned,
+      error_message: errorMessage || null,
     });
 
     return new Response(

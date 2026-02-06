@@ -59,6 +59,45 @@ export type Database = {
         }
         Relationships: []
       }
+      purchase_log: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          customer_email: string
+          customer_name: string
+          error_message: string | null
+          id: string
+          kajabi_provisioned: boolean | null
+          product_name: string | null
+          stripe_session_id: string
+          welcome_email_sent: boolean | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          error_message?: string | null
+          id?: string
+          kajabi_provisioned?: boolean | null
+          product_name?: string | null
+          stripe_session_id: string
+          welcome_email_sent?: boolean | null
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          error_message?: string | null
+          id?: string
+          kajabi_provisioned?: boolean | null
+          product_name?: string | null
+          stripe_session_id?: string
+          welcome_email_sent?: boolean | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
