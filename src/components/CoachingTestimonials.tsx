@@ -27,10 +27,10 @@ const CoachingTestimonials = () => {
   const sectionRef = useGsapScroll();
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 bg-secondary">
+    <section ref={sectionRef} className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 space-y-4">
-          <h2 className="text-3xl md:text-5xl font-bold">
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
             What Clients Say About{" "}
             <span className="text-gradient-gold">1-on-1 Coaching</span>
           </h2>
@@ -43,9 +43,9 @@ const CoachingTestimonials = () => {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="glass-card p-6 md:p-8 space-y-4 flex flex-col justify-between bg-background"
+              className="rounded-xl border border-border/60 bg-muted/30 p-6 md:p-8 space-y-4 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
             >
-              <blockquote className="text-sm md:text-base text-foreground/80 leading-relaxed">
+              <blockquote className="text-sm md:text-base text-foreground leading-relaxed">
                 "{t.quote}"
               </blockquote>
               <p className="text-sm font-semibold text-primary">— {t.attribution}</p>
