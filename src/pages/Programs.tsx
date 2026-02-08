@@ -9,174 +9,275 @@ import ProgramTestimonials from "@/components/ProgramTestimonials";
 import InvestmentTable from "@/components/InvestmentTable";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
 import FullAccessModal from "@/components/FullAccessModal";
+import CoachingTestimonials from "@/components/CoachingTestimonials";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, Video, Check, Users, Sparkles, Crown, ArrowRight } from "lucide-react";
+import { Clock, HardHat, TrendingUp, Video, Check, Users, Sparkles, Crown, ArrowRight, MessageCircle, Map } from "lucide-react";
+
+const STRIPE_SINGLE = "https://buy.stripe.com/bJeaEYe0h9L8ao0g5QeQM0R";
+const STRIPE_6SESSION = "https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q";
+
+const coachingPackages = [
+  {
+    title: "Single Session",
+    price: "$1,000",
+    description: "One focused hour with Marshall — bring your biggest challenge and leave with a clear plan.",
+    benefits: [
+      "60-minute deep-dive on your biggest challenge",
+      "Actionable takeaways you can implement immediately",
+      "Follow-up summary with next steps",
+    ],
+    checkoutUrl: STRIPE_SINGLE,
+    highlight: false,
+  },
+  {
+    title: "6-Session Intensive",
+    price: "$5,000",
+    badge: "MOST POPULAR",
+    description: "Your strategic advisor on speed dial for the decisions that matter most.",
+    benefits: [
+      "Six 1-hour sessions tailored to your business",
+      "Direct text & Discord access between sessions",
+      "Custom strategic scaling roadmap",
+    ],
+    checkoutUrl: STRIPE_6SESSION,
+    highlight: true,
+  },
+];
+
+const programs = [
+  {
+    icon: Clock,
+    title: "Power Hour",
+    tagline: "Daily live coaching at 8am EST",
+    description: "Morning strategy call for entrepreneurship, mindset, and business best practices. Recordings included.",
+    link: "/power-hour",
+    pricing: {
+      monthly: "$1,000",
+      sixMonth: "$5,000",
+      monthlyLink: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
+      sixMonthLink: "https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I",
+    },
+  },
+  {
+    icon: HardHat,
+    title: "Contractor School",
+    tagline: "Scale your construction company",
+    description: "Estimating, project management, legal, accounting, C-suite operations. Live Tuesdays at 7pm EST.",
+    link: "/contractor-school",
+  },
+  {
+    icon: TrendingUp,
+    title: "Sales & Marketing",
+    tagline: "Close more deals, generate leads",
+    description: "Presentations, negotiations, traffic, retargeting, offline marketing. Live Wednesdays at 7pm EST.",
+    link: "/sales-marketing-school",
+  },
+  {
+    icon: Video,
+    title: "ALP University",
+    tagline: "Full video training library",
+    description: "Access the full archive of Power Hours, Contractor School, and Sales & Marketing School recordings.",
+    link: "/alp-university",
+  },
+];
+
+const growthAcademyFeatures = [
+  "20+ live sessions per month with Marshall",
+  "Daily morning strategy calls (Power Hour)",
+  "Contractor School & Sales & Marketing School",
+  "Every recording included",
+  "Group Discord community",
+];
+
+const fullAccessFeatures = [
+  "Everything in Growth Academy",
+  "10 private 1:1 sessions with Marshall",
+  "Direct group text chat access",
+  "Priority support & private elite community",
+];
 
 const Programs = () => {
   const [growthModalOpen, setGrowthModalOpen] = useState(false);
   const [fullAccessModalOpen, setFullAccessModalOpen] = useState(false);
-  
-  const programs = [
-    {
-      title: "Power Hour",
-      tagline: "Start every day with momentum.",
-      description: "A morning call for entrepreneurship, inspiration, mindset, and business best practices. Realign yourself every morning to go out and be a high-performing entrepreneur. Includes full recording library.",
-      schedule: "Live Daily at 8am EST",
-      icon: Clock,
-      link: "/power-hour",
-      pricing: {
-        monthly: "$1,000",
-        sixMonth: "$5,000",
-        monthlyLink: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
-        sixMonthLink: "https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I"
-      }
-    },
-    {
-      title: "Contractor School",
-      tagline: "Scale your construction company the right way.",
-      description: "Everything you need to scale: estimating, project management, legal and contracts, accounting, C-suite activities, taxes, and operations. Recordings included.",
-      schedule: "Live Tuesdays at 7pm EST",
-      icon: HardHat,
-      link: "/contractor-school"
-    },
-    {
-      title: "Sales & Marketing School",
-      tagline: "Generate leads. Close deals. Grow revenue.",
-      description: "Learn how to make presentations, negotiate and close deals, drive traffic to websites and landing pages, run retargeting campaigns, offline marketing, and get attention for your business to generate leads. Recordings included.",
-      schedule: "Live Wednesdays at 7pm EST",
-      icon: TrendingUp,
-      link: "/sales-marketing-school"
-    },
-    {
-      title: "ALP University",
-      tagline: "Learn at your own pace.",
-      description: "Access to the full archive of Power Hours, Contractor School, and Sales & Marketing School. New recordings added daily.",
-      schedule: "Recordings Only",
-      icon: Video,
-      link: "/alp-university",
-      price: "$197/mo"
-    }
-  ];
-
-  const growthAcademyFeatures = [
-    "20+ live sessions per month with Marshall",
-    "7 live coaching sessions across 5 days per week",
-    "Daily morning strategy calls",
-    "Every recording included",
-    "Group Discord community",
-    "Designed for entrepreneurs who want acceleration, not excuses"
-  ];
-
-  const fullAccessFeatures = [
-    "Everything in ALP Growth Academy (20+ live sessions/month)",
-    "10 private 1:1 sessions with Marshall",
-    "Direct group text chat access",
-    "Priority support",
-    "Private elite community"
-  ];
 
   return (
     <>
-      <SEO 
-        title="ALP Programs - All Live Training & Coaching Packages | Marshall Wilkinson"
-        description="Explore Marshall Wilkinson's complete program offerings: Power Hour, Contractor School, Sales & Marketing School, ALP University, Growth Academy, and Full Access bundles."
-        keywords="Marshall Wilkinson programs, ALP programs, business coaching programs, contractor training, sales training, Power Hour, Growth Academy, Full Access"
+      <SEO
+        title="ALP Programs - All Training & Coaching Packages | Marshall Wilkinson"
+        description="Explore Marshall Wilkinson's complete program offerings: 1-on-1 Coaching, Power Hour, Contractor School, Sales & Marketing School, ALP University, Growth Academy, and Full Access bundles."
+        keywords="Marshall Wilkinson programs, ALP programs, business coaching programs, 1-on-1 coaching, contractor training, sales training, Power Hour, Growth Academy, Full Access"
         canonical="/programs"
       />
       <StructuredData type="organization" />
-      
+
       <main className="min-h-screen">
         <Header />
-        
-        {/* Hero Section */}
-        <section className="pt-24 pb-16 bg-gradient-to-b from-muted/50 to-background">
+
+        {/* Hero */}
+        <section className="pt-24 pb-12 bg-gradient-to-b from-muted/50 to-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <h1 className="text-4xl md:text-6xl font-bold">
-                The Four <span className="text-gradient-gold">ALP Programs</span>
+                Every Way to <span className="text-gradient-gold">Work With Marshall</span>
               </h1>
-              <p className="text-xl text-muted-foreground">
-                Power Hour, Contractor School, and Sales & Marketing School are bundled in our Growth Academy and Full Access packages.
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+                Whether you want Marshall on speed dial for your biggest decisions, daily group coaching to build momentum, or a complete training library — there's a path built for you.
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <Button variant="premium" size="lg" className="gap-2" asChild>
+                  <a href="#coaching">1-on-1 Coaching</a>
+                </Button>
+                <Button variant="outline" size="lg" className="gap-2" asChild>
+                  <a href="#programs">Group Programs</a>
+                </Button>
+                <Button variant="outline" size="lg" className="gap-2" asChild>
+                  <a href="#bundles">Bundles</a>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Individual Programs Grid */}
-        <section className="py-16 bg-background">
+        {/* Tier 1: 1-on-1 Coaching */}
+        <section id="coaching" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-6">
-                {programs.map((program, index) => {
-                  const Icon = program.icon;
-                  return (
-                    <Link to={program.link} key={index} className="group">
-                      <Card className="h-full border-border hover:border-primary/50 transition-all duration-300 group-hover:shadow-lg">
-                        <CardContent className="p-6 space-y-4">
-                          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-xs">
-                            <Icon className="w-3 h-3 text-primary" />
-                            <span className="text-primary">{program.schedule}</span>
-                          </div>
-                          
-                          <div>
-                            <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
-                              {program.title}
-                              <ArrowRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                            </h3>
-                            <p className="text-primary font-medium mb-3">{program.tagline}</p>
-                            <p className="text-muted-foreground leading-relaxed">{program.description}</p>
-                          </div>
-
-                          {program.pricing ? (
-                            <div className="pt-4 border-t border-border space-y-3">
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <span className="text-lg font-bold">{program.pricing.monthly}</span>
-                                  <span className="text-muted-foreground text-sm"> for 1 month</span>
-                                </div>
-                                <Button size="sm" variant="outline" asChild onClick={(e) => e.stopPropagation()}>
-                                  <a href={program.pricing.monthlyLink} target="_blank" rel="noopener noreferrer">
-                                    Get Started
-                                  </a>
-                                </Button>
-                              </div>
-                              <div className="flex items-center justify-between bg-primary/5 rounded-lg p-2 -mx-2">
-                                <div>
-                                  <span className="text-lg font-bold text-primary">{program.pricing.sixMonth}</span>
-                                  <span className="text-muted-foreground text-sm"> for 6 months</span>
-                                  <span className="text-xs text-primary ml-2">Save $1,000</span>
-                                </div>
-                                <Button size="sm" variant="premium" asChild onClick={(e) => e.stopPropagation()}>
-                                  <a href={program.pricing.sixMonthLink} target="_blank" rel="noopener noreferrer">
-                                    Best Value
-                                  </a>
-                                </Button>
-                              </div>
-                            </div>
-                          ) : program.price ? (
-                            <div className="pt-4 border-t border-border">
-                              <div className="flex items-center justify-between">
-                                <span className="text-2xl font-bold text-primary">{program.price}</span>
-                                <span className="text-sm text-muted-foreground">Holiday Special</span>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="pt-4 border-t border-border">
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <div className="w-4 h-4 rounded-full border border-muted-foreground/50 flex items-center justify-center">
-                                  <Check className="w-2.5 h-2.5" />
-                                </div>
-                                <span>Included in ALP Growth Academy</span>
-                              </div>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  );
-                })}
+            <div className="text-center mb-10 space-y-4">
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
+                <Users className="w-4 h-4 text-primary" />
+                <span className="text-primary font-medium">Work With Marshall Directly</span>
               </div>
+              <h2 className="text-3xl md:text-5xl font-bold">1-on-1 Coaching</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Not everyone wants a daily group call. Some entrepreneurs need Marshall on speed dial — available to peel off an hour when a high-stakes decision demands it.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              {coachingPackages.map((pkg, index) => (
+                <Card
+                  key={index}
+                  className={`relative rounded-xl border hover:shadow-md transition-shadow ${
+                    pkg.highlight ? "border-primary/40" : "border-border"
+                  }`}
+                >
+                  {pkg.badge && (
+                    <div className="absolute top-0 right-0 bg-gradient-gold text-primary-foreground px-4 py-1 text-xs font-bold rounded-bl-lg rounded-tr-xl">
+                      {pkg.badge}
+                    </div>
+                  )}
+                  <CardContent className="p-6 md:p-8 space-y-5">
+                    <div>
+                      <h3 className="text-xl font-bold">{pkg.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p>
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-bold text-primary">{pkg.price}</span>
+                    </div>
+                    <ul className="space-y-3">
+                      {pkg.benefits.map((b, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm">
+                          <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button
+                      variant={pkg.highlight ? "premium" : "default"}
+                      size="lg"
+                      className="w-full gap-2 min-h-[48px]"
+                      asChild
+                    >
+                      <a href={pkg.checkoutUrl} target="_blank" rel="noopener noreferrer">
+                        Get Started
+                        <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-6">
+              <Button variant="link" className="text-primary gap-1" asChild>
+                <Link to="/coaching">
+                  Learn more about 1-on-1 coaching
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Tier 2: Group Programs */}
+        <section id="programs" className="py-16 md:py-24 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10 space-y-4">
+              <h2 className="text-3xl md:text-5xl font-bold">Group Programs & Training</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Live group sessions and a complete training library — build momentum with a community of driven entrepreneurs.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
+              {programs.map((program, index) => {
+                const Icon = program.icon;
+                return (
+                  <Link key={index} to={program.link}>
+                    <Card className="h-full rounded-xl border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
+                      <CardContent className="p-4 md:p-6 space-y-3">
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary group-hover:scale-110 transition-transform" />
+                        </div>
+                        <div>
+                          <h4 className="text-base md:text-lg font-bold group-hover:text-primary transition-colors leading-tight">
+                            {program.title}
+                          </h4>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 leading-snug">
+                            {program.tagline}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1 text-xs md:text-sm text-primary font-medium pt-1">
+                          Learn More
+                          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Power Hour standalone pricing */}
+            <div className="max-w-3xl mx-auto mt-12">
+              <Card className="rounded-xl border-primary/30 border-2">
+                <CardContent className="p-6 md:p-8">
+                  <div className="flex flex-col md:flex-row md:items-center gap-6">
+                    <div className="flex-1 space-y-2">
+                      <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-xs">
+                        <Clock className="w-3 h-3 text-primary" />
+                        <span className="text-primary">Available Standalone</span>
+                      </div>
+                      <h3 className="text-xl font-bold">Power Hour</h3>
+                      <p className="text-sm text-muted-foreground">
+                        The only group program available as a standalone purchase. Daily live coaching at 8am EST.
+                      </p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button variant="outline" size="lg" className="min-h-[48px]" asChild>
+                        <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
+                          $1,000 for 1 month
+                        </a>
+                      </Button>
+                      <Button variant="premium" size="lg" className="min-h-[48px]" asChild>
+                        <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
+                          $5,000 for 6 months
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -184,279 +285,124 @@ const Programs = () => {
         {/* Weekly Schedule */}
         <WeeklySchedule />
 
-        {/* Power Hour Standalone Section */}
-        <section className="py-20 bg-background">
+        {/* Tier 3: Bundles */}
+        <section id="bundles" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <Card className="border-2 border-primary/30 overflow-hidden">
-                <CardContent className="p-8 md:p-12">
-                  <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div className="space-y-6">
-                      <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-sm">
-                        <Clock className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-medium">Daily at 8am EST</span>
-                      </div>
-                      
-                      <h2 className="text-3xl md:text-4xl font-bold">
-                        Power Hour
-                      </h2>
-                      
-                      <p className="text-xl text-primary font-medium">
-                        Start every day with momentum.
-                      </p>
-                      
-                      <p className="text-muted-foreground">
-                        A morning call for entrepreneurship, inspiration, mindset, and business best practices. Realign yourself every morning to go out and be a high-performing entrepreneur.
-                      </p>
+            <div className="text-center mb-10 space-y-4">
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-primary font-medium">Get Everything</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold">Bundle & Save</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Combine all group programs into one package — or go all-in with private coaching included.
+              </p>
+            </div>
 
-                      <ul className="space-y-3">
-                        {[
-                          "Daily live coaching calls at 8:00 AM EST",
-                          "Access to exclusive Power Hour community",
-                          "Recordings of all sessions included",
-                          "Direct access to Marshall during calls",
-                          "Networking with successful entrepreneurs"
-                        ].map((feature, index) => (
-                          <li key={index} className="flex items-start gap-3">
-                            <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-foreground">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Growth Academy */}
+              <Card className="rounded-xl border-2 border-primary/30">
+                <CardContent className="p-6 md:p-8 space-y-6">
+                  <div className="space-y-2">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-3 py-1 text-xs">
+                      <Sparkles className="w-3 h-3 text-primary" />
+                      <span className="text-primary font-medium">Hero Tier</span>
                     </div>
+                    <h3 className="text-2xl font-bold">ALP Growth Academy</h3>
+                    <p className="text-muted-foreground text-sm">
+                      All 4 live programs + recordings + community. 20+ sessions per month.
+                    </p>
+                  </div>
 
-                    <div className="space-y-4">
-                      <Card className="bg-background border-2 border-border">
-                        <CardContent className="p-6 space-y-4">
-                          <p className="text-sm text-muted-foreground text-center">Choose Your Commitment</p>
-                          
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center p-4 border border-border rounded-lg">
-                              <div>
-                                <p className="text-2xl font-bold">$1,000 <span className="text-base font-normal text-muted-foreground">for 1 month</span></p>
-                              </div>
-                              <Button variant="outline" asChild>
-                                <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
-                                  Get Started
-                                </a>
-                              </Button>
-                            </div>
-                            
-                            <div className="flex justify-between items-center p-4 border-2 border-primary rounded-lg bg-primary/5 relative">
-                              <div className="absolute -top-3 left-4 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                                BEST VALUE
-                              </div>
-                              <div>
-                                <p className="text-2xl font-bold text-primary">$5,000 <span className="text-base font-normal text-muted-foreground">for 6 months</span></p>
-                                <p className="text-xs text-primary">Save $1,000</p>
-                              </div>
-                              <Button variant="premium" asChild>
-                                <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
-                                  Get 6 Months
-                                </a>
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          <p className="text-xs text-center text-muted-foreground pt-2">
-                            Immediate access after payment
-                          </p>
-                        </CardContent>
-                      </Card>
-                      
-                      <p className="text-sm text-center text-muted-foreground">
-                        Also included in <Link to="#growth-academy" className="text-primary hover:underline">ALP Growth Academy</Link>
-                      </p>
+                  <ul className="space-y-2">
+                    {growthAcademyFeatures.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm">
+                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-foreground">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="space-y-2 border-t border-border pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">1 Month</span>
+                      <span className="text-xl font-bold">$2,000</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">6 Months</span>
+                      <span className="text-xl font-bold text-primary">$8,000</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Annual</span>
+                      <span className="text-xl font-bold text-primary">$14,000</span>
                     </div>
                   </div>
+
+                  <Button
+                    variant="default"
+                    size="lg"
+                    className="w-full min-h-[48px] gap-2"
+                    onClick={() => setGrowthModalOpen(true)}
+                  >
+                    Choose Duration
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </CardContent>
               </Card>
-            </div>
-          </div>
-        </section>
 
-        {/* Growth Academy Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <Card className="border-2 border-primary/30 overflow-hidden">
-                <CardContent className="p-8 md:p-12">
-                  <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div className="space-y-6">
-                      <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 text-sm">
-                        <Sparkles className="w-4 h-4 text-primary" />
-                        <span className="text-primary font-medium">Hero Tier</span>
-                      </div>
-                      
-                      <h2 className="text-3xl md:text-4xl font-bold">
-                        The ALP Growth Academy
-                      </h2>
-                      
-                      <p className="text-xl text-primary font-medium">
-                        All live programs. One ecosystem. Maximum momentum.
-                      </p>
-                      
-                      <p className="text-muted-foreground">
-                        Power Hour (Daily 8am EST) + Contractor School (Tuesdays 7pm EST) + Sales & Marketing School (Wednesdays 7pm EST) + full recordings.
-                      </p>
-
-                      <ul className="space-y-3">
-                        {growthAcademyFeatures.map((feature, index) => (
-                          <li key={index} className="flex items-start gap-3">
-                            <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-foreground">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="space-y-4">
-                      <Card className="bg-background border-2 border-border relative overflow-hidden">
-                        <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-lg">
-                          HOLIDAY SPECIAL
-                        </div>
-                        <CardContent className="p-6 space-y-4">
-                          <p className="text-sm text-muted-foreground">Holiday Pricing — Ends December 31</p>
-                          
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <p className="font-medium">1 Month</p>
-                                <p className="text-xs text-muted-foreground">20+ live sessions included</p>
-                              </div>
-                              <p className="text-2xl font-bold">$2,000</p>
-                            </div>
-                            
-                            <div className="flex justify-between items-center border-t border-border pt-3">
-                              <div>
-                                <p className="font-medium">6 Months</p>
-                                <p className="text-xs text-primary">Save $4,000</p>
-                              </div>
-                              <p className="text-2xl font-bold text-primary">$8,000</p>
-                            </div>
-                            
-                            <div className="flex justify-between items-center border-t border-border pt-3">
-                              <div>
-                                <p className="font-medium">Annual</p>
-                                <p className="text-xs text-primary">Save $10,000 — Best Value</p>
-                              </div>
-                              <p className="text-2xl font-bold text-primary">$14,000</p>
-                            </div>
-                          </div>
-                          
-                          <div className="pt-4 border-t border-border">
-                            <p className="text-sm text-center">
-                              <span className="text-primary font-semibold">7x live sessions per week</span>
-                              <span className="text-muted-foreground"> vs recordings-only with ALP University — for serious entrepreneurs ready to accelerate.</span>
-                            </p>
-                          </div>
-                          
-                          <Button 
-                            variant="premium" 
-                            size="lg" 
-                            className="w-full"
-                            onClick={() => setGrowthModalOpen(true)}
-                          >
-                            Choose Your Package
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Full Access Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <Card className="border-2 border-primary overflow-hidden relative">
+              {/* Full Access */}
+              <Card className="rounded-xl border-2 border-primary relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 pointer-events-none" />
-                
-                <CardContent className="p-8 md:p-12 relative">
-                  <div className="text-center space-y-6">
-                    <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-4 py-1.5 text-sm">
-                      <Crown className="w-4 h-4 text-primary" />
+                <CardContent className="p-6 md:p-8 space-y-6 relative">
+                  <div className="space-y-2">
+                    <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-3 py-1 text-xs">
+                      <Crown className="w-3 h-3 text-primary" />
                       <span className="text-primary font-medium">Elite Tier</span>
                     </div>
-
-                    <h2 className="text-4xl md:text-5xl font-bold">
+                    <h3 className="text-2xl font-bold">
                       <span className="text-gradient-gold">ALP Full Access</span>
-                    </h2>
-
-                    <p className="text-xl text-foreground">
-                      For entrepreneurs who want direct access and high-level mentorship.
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      Everything in Growth Academy + 10 private 1-on-1 sessions with Marshall.
                     </p>
-
-                    <p className="text-muted-foreground max-w-2xl mx-auto">
-                      Includes everything in the ALP Growth Academy, plus 10 private one-on-one sessions with Marshall.
-                    </p>
-
-                    {/* $10,000 value callout */}
-                    <div className="inline-flex items-center gap-3 bg-primary/10 border-2 border-primary/40 rounded-lg px-6 py-4">
-                      <Users className="w-8 h-8 text-primary" />
-                      <div className="text-left">
-                        <p className="text-3xl font-bold text-primary">$10,000</p>
-                        <p className="text-sm text-muted-foreground">in private 1:1 sessions included</p>
-                      </div>
-                    </div>
-
-                    {/* Features */}
-                    <div className="flex flex-wrap justify-center gap-3 pt-4">
-                      {fullAccessFeatures.map((feature, index) => (
-                        <div key={index} className="flex items-center gap-2 bg-muted/50 rounded-full px-4 py-2 text-sm">
-                          <Check className="w-4 h-4 text-primary" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Group chat callout */}
-                    <p className="text-muted-foreground">
-                      💬 Direct group text chat with Marshall and elite members
-                    </p>
-
-                    {/* Pricing Cards */}
-                    <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto pt-8">
-                      <Card className="border-2 border-primary/50 relative">
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                          HOLIDAY SPECIAL
-                        </div>
-                        <CardContent className="p-6 text-center">
-                          <p className="font-medium mb-2">6 Months</p>
-                          <p className="text-4xl font-bold text-primary mb-2">$10,000</p>
-                          <p className="text-sm text-primary">Save $5,000</p>
-                        </CardContent>
-                      </Card>
-
-                      <Card className="border-2 border-primary/50 relative">
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                          BEST VALUE
-                        </div>
-                        <CardContent className="p-6 text-center">
-                          <p className="font-medium mb-2">Annual</p>
-                          <p className="text-4xl font-bold text-primary mb-2">$15,000</p>
-                          <p className="text-sm text-primary">Save $15,000</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    <p className="text-sm text-muted-foreground">
-                      Just <span className="text-primary font-semibold">$1,000 more</span> than Growth Academy Annual — includes <span className="text-primary font-semibold">$10,000</span> in private 1:1 coaching sessions.
-                    </p>
-
-                    <Button 
-                      variant="premium" 
-                      size="lg" 
-                      className="px-12"
-                      onClick={() => setFullAccessModalOpen(true)}
-                    >
-                      Get Full ALP Access
-                    </Button>
                   </div>
+
+                  <ul className="space-y-2">
+                    {fullAccessFeatures.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm">
+                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <span className="text-foreground">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="space-y-2 border-t border-border pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">6 Months</span>
+                      <span className="text-xl font-bold text-primary">$10,000</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <span className="text-sm text-muted-foreground">Annual</span>
+                        <span className="text-xs text-primary ml-2">Best Value</span>
+                      </div>
+                      <span className="text-xl font-bold text-primary">$15,000</span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground text-center">
+                    Just <span className="text-primary font-semibold">$1,000 more</span> than Growth Academy Annual — includes <span className="text-primary font-semibold">$10,000</span> in private coaching.
+                  </p>
+
+                  <Button
+                    variant="premium"
+                    size="lg"
+                    className="w-full min-h-[48px] gap-2"
+                    onClick={() => setFullAccessModalOpen(true)}
+                  >
+                    Get Full Access
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -466,15 +412,15 @@ const Programs = () => {
         {/* Investment Table */}
         <InvestmentTable />
 
-        {/* Testimonials */}
+        {/* Coaching Testimonials */}
+        <CoachingTestimonials />
+
+        {/* Program Testimonials */}
         <ProgramTestimonials />
 
         <Footer />
-        
-        {/* Growth Academy Modal */}
+
         <GrowthAcademyModal open={growthModalOpen} onOpenChange={setGrowthModalOpen} />
-        
-        {/* Full Access Modal */}
         <FullAccessModal open={fullAccessModalOpen} onOpenChange={setFullAccessModalOpen} />
       </main>
     </>
