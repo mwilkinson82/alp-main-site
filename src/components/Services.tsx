@@ -37,16 +37,22 @@ const programs = [
 
 const bundles = [
   {
+    title: "6-Session Intensive",
+    price: "$5,000",
+    period: "",
+    description: "Six 1-on-1 hours with Marshall + direct access between sessions",
+    highlight: true
+  },
+  {
     title: "Growth Academy",
     price: "$2,000",
-    period: "/month",
-    description: "All 4 programs + community access",
-    highlight: true
+    period: "for 1 month",
+    description: "All 4 programs + community access"
   },
   {
     title: "Full Access",
     price: "$10,000",
-    period: "/6 months",
+    period: "for 6 months",
     description: "Everything + 1-on-1 coaching sessions"
   }
 ];
@@ -106,7 +112,7 @@ const Services = () => {
             <h3 className="text-2xl md:text-3xl font-bold">Get Access to Everything</h3>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
             {bundles.map((bundle, index) => (
               <Card 
                 key={index} 

@@ -51,7 +51,7 @@ const HeroContent = () => {
             >
               <Link to="/coaching">
                 <Calendar className="mr-2" />
-                Schedule 1-on-1
+                Learn About 6-Session Intensive
               </Link>
             </Button>
           </div>
