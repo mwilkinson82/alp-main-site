@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const PersistentCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,10 +44,10 @@ const PersistentCTA = () => {
                 className="bg-background text-foreground hover:bg-background/90"
                 asChild
               >
-                <a href="https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q" target="_blank" rel="noopener noreferrer">
+                <Link to="/coaching#intensive">
                   <Calendar className="mr-2 h-4 w-4" />
                   6-Session Intensive
-                </a>
+                </Link>
               </Button>
               <button
                 onClick={() => setIsDismissed(true)}

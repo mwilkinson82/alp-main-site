@@ -200,7 +200,7 @@ const Coaching = () => {
       </section>
 
       {/* 6-Session Intensive Feature Section */}
-      <section className="py-20 bg-background">
+      <section id="intensive" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
