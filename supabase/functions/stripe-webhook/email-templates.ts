@@ -212,6 +212,80 @@ function fullAccessEmail(): string {
   `);
 }
 
+// --- 1-on-1 Coaching: Single Session ---
+function coachingSingleEmail(name: string): string {
+  const firstName = name.split(" ")[0];
+  return wrapEmail(`
+    ${heading("Welcome — Your 1-on-1 Session Is Confirmed.")}
+    ${p(`${firstName},`)}
+    ${p(`Congratulations — you just made a move that separates you from 99% of business owners:`)}
+    ${p(`${bold("You invested in direct, expert-level guidance.")}`)}
+    ${p("This isn't a generic consultation. This is a focused, high-impact hour designed to give you the clarity and direction most people spend months searching for.")}
+
+    ${heading("What Happens Next")}
+    ${p(`Marshall will personally follow up with you via email within the next 24–48 hours to:`)}
+    ${bulletList([
+      "Schedule your session at a time that works for you",
+      "Lay out an agenda so every minute is maximized",
+      "Set up a brief introductory call (if needed) to align on your biggest priorities before the deep-dive",
+    ])}
+    ${p("There's nothing you need to do right now — just keep an eye on your inbox.")}
+
+    ${heading("How to Prepare")}
+    ${p("When the time comes, bring:")}
+    ${bulletList([
+      "Your single biggest bottleneck or decision you need clarity on",
+      "Any relevant numbers, context, or constraints",
+      "An open mind — the best sessions come from real honesty about what's not working",
+    ])}
+    ${p(`This hour will be ${bold("direct, strategic, and built entirely around your situation")}.`)}
+    ${p("No fluff. No filler. Just execution-ready clarity.")}
+    ${p("Welcome to the room.")}
+    ${p("— Marshall Wilkinson")}
+  `);
+}
+
+// --- 1-on-1 Coaching: 6-Session Intensive ---
+function coaching6SessionEmail(name: string): string {
+  const firstName = name.split(" ")[0];
+  return wrapEmail(`
+    ${heading("Welcome — Your 6-Session Intensive Begins Now.")}
+    ${p(`${firstName},`)}
+    ${p(`Congratulations — and I mean that.`)}
+    ${p(`Most people talk about getting a coach. Most people talk about investing in themselves. ${bold("You actually did it.")}`)}
+    ${p("The 6-Session Intensive is not a casual engagement. It's a strategic partnership designed to compress months of progress into weeks — with direct access to me between sessions.")}
+
+    ${heading("What Happens Next")}
+    ${p(`I'll personally follow up with you via email within the next 24–48 hours to:`)}
+    ${bulletList([
+      "Schedule your first session",
+      "Lay out an initial agenda based on your goals",
+      "Set up a brief introductory call so we can align on priorities and hit the ground running from session one",
+    ])}
+    ${p("There's nothing you need to do right now — just keep an eye on your inbox.")}
+
+    ${heading("What You Get Over the Next 6 Sessions")}
+    ${bulletList([
+      "Six 1-hour deep-dive sessions tailored entirely to your business",
+      "Direct text & Discord access to me between sessions",
+      "A custom strategic scaling roadmap built around your situation",
+      "Real-time support when decisions can't wait for the next call",
+    ])}
+
+    ${heading("How to Get the Most Out of This")}
+    ${p("The entrepreneurs who get the biggest results from this do three things:")}
+    ${bulletList([
+      "Come prepared with real numbers and real constraints",
+      "Execute between sessions — don't wait for permission",
+      "Use the direct access line for high-stakes decisions, not just check-ins",
+    ])}
+    ${p(`This is about ${bold("compounding momentum")} — each session builds on the last.`)}
+    ${p("And if you stay disciplined, the trajectory shift will be undeniable.")}
+    ${p("Looking forward to working with you.")}
+    ${p("— Marshall Wilkinson")}
+  `);
+}
+
 // --- Handbook Special ---
 function handbookSpecialEmail(name: string): string {
   const firstName = name.split(" ")[0];
@@ -250,6 +324,10 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string): s
   if (productKey === "8x2bJ28FXg9wgMo1aWeQM0K") return handbookSpecialEmail(customerName);
   // ALP University
   if (productKey === "alp-university") return alpUniversityEmail();
+  // 1-on-1 Coaching: Single Session
+  if (productKey === "bJeaEYe0h9L8ao0g5QeQM0R") return coachingSingleEmail(customerName);
+  // 1-on-1 Coaching: 6-Session Intensive
+  if (productKey === "14A5kEf4l0ay7bOaLweQM0Q") return coaching6SessionEmail(customerName);
 
   // Fallback generic
   const firstName = customerName.split(" ")[0];
