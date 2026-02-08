@@ -141,21 +141,32 @@ const Services = () => {
 
         {/* 1-on-1 Coaching CTA */}
         <div className="mt-20 text-center">
-          <Card className="glass-card border-primary/20 max-w-2xl mx-auto">
-            <CardContent className="p-8 space-y-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-gold flex items-center justify-center mx-auto">
-                <Users className="w-7 h-7 text-primary-foreground" />
+          <Card className="glass-card border-primary/30 max-w-3xl mx-auto overflow-hidden">
+            <CardContent className="p-8 md:p-10 space-y-6">
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
+                <Users className="w-4 h-4 text-primary" />
+                <span className="text-primary font-medium">1-on-1 with Marshall</span>
               </div>
-              <h3 className="text-2xl font-bold">Need Personalized Guidance?</h3>
-              <p className="text-muted-foreground max-w-lg mx-auto">
-                Work directly with Marshall in exclusive 1-on-1 coaching sessions tailored to your specific business challenges.
+              <h3 className="text-2xl md:text-3xl font-bold">
+                6-Session Intensive — <span className="text-gradient-gold">$5,000</span>
+              </h3>
+              <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
+                Six dedicated hours with Marshall, plus direct text & Discord access between sessions. Walk away with a strategic roadmap built for your business.
               </p>
-              <Button variant="outline" size="lg" className="gap-2" asChild>
-                <Link to="/coaching">
-                  Explore 1-on-1 Coaching
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                <Button variant="premium" size="lg" className="gap-2" asChild>
+                  <a href="https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q" target="_blank" rel="noopener noreferrer">
+                    Get Started
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </Button>
+                <Button variant="outline" size="lg" className="gap-2" asChild>
+                  <Link to="/coaching">
+                    View All Options
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
