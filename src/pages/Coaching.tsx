@@ -326,25 +326,6 @@ const Coaching = () => {
         </div>
       </section>
 
-      {/* Testimonials CTA */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              See What Clients Are Saying
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Hear directly from business owners who've transformed their operations through personalized coaching
-            </p>
-            <Button size="lg" variant="outline" asChild className="text-lg px-8">
-              <Link to={{ pathname: "/", hash: "#testimonials" }}>
-                View Client Testimonials
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
 
       <CoachingTestimonials />
 
