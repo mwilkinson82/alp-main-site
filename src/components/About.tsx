@@ -122,24 +122,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* Three Routes Section */}
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <h3 className="text-3xl font-bold mb-8 text-primary">Results Aren't Random</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card hover-lift p-6 space-y-2">
-              <h4 className="text-xl font-bold">Business</h4>
-              <p className="text-muted-foreground">Strategic growth, systems, and sales mastery</p>
-            </div>
-            <div className="glass-card hover-lift p-6 space-y-2">
-              <h4 className="text-xl font-bold">Fear & Trauma</h4>
-              <p className="text-muted-foreground">Breaking limitations and restoring identity</p>
-            </div>
-            <div className="glass-card hover-lift p-6 space-y-2">
-              <h4 className="text-xl font-bold">Relationships</h4>
-              <p className="text-muted-foreground">Leadership, love, and high-trust communication</p>
-            </div>
-          </div>
-        </div>
 
         {/* Legacy Section */}
         <div className="max-w-3xl mx-auto text-center mb-16">
