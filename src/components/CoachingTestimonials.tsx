@@ -43,9 +43,9 @@ const CoachingTestimonials = () => {
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="glass-card p-6 md:p-8 space-y-4 flex flex-col justify-between"
+              className="glass-card p-6 md:p-8 space-y-4 flex flex-col justify-between bg-background"
             >
-              <blockquote className="text-sm md:text-base text-muted-foreground leading-relaxed italic">
+              <blockquote className="text-sm md:text-base text-foreground/80 leading-relaxed">
                 "{t.quote}"
               </blockquote>
               <p className="text-sm font-semibold text-primary">— {t.attribution}</p>
