@@ -16,7 +16,7 @@ const staticPages = [
   { loc: "/contractor-school", changefreq: "weekly", priority: "0.8" },
   { loc: "/sales-marketing-school", changefreq: "weekly", priority: "0.8" },
   { loc: "/handbook-special", changefreq: "monthly", priority: "0.7" },
-  { loc: "/blog", changefreq: "daily", priority: "0.8" },
+  { loc: "/articles", changefreq: "daily", priority: "0.8" },
   { loc: "/privacy-policy", changefreq: "monthly", priority: "0.3" },
   { loc: "/terms-of-service", changefreq: "monthly", priority: "0.3" },
 ];
@@ -50,7 +50,7 @@ Deno.serve(async () => {
   const blogEntries = (posts || [])
     .map(
       (post) => `  <url>
-    <loc>${SITE_URL}/blog/${post.slug}</loc>
+    <loc>${SITE_URL}/articles/${post.slug}</loc>
     <lastmod>${(post.updated_at || post.published_at || today).split("T")[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -49,8 +49,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Blog
+                <Link to="/articles" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  Articles
                 </Link>
               </li>
             </ul>

@@ -198,9 +198,9 @@ const Admin = () => {
             </div>
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm" asChild>
-                <Link to="/blog" target="_blank">
+                <Link to="/articles" target="_blank">
                   <Eye className="w-4 h-4 mr-2" />
-                  View Blog
+                  View Articles
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -218,7 +218,7 @@ const Admin = () => {
           <TabsList className="mb-8">
             <TabsTrigger value="posts" className="gap-2">
               <FileText className="w-4 h-4" />
-              Blog Posts
+              Articles
             </TabsTrigger>
             <TabsTrigger value="purchases" className="gap-2">
               <ShoppingCart className="w-4 h-4" />
@@ -229,8 +229,8 @@ const Admin = () => {
           <TabsContent value="posts">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h1 className="text-3xl font-bold">Blog Posts</h1>
-                <p className="text-muted-foreground">Manage your blog content</p>
+                <h1 className="text-3xl font-bold">Articles</h1>
+                <p className="text-muted-foreground">Manage your articles</p>
               </div>
               <Button variant="premium" asChild>
                 <Link to="/admin/posts/new">
@@ -287,7 +287,7 @@ const Admin = () => {
                             <div className="flex items-center justify-end gap-2">
                               {post.published && (
                                 <Button variant="ghost" size="sm" asChild>
-                                  <Link to={`/blog/${post.slug}`} target="_blank">
+                                  <Link to={`/articles/${post.slug}`} target="_blank">
                                     <Eye className="w-4 h-4" />
                                   </Link>
                                 </Button>

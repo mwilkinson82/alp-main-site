@@ -302,7 +302,7 @@ const AdminPostEditor = () => {
                     placeholder="post-url-slug"
                   />
                   <p className="text-xs text-muted-foreground">
-                    URL: /blog/{post.slug || "post-slug"}
+                    URL: /articles/{post.slug || "post-slug"}
                   </p>
                 </div>
 
