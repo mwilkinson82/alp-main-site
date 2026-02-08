@@ -52,6 +52,22 @@ const Coaching = () => {
       cta: "Book Your Session"
     },
     {
+      name: "6-Session Intensive",
+      subtitle: "ALP's Premier Coaching Experience",
+      price: "$5,000",
+      duration: "Six 1-Hour Sessions",
+      features: [
+        "Six dedicated 1-on-1 sessions with Marshall",
+        "Direct access to Marshall between sessions via text & Discord",
+        "Real-time guidance as challenges arise during your day",
+        "Recorded sessions with lifetime access",
+        "Strategic scaling roadmap tailored to your business",
+        "Risk mitigation and decision-making support"
+      ],
+      cta: "Book Your Intensive",
+      premium: true
+    },
+    {
       name: "Ongoing Support",
       subtitle: "Daily, Weekly, or Monthly",
       price: "Custom Pricing",
@@ -62,21 +78,6 @@ const Coaching = () => {
         "All single session benefits",
         "Priority scheduling",
         "Direct messaging access between sessions"
-      ],
-      cta: "Discuss Your Needs",
-      premium: true
-    },
-    {
-      name: "Extended Partnership",
-      subtitle: "6 Months or 1 Year",
-      price: "Custom Pricing",
-      duration: "Long-term Commitment",
-      features: [
-        "Comprehensive business transformation",
-        "Quarterly strategic planning sessions",
-        "All ongoing support benefits",
-        "Exclusive access to network and resources",
-        "VIP priority for all services"
       ],
       cta: "Discuss Your Needs"
     }
@@ -205,6 +206,36 @@ const Coaching = () => {
         </div>
       </section>
 
+      {/* 6-Session Intensive Feature Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <span className="inline-block bg-primary/10 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+                ALP's Flagship Coaching Package
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                The 6-Session Intensive
+              </h2>
+            </div>
+            <div className="prose prose-lg mx-auto text-muted-foreground space-y-6 text-center">
+              <p className="text-xl leading-relaxed">
+                Scaling a business is one of the most high-stakes endeavors you'll ever undertake. Every decision carries weight—hiring, pricing, operations, client acquisition—and the cost of getting it wrong compounds fast. That's why the 6-Session Intensive exists.
+              </p>
+              <p className="text-lg leading-relaxed">
+                This is ALP's top-tier coaching service, designed for founders and operators who need more than a single conversation. Over six dedicated sessions, Marshall works alongside you to build a strategic roadmap tailored to your business—addressing the real challenges you're facing in real time.
+              </p>
+              <p className="text-lg leading-relaxed">
+                But the value doesn't stop when the call ends. Between sessions, you have <strong className="text-foreground">direct access to Marshall via text and Discord</strong>—so when a critical decision lands on your desk, you're not guessing. You have an experienced advisor in your corner helping you mitigate risk, seize opportunities, and move with confidence.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Most clients find this is the format that fits. It gives you enough time to implement, adjust, and come back with results—while keeping the momentum and accountability that drives real transformation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Packages */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
@@ -252,7 +283,7 @@ const Coaching = () => {
                     <Button 
                       className="w-full" 
                       variant={pkg.premium ? "default" : "outline"}
-                      onClick={() => pkg.price === "$1,000" ? scrollToBooking() : openCustomPricingForm(pkg.name)}
+                      onClick={() => pkg.price === "Custom Pricing" ? openCustomPricingForm(pkg.name) : scrollToBooking()}
                       size="lg"
                     >
                       {pkg.cta}
