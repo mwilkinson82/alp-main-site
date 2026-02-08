@@ -14,7 +14,7 @@ const Coaching = () => {
   const [selectedPackage, setSelectedPackage] = useState("");
 
   const STRIPE_LINKS: Record<string, string> = {
-    "Single Session": "", // TODO: add single session link
+    "Single Session": "https://buy.stripe.com/bJeaEYe0h9L8ao0g5QeQM0R",
     "6-Session Intensive": "https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q",
   };
 
