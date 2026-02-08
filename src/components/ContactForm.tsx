@@ -68,7 +68,7 @@ const ContactForm = () => {
   return (
     <section 
       ref={ref}
-      className={`py-20 bg-background transition-all duration-700 ${
+      className={`py-12 md:py-16 bg-background transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
     >
