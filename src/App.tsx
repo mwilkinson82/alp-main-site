@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import HashScroller from "@/components/HashScroller";
 import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
@@ -20,6 +20,11 @@ import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import AdminPostEditor from "./pages/AdminPostEditor";
 import NotFound from "./pages/NotFound";
+
+const BlogSlugRedirect = () => {
+  const { slug } = useParams();
+  return <Navigate to={`/articles/${slug}`} replace />;
+};
 
 const queryClient = new QueryClient();
 
@@ -45,6 +50,8 @@ const App = () => (
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
+          <Route path="/blog" element={<Navigate to="/articles" replace />} />
+          <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
