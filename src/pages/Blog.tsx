@@ -53,10 +53,10 @@ const Blog = () => {
   return (
     <>
       <SEO
-        title="Blog - Business Insights & Strategies"
+        title="Articles - Business Insights & Strategies"
         description="Expert insights on business growth, leadership, sales strategies, and entrepreneurship from Marshall Wilkinson."
-        keywords="business blog, leadership insights, sales strategies, entrepreneur tips, Marshall Wilkinson blog"
-        canonical="/blog"
+        keywords="business articles, leadership insights, sales strategies, entrepreneur tips, Marshall Wilkinson"
+        canonical="/articles"
       />
       <main className="min-h-screen">
         <Header />
@@ -100,7 +100,7 @@ const Blog = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {posts.map((post) => (
-                  <Link key={post.id} to={`/blog/${post.slug}`}>
+                  <Link key={post.id} to={`/articles/${post.slug}`}>
                     <Card className="overflow-hidden h-full hover:shadow-gold transition-all duration-300 group border-border/50 hover:border-primary/30">
                       {post.featured_image_url && (
                         <div className="aspect-video overflow-hidden">

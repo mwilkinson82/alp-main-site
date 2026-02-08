@@ -24,7 +24,7 @@ const BlogArticleSchema = ({
     "@type": "Article",
     "headline": title,
     "description": description,
-    "url": `${siteUrl}/blog/${slug}`,
+    "url": `${siteUrl}/articles/${slug}`,
     "datePublished": publishedAt || undefined,
     "dateModified": updatedAt || publishedAt || undefined,
     "image": featuredImage || undefined,

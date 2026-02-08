@@ -45,9 +45,9 @@ const BlogPost = () => {
 
       if (error) {
         console.error("Error fetching post:", error);
-        navigate("/blog");
+        navigate("/articles");
       } else if (!data) {
-        navigate("/blog");
+        navigate("/articles");
       } else {
         setPost(data);
       }
@@ -113,13 +113,13 @@ const BlogPost = () => {
     <>
       <SEO
         title={post.meta_title || post.title}
-        description={post.meta_description || post.excerpt || `Read ${post.title} on the ALP Blog`}
+        description={post.meta_description || post.excerpt || `Read ${post.title} on ALP Articles`}
         ogImage={post.featured_image_url || undefined}
-        canonical={`/blog/${post.slug}`}
+        canonical={`/articles/${post.slug}`}
       />
       <BlogArticleSchema
         title={post.title}
-        description={post.meta_description || post.excerpt || `Read ${post.title} on the ALP Blog`}
+        description={post.meta_description || post.excerpt || `Read ${post.title} on ALP Articles`}
         slug={post.slug}
         publishedAt={post.published_at}
         updatedAt={post.updated_at}
@@ -133,11 +133,11 @@ const BlogPost = () => {
           <div className="container mx-auto px-4 max-w-4xl">
             {/* Back Link */}
             <Link 
-              to="/blog" 
+              to="/articles" 
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-8"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Blog
+              Back to Articles
             </Link>
 
             {/* Title & Meta */}

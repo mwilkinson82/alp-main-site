@@ -40,8 +40,8 @@ const App = () => (
           <Route path="/handbook-special" element={<HandbookSpecial />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/articles" element={<Blog />} />
+          <Route path="/articles/:slug" element={<BlogPost />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
