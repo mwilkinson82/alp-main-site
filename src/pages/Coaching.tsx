@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
 import CustomPricingForm from "@/components/CustomPricingForm";
+import CoachingTestimonials from "@/components/CoachingTestimonials";
 
 const Coaching = () => {
   const [customPricingOpen, setCustomPricingOpen] = useState(false);
@@ -344,6 +345,8 @@ const Coaching = () => {
           </div>
         </div>
       </section>
+
+      <CoachingTestimonials />
 
       {/* Final CTA */}
       <section className="py-20 bg-primary text-primary-foreground">

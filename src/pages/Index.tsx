@@ -5,6 +5,7 @@ import FeaturedIn from "@/components/FeaturedIn";
 import Services from "@/components/Services";
 import InlineTestimonial from "@/components/InlineTestimonial";
 import About from "@/components/About";
+import CoachingTestimonials from "@/components/CoachingTestimonials";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
 import CoachingCTA from "@/components/CoachingCTA";
@@ -42,6 +43,7 @@ const Index = () => {
           role="CEO, Beau Monde Builders"
         />
         <CoachingCTA />
+        <CoachingTestimonials />
         <Testimonials />
         <ContactForm />
         <CTA />
