@@ -74,6 +74,18 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
     kajabiOfferIds: ["2149157033"],
     welcomeSubject: "Welcome to ALP University! 🎓",
   },
+  // 1-on-1 Coaching: Single Session
+  "bJeaEYe0h9L8ao0g5QeQM0R": {
+    name: "1-on-1 Coaching (Single Session)",
+    kajabiOfferIds: [],
+    welcomeSubject: "Welcome — Your 1-on-1 Session Is Confirmed 🤝",
+  },
+  // 1-on-1 Coaching: 6-Session Intensive
+  "14A5kEf4l0ay7bOaLweQM0Q": {
+    name: "1-on-1 Coaching (6-Session Intensive)",
+    kajabiOfferIds: [],
+    welcomeSubject: "Welcome — Your 6-Session Intensive Begins Now 🤝",
+  },
 };
 
 // Extract the product key from a Stripe Payment Link URL
