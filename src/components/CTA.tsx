@@ -9,7 +9,7 @@ const CTA = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 bg-gradient-dark relative overflow-hidden"
+      className="py-16 md:py-20 bg-gradient-dark relative overflow-hidden"
     >
       {/* Background accent */}
       <div 
