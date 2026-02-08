@@ -155,7 +155,7 @@ const CinematicHero = () => {
                 <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
                   <Link to="/coaching">
                     <Calendar className="mr-2" />
-                    Schedule 1-on-1
+                    Learn About 6-Session Intensive
                   </Link>
                 </Button>
               </div>
