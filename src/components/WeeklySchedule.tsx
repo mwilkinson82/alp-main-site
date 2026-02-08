@@ -49,27 +49,32 @@ const WeeklySchedule = () => {
           </div>
 
           {/* Mobile: Horizontal scroll layout */}
-          <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4">
-            <div className="flex gap-3 min-w-max">
-              {days.map((dayData, index) => (
-                <div key={index} className="space-y-2 w-[140px] flex-shrink-0">
-                  <div className="bg-primary/20 text-primary font-semibold text-center py-2 rounded-lg text-sm">
-                    {dayData.day}
+          <div className="md:hidden">
+            <p className="text-xs text-muted-foreground text-center mb-2 flex items-center justify-center gap-1">
+              <span>←</span> Swipe to see full schedule <span>→</span>
+            </p>
+            <div className="overflow-x-auto pb-4 -mx-4 px-4">
+              <div className="flex gap-3 min-w-max">
+                {days.map((dayData, index) => (
+                  <div key={index} className="space-y-2 w-[140px] flex-shrink-0">
+                    <div className="bg-primary/20 text-primary font-semibold text-center py-2 rounded-lg text-sm">
+                      {dayData.day}
+                    </div>
+                    {dayData.sessions.map((session, sessionIndex) => {
+                      const Icon = session.icon;
+                      return (
+                        <Card key={sessionIndex} className="bg-muted/50 border-border">
+                          <CardContent className="p-3 text-center">
+                            <Icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
+                            <p className="font-medium text-xs">{session.name}</p>
+                            <p className="text-[10px] text-muted-foreground">{session.time}</p>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
-                  {dayData.sessions.map((session, sessionIndex) => {
-                    const Icon = session.icon;
-                    return (
-                      <Card key={sessionIndex} className="bg-muted/50 border-border">
-                        <CardContent className="p-3 text-center">
-                          <Icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
-                          <p className="font-medium text-xs">{session.name}</p>
-                          <p className="text-[10px] text-muted-foreground">{session.time}</p>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
