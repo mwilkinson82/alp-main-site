@@ -13,22 +13,15 @@ const Coaching = () => {
   const [customPricingOpen, setCustomPricingOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("");
 
-  // Load Calendly widget script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
+  const STRIPE_LINKS: Record<string, string> = {
+    "Single Session": "", // TODO: add single session link
+    "6-Session Intensive": "https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q",
+  };
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  const scrollToBooking = () => {
-    const bookingSection = document.getElementById('booking-section');
-    if (bookingSection) {
-      bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handlePurchase = (packageName: string) => {
+    const link = STRIPE_LINKS[packageName];
+    if (link) {
+      window.open(link, '_blank');
     }
   };
 
@@ -131,9 +124,9 @@ const Coaching = () => {
                 <Button
                   size="lg"
                   className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
-                  onClick={scrollToBooking}
+                  onClick={() => handlePurchase("6-Session Intensive")}
                 >
-                  Book Your Session
+                  Get Started
                 </Button>
                 <Button
                   size="lg"
@@ -283,7 +276,7 @@ const Coaching = () => {
                     <Button 
                       className="w-full" 
                       variant={pkg.premium ? "default" : "outline"}
-                      onClick={() => pkg.price === "Custom Pricing" ? openCustomPricingForm(pkg.name) : scrollToBooking()}
+                      onClick={() => pkg.price === "Custom Pricing" ? openCustomPricingForm(pkg.name) : handlePurchase(pkg.name)}
                       size="lg"
                     >
                       {pkg.cta}
@@ -301,26 +294,32 @@ const Coaching = () => {
         </div>
       </section>
 
-      {/* Book Your Session */}
-      <section id="booking-section" className="py-20 bg-muted/30">
+      {/* How It Works */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Book Your Session
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                Select a time that works best for you
-              </p>
-            </div>
-            
-            {/* Calendly Inline Widget */}
-            <div className="bg-background rounded-lg shadow-lg p-4 md:p-8">
-              <div 
-                className="calendly-inline-widget" 
-                data-url="https://calendly.com/marshallwilkinson/60min?primary_color=ffc700" 
-                style={{ minWidth: '320px', height: '1000px' }}
-              />
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
+              How It Works
+            </h2>
+            <p className="text-center text-muted-foreground mb-12 text-lg">
+              A simple process designed around your schedule
+            </p>
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">1</div>
+                <h3 className="text-xl font-semibold">Choose Your Package</h3>
+                <p className="text-muted-foreground">Select the coaching option that fits your needs and complete your purchase securely through Stripe.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">2</div>
+                <h3 className="text-xl font-semibold">Marshall Reaches Out</h3>
+                <p className="text-muted-foreground">Within 24 hours of purchase, Marshall will personally reach out to schedule your session(s) at a time that works for you—including international time zones.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">3</div>
+                <h3 className="text-xl font-semibold">Start Transforming</h3>
+                <p className="text-muted-foreground">Get on the call, dive deep into your business challenges, and walk away with actionable strategies you can implement immediately.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -359,7 +358,7 @@ const Coaching = () => {
             <Button 
               size="lg" 
               variant="secondary"
-              onClick={scrollToBooking}
+              onClick={() => handlePurchase("6-Session Intensive")}
               className="text-lg px-8"
             >
               Schedule Your Session Now
