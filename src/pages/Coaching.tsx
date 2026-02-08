@@ -345,7 +345,7 @@ const Coaching = () => {
               onClick={() => handlePurchase("6-Session Intensive")}
               className="text-lg px-8"
             >
-              Schedule Your Session Now
+              Book the 6-Session Intensive — $5,000
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
