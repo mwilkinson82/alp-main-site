@@ -125,9 +125,9 @@ const Coaching = () => {
                 <Button
                   size="lg"
                   className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
-                  onClick={() => handlePurchase("6-Session Intensive")}
+                  asChild
                 >
-                  Get Started
+                  <a href="#intensive">See the 6-Session Intensive</a>
                 </Button>
                 <Button
                   size="lg"
@@ -135,7 +135,7 @@ const Coaching = () => {
                   className="border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 h-12"
                   asChild
                 >
-                  <Link to={{ pathname: "/", hash: "#testimonials" }}>See Client Results</Link>
+                  <a href="#packages">View All Packages</a>
                 </Button>
               </div>
             </div>
@@ -231,7 +231,7 @@ const Coaching = () => {
       </section>
 
       {/* Packages */}
-      <section className="py-20 bg-background">
+      <section id="packages" className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
