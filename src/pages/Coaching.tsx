@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import marshallCasual from "@/assets/marshall-casual.jpg";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -106,7 +107,7 @@ const Coaching = () => {
         <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/images/marshall-origin-thumbnail.png)` }}
+            style={{ backgroundImage: `url(${marshallCasual})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
         </section>
