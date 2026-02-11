@@ -12,7 +12,7 @@ import { ArrowRight, Upload, FileText, X, CheckCircle2, Clock, Video, MessageCir
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const STRIPE_ASK_MARSHALL = "https://buy.stripe.com/PLACEHOLDER_LINK";
+const STRIPE_ASK_MARSHALL = "https://buy.stripe.com/cNi4gA1dvbTg1Ru5rceQM0S";
 
 const AskMarshall = () => {
   const [searchParams] = useSearchParams();
