@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      ask_marshall_submissions: {
+        Row: {
+          context: string | null
+          created_at: string
+          customer_email: string
+          customer_name: string
+          file_urls: string[] | null
+          id: string
+          question: string
+          status: string
+          stripe_session_id: string | null
+        }
+        Insert: {
+          context?: string | null
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          file_urls?: string[] | null
+          id?: string
+          question: string
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Update: {
+          context?: string | null
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          file_urls?: string[] | null
+          id?: string
+          question?: string
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           content: string

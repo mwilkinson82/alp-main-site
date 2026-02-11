@@ -308,10 +308,32 @@ function handbookSpecialEmail(name: string): string {
   `);
 }
 
+// --- Ask Marshall Welcome ---
+function askMarshallEmail(name: string, email: string): string {
+  const firstName = name.split(" ")[0];
+  return wrapEmail(`
+    ${heading("Your Ask Marshall Submission Is Ready.")}
+    ${p(`${firstName},`)}
+    ${p(`Thank you for your purchase! You're one step away from getting Marshall's expert analysis on your toughest question.`)}
+    ${p(`${bold("Click the link below to submit your question:")}`)}
+    ${p(`<a href="https://alp-site.lovable.app/ask-marshall?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}" style="display: inline-block; background: #c9a44a; color: #000; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">Submit Your Question →</a>`)}
+    
+    ${heading("What Happens Next")}
+    ${bulletList([
+      "Click the link above to access the submission form",
+      "Describe your question in as much detail as possible",
+      "Upload any supporting documents (contracts, financials, proposals, etc.)",
+      "Within 24 hours, Marshall will send you a personalized Loom video with his analysis and recommendations",
+    ])}
+    ${p(`The more context you provide, the better Marshall's analysis will be. Don't hold back.`)}
+    ${p("— ALP Team")}
+  `);
+}
+
 // --- Exported map ---
 export type ProductKey = string;
 
-export function getWelcomeEmailHtml(productKey: string, customerName: string): string {
+export function getWelcomeEmailHtml(productKey: string, customerName: string, customerEmail?: string): string {
   // Power Hour 1 Month
   if (productKey === "7sYeVeaO52iGgMo4n8eQM0J") return powerHour1MonthEmail();
   // Power Hour 6 Months
@@ -328,6 +350,8 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string): s
   if (productKey === "bJeaEYe0h9L8ao0g5QeQM0R") return coachingSingleEmail(customerName);
   // 1-on-1 Coaching: 6-Session Intensive
   if (productKey === "14A5kEf4l0ay7bOaLweQM0Q") return coaching6SessionEmail(customerName);
+  // Ask Marshall
+  if (productKey === "ASK_MARSHALL_KEY") return askMarshallEmail(customerName, customerEmail || "");
 
   // Fallback generic
   const firstName = customerName.split(" ")[0];

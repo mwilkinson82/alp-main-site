@@ -86,6 +86,13 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
     kajabiOfferIds: [],
     welcomeSubject: "Welcome — Your 6-Session Intensive Begins Now 🤝",
   },
+  // Ask Marshall — $250 async video analysis
+  // TODO: Replace ASK_MARSHALL_KEY with actual Stripe payment link ID
+  "ASK_MARSHALL_KEY": {
+    name: "Ask Marshall",
+    kajabiOfferIds: [],
+    welcomeSubject: "Your Ask Marshall Submission Is Ready 🎯",
+  },
 };
 
 // Extract the product key from a Stripe Payment Link URL
@@ -351,7 +358,7 @@ const handler = async (req: Request): Promise<Response> => {
         from: "ALP — Marshall Wilkinson <marshall@notifications.marshallwilkinson.com>",
         to: [customerEmail],
         subject: product.welcomeSubject,
-        html: getWelcomeEmailHtml(productKey, customerName),
+        html: getWelcomeEmailHtml(productKey, customerName, customerEmail),
         replyTo: "marshall@marshallwilkinson.com",
       });
       console.log("Welcome email sent:", emailResult.data?.id);
