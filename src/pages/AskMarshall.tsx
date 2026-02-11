@@ -59,6 +59,16 @@ const SalesLanding = () => (
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Submit your toughest business question with all the details, and receive a personalized video analysis from Marshall within 24 hours. No live call required.
           </p>
+          <div className="max-w-3xl mx-auto w-full rounded-xl overflow-hidden shadow-xl">
+            <div style={{ position: "relative", paddingBottom: "58%", height: 0 }}>
+              <iframe
+                src="https://www.loom.com/embed/d0b876b485e640cfa7e5e9b0e011c0f9?autoplay=1&mute=1&hide_owner=true&hide_share=true&hide_title=true"
+                frameBorder="0"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full"
+              />
+            </div>
+          </div>
           <Button size="lg" variant="premium" className="text-lg px-10 h-14 gap-2" asChild>
             <a href={STRIPE_ASK_MARSHALL} target="_blank" rel="noopener noreferrer">
               Get Your Answer — $250
