@@ -123,6 +123,12 @@ const Header = () => {
             >
               1-on-1 Coaching
             </Link>
+            <Link 
+              to="/ask-marshall" 
+              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
+            >
+              Ask Marshall
+            </Link>
             <Button
               variant="premium" 
               size="sm"
@@ -192,6 +198,13 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               1-on-1 Coaching
+            </Link>
+            <Link 
+              to="/ask-marshall" 
+              className="block text-foreground hover:text-primary transition-colors font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Ask Marshall
             </Link>
             <Button
               variant="premium" 
