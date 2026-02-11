@@ -53,8 +53,8 @@ const SalesLanding = () => (
             <span className="text-primary font-medium">New — Async Expert Analysis</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Get Marshall's Brain{" "}
-            <span className="text-gradient-gold">on Your Problem</span>
+            Get Marshall's Expert Analysis on Your Problem.{" "}
+            <span className="text-gradient-gold">On Demand.</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Submit your toughest business question with all the details, and receive a personalized video analysis from Marshall within 24 hours. No live call required.
