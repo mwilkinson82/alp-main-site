@@ -88,7 +88,7 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
   },
   // Ask Marshall — $250 async video analysis
   // TODO: Replace ASK_MARSHALL_KEY with actual Stripe payment link ID
-  "ASK_MARSHALL_KEY": {
+  "cNi4gA1dvbTg1Ru5rceQM0S": {
     name: "Ask Marshall",
     kajabiOfferIds: [],
     welcomeSubject: "Your Ask Marshall Submission Is Ready 🎯",
