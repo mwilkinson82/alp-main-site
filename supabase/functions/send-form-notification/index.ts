@@ -29,7 +29,16 @@ interface PricingFormData {
   packageType: string;
 }
 
-type FormData = ContactFormData | PricingFormData;
+interface AskMarshallFormData {
+  formType: 'ask-marshall';
+  name: string;
+  email: string;
+  question: string;
+  context?: string;
+  fileUrls?: string[];
+}
+
+type FormData = ContactFormData | PricingFormData | AskMarshallFormData;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -42,7 +51,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Received form submission:", { formType: formData.formType, name: formData.name });
 
     // Validate form type
-    if (!formData.formType || !['contact', 'pricing'].includes(formData.formType)) {
+    if (!formData.formType || !['contact', 'pricing', 'ask-marshall'].includes(formData.formType)) {
       console.error("Invalid form type:", formData.formType);
       return new Response(
         JSON.stringify({ error: "Invalid form type" }),
@@ -54,7 +63,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Validate required fields
-    if (!formData.name || !formData.email || !formData.message) {
+    const isAskMarshall = formData.formType === 'ask-marshall';
+    if (!formData.name || !formData.email || (!isAskMarshall && !(formData as any).message) || (isAskMarshall && !(formData as AskMarshallFormData).question)) {
       console.error("Missing required fields");
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
@@ -73,7 +83,28 @@ const handler = async (req: Request): Promise<Response> => {
       timeStyle: 'long'
     });
 
-    if (formData.formType === 'contact') {
+    if (formData.formType === 'ask-marshall') {
+      const askData = formData as AskMarshallFormData;
+      subject = `🎯 New "Ask Marshall" Submission from ${askData.name}`;
+      const fileLinks = askData.fileUrls && askData.fileUrls.length > 0
+        ? `<p><strong>Uploaded Files:</strong></p><ul>${askData.fileUrls.map((url, i) => `<li><a href="${url}" style="color: #c9a44a;">File ${i + 1}</a></li>`).join("")}</ul>`
+        : `<p><em>No files uploaded</em></p>`;
+      html = `
+        <h2>New "Ask Marshall" Submission 🎯</h2>
+        <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+        <p><strong>Name:</strong> ${askData.name}</p>
+        <p><strong>Email:</strong> <a href="mailto:${askData.email}">${askData.email}</a></p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <p><strong>Question:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${askData.question}</p>
+        ${askData.context ? `<p><strong>Additional Context:</strong></p><p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${askData.context}</p>` : ''}
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        ${fileLinks}
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <p style="background: #fff3cd; padding: 12px; border-radius: 5px; font-weight: bold;">⏰ Reminder: Respond within 24 hours via Loom video</p>
+        <p style="color: #6b7280; font-size: 14px;"><small>Submitted: ${timestamp}</small></p>
+      `;
+    } else if (formData.formType === 'contact') {
       // Contact form email
       subject = `New Contact Form Submission from ${formData.name}`;
       html = `

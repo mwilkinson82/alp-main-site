@@ -19,6 +19,7 @@ import BlogPost from "./pages/BlogPost";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import AdminPostEditor from "./pages/AdminPostEditor";
+import AskMarshall from "./pages/AskMarshall";
 import NotFound from "./pages/NotFound";
 
 const BlogSlugRedirect = () => {
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/contractor-school" element={<ContractorSchool />} />
           <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
           <Route path="/handbook-special" element={<HandbookSpecial />} />
+          <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/articles" element={<Blog />} />

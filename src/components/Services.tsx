@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, HardHat, TrendingUp, Sparkles, Check, MessageCircle, Map, Calendar } from "lucide-react";
+import { Clock, Users, GraduationCap, ArrowRight, HardHat, TrendingUp, Sparkles, Check, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
@@ -231,6 +231,29 @@ const Services = () => {
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Ask Marshall Callout */}
+        <div className="max-w-3xl mx-auto mb-12">
+          <Card className="glass-card hover-lift border-primary/20">
+            <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <MessageCircle className="w-7 h-7 text-primary" />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h4 className="text-xl font-bold mb-1">Not ready for a live call?</h4>
+                <p className="text-muted-foreground text-sm">
+                  Ask Marshall a specific question and get a personalized video answer within 24 hours — <strong className="text-primary">$250</strong>
+                </p>
+              </div>
+              <Button variant="premium" className="gap-2 whitespace-nowrap" asChild>
+                <Link to="/ask-marshall">
+                  Ask Marshall
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Bottom CTA */}
