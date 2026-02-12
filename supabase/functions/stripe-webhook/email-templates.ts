@@ -316,7 +316,7 @@ function askMarshallEmail(name: string, email: string): string {
     ${p(`${firstName},`)}
     ${p(`Thank you for your purchase! You're one step away from getting Marshall's expert analysis on your toughest question.`)}
     ${p(`${bold("Click the link below to submit your question:")}`)}
-    ${p(`<a href="https://alp-site.lovable.app/ask-marshall?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}" style="display: inline-block; background: #c9a44a; color: #000; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">Submit Your Question →</a>`)}
+    ${p(`<a href="https://altitudelogicpressure.com/ask-marshall?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}" style="display: inline-block; background: #c9a44a; color: #000; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px;">Submit Your Question →</a>`)}
     
     ${heading("What Happens Next")}
     ${bulletList([
