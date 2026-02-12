@@ -351,7 +351,7 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string, cu
   // 1-on-1 Coaching: 6-Session Intensive
   if (productKey === "14A5kEf4l0ay7bOaLweQM0Q") return coaching6SessionEmail(customerName);
   // Ask Marshall
-  if (productKey === "ASK_MARSHALL_KEY") return askMarshallEmail(customerName, customerEmail || "");
+  if (productKey === "cNi4gA1dvbTg1Ru5rceQM0S") return askMarshallEmail(customerName, customerEmail || "");
 
   // Fallback generic
   const firstName = customerName.split(" ")[0];
