@@ -176,12 +176,25 @@ const SubmissionForm = ({ defaultName, defaultEmail }: { defaultName: string; de
   const [submitted, setSubmitted] = useState(false);
 
   const MAX_FILES = 5;
+  const MAX_FILE_SIZE_MB = 50;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
+    const oversized = selected.filter((f) => f.size > MAX_FILE_SIZE_BYTES);
+    if (oversized.length > 0) {
+      toast({
+        title: "File too large",
+        description: `Files must be under ${MAX_FILE_SIZE_MB}MB. For larger files, paste a Dropbox or Google Drive link in the question or context field.`,
+        variant: "destructive",
+      });
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
     const total = files.length + selected.length;
     if (total > MAX_FILES) {
       toast({ title: `Maximum ${MAX_FILES} files allowed`, variant: "destructive" });
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
     setFiles((prev) => [...prev, ...selected]);
@@ -321,6 +334,7 @@ const SubmissionForm = ({ defaultName, defaultEmail }: { defaultName: string; de
               >
                 <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground">Click to upload files (PDFs, spreadsheets, images, docs)</p>
+                <p className="text-xs text-muted-foreground mt-1">Max {MAX_FILE_SIZE_MB}MB per file · For larger files, paste a Dropbox or Google Drive link above</p>
                 <input
                   ref={fileInputRef}
                   type="file"
