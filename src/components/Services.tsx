@@ -20,7 +20,7 @@ const advisoryPaths = [
       "Follow-up summary with next steps",
     ],
     link: "/coaching",
-    cta: "Book a Strategy Session",
+    cta: "Request Private Advisory",
     highlight: false,
   },
   {
@@ -253,7 +253,7 @@ const Services = () => {
                   <Sparkles className="w-7 h-7 text-primary group-hover:scale-110 transition-smooth" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">Full Access — All Live Rooms + Private Sessions</h4>
+                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">Full Access — All Live Rooms + Private Advisory</h4>
                   <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
                     Every live room. Every weekly session. Private advisory access. Community. This is the highest proximity you can get — built for operators who are serious about installing systems and scaling fast.
                   </p>

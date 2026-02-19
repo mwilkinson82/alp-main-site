@@ -2,11 +2,11 @@ import { Archive, MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-
 import { Link } from "react-router-dom";
 
 const ladderSteps = [
-  { label: "ALP University" },
-  { label: "Ask Marshall" },
-  { label: "Strategy Session" },
-  { label: "Private Advisory" },
-  { label: "Full Access Membership" },
+  { label: "ALP University",        colorClass: "border-border/60 text-muted-foreground bg-muted/30" },
+  { label: "Ask Marshall",          colorClass: "border-primary/25 text-foreground/80 bg-primary/5" },
+  { label: "Strategy Session",      colorClass: "border-primary/45 text-primary/80 bg-primary/10" },
+  { label: "Private Advisory",      colorClass: "border-primary/70 text-primary bg-primary/15" },
+  { label: "Full Access Membership",colorClass: "border-primary shadow-[0_0_12px_-3px_hsl(var(--primary)/0.5)] text-primary font-bold bg-gradient-to-r from-primary/20 to-primary/10" },
 ];
 
 const entries = [
@@ -30,10 +30,10 @@ const entries = [
   },
   {
     icon: Users,
-    title: "Direct Advisory",
-    subtitle: "Private strategy sessions and long-form intensives.",
+    title: "Private Advisory",
+    subtitle: "Single-session and multi-session intensives.",
     body: "Private strategic engagements designed to install execution systems, sharpen leadership decisions, and remove bottlenecks.",
-    cta: "Explore 1-on-1 Options",
+    cta: "Explore Private Advisory",
     href: "/coaching",
     featured: false,
   },
@@ -58,8 +58,8 @@ const StartHere = () => {
           <div className="flex flex-wrap items-center justify-center gap-1">
             {ladderSteps.map((step, index) => (
               <div key={index} className="flex items-center gap-1">
-                <div className="flex flex-col items-center bg-background border border-primary/20 rounded-lg px-3 py-1.5 text-center">
-                  <span className="text-xs font-semibold text-foreground leading-tight">{step.label}</span>
+                <div className={`flex flex-col items-center border rounded-lg px-3 py-1.5 text-center transition-all ${step.colorClass}`}>
+                  <span className="text-xs font-semibold leading-tight">{step.label}</span>
                 </div>
                 {index < ladderSteps.length - 1 && (
                   <ChevronRight className="w-4 h-4 text-primary/50 flex-shrink-0" />
