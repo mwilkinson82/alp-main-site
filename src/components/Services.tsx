@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check, HardHat } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
-import FullAccessModal from "@/components/FullAccessModal";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
 
 const advisoryPaths = [
   {
     title: "Strategy Session",
+    sessionLabel: "1-session intensive",
     price: "$1,000",
     badge: "BY APPLICATION" as string | undefined,
     badgeMuted: true,
@@ -25,6 +25,7 @@ const advisoryPaths = [
   },
   {
     title: "Private Advisory",
+    sessionLabel: "6-session intensive",
     price: "$5,000",
     badge: "BY APPLICATION" as string | undefined,
     badgeMuted: false,
@@ -67,36 +68,10 @@ const programs = [
   },
 ];
 
-const bundles = [
-  {
-    title: "Power Hour",
-    price: "$1,000",
-    period: "for 1 month",
-    description: "Daily live execution room at 8am EST. Mindset, strategy, and business best practices — every weekday.",
-    link: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
-    modal: null as null,
-  },
-  {
-    title: "Full Access",
-    price: "$10,000",
-    period: "for 6 months",
-    description: "All Live Rooms + 10 private advisory sessions per year. Maximum proximity.",
-    link: null as null,
-    modal: "full" as const,
-  },
-  {
-    title: "Full Access (Annual)",
-    price: "$15,000",
-    period: "/year",
-    description: "All live rooms + full community + 10 private advisory sessions annually. Maximum proximity. Maximum leverage.",
-    link: null as null,
-    modal: "full" as const,
-  },
-];
 
 const Services = () => {
   const containerRef = useGsapStagger();
-  const [fullOpen, setFullOpen] = useState(false);
+  
   const [appModalOpen, setAppModalOpen] = useState(false);
   const [defaultService, setDefaultService] = useState<"Strategy Session — $1,000" | "Private Advisory — $5,000">("Strategy Session — $1,000");
 
@@ -144,6 +119,7 @@ const Services = () => {
                 <CardContent className="p-6 md:p-8 space-y-5">
                   <div>
                     <h3 className="text-xl font-bold">{pkg.title}</h3>
+                    <p className="text-xs font-bold text-primary uppercase tracking-wider mt-1">{pkg.sessionLabel}</p>
                     <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p>
                   </div>
                   <div className="flex items-baseline gap-1">
@@ -263,7 +239,7 @@ const Services = () => {
           </Link>
         </div>
 
-        {/* Tier 3: Bundles */}
+        {/* Maximum Proximity: Single Full Access highlight card */}
         <div className="max-w-3xl mx-auto mb-12">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-4">
@@ -273,52 +249,40 @@ const Services = () => {
             <h3 className="text-2xl md:text-3xl font-bold">Maximum Proximity.</h3>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {bundles.map((bundle, index) => (
-              <Card key={index} className="glass-card hover-lift">
-                <CardContent className="p-6 md:p-8 text-center space-y-4">
-                  <h4 className="text-xl font-bold">{bundle.title}</h4>
-                  <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-4xl font-bold text-primary">{bundle.price}</span>
-                    <span className="text-muted-foreground text-sm">{bundle.period}</span>
+          <Link to="/programs">
+            <Card className="glass-card hover-lift hover-glow group cursor-pointer border-primary/30">
+              <CardContent className="p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-smooth">
+                  <Sparkles className="w-7 h-7 text-primary group-hover:scale-110 transition-smooth" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">Full Access — All Live Rooms + Private Sessions</h4>
+                  <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
+                    Every live room. Every weekly session. Private advisory access. Community. This is the highest proximity you can get — built for operators who are serious about installing systems and scaling fast.
+                  </p>
+                  <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1">
+                    {["All Live Rooms (Daily + Weekly)", "10 Private Advisory Sessions/Year", "Full Community Access", "Everything, updated in real time"].map((item) => (
+                      <li key={item} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex-shrink-0">
+                  <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary whitespace-nowrap">
+                    Explore Full Access
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
                   </div>
-                  <p className="text-muted-foreground text-sm">{bundle.description}</p>
-                  {bundle.link ? (
-                    <Button size="lg" className="w-full min-h-[48px] gap-2" asChild>
-                      <a href={bundle.link} target="_blank" rel="noopener noreferrer">
-                        Join Power Hour
-                        <ArrowRight className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  ) : (
-                    <Button
-                      size="lg"
-                      className="w-full min-h-[48px] gap-2"
-                      onClick={() => setFullOpen(true)}
-                    >
-                      Choose Duration
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center">
-          <Button size="lg" variant="outline" className="gap-2" asChild>
-            <Link to="/programs">
-              View All Programs & Pricing
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </div>
 
+
       
-      <FullAccessModal open={fullOpen} onOpenChange={setFullOpen} />
       <AdvisoryApplicationModal
         open={appModalOpen}
         onOpenChange={setAppModalOpen}
