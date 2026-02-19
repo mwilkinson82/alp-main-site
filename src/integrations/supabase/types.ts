@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      advisory_applications: {
+        Row: {
+          already_tried: string
+          annual_revenue: string
+          biggest_challenge: string
+          company_name: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          service_applying_for: string
+        }
+        Insert: {
+          already_tried: string
+          annual_revenue: string
+          biggest_challenge: string
+          company_name: string
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          service_applying_for: string
+        }
+        Update: {
+          already_tried?: string
+          annual_revenue?: string
+          biggest_challenge?: string
+          company_name?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          service_applying_for?: string
+        }
+        Relationships: []
+      }
       ask_marshall_submissions: {
         Row: {
           context: string | null

@@ -38,7 +38,18 @@ interface AskMarshallFormData {
   fileUrls?: string[];
 }
 
-type FormData = ContactFormData | PricingFormData | AskMarshallFormData;
+interface AdvisoryApplicationFormData {
+  formType: 'advisory-application';
+  name: string;
+  email: string;
+  companyName: string;
+  annualRevenue: string;
+  biggestChallenge: string;
+  alreadyTried: string;
+  serviceApplyingFor: string;
+}
+
+type FormData = ContactFormData | PricingFormData | AskMarshallFormData | AdvisoryApplicationFormData;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -51,7 +62,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Received form submission:", { formType: formData.formType, name: formData.name });
 
     // Validate form type
-    if (!formData.formType || !['contact', 'pricing', 'ask-marshall'].includes(formData.formType)) {
+    if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application'].includes(formData.formType)) {
       console.error("Invalid form type:", formData.formType);
       return new Response(
         JSON.stringify({ error: "Invalid form type" }),
@@ -64,7 +75,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Validate required fields
     const isAskMarshall = formData.formType === 'ask-marshall';
-    if (!formData.name || !formData.email || (!isAskMarshall && !(formData as any).message) || (isAskMarshall && !(formData as AskMarshallFormData).question)) {
+    const isAdvisoryApplication = formData.formType === 'advisory-application';
+    if (!formData.name || !formData.email || (!isAskMarshall && !isAdvisoryApplication && !(formData as any).message) || (isAskMarshall && !(formData as AskMarshallFormData).question) || (isAdvisoryApplication && !(formData as AdvisoryApplicationFormData).biggestChallenge)) {
       console.error("Missing required fields");
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
@@ -102,6 +114,26 @@ const handler = async (req: Request): Promise<Response> => {
         ${fileLinks}
         <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
         <p style="background: #fff3cd; padding: 12px; border-radius: 5px; font-weight: bold;">⏰ Reminder: Respond within 24 hours via Loom video</p>
+        <p style="color: #6b7280; font-size: 14px;"><small>Submitted: ${timestamp}</small></p>
+      `;
+    } else if (formData.formType === 'advisory-application') {
+      const appData = formData as AdvisoryApplicationFormData;
+      subject = `🔒 New Advisory Application from ${appData.name} — ${appData.serviceApplyingFor}`;
+      html = `
+        <h2>New Advisory Application 🔒</h2>
+        <p style="background: #fef3c7; padding: 10px; border-radius: 5px; font-weight: bold;">Applying for: ${appData.serviceApplyingFor}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+        <p><strong>Name:</strong> ${appData.name}</p>
+        <p><strong>Email:</strong> <a href="mailto:${appData.email}">${appData.email}</a></p>
+        <p><strong>Company:</strong> ${appData.companyName}</p>
+        <p><strong>Annual Revenue:</strong> ${appData.annualRevenue}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <p><strong>Biggest Challenge:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${appData.biggestChallenge}</p>
+        <p><strong>What They've Already Tried:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${appData.alreadyTried}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <p style="background: #dcfce7; padding: 12px; border-radius: 5px; font-weight: bold;">✅ Review this application and follow up manually within 48 hours if qualified.</p>
         <p style="color: #6b7280; font-size: 14px;"><small>Submitted: ${timestamp}</small></p>
       `;
     } else if (formData.formType === 'contact') {
