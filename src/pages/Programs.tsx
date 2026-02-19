@@ -8,7 +8,7 @@ import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 import InvestmentTable from "@/components/InvestmentTable";
 import FullAccessModal from "@/components/FullAccessModal";
-import CoachingTestimonials from "@/components/CoachingTestimonials";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, HardHat, TrendingUp, Video, Check, Crown, ArrowRight } from "lucide-react";
@@ -232,9 +232,6 @@ const Programs = () => {
 
         {/* Investment Table */}
         <InvestmentTable />
-
-        {/* Coaching Testimonials */}
-        <CoachingTestimonials />
 
         {/* Program Testimonials */}
         <ProgramTestimonials />
