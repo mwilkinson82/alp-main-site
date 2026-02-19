@@ -179,7 +179,7 @@ const Services = () => {
 
         {/* Tier 2: Group Programs */}
         <div className="mb-20">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Learn the ALP Framework</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">ALP Courses</h3>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
