@@ -7,7 +7,7 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Clock, Video, Users, ArrowRight } from "lucide-react";
+import { Check, Clock, Video, Users, ArrowRight, Monitor } from "lucide-react";
 import CustomPricingForm from "@/components/CustomPricingForm";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
@@ -120,6 +120,10 @@ const Coaching = () => {
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
                 Private strategic engagements for operators and founders who need execution systems, decision leverage, and real accountability installed fast.
               </p>
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mx-auto">
+                <Video className="w-4 h-4 text-primary" />
+                <span className="text-primary font-medium">All sessions conducted virtually via Zoom — 1-on-1 with Marshall</span>
+              </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                 <Button
                   size="lg"
