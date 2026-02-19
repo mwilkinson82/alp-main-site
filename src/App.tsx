@@ -24,7 +24,7 @@ import NotFound from "./pages/NotFound";
 
 const BlogSlugRedirect = () => {
   const { slug } = useParams();
-  return <Navigate to={`/articles/${slug}`} replace />;
+  return <Navigate to={`/insights/${slug}`} replace />;
 };
 
 const queryClient = new QueryClient();
@@ -47,13 +47,17 @@ const App = () => (
           <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/articles" element={<Blog />} />
-          <Route path="/articles/:slug" element={<BlogPost />} />
+          {/* Canonical Insights routes */}
+          <Route path="/insights" element={<Blog />} />
+          <Route path="/insights/:slug" element={<BlogPost />} />
+          {/* Legacy redirects — SEO-safe 301-equivalent client redirects */}
+          <Route path="/blog" element={<Navigate to="/insights" replace />} />
+          <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
+          <Route path="/articles" element={<Navigate to="/insights" replace />} />
+          <Route path="/articles/:slug" element={<BlogSlugRedirect />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
-          <Route path="/blog" element={<Navigate to="/articles" replace />} />
-          <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   // Pages that should always have black text (no dark hero)
-  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university', '/programs', '/articles', '/ask-marshall'];
+  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university', '/programs', '/insights', '/ask-marshall'];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +41,7 @@ const Header = () => {
   
   // Text color transitions from white (on dark hero) to foreground as you scroll
   // Force black text on pages without dark heroes
-  const shouldForceBlack = forceBlackTextPages.includes(location.pathname) || location.pathname.startsWith('/articles/');
+  const shouldForceBlack = forceBlackTextPages.includes(location.pathname) || location.pathname.startsWith('/insights/');
   const isAtTop = scrollY < 300 && !shouldForceBlack;
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
@@ -81,7 +81,7 @@ const Header = () => {
             </Link>
             
             <Link 
-              to="/articles" 
+              to="/insights" 
               className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
             Insights
@@ -165,7 +165,7 @@ const Header = () => {
             </Link>
             
             <Link 
-              to="/articles" 
+              to="/insights" 
               className="block text-foreground hover:text-primary transition-colors font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
