@@ -2,11 +2,11 @@ import { Archive, MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-
 import { Link } from "react-router-dom";
 
 const ladderSteps = [
-  { label: "ALP University", price: "$197/mo" },
-  { label: "Ask Marshall", price: "$250" },
-  { label: "Strategy Session", price: "$1,000" },
-  { label: "Private Advisory", price: "$5,000" },
-  { label: "Full Access Membership", price: "" },
+  { label: "ALP University" },
+  { label: "Ask Marshall" },
+  { label: "Strategy Session" },
+  { label: "Private Advisory" },
+  { label: "Full Access Membership" },
 ];
 
 const entries = [
@@ -15,7 +15,6 @@ const entries = [
     title: "ALP University",
     subtitle: "The Operator's Archive. Updated daily.",
     body: "Access the full repository of recorded Power Hour, Sales & Marketing School, and Contractor School sessions — indexed and expanded every week.",
-    price: "$197/mo",
     cta: "Enter the Archive",
     href: "/alp-university",
     featured: false,
@@ -25,7 +24,6 @@ const entries = [
     title: "Ask Marshall",
     subtitle: "Get a direct strategic answer — without booking a call.",
     body: "Submit your most pressing business decision and receive a direct Loom breakdown of what to do next — with clear steps, structure, and leverage.",
-    price: "$250",
     cta: "Submit a Question",
     href: "/ask-marshall",
     featured: true,
@@ -35,7 +33,6 @@ const entries = [
     title: "Direct Advisory",
     subtitle: "Private strategy sessions and long-form intensives.",
     body: "Private strategic engagements designed to install execution systems, sharpen leadership decisions, and remove bottlenecks.",
-    price: "From $1,000",
     cta: "Explore 1-on-1 Options",
     href: "/coaching",
     featured: false,
@@ -63,9 +60,6 @@ const StartHere = () => {
               <div key={index} className="flex items-center gap-1">
                 <div className="flex flex-col items-center bg-background border border-primary/20 rounded-lg px-3 py-1.5 text-center">
                   <span className="text-xs font-semibold text-foreground leading-tight">{step.label}</span>
-                  {step.price && (
-                    <span className="text-[10px] text-primary font-bold mt-0.5">{step.price}</span>
-                  )}
                 </div>
                 {index < ladderSteps.length - 1 && (
                   <ChevronRight className="w-4 h-4 text-primary/50 flex-shrink-0" />
@@ -100,7 +94,7 @@ const StartHere = () => {
                     <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
                     <p className="text-sm text-muted-foreground/80 leading-relaxed">{entry.body}</p>
                   </div>
-                  <p className="text-2xl font-bold text-primary">{entry.price}</p>
+                  
                   <div className="flex items-center gap-2 text-base font-bold text-primary pt-1 group-hover:gap-3 transition-all">
                     {entry.cta}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -118,7 +112,7 @@ const StartHere = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
                 <p className="text-sm text-muted-foreground/80 leading-relaxed">{entry.body}</p>
               </div>
-                <p className="text-xl font-bold text-primary">{entry.price}</p>
+                
                 <div className="flex items-center gap-1.5 text-sm font-semibold text-primary pt-1 group-hover:gap-2 transition-all">
                   {entry.cta}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
