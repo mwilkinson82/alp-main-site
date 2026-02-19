@@ -122,20 +122,24 @@ const Header = () => {
             >
               1-on-1 Advisory
             </Link>
-            <Link 
-              to="/ask-marshall"
-              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
-            >
-              Ask Marshall
-            </Link>
             <Button
-              variant="premium" 
+              variant="premium"
               size="sm"
               asChild
             >
-              <a 
-                href="https://marshallwilkinson.mykajabi.com/login" 
-                target="_blank" 
+              <Link to="/ask-marshall">
+                Ask Marshall — $250
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="border-current opacity-60 hover:opacity-100"
+            >
+              <a
+                href="https://marshallwilkinson.mykajabi.com/login"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <LogIn className="mr-2 h-4 w-4" />
@@ -197,22 +201,25 @@ const Header = () => {
             >
               1-on-1 Advisory
             </Link>
-            <Link 
-              to="/ask-marshall" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Ask Marshall
-            </Link>
             <Button
-              variant="premium" 
+              variant="premium"
               size="sm"
               className="w-full"
               asChild
             >
-              <a 
-                href="https://marshallwilkinson.mykajabi.com/login" 
-                target="_blank" 
+              <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
+                Ask Marshall — $250
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full opacity-70"
+              asChild
+            >
+              <a
+                href="https://marshallwilkinson.mykajabi.com/login"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <LogIn className="mr-2 h-4 w-4" />
