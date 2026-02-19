@@ -74,7 +74,7 @@ const StartHere = () => {
             ))}
           </div>
           <p className="text-center text-[11px] text-muted-foreground mt-2 tracking-wider uppercase">
-            The Ascension Ladder — Entry to Maximum Proximity
+            Start where you need. Scale proximity as required.
           </p>
         </div>
 

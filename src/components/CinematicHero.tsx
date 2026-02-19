@@ -139,7 +139,7 @@ const CinematicHero = () => {
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Marshall Wilkinson teaches decision architecture, negotiation leverage, and execution systems built from over $5B in real-world outcomes across enterprise deals and high-stakes operations.
+                Decision architecture, negotiation leverage, and execution systems built from over $5B in real-world enterprise outcomes.
               </p>
 
               {/* Micro line */}
@@ -167,6 +167,11 @@ const CinematicHero = () => {
                   Watch the Origin Story
                 </Button>
               </div>
+
+              {/* Qualifier line */}
+              <p className="text-sm text-muted-foreground/70 italic">
+                Built for executives, founders, and operators scaling beyond $1M+ in revenue.
+              </p>
 
               {/* Trust Indicators */}
               <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">

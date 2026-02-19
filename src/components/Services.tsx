@@ -14,7 +14,7 @@ const advisoryPaths = [
     price: "$1,000",
     badge: "BY APPLICATION" as string | undefined,
     badgeMuted: true,
-    description: "A focused 60-minute deep dive on your most pressing issue.",
+    description: "A focused 60-minute systems intervention on your most pressing decision.",
     benefits: [
       "60-minute deep-dive on your biggest challenge",
       "Actionable takeaways you can implement immediately",
@@ -29,7 +29,7 @@ const advisoryPaths = [
     price: "$5,000",
     badge: "BY APPLICATION" as string | undefined,
     badgeMuted: false,
-    description: "Direct strategic access for high-level operators navigating consequential decisions.",
+    description: "Private strategic access for operators managing high-consequence decisions and scale inflection points.",
     benefits: [
       "Six 1-hour sessions tailored to your business",
       "Direct text & Discord access between sessions",
@@ -269,7 +269,7 @@ const Services = () => {
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-primary font-medium">Full Access Membership</span>
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold">Everything. Live.</h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Maximum Proximity.</h3>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
