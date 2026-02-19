@@ -12,7 +12,7 @@ import FullAccessModal from "@/components/FullAccessModal";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, Video, Check, Crown, ArrowRight } from "lucide-react";
+import { Clock, HardHat, TrendingUp, Video, Check, Crown, ArrowRight, Monitor } from "lucide-react";
 
 const programs = [
   {
@@ -120,6 +120,10 @@ const Programs = () => {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Live group sessions and a complete training archive — built for operators who execute, not just learn.
               </p>
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
+                <Monitor className="w-4 h-4 text-primary" />
+                <span className="text-primary font-medium">All sessions are virtual — delivered live through the ALP portal</span>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
