@@ -177,14 +177,20 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Tier 2: Group Programs */}
-        <div className="mb-20">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">ALP Courses</h3>
+        {/* Tier 2: Live Group Programs */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-3">
+              <Users className="w-4 h-4 text-primary" />
+              <span className="text-primary font-medium">Live Group Programs</span>
+            </div>
+            <p className="text-muted-foreground text-sm">Daily &amp; weekly live calls — real-time, interactive, recorded for members</p>
+          </div>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
           >
-            {programs.map((program, index) => {
+            {programs.filter(p => p.title !== "ALP University").map((program, index) => {
               const Icon = program.icon;
               return (
                 <Link key={index} to={program.link}>
@@ -211,6 +217,37 @@ const Services = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* On-Demand Library: ALP University */}
+        <div className="mb-20">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 bg-muted border border-border rounded-full px-4 py-2 text-sm mb-3">
+              <GraduationCap className="w-4 h-4 text-muted-foreground" />
+              <span className="text-muted-foreground font-medium">On-Demand Library</span>
+            </div>
+            <p className="text-muted-foreground text-sm">Recorded sessions &amp; full video training — available anytime</p>
+          </div>
+          <Link to="/alp-university">
+            <Card className="glass-card hover-lift hover-glow group cursor-pointer max-w-3xl mx-auto">
+              <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-smooth">
+                  <GraduationCap className="w-7 h-7 text-primary group-hover:scale-110 transition-smooth" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">ALP University</h4>
+                  <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
+                    Every recorded session from Power Hour, Sales &amp; Marketing, and Contractor School — plus the full ALP video training library. Self-paced, always available.
+                  </p>
+                  <p className="text-primary font-semibold text-sm mt-2">$197 / month</p>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-semibold text-primary flex-shrink-0">
+                  Learn More
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
 
         {/* Tier 3: Bundles */}

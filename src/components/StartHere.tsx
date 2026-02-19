@@ -44,22 +44,22 @@ const StartHere = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
           {entries.map((entry, index) => {
             const Icon = entry.icon;
 
             const content = entry.featured ? (
-              /* ── Featured "Ask Marshall" card ── */
-              <div className="relative h-full flex flex-col rounded-xl overflow-hidden border border-primary/40 bg-primary/5 shadow-[0_0_40px_-8px_hsl(var(--primary)/0.3)] group">
-                {/* Top banner */}
-                <div className="bg-primary/10 border-b border-primary/20 px-6 py-2 flex items-center justify-center gap-2">
-                  <span className="text-[11px] font-bold tracking-widest text-primary uppercase">
+              /* ── Featured "Ask Marshall" card — elevated above siblings ── */
+              <div className="glass-card hover-lift relative h-full flex flex-col rounded-xl overflow-hidden border border-primary/60 shadow-[0_0_35px_-5px_hsl(var(--primary)/0.45)] scale-[1.03] md:scale-[1.03] group z-10">
+                {/* Solid gold banner ribbon */}
+                <div className="bg-gradient-gold px-6 py-2 flex items-center justify-center gap-2">
+                  <span className="text-[11px] font-bold tracking-widest text-primary-foreground uppercase">
                     Most Popular Entry Point
                   </span>
                 </div>
 
                 <div className="p-6 md:p-8 space-y-4 flex-1 flex flex-col">
-                  <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center group-hover:shadow-glow transition-smooth">
+                  <div className="w-12 h-12 rounded-xl bg-primary/30 flex items-center justify-center group-hover:shadow-glow transition-smooth">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
                   <div className="flex-1 space-y-1.5">
