@@ -56,16 +56,26 @@ const StartHere = () => {
         {/* Ascension Ladder Strip */}
         <div className="max-w-4xl mx-auto mb-10">
           <div className="flex flex-wrap items-center justify-center gap-1">
-            {ladderSteps.map((step, index) => (
-              <div key={index} className="flex items-center gap-1">
-                <div className="flex flex-col items-center bg-primary/10 border border-primary/40 rounded-lg px-3 py-1.5 text-center">
-                  <span className="text-xs font-semibold text-primary leading-tight">{step.label}</span>
+            {ladderSteps.map((step, index) => {
+              const isAskMarshall = step.label === "Ask Marshall";
+              return (
+                <div key={index} className="flex items-center gap-1">
+                  {isAskMarshall ? (
+                    <div className="relative flex flex-col items-center bg-gradient-gold rounded-lg px-3 py-1.5 text-center shadow-[0_0_14px_-3px_hsl(var(--primary)/0.6)] ring-1 ring-primary/60">
+                      <span className="text-xs font-bold text-primary-foreground leading-tight">{step.label}</span>
+                      <span className="text-[9px] font-bold text-primary-foreground/80 tracking-wide uppercase leading-none mt-0.5">Most Popular</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center bg-primary/10 border border-primary/40 rounded-lg px-3 py-1.5 text-center">
+                      <span className="text-xs font-semibold text-primary leading-tight">{step.label}</span>
+                    </div>
+                  )}
+                  {index < ladderSteps.length - 1 && (
+                    <ChevronRight className="w-4 h-4 text-primary/50 flex-shrink-0" />
+                  )}
                 </div>
-                {index < ladderSteps.length - 1 && (
-                  <ChevronRight className="w-4 h-4 text-primary/50 flex-shrink-0" />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
           <p className="text-center text-[11px] text-muted-foreground mt-2 tracking-wider uppercase">
             Start where you need. Scale proximity as required.
