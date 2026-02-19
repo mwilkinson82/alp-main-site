@@ -25,7 +25,7 @@ const SalesMarketingSchool = () => {
     "Real strategies from real business results",
     "Direct access to Marshall during live sessions",
     "Community of ambitious entrepreneurs",
-    "Included in ALP Growth Academy bundle"
+    "Included in the Full Access membership — not sold separately"
   ];
 
   return (
@@ -140,13 +140,13 @@ const SalesMarketingSchool = () => {
                 <Card className="border-2 border-primary/30">
                   <CardContent className="p-6 text-center space-y-4">
                     <TrendingUp className="w-16 h-16 text-primary mx-auto" />
-                    <h3 className="text-2xl font-bold">Get Access to Sales & Marketing School</h3>
+                    <h3 className="text-2xl font-bold">Included in Full Access</h3>
                     <p className="text-muted-foreground">
-                      Sales & Marketing School is included in the ALP Growth Academy bundle along with Power Hour and Contractor School.
+                      Sales & Marketing School is not sold separately. It's included in the ALP Full Access membership — alongside Power Hour and Contractor School — for operators who want the complete training ecosystem.
                     </p>
                     <Button asChild variant="premium" size="lg" className="w-full">
                       <Link to="/programs">
-                        View All Programs
+                        View Full Access Membership
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </Link>
                     </Button>
@@ -171,7 +171,7 @@ const SalesMarketingSchool = () => {
                 Ready to Grow Your Revenue?
               </h2>
               <p className="text-xl mb-8 opacity-90">
-                Get access to Sales & Marketing School through the ALP Growth Academy for the full training ecosystem.
+                Sales & Marketing School is included in the ALP Full Access membership. Join to get access to the complete live training ecosystem.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
