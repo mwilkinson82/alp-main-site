@@ -156,7 +156,7 @@ const CinematicHero = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                 <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
                   <a href="/ask-marshall">
-                    Submit a Strategic Question
+                    Start Here — Get Marshall's Analysis
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </Button>
