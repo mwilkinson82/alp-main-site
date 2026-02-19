@@ -1,52 +1,60 @@
 
-# Homepage Services Section — Strategic Cleanup
+# Remove Pricing From Homepage Cards — Conviction Over Catalog
 
-## The Three Problems Being Solved
+## The Core Decision
 
-1. Maximum Proximity section shows raw pricing on the homepage, which risks price-shocking visitors before they understand the value
-2. "View All Programs & Pricing" button at the bottom duplicates what the Live Rooms page already does — unnecessary redundancy
-3. Private Advisory card doesn't make the "6-session" distinction prominent enough — it's buried in a bullet list
+The homepage should build conviction and drive qualified clicks — not act as a price list. Showing dollar amounts on the homepage before someone understands the value risks two things: sticker shock on the high-ticket offers, and underselling the low-ticket ones by reducing them to a commodity number. The one exception is ALP University, where "$197/month — Cancel anytime" is a reassurance signal, not a price shock. It stays.
 
 ## What's Changing
 
-### Part 1 — Maximum Proximity: Remove Pricing, Replace with Outcome Language
+### 1. StartHere.tsx — "Choose Your Access Level" section
 
-The three bundle cards (Power Hour, Full Access, Full Access Annual) currently show large dollar amounts front-and-center. We will:
+**Ascension Ladder Strip (the horizontal pill badges):**
+- Remove all price labels from the ladder steps
+- The steps become: ALP University → Ask Marshall → Strategy Session → Private Advisory → Full Access Membership
+- The strip communicates progression, not pricing
 
-- Replace the entire three-card bundle grid with a single, wide "Full Access" highlight card — no prices shown
-- The card presents the outcomes and what's included (all live rooms, private sessions, community)
-- CTA button says **"Explore Full Access"** and links to `/programs` where pricing is shown in full context
-- Remove the "View All Programs & Pricing" button at the bottom (redundant — the card CTA replaces it)
-- The "Full Access Membership" label pill and "Maximum Proximity." headline remain — they set the right tone
+**The three access-tier cards:**
+- **ALP University card**: Remove the `$197/mo` price line from the card body. The price will be discovered on the `/alp-university` page.
+- **Ask Marshall card** (featured): Remove the `$250` price line from the card body.
+- **Direct Advisory card**: Remove the `From $1,000` price line from the card body.
+- All CTAs, icons, subtitles, and body copy remain exactly as-is.
+- The "Most Popular Entry Point" gold banner on Ask Marshall stays — it's a social proof signal, not a price.
 
-### Part 2 — Advisory Cards: Surface the Session Count
+### 2. Services.tsx — "Direct Access Options" section
 
-On the Strategy Session card:
-- Add a prominent sub-label directly under the title: **"1-session intensive"** (small, gold, bold)
+**Advisory Cards (Strategy Session / Private Advisory):**
+- Remove the large `$1,000` and `$5,000` price displays from both cards
+- The session labels ("1-session intensive" / "6-session intensive") stay — they communicate value structure, not cost
+- The benefit bullet lists stay
+- The "BY APPLICATION" badges stay — they reinforce exclusivity
+- The CTA buttons stay ("Book a Strategy Session" / "Request Private Advisory") — they open the application modal, not a checkout, so no price needs to appear in the button
+- The "View all consulting options" link below the cards stays — it points to `/coaching` where pricing is fully contextualized
 
-On the Private Advisory card:
-- Change the sub-label to: **"6-session intensive"** (same treatment)
-- This makes the core distinction scannable before anyone reads a single bullet
+**Everything else in Services.tsx stays unchanged:**
+- Live Group Programs cards (Power Hour, Sales & Marketing, Contractor School) — no prices were shown here anyway
+- ALP University wide card — keeps its `$197/month` line (subscription reassurance, not shock)
+- Maximum Proximity / Full Access card — no prices shown (already clean from the previous update)
 
-### Part 3 — Remove "View All Programs & Pricing" Bottom Button
+## What Stays the Same — And Why
 
-Since the Maximum Proximity section now has a clear CTA pointing to the Live Rooms page, the bottom "View All Programs & Pricing" button is no longer needed. Removing it tightens the section.
-
-## What Stays the Same
-
-- The three individual program cards (Power Hour, Sales & Marketing, Contractor School) stay — individual links per program are better UX than one generic Live Rooms link
-- The advisory cards still use the application modal (no direct checkout)
-- The ALP University wide card with "$197/month" pricing stays — it's a low-ticket subscription where transparency aids conversion
-- All pricing remains visible on the dedicated `/programs` page
+| Element | Stays | Reason |
+|---|---|---|
+| ALP University $197/mo | Yes | Low-ticket subscription — transparency aids conversion |
+| Advisory application modal | Yes | Price lives inside the modal as a qualifier |
+| Session labels (1-session / 6-session) | Yes | Value structure, not cost |
+| BY APPLICATION badges | Yes | Exclusivity signal |
+| All CTAs and links | Yes | Drive to dedicated pages where pricing has full context |
 
 ## Files to Change
 
-- **`src/components/Services.tsx`** — all changes are contained here:
-  - Restructure `bundles` array into a single full-access highlight object
-  - Replace the three-card grid with a single wide card
-  - Add session-count sub-labels to both advisory cards
-  - Remove the bottom CTA button
+- **`src/components/StartHere.tsx`**:
+  - Remove `price` field values from the `ladderSteps` array (or remove the price rendering entirely)
+  - Remove `price` display lines from all three entry cards
+
+- **`src/components/Services.tsx`**:
+  - Remove the `price` field and the `<div className="flex items-baseline gap-1">` price block from each advisory card rendering
 
 ## Result
 
-The homepage becomes a conviction page that drives visitors to dedicated pages. Price discovery happens in context (on program pages) rather than as a cold number on the homepage. The advisory section becomes instantly scannable — 1 session vs. 6 sessions is visible at a glance.
+Visitors land on the homepage and understand **what** is available and **why** it matters. The price discovery happens in context — on the page for that specific offer — where the full value proposition is laid out. The homepage becomes a conviction engine that earns the click, not a menu that prices them out before they're ready.
