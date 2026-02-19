@@ -67,7 +67,7 @@ const LatestInsights = () => {
                 </div>
               )
             : posts.map((post) => (
-                <Link key={post.id} to={`/blog/${post.slug}`} className="group block">
+                <Link key={post.id} to={`/insights/${post.slug}`} className="group block">
                   <div className="glass-card hover-lift rounded-2xl overflow-hidden h-full flex flex-col">
                     {/* Image */}
                     <div className="relative h-48 bg-muted overflow-hidden flex-shrink-0">
@@ -113,8 +113,8 @@ const LatestInsights = () => {
 
         <div className="text-center">
           <Button variant="outline" size="lg" className="gap-2" asChild>
-            <Link to="/blog">
-              View All Articles
+            <Link to="/insights">
+              View All Insights
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>

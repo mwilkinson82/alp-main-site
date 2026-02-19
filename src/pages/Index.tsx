@@ -14,6 +14,7 @@ import StartHere from "@/components/StartHere";
 import AskMarshallHighlight from "@/components/AskMarshallHighlight";
 import LatestInsights from "@/components/LatestInsights";
 import LeadMagnet from "@/components/LeadMagnet";
+import InsightsNewsletter from "@/components/InsightsNewsletter";
 
 const Index = () => {
   return (
@@ -35,6 +36,7 @@ const Index = () => {
         <AskMarshallHighlight />
         <Services />
         <LatestInsights />
+        <InsightsNewsletter />
         <LeadMagnet />
         <CoachingTestimonials />
         <Testimonials />
