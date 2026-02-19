@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -7,24 +7,20 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Clock, Video, Users, Star, ArrowRight } from "lucide-react";
+import { Check, Clock, Video, Users, ArrowRight } from "lucide-react";
 import CustomPricingForm from "@/components/CustomPricingForm";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
+import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
 
 const Coaching = () => {
   const [customPricingOpen, setCustomPricingOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("");
+  const [appModalOpen, setAppModalOpen] = useState(false);
+  const [defaultService, setDefaultService] = useState<"Strategy Session — $1,000" | "Private Advisory — $5,000">("Strategy Session — $1,000");
 
-  const STRIPE_LINKS: Record<string, string> = {
-    "Single Session": "https://buy.stripe.com/bJeaEYe0h9L8ao0g5QeQM0R",
-    "6-Session Intensive": "https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q",
-  };
-
-  const handlePurchase = (packageName: string) => {
-    const link = STRIPE_LINKS[packageName];
-    if (link) {
-      window.open(link, '_blank');
-    }
+  const openApplication = (service: "Strategy Session — $1,000" | "Private Advisory — $5,000") => {
+    setDefaultService(service);
+    setAppModalOpen(true);
   };
 
   const openCustomPricingForm = (packageName: string) => {
@@ -44,11 +40,12 @@ const Coaching = () => {
         "Personalized guidance and recommendations",
         "Follow-up resources and materials"
       ],
-      cta: "Book Your Session"
+      cta: "Apply for a Session",
+      premium: false,
     },
     {
       name: "6-Session Intensive",
-      subtitle: "ALP's Premier Coaching Experience",
+      subtitle: "ALP's Premier Advisory Experience",
       price: "$5,000",
       duration: "Six 1-Hour Sessions",
       features: [
@@ -59,7 +56,7 @@ const Coaching = () => {
         "Strategic scaling roadmap tailored to your business",
         "Risk mitigation and decision-making support"
       ],
-      cta: "Book Your Intensive",
+      cta: "Apply for Private Advisory",
       premium: true
     },
     {
@@ -278,7 +275,15 @@ const Coaching = () => {
                     <Button 
                       className="w-full" 
                       variant={pkg.premium ? "default" : "outline"}
-                      onClick={() => pkg.price === "Custom Pricing" ? openCustomPricingForm(pkg.name) : handlePurchase(pkg.name)}
+                      onClick={() => {
+                        if (pkg.price === "Custom Pricing") {
+                          openCustomPricingForm(pkg.name);
+                        } else if (pkg.premium) {
+                          openApplication("Private Advisory — $5,000");
+                        } else {
+                          openApplication("Strategy Session — $1,000");
+                        }
+                      }}
                       size="lg"
                     >
                       {pkg.cta}
@@ -309,13 +314,13 @@ const Coaching = () => {
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">1</div>
-                <h3 className="text-xl font-semibold">Choose Your Package</h3>
-                <p className="text-muted-foreground">Select the coaching option that fits your needs and complete your purchase securely through Stripe.</p>
+                <h3 className="text-xl font-semibold">Submit Your Application</h3>
+                <p className="text-muted-foreground">Complete the short advisory application so Marshall can understand your business and determine if there's a fit.</p>
               </div>
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">2</div>
-                <h3 className="text-xl font-semibold">Marshall Reaches Out</h3>
-                <p className="text-muted-foreground">Within 24 hours of purchase, Marshall will personally reach out to schedule your session(s) at a time that works for you—including international time zones.</p>
+                <h3 className="text-xl font-semibold">Marshall Reviews & Reaches Out</h3>
+                <p className="text-muted-foreground">Marshall reviews every application personally. If there's a fit, he'll reach out within 48 hours to schedule your sessions.</p>
               </div>
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">3</div>
@@ -357,18 +362,18 @@ const Coaching = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Get Started?
+              Ready to Apply?
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Book your session today and take the first step toward transforming your business
+              Applications are reviewed personally by Marshall. If there's a fit, you'll hear back within 48 hours.
             </p>
             <Button 
               size="lg" 
               variant="secondary"
-              onClick={() => handlePurchase("6-Session Intensive")}
+              onClick={() => openApplication("Private Advisory — $5,000")}
               className="text-lg px-8"
             >
-              Book the 6-Session Intensive — $5,000
+              Apply for Private Advisory — $5,000
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
@@ -381,6 +386,11 @@ const Coaching = () => {
           open={customPricingOpen}
           onOpenChange={setCustomPricingOpen}
           packageType={selectedPackage}
+        />
+        <AdvisoryApplicationModal
+          open={appModalOpen}
+          onOpenChange={setAppModalOpen}
+          defaultService={defaultService}
         />
       </main>
     </>

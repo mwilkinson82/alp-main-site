@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
 import FullAccessModal from "@/components/FullAccessModal";
+import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
 
 const advisoryPaths = [
   {
@@ -86,6 +87,13 @@ const Services = () => {
   const containerRef = useGsapStagger();
   const [growthOpen, setGrowthOpen] = useState(false);
   const [fullOpen, setFullOpen] = useState(false);
+  const [appModalOpen, setAppModalOpen] = useState(false);
+  const [defaultService, setDefaultService] = useState<"Strategy Session — $1,000" | "Private Advisory — $5,000">("Strategy Session — $1,000");
+
+  const openApplication = (service: "Strategy Session — $1,000" | "Private Advisory — $5,000") => {
+    setDefaultService(service);
+    setAppModalOpen(true);
+  };
 
   return (
     <section id="services" className="py-20 md:py-32 bg-background">
@@ -139,12 +147,14 @@ const Services = () => {
                     variant={pkg.highlight ? "premium" : "default"}
                     size="lg"
                     className="w-full gap-2 min-h-[48px]"
-                    asChild
+                    onClick={() => openApplication(
+                      pkg.title === "Private Advisory"
+                        ? "Private Advisory — $5,000"
+                        : "Strategy Session — $1,000"
+                    )}
                   >
-                    <Link to={pkg.link}>
-                      {pkg.cta}
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    {pkg.cta}
+                    <ArrowRight className="w-4 h-4" />
                   </Button>
                 </CardContent>
               </Card>
@@ -269,6 +279,11 @@ const Services = () => {
 
       <GrowthAcademyModal open={growthOpen} onOpenChange={setGrowthOpen} />
       <FullAccessModal open={fullOpen} onOpenChange={setFullOpen} />
+      <AdvisoryApplicationModal
+        open={appModalOpen}
+        onOpenChange={setAppModalOpen}
+        defaultService={defaultService}
+      />
     </section>
   );
 };
