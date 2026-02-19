@@ -76,7 +76,7 @@ const LeadMagnet = () => {
 
           {/* Body */}
           <p className="text-lg text-background/70 leading-relaxed max-w-xl mx-auto">
-            The decision model behind billion-dollar negotiations. Download the core framework Marshall uses with private advisory clients — free.
+            Download the core decision framework used in billion-dollar negotiations.
           </p>
 
           {/* Form */}

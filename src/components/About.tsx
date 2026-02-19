@@ -49,8 +49,8 @@ const About = () => {
           <h2 className="text-4xl md:text-6xl font-bold">
             <span className="text-gradient-gold">Why Marshall</span>
           </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            The strategic mind behind billion-dollar decisions
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Marshall Wilkinson has advised on over $5B in negotiated outcomes and enterprise-scale execution environments. He now teaches the frameworks behind those decisions to founders, operators, and contractors building serious companies.
           </p>
         </div>
 

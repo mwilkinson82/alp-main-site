@@ -63,7 +63,7 @@ const programs = [
   {
     icon: HardHat,
     title: "Contractor School",
-    tagline: "Scale your construction business",
+    tagline: "Scale like an operator, not a tradesman.",
     link: "/contractor-school",
   },
 ];
@@ -180,11 +180,12 @@ const Services = () => {
         {/* Tier 2: Live Group Programs */}
         <div className="mb-12">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-3">
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-4">
               <Users className="w-4 h-4 text-primary" />
               <span className="text-primary font-medium">Live Group Programs</span>
             </div>
-            <p className="text-muted-foreground text-sm">Daily &amp; weekly live calls — real-time, interactive, recorded for members</p>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">Train Live. Think Sharper. Move Faster.</h3>
+            <p className="text-muted-foreground text-sm">Daily and weekly strategic sessions for operators in motion.</p>
           </div>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
@@ -235,15 +236,18 @@ const Services = () => {
                   <GraduationCap className="w-7 h-7 text-primary group-hover:scale-110 transition-smooth" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">ALP University</h4>
+                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">ALP University — The Operator's Archive</h4>
                   <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
-                    Every recorded session from Power Hour, Sales &amp; Marketing, and Contractor School — plus the full ALP video training library. Self-paced, always available.
+                    Access every recorded Power Hour, Sales &amp; Marketing School, and Contractor School session — indexed and updated daily. This is where serious operators study the thinking.
                   </p>
-                  <p className="text-primary font-semibold text-sm mt-2">$197 / month</p>
+                  <p className="text-primary font-semibold text-sm mt-2">$197/month — Cancel anytime.</p>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-semibold text-primary flex-shrink-0">
-                  Learn More
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+                <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                    Enter the Archive
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+                  </div>
+                  <p className="text-xs text-muted-foreground italic text-right max-w-[160px]">If you can't attend live, you can still study the room.</p>
                 </div>
               </CardContent>
             </Card>

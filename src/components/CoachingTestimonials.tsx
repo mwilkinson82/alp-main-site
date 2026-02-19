@@ -1,4 +1,7 @@
 import { useGsapScroll } from "@/hooks/use-gsap-scroll";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const testimonials = [
   {
@@ -31,11 +34,10 @@ const CoachingTestimonials = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-bold text-foreground">
-            What Clients Say About{" "}
-            <span className="text-gradient-gold">1-on-1 Consulting</span>
+            <span className="text-gradient-gold">Direct Advisory</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Real feedback from business owners who invested in themselves
+            Private strategic access for operators making high-stakes decisions.
           </p>
         </div>
 
@@ -51,6 +53,15 @@ const CoachingTestimonials = () => {
               <p className="text-sm font-semibold text-primary">— {t.attribution}</p>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Button size="lg" className="bg-gradient-gold hover:shadow-glow hover-gold-edge gap-2" asChild>
+            <Link to="/coaching">
+              Book a Strategy Session
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

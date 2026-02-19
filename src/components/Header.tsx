@@ -86,7 +86,7 @@ const Header = () => {
               to="/articles" 
               className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
-              Articles
+            Insights
             </Link>
             
             {/* Programs Dropdown */}
@@ -95,7 +95,7 @@ const Header = () => {
                 onClick={() => setProgramsOpen(!programsOpen)}
                 className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
               >
-                Programs
+                Ecosystem
                 <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -121,7 +121,7 @@ const Header = () => {
               to="/coaching" 
               className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
-              1-on-1 Consulting
+              1-on-1 Advisory
             </Link>
             <Link 
               to="/ask-marshall"
@@ -170,7 +170,7 @@ const Header = () => {
               className="block text-foreground hover:text-primary transition-colors font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Articles
+              Insights
             </Link>
             
             {/* Mobile Programs Section */}
@@ -197,7 +197,7 @@ const Header = () => {
               className="block text-foreground hover:text-primary transition-colors font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
-              1-on-1 Consulting
+              1-on-1 Advisory
             </Link>
             <Link 
               to="/ask-marshall" 

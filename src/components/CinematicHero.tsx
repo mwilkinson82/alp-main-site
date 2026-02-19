@@ -154,18 +154,17 @@ const CinematicHero = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" onClick={() => {
+                <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
+                  <a href="/ask-marshall">
+                    Submit a Strategic Question
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" onClick={() => {
                   const el = document.getElementById("origin-story");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}>
                   Watch the Origin Story
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" onClick={() => {
-                  const el = document.getElementById("services");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}>
-                  Work With Marshall
                 </Button>
               </div>
 
