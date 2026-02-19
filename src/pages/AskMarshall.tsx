@@ -85,7 +85,7 @@ const SalesLanding = () => (
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
-            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed. If not, your fee is refunded.</p>
+            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed.</p>
           </div>
         </div>
       </div>
@@ -172,7 +172,7 @@ const SalesLanding = () => (
                 <ArrowRight className="w-5 h-5" />
               </a>
             </Button>
-            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed. If not, your fee is refunded.</p>
+            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed.</p>
           </div>
         </div>
       </div>
