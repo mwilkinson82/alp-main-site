@@ -128,7 +128,7 @@ const Header = () => {
               asChild
             >
               <Link to="/ask-marshall">
-                Ask Marshall — $250
+                Ask Marshall
               </Link>
             </Button>
             <Button
@@ -208,7 +208,7 @@ const Header = () => {
               asChild
             >
               <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
-                Ask Marshall — $250
+                Ask Marshall
               </Link>
             </Button>
             <Button
