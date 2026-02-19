@@ -184,7 +184,7 @@ const CinematicHero = () => {
                   <div className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">Build infrastructure before scaling volume</div>
                 </div>
                 <div className="space-y-1.5 glass-card p-3 md:p-6 hover-lift">
-                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight">Live Operator Rooms</div>
+                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight">Live Training Rooms</div>
                   <div className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">Daily and weekly strategic execution sessions</div>
                 </div>
               </div>
