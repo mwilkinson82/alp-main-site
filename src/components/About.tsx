@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+
 import { Award, TrendingUp, Target, Shield } from "lucide-react";
 import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallSignature from "@/assets/marshall-signature-black.png";
@@ -114,11 +114,6 @@ const About = () => {
               <p className="text-sm text-muted-foreground mt-2">Marshall Wilkinson</p>
             </div>
 
-            <Button size="lg" variant="premium" asChild className="mt-6">
-              <a href="#services">
-                Explore Services
-              </a>
-            </Button>
           </div>
         </div>
 
