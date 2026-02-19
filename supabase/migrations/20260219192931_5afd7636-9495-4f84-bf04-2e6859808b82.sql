@@ -1,0 +1,1 @@
+ALTER TABLE public.advisory_applications ADD COLUMN phone text;

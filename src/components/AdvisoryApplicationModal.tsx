@@ -20,6 +20,7 @@ const schema = z.object({
   already_tried: z.string().trim().min(10, "Please share what you've already tried").max(2000),
   service_applying_for: z.string().min(1, "Please select which option you're applying for"),
   email: z.string().trim().email("Please enter a valid email address").max(255),
+  phone: z.string().trim().min(7, "Please enter a valid phone number").max(30),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -56,6 +57,7 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
           already_tried: data.already_tried,
           service_applying_for: data.service_applying_for,
           email: data.email,
+          phone: data.phone,
         });
 
       if (dbError) throw dbError;
@@ -74,6 +76,7 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
           formType: "advisory-application",
           name: data.full_name,
           email: data.email,
+          phone: data.phone,
           companyName: data.company_name,
           annualRevenue: data.annual_revenue,
           biggestChallenge: data.biggest_challenge,
@@ -211,6 +214,13 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
                 <Label htmlFor="email">Email Address *</Label>
                 <Input id="email" type="email" {...register("email")} placeholder="you@company.com" />
                 {errors.email && <p className="text-destructive text-xs">{errors.email.message}</p>}
+              </div>
+
+              {/* Phone */}
+              <div className="space-y-1.5">
+                <Label htmlFor="phone">Phone Number *</Label>
+                <Input id="phone" type="tel" {...register("phone")} placeholder="+1 (555) 000-0000" />
+                {errors.phone && <p className="text-destructive text-xs">{errors.phone.message}</p>}
               </div>
 
               <Button
