@@ -1,77 +1,91 @@
 
-## Two-Part Fix: Application Form + Video Testimonial White Space
+# Copy & Positioning Refinements — ChatGPT Feedback Implementation
 
-### Part 1 — The Pricing Question: Here's the Clear Answer
-
-ChatGPT's recommendation (and the right strategic call) is:
-
-- **Keep prices visible** ($1,000 Strategy Session, $5,000 Private Advisory) — they act as a filter. Serious operators see the number and self-qualify. This is already correct on the homepage Services cards.
-- **Remove direct Stripe checkout** — replace with an application. You decide who gets the Stripe link. This is already done on the homepage.
-- **The `/coaching` page still has direct Stripe "Book Now" buttons** — this contradicts the advisory positioning. We need to update that page to match: show the pricing, but gate it behind an application form instead of instant checkout.
-
-So to summarize: **prices stay visible everywhere. Checkout buttons become "Apply" buttons that open an application form.**
+This is a copy-and-language polish pass across 4 files. No database changes, no new components. Every change is a targeted word swap or small structural tweak.
 
 ---
 
-### Part 2 — Application Form
+## Files Being Changed
 
-We will build a short advisory application form that captures the right qualifying information. This form will be a modal that appears when someone clicks "Apply for a Session" or "Request Advisory Access" on either the homepage or the `/coaching` page.
+### 1. `src/components/CinematicHero.tsx`
 
-**Form Fields (7 questions — concise, serious, qualifying):**
-1. Full Name
-2. Company Name
-3. Annual Revenue Range (dropdown: Under $500K / $500K–$2M / $2M–$10M / $10M+)
-4. Biggest Business Challenge Right Now (textarea)
-5. What have you already tried? (textarea)
-6. Which option are you applying for? (dropdown: Strategy Session $1,000 / Private Advisory $5,000)
-7. Email Address
+**Authority line (line 148):**
+- Current: `Over $5B executed. Complex negotiations. Real-world leverage under pressure.`
+- New: `Over $5B executed across high-stakes negotiations and enterprise decisions.`
 
-**Where it saves:** Applications are saved to the backend database so Marshall can review them and follow up manually. A notification email is also sent to Marshall via the existing `send-form-notification` edge function.
+**Trust indicator label (line 183):**
+- Current: `Elite Consulting`
+- New: `Private Advisory`
 
-**Where the form appears:**
-- Homepage Services section: "Apply for a Session" and "Request Advisory Access" buttons open this modal
-- `/coaching` page: All Stripe "Book Now" / "Book Your Session" / "Book the 6-Session Intensive" buttons are replaced with "Apply for a Session" / "Request Private Advisory Access" buttons that open the same modal
-- The `How It Works` section on `/coaching` (step 1: "Choose Your Package", step 2: "Marshall Reaches Out") updates to reflect the application flow: Step 1 → "Submit Your Application", Step 2 → "Marshall Reviews & Reaches Out"
+**New quiet line added under the hero subheadline (after line 144):**
+- Add: `Not built for everyone. Designed for operators who move.` — rendered as a small italicized muted line, positioned between the subheadline and the authority line.
 
 ---
 
-### Part 3 — Fix Video Testimonial White Space
+### 2. `src/components/PersistentCTA.tsx`
 
-**Root Cause:** The `VideoTestimonial` component auto-generates a poster thumbnail by drawing a video frame onto a canvas. While this is processing (or if it fails), `posterUrl` is `null`. The component only renders the visual overlay when `posterUrl` exists — so during loading there's a blank white/transparent box. On the Lovable preview environment, cross-origin restrictions or video preloading issues can cause the canvas grab to fail silently, leaving a permanent white box.
+ChatGPT flagged this as the one element that breaks premium positioning. We'll update the copy to feel controlled rather than sales-funnel-y.
 
-**Fix:**
-- Add a `isLoading` state that shows a skeleton/placeholder background with a gold play button while the poster is generating
-- Add a dark background fallback (`bg-muted`) to the container so even if the poster never loads, you see a dark card with a centered play button — not white space
-- If `posterUrl` generation fails, fall back gracefully to showing just the play button on a dark background instead of a blank area
-- Add `poster` attribute directly to the `<video>` element using the generated URL once available, so browser-native controls show the thumbnail too
+- Text: `Ready to transform your business?` → `Executive Advisory — Limited Openings`
+- Button label: `6-Session Intensive` → `Request Access`
+- Button behavior: Instead of linking to `/coaching#intensive`, it opens the `AdvisoryApplicationModal` directly
+- Remove the `Calendar` icon (too "booking" in energy), replace with `ArrowRight`
+
+This keeps the bar alive (Option B from ChatGPT's suggestion) but makes it feel like access-gating rather than a sales prompt.
 
 ---
 
-### Files to Edit
+### 3. `src/components/Services.tsx`
 
-1. **`src/components/VideoTestimonial.tsx`** — Add loading state, dark background fallback, improved error handling so white space never appears
+**Section header (line 176):**
+- Current: `Group Programs & Training`
+- New: `Structured Programs`
 
-2. **`src/components/AdvisoryApplicationModal.tsx`** (new file) — The application form modal component with 7 fields, form validation, saves to database, and sends email notification
+**Bundle section header (line 217):**
+- Current: `Bundle & Save`
+- New: `Extended Engagement Options`
 
-3. **`src/components/Services.tsx`** — Change "Apply for a Session" and "Request Advisory Access" `<Link>` buttons to `<Button onClick>` that open the new AdvisoryApplicationModal
+**Strategy Session card button (line 22):**
+- Current CTA: `Apply for a Session`
+- New CTA: `Submit Application`
 
-4. **`src/pages/Coaching.tsx`** — Replace all Stripe checkout buttons with application-gating buttons that open the modal; update "How It Works" step copy; keep prices visible
+**Private Advisory card button (line 37):**
+- Current CTA: `Request Advisory Access`
+- New CTA: `Request Private Advisory`
 
-5. **Database migration** — Create an `advisory_applications` table to store submissions (name, company, revenue range, challenge, what they've tried, which service, email, submitted_at)
+**Private Advisory description (line 31):**
+- Current: `Long-term strategic access for high-level operators.`
+- New: `Direct strategic access for high-level operators navigating consequential decisions.`
 
-### Database Table Design
+**Ask Marshall callout (line 254):**
+- Current: `Not ready for a live call?`
+- New: `Prefer a focused written or video response?`
 
-```text
-advisory_applications
-├── id (uuid, primary key)
-├── full_name (text, not null)
-├── company_name (text, not null)
-├── annual_revenue (text, not null)
-├── biggest_challenge (text, not null)
-├── already_tried (text, not null)
-├── service_applying_for (text, not null)
-├── email (text, not null)
-└── created_at (timestamptz, default now())
-```
+**Ask Marshall button (line 260):**
+- Current: `Ask Marshall`
+- New: `Submit a Strategic Question`
 
-RLS: Insert allowed for everyone (public form). Select restricted (no public reads). This is a lead capture form — no auth required.
+---
+
+### 4. `src/pages/Coaching.tsx`
+
+**Ask Marshall callout heading (line 344):**
+- Current: `Not Sure About 1-on-1 Consulting?`
+- New: `Prefer a Focused Written or Video Response?`
+
+**Ask Marshall button (line 350):**
+- Current: `Ask Marshall — $250`
+- New: `Submit a Strategic Question — $250`
+
+---
+
+## Summary of All Changes
+
+| File | What Changes | Why |
+|---|---|---|
+| `CinematicHero.tsx` | Authority line rewrite, "Elite Consulting" → "Private Advisory", add quiet selectivity line | More institutional language; stronger authority signal |
+| `PersistentCTA.tsx` | Headline + button copy, opens application modal instead of /coaching link | Removes funnel energy; consistent with advisory positioning |
+| `Services.tsx` | Button CTAs, section headers, Private Advisory description, Ask Marshall framing | Tighter language across every touchpoint |
+| `Coaching.tsx` | Ask Marshall heading + button copy | Consistent with homepage changes |
+
+No database changes. No new components. Pure copy and small wiring change (PersistentCTA opens modal instead of linking).
