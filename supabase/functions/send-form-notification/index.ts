@@ -42,6 +42,7 @@ interface AdvisoryApplicationFormData {
   formType: 'advisory-application';
   name: string;
   email: string;
+  phone?: string;
   companyName: string;
   annualRevenue: string;
   biggestChallenge: string;
@@ -125,6 +126,7 @@ const handler = async (req: Request): Promise<Response> => {
         <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
         <p><strong>Name:</strong> ${appData.name}</p>
         <p><strong>Email:</strong> <a href="mailto:${appData.email}">${appData.email}</a></p>
+        <p><strong>Phone:</strong> ${appData.phone ? `<a href="tel:${appData.phone}">${appData.phone}</a>` : 'Not provided'}</p>
         <p><strong>Company:</strong> ${appData.companyName}</p>
         <p><strong>Annual Revenue:</strong> ${appData.annualRevenue}</p>
         <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
