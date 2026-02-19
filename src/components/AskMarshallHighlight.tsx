@@ -60,7 +60,7 @@ const AskMarshallHighlight = () => {
 
             <Button size="lg" variant="premium" className="gap-2 group" asChild>
               <Link to="/ask-marshall">
-                Start Here — Get Marshall's Analysis
+                Submit a Strategic Question
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </Button>
