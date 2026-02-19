@@ -1,69 +1,126 @@
 
-# Two Changes: Ask Marshall Card Redesign + Live Sessions vs. ALP University Separation
+# Site-Wide Copy & Strategy Refinement — Implementing ChatGPT's Recommendations
+
+This plan covers all the actionable changes from the audit, filtered and adapted to fit the existing codebase and brand positioning. Some suggestions are adopted as-is, some are adjusted, and a few are skipped with explanation.
 
 ---
 
-## Problem 1: Ask Marshall Card Looks Sunken, Not Elevated
+## What's Being Changed (and Why)
 
-### Why It Looks Wrong
-The standard cards use `.glass-card` which has `shadow-premium` (a multi-layer lifted shadow) and a subtle gradient background — they literally look like they're floating off the page. The Ask Marshall card currently replaces all of that with `bg-primary/5` (a flat tinted fill) and no elevation shadow. The result: the other two cards look like glass tiles hovering above the surface, and Ask Marshall looks like a pressed button inset into the surface.
+### 1. Navigation Rename — `src/components/Header.tsx`
 
-### The Fix: Elevate It Further, Not Differently
-Instead of using a different background treatment, the Ask Marshall card needs to be *more* elevated than its siblings — not differently styled. The approach:
-
-**Keep `.glass-card` as the base** (same floating aesthetic as siblings), then layer on top:
-- A brighter, more prominent gold border: `border-primary/60` instead of `border-primary/10`
-- A gold outer glow shadow on top of `shadow-premium`: add `shadow-[0_0_35px_-5px_hsl(45_100%_51%/0.4)]`
-- Slightly scale it up at rest: `scale-[1.02]` so it's physically taller/larger than its neighbors on desktop
-- Keep the top banner but give it a solid gold background (`bg-gradient-gold text-primary-foreground`) so it reads like a highlighted "RECOMMENDED" ribbon, not a muted note
-- The icon circle upgrades to `bg-primary/30` with the icon in gold
-- CTA text stays `font-bold text-base text-primary`
-
-This way all three cards share the same material (glass, elevated) but Ask Marshall is unambiguously the biggest and brightest one in the group.
-
-**File:** `src/components/StartHere.tsx`
-
----
-
-## Problem 2: "ALP Courses" Misrepresents Live Group Sessions
-
-### The Reality
-- **Power Hour** — live group call, daily, 8am EST
-- **Sales & Marketing School** — live group call, weekly
-- **Contractor School** — live group call, weekly
-- **ALP University** — recorded video library, $197/month (a passive content product)
-
-Lumping all four under one label creates a false impression. ALP University is a fundamentally different product type (self-paced, subscription, recorded) from the three live programs.
-
-### The Fix: Split into Two Subsections
-
-**Rename the current section from "ALP Courses" to "Live Group Programs"** and keep only the three live sessions (Power Hour, Sales & Marketing, Contractor School) in a 3-column grid.
-
-**Add a separate smaller row below it** for ALP University, positioned as the "on-demand" companion — a different value prop. It gets its own label like "On-Demand Library" with copy that makes clear it's the recorded archive, not a live program.
-
-This creates two distinct product categories:
-```text
-┌──────────────────────────────────────────────────────┐
-│  LIVE GROUP PROGRAMS                                 │
-│  [Power Hour] [Sales & Marketing] [Contractor School]│
-│  3 cards, full width, 3-col grid                     │
-├──────────────────────────────────────────────────────┤
-│  ON-DEMAND LIBRARY                                   │
-│  [ALP University — $197/mo]  (single wider card)     │
-└──────────────────────────────────────────────────────┘
-```
-
-ALP University's card gets a slightly different treatment — perhaps a horizontal layout (icon + text side by side) or a full-width banner card — to visually signal it's a different product type. Its tagline updates to something accurate like: "Recorded sessions + full video training library — $197/month."
-
-**File:** `src/components/Services.tsx`
-
----
-
-## Summary
-
-| Change | File | What Changes |
+| Current | New | Reason |
 |---|---|---|
-| Ask Marshall card elevated above siblings | `StartHere.tsx` | Glass base kept, gold border brightened, outer glow added, scale-up at rest, solid gold banner |
-| Live programs renamed + separated from University | `Services.tsx` | Section split into "Live Group Programs" (3-col) and "On-Demand Library" (ALP University, full-width card) |
+| Articles | Insights | More intellectual, authority-driven |
+| Programs | Ecosystem | Signals multi-layered, strategic positioning |
+| 1-on-1 Consulting | 1-on-1 Advisory | Premium tone; aligns with "advisory firm" brand positioning |
 
-No new components. No database changes. Two targeted file edits.
+The route links stay the same (`/articles`, `/programs`, `/coaching`) — only the display text changes.
+
+---
+
+### 2. Hero CTA Buttons — `src/components/CinematicHero.tsx`
+
+**Current:**
+- Gold primary: "Watch the Origin Story"
+- Outline secondary: "Work With Marshall"
+
+**New:**
+- Gold primary: "Submit a Strategic Question →" — links to `/ask-marshall`
+- Outline secondary: "Watch the Origin Story" — scrolls to `#origin-story`
+
+ChatGPT's reasoning is correct: one clear first step beats two competing calls to action. "Submit a Strategic Question" is the single lowest-friction, highest-clarity CTA for a new visitor.
+
+---
+
+### 3. About / "Why Marshall" Copy — `src/components/About.tsx`
+
+The subheadline under "Why Marshall" gets tightened:
+
+**Current:** "The strategic mind behind billion-dollar decisions"
+
+**New:** "Marshall Wilkinson has advised on over $5B in negotiated outcomes and enterprise-scale execution environments. He now teaches the frameworks behind those decisions to founders, operators, and contractors building serious companies."
+
+This replaces the vague subheadline AND the opening body paragraph — replacing them both with this single, clean, confident authority statement as the section subheadline. The rest of the body copy stays.
+
+---
+
+### 4. Live Group Programs Section Header — `src/components/Services.tsx`
+
+**Current label chip:** "Live Group Programs"
+**Current sub-text:** "Daily & weekly live calls — real-time, interactive, recorded for members"
+
+**New heading (h3):** "Train Live. Think Sharper. Move Faster."
+**New subheadline:** "Daily and weekly strategic sessions for operators in motion."
+
+The chip badge label ("Live Group Programs") stays as a category identifier above the new heading.
+
+**Contractor School tagline update:**
+- Current: "Scale your construction business"
+- New: "Scale like an operator, not a tradesman."
+
+---
+
+### 5. ALP University Card Rewrite — `src/components/Services.tsx`
+
+The On-Demand Library card copy gets replaced entirely:
+
+- **Title:** ALP University → "ALP University — The Operator's Archive"
+- **Description:** "Access every recorded Power Hour, Sales & Marketing School, and Contractor School session — indexed and updated daily. This is where serious operators study the thinking."
+- **Price:** "$197/month — Cancel anytime."
+- **CTA:** "Learn More" → "Enter the Archive →"
+- **Microline** under CTA: "If you can't attend live, you can still study the room."
+
+---
+
+### 6. Latest Insights Subheadline — `src/components/LatestInsights.tsx`
+
+**Current:** "Strategic frameworks, negotiation insights, and execution models."
+
+**New:** "Where strategic thinking is sharpened publicly."
+
+---
+
+### 7. Lead Magnet Body Copy — `src/components/LeadMagnet.tsx`
+
+**Current:** "Download the core framework Marshall uses with private advisory clients — free."
+
+**New:** "Download the core decision framework used in billion-dollar negotiations."
+
+Clean. Confident. No need to say "free" when the form already conveys that.
+
+---
+
+### 8. Persistent CTA Button Text — `src/components/PersistentCTA.tsx`
+
+**Current button:** "Submit a Question"
+**New button:** "Start Here →"
+
+Less transactional, more inviting — as recommended.
+
+---
+
+## What's NOT Being Changed (and Why)
+
+- **Section order:** The current order (Hero → Start Here → Featured In → About → Ask Marshall Highlight → Services → Latest Insights → Lead Magnet → Testimonials) is functionally correct and was intentionally designed in prior sessions. Reordering everything is a large structural change that deserves its own conversation.
+
+- **"Get Everything" bundle section removal:** The bundles (Growth Academy, Full Access) are legitimate product offerings. Removing them in this pass would require product-level decisions. Left as-is.
+
+- **CoachingTestimonials "Direct Advisory" rename:** The testimonials section is titled "What Clients Say About 1-on-1 Consulting" internally. Renaming it to "Direct Advisory" with a CTA button is a good idea — adding it to this pass since it's a small targeted change in `src/components/CoachingTestimonials.tsx`.
+
+---
+
+## Files to Edit
+
+| File | Changes |
+|---|---|
+| `src/components/Header.tsx` | Nav labels: Articles → Insights, Programs → Ecosystem, 1-on-1 Consulting → 1-on-1 Advisory |
+| `src/components/CinematicHero.tsx` | Swap hero CTAs: gold = "Submit a Strategic Question", outline = "Watch the Origin Story" |
+| `src/components/About.tsx` | Replace subheadline with tightened authority copy |
+| `src/components/Services.tsx` | Live section heading + subheadline, Contractor School tagline, ALP University card full rewrite |
+| `src/components/LatestInsights.tsx` | Subheadline copy update |
+| `src/components/LeadMagnet.tsx` | Body copy update |
+| `src/components/PersistentCTA.tsx` | Button text "Submit a Question" → "Start Here →" |
+| `src/components/CoachingTestimonials.tsx` | Section header → "Direct Advisory" + add "Book a Strategy Session →" CTA button below testimonials |
+
+8 files. All copy and light structural changes — no new components, no database changes, no routing changes.
