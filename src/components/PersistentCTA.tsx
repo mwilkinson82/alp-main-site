@@ -34,7 +34,7 @@ const PersistentCTA = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1 text-center md:text-left">
               <p className="text-primary-foreground font-semibold text-sm md:text-base">
-                Start Here — Ask Marshall ($250)
+                Start Here — Ask Marshall
               </p>
             </div>
             <div className="flex items-center gap-2">
