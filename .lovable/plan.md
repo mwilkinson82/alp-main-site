@@ -1,33 +1,52 @@
 
-# Remove "Full Access Membership" from the Access Dropdown
+# Homepage Services Section — Strategic Cleanup
+
+## The Three Problems Being Solved
+
+1. Maximum Proximity section shows raw pricing on the homepage, which risks price-shocking visitors before they understand the value
+2. "View All Programs & Pricing" button at the bottom duplicates what the Live Rooms page already does — unnecessary redundancy
+3. Private Advisory card doesn't make the "6-session" distinction prominent enough — it's buried in a bullet list
 
 ## What's Changing
 
-The "Full Access Membership" entry in the Access dropdown currently links to `/programs` — the same URL as "Live Rooms." This creates a broken-site perception when a user is already on that page and clicks it. Since Full Access is not a standalone page or experience, the cleanest fix is to remove it from the dropdown entirely.
+### Part 1 — Maximum Proximity: Remove Pricing, Replace with Outcome Language
 
-## Why This Is the Right Call
+The three bundle cards (Power Hour, Full Access, Full Access Annual) currently show large dollar amounts front-and-center. We will:
 
-- Full Access is a *bundle*, not a *destination*. It lives logically inside the Live Rooms page (the Full Access card section) and in the Investment Table.
-- The dropdown should only contain distinct destinations. Right now that's ALP University and Live Rooms — two clearly different things.
-- Full Access remains discoverable through the Live Rooms page, the Investment Table, the homepage Services/Ascension Ladder section, and the `/programs#full-access` anchor.
-- Removing it makes the nav cleaner and eliminates user confusion.
+- Replace the entire three-card bundle grid with a single, wide "Full Access" highlight card — no prices shown
+- The card presents the outcomes and what's included (all live rooms, private sessions, community)
+- CTA button says **"Explore Full Access"** and links to `/programs` where pricing is shown in full context
+- Remove the "View All Programs & Pricing" button at the bottom (redundant — the card CTA replaces it)
+- The "Full Access Membership" label pill and "Maximum Proximity." headline remain — they set the right tone
 
-## Result After Change
+### Part 2 — Advisory Cards: Surface the Session Count
 
-The Access dropdown will contain exactly two items:
-- ALP University — On-Demand Archive → `/alp-university`
-- Live Rooms — Power Hour · Sales & Marketing · Contractor School → `/programs`
+On the Strategy Session card:
+- Add a prominent sub-label directly under the title: **"1-session intensive"** (small, gold, bold)
 
-## Technical Details
+On the Private Advisory card:
+- Change the sub-label to: **"6-session intensive"** (same treatment)
+- This makes the core distinction scannable before anyone reads a single bullet
 
-### File: `src/components/Header.tsx`
+### Part 3 — Remove "View All Programs & Pricing" Bottom Button
 
-The `accessLinks` array (line 49–53) currently has three entries. Remove the third entry:
+Since the Maximum Proximity section now has a clear CTA pointing to the Live Rooms page, the bottom "View All Programs & Pricing" button is no longer needed. Removing it tightens the section.
 
-```
-{ name: "Full Access Membership", path: "/programs", sub: "All Live Rooms + Advisory Sessions", highlight: true },
-```
+## What Stays the Same
 
-This change applies to both desktop dropdown and mobile navigation (both use the same `accessLinks` array), so one removal handles both.
+- The three individual program cards (Power Hour, Sales & Marketing, Contractor School) stay — individual links per program are better UX than one generic Live Rooms link
+- The advisory cards still use the application modal (no direct checkout)
+- The ALP University wide card with "$197/month" pricing stays — it's a low-ticket subscription where transparency aids conversion
+- All pricing remains visible on the dedicated `/programs` page
 
-No other files need to change. The Full Access section on the `/programs` page, the Investment Table, and homepage references remain untouched.
+## Files to Change
+
+- **`src/components/Services.tsx`** — all changes are contained here:
+  - Restructure `bundles` array into a single full-access highlight object
+  - Replace the three-card grid with a single wide card
+  - Add session-count sub-labels to both advisory cards
+  - Remove the bottom CTA button
+
+## Result
+
+The homepage becomes a conviction page that drives visitors to dedicated pages. Price discovery happens in context (on program pages) rather than as a cold number on the homepage. The advisory section becomes instantly scannable — 1 session vs. 6 sessions is visible at a glance.
