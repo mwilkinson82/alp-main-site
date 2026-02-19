@@ -30,7 +30,8 @@ const Coaching = () => {
 
   const packages = [
     {
-      name: "Single Session",
+      name: "Strategy Session",
+      subtitle: "Single-session intensive",
       price: "$1,000",
       duration: "1 Hour",
       features: [
@@ -40,7 +41,7 @@ const Coaching = () => {
         "Personalized guidance and recommendations",
         "Follow-up resources and materials"
       ],
-      cta: "Apply for Private Advisory",
+      cta: "Request Private Advisory",
       premium: false,
     },
     {
@@ -113,11 +114,11 @@ const Coaching = () => {
         <section className="relative bg-background py-16 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-8">
-              <h1 className="text-5xl md:text-7xl font-bold">
-                <span className="text-gradient-gold">1-on-1 Consulting</span>
+                <h1 className="text-5xl md:text-7xl font-bold">
+                <span className="text-gradient-gold">Private Advisory</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Elite business consulting for entrepreneurs, CEOs, and sales professionals ready to scale beyond limits
+                Private strategic engagements for operators and founders who need execution systems, decision leverage, and real accountability installed fast.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                 <Button
