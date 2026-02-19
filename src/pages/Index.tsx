@@ -3,17 +3,16 @@ import CinematicHero from "@/components/CinematicHero";
 import ScrollProgress from "@/components/ScrollProgress";
 import FeaturedIn from "@/components/FeaturedIn";
 import Services from "@/components/Services";
-import InlineTestimonial from "@/components/InlineTestimonial";
 import About from "@/components/About";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
 import Testimonials from "@/components/Testimonials";
-import ContactForm from "@/components/ContactForm";
-
-import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PersistentCTA from "@/components/PersistentCTA";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
+import StartHere from "@/components/StartHere";
+import AskMarshallHighlight from "@/components/AskMarshallHighlight";
+import LatestInsights from "@/components/LatestInsights";
 
 const Index = () => {
   return (
@@ -29,23 +28,14 @@ const Index = () => {
         <ScrollProgress />
         <Header />
         <CinematicHero />
+        <StartHere />
         <FeaturedIn />
-        <Services />
-        <InlineTestimonial 
-          quote="Marshall didn't just coach me—he rebuilt the way I think about business."
-          author="Ahron Gluck"
-          role="CEO, AG Builders"
-        />
         <About />
-        <InlineTestimonial 
-          quote="The frameworks Marshall teaches have transformed how we scale and lead."
-          author="AJ Hoover"
-          role="CEO, Beau Monde Builders"
-        />
+        <AskMarshallHighlight />
+        <Services />
+        <LatestInsights />
         <CoachingTestimonials />
         <Testimonials />
-        <ContactForm />
-        <CTA />
         <Footer />
         <PersistentCTA />
       </main>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, HardHat, TrendingUp, Sparkles, Check, MessageCircle } from "lucide-react";
+import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
@@ -12,6 +12,8 @@ const advisoryPaths = [
   {
     title: "Strategy Session",
     price: "$1,000",
+    badge: "BY APPLICATION" as string | undefined,
+    badgeMuted: true,
     description: "A focused 60-minute deep dive on your most pressing issue.",
     benefits: [
       "60-minute deep-dive on your biggest challenge",
@@ -19,14 +21,14 @@ const advisoryPaths = [
       "Follow-up summary with next steps",
     ],
     link: "/coaching",
-    cta: "Submit Application",
+    cta: "Book a Strategy Session",
     highlight: false,
-    badge: undefined as string | undefined,
   },
   {
     title: "Private Advisory",
     price: "$5,000",
-    badge: "BY APPLICATION",
+    badge: "BY APPLICATION" as string | undefined,
+    badgeMuted: false,
     description: "Direct strategic access for high-level operators navigating consequential decisions.",
     benefits: [
       "Six 1-hour sessions tailored to your business",
@@ -45,12 +47,6 @@ const programs = [
     title: "Power Hour",
     tagline: "Daily live coaching at 8am EST",
     link: "/power-hour",
-  },
-  {
-    icon: HardHat,
-    title: "Contractor School",
-    tagline: "Scale your construction business",
-    link: "/contractor-school",
   },
   {
     icon: TrendingUp,
@@ -100,10 +96,10 @@ const Services = () => {
       <div className="container mx-auto px-4">
         <header className="text-center mb-16 space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold">
-            <span className="text-gradient-gold">Work With Marshall</span>
+            <span className="text-gradient-gold">Direct Access Options</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            There is one path to working with Marshall directly. Choose your entry point.
+            Private, high-leverage engagements for operators ready to move.
           </p>
         </header>
 
@@ -123,7 +119,11 @@ const Services = () => {
                 className={`glass-card hover-lift relative ${pkg.highlight ? "border-primary/40" : ""}`}
               >
                 {pkg.badge && (
-                  <div className="absolute top-0 right-0 bg-gradient-gold text-primary-foreground px-4 py-1 text-xs font-bold rounded-bl-lg rounded-tr-xl">
+                  <div className={`absolute top-0 right-0 px-4 py-1 text-xs font-bold rounded-bl-lg rounded-tr-xl ${
+                    pkg.badgeMuted
+                      ? "bg-muted border border-primary/30 text-primary"
+                      : "bg-gradient-gold text-primary-foreground"
+                  }`}>
                     {pkg.badge}
                   </div>
                 )}
@@ -173,7 +173,7 @@ const Services = () => {
 
         {/* Tier 2: Group Programs */}
         <div className="mb-20">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Structured Programs</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Learn the ALP Framework</h3>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
@@ -241,29 +241,6 @@ const Services = () => {
               </Card>
             ))}
           </div>
-        </div>
-
-        {/* Ask Marshall Callout */}
-        <div className="max-w-3xl mx-auto mb-12">
-          <Card className="glass-card hover-lift border-primary/20">
-            <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
-              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <MessageCircle className="w-7 h-7 text-primary" />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h4 className="text-xl font-bold mb-1">Prefer a focused written or video response?</h4>
-                <p className="text-muted-foreground text-sm">
-                  Ask Marshall a specific question and get a personalized video answer within 24 hours — <strong className="text-primary">$250</strong>
-                </p>
-              </div>
-              <Button variant="premium" className="gap-2 whitespace-nowrap" asChild>
-                 <Link to="/ask-marshall">
-                   Submit a Strategic Question
-                   <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Bottom CTA */}

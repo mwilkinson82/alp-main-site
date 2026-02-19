@@ -55,7 +55,7 @@ const About = () => {
         </div>
 
         {/* Origin Story Video */}
-        <div className="max-w-5xl mx-auto mb-24">
+        <div id="origin-story" className="max-w-5xl mx-auto mb-24">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-bold mb-2">The Origin Story</h3>
             <p className="text-lg text-muted-foreground">

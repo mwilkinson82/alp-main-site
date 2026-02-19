@@ -1,6 +1,5 @@
 import { Volume2, VolumeX, ArrowRight } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
 import marshallHero from "@/assets/marshall-hero.png";
 import alpLogo from "@/assets/alp-logo.png";
 import { gsap } from "gsap";
@@ -134,51 +133,40 @@ const CinematicHero = () => {
 
               {/* Main Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl text-foreground leading-tight">
-                Strategic Advisory for
-                <span className="text-gradient-gold block mt-2">Operators Who Demand Results</span>
+                Strategic Leverage for
+                <span className="text-gradient-gold block mt-2">Founders and Operators</span>
               </h1>
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Marshall Wilkinson advises founders, executives, and high-performing professionals on negotiation, execution, and scale — using frameworks forged in high-stakes business environments.
+                Marshall Wilkinson teaches negotiation, execution, and decision architecture — built from over $5B in real-world outcomes across high-stakes environments.
               </p>
 
-              {/* Quiet selectivity line */}
-              <p className="text-sm text-muted-foreground/50 italic">
-                Not built for everyone. Designed for operators who move.
+              {/* Micro line */}
+              <p className="text-sm text-muted-foreground/60 italic">
+                Frameworks, not motivation. Strategy, not noise.
               </p>
 
-              {/* Authority Line */}
-              <p className="text-sm md:text-base text-muted-foreground/70 tracking-wide">
-                Over <span className="text-primary font-semibold">$5B</span> executed across high-stakes negotiations and enterprise decisions.
+              {/* Brand line */}
+              <p className="text-base md:text-lg font-semibold italic" style={{ color: "hsl(var(--primary))", opacity: 0.85 }}>
+                "I teach the frameworks. I deliver the outcomes."
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-4">
-                <div className="flex flex-col items-center gap-1.5">
-                  <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
-                    <Link to="/coaching">
-                      Request Private Advisory Access
-                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                  <p className="text-xs text-muted-foreground/60 italic">For founders and executives making consequential decisions.</p>
-                </div>
-                <div className="flex flex-col items-center gap-1.5">
-                  <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
-                    <Link to="/coaching">
-                      Start With a Strategy Session
-                    </Link>
-                  </Button>
-                  <p className="text-xs text-muted-foreground/60 italic">A focused 60-minute deep dive. By application only.</p>
-                </div>
-              </div>
-
-              {/* Client Login Link */}
-              <div className="pt-4">
-                <a href="https://marshallwilkinson.mykajabi.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold underline underline-offset-4">
-                  Existing Client? Login to ALP Portal →
-                </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" onClick={() => {
+                  const el = document.getElementById("origin-story");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}>
+                  Watch the Origin Story
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" onClick={() => {
+                  const el = document.getElementById("services");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}>
+                  Work With Marshall
+                </Button>
               </div>
 
               {/* Trust Indicators */}
