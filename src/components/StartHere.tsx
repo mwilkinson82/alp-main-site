@@ -24,7 +24,7 @@ const entries = [
     title: "Ask Marshall",
     subtitle: "Get a direct strategic answer — without booking a call.",
     body: "Submit your most pressing business decision and receive a direct Loom breakdown of what to do next — with clear steps, structure, and leverage.",
-    cta: "Submit a Question",
+    cta: "Start Here — Get Marshall's Analysis",
     href: "/ask-marshall",
     featured: true,
   },
