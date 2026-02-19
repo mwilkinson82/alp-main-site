@@ -1,104 +1,77 @@
 
-## Homepage Strategic Repositioning — Advisory Firm Positioning
+## Two-Part Fix: Application Form + Video Testimonial White Space
 
-### Summary
-This is a targeted content and copy rewrite — not a visual redesign. The site already looks premium. What we're changing is the **language, hierarchy, and offer framing** to position Marshall as a strategic advisor, not a transactional coach with a product menu.
+### Part 1 — The Pricing Question: Here's the Clear Answer
 
----
+ChatGPT's recommendation (and the right strategic call) is:
 
-### Changes Overview
+- **Keep prices visible** ($1,000 Strategy Session, $5,000 Private Advisory) — they act as a filter. Serious operators see the number and self-qualify. This is already correct on the homepage Services cards.
+- **Remove direct Stripe checkout** — replace with an application. You decide who gets the Stripe link. This is already done on the homepage.
+- **The `/coaching` page still has direct Stripe "Book Now" buttons** — this contradicts the advisory positioning. We need to update that page to match: show the pricing, but gate it behind an application form instead of instant checkout.
 
-**1. Hero Section — Rewrite (`src/components/CinematicHero.tsx`)**
-
-The current headline ("Transform Your Business with Proven Expertise") and subheadline reference construction-heavy language and feel generic. We rewrite this with the exact copy recommended:
-
-- **Overline**: Keep "Altitude Logic Pressure" pill — it's brand, not filler
-- **Headline**: "Strategic Advisory for Operators Who Demand Results"
-- **Subheadline**: "Marshall Wilkinson advises founders, executives, and high-performing professionals on negotiation, execution, and scale — using frameworks forged in high-stakes business environments."
-- **Authority line** (new, smaller text with gold accent on numbers): "Over $5B executed. Complex negotiations. Real-world leverage under pressure."
-- **Primary CTA button**: "Request Private Advisory Access" → links to `/coaching`
-- **Primary CTA microcopy** (small text below): "For founders and executives making consequential decisions."
-- **Secondary CTA button**: "Start With a Strategy Session" → links to `/coaching`
-- **Secondary CTA microcopy** (small text below): "A focused 60-minute deep dive. By application only."
-- **Trust stat cards**: Remove "Elite Coaching" label from the first card → change to "Elite Consulting". Keep the 3 stat cards but update the bottom label on card 1 from "Elite Coaching" to "Elite Consulting"
-- **Remove**: The `<Calendar>` import and icon (no longer used)
-
-**2. Services Section — Restructured (`src/components/Services.tsx`)**
-
-Replace the scattered product grid with the clean 3-path "Work With Marshall" structure:
-
-- **Section header**: Change from "Programs / Choose your path" to **"Work With Marshall"** with subtext "There is one path to working with Marshall directly. Choose your entry point."
-- **Path 1 — Private Advisory** (replaces the 6-Session card):
-  - Title: "Private Advisory"
-  - Description: "Long-term strategic access for high-level operators."
-  - Price: "$5,000" (kept visible — pre-qualifies mindset)
-  - Benefits list: unchanged
-  - Badge: Change "MOST POPULAR" → "BY APPLICATION"
-  - **Button**: Remove direct Stripe checkout. New button: "Request Advisory Access" → links to `/coaching`
-- **Path 2 — Strategy Session** (replaces the Single Session card):
-  - Title: "Strategy Session"
-  - Description: "A focused 60-minute deep dive on your most pressing issue."
-  - Price: "$1,000" (kept visible)
-  - Benefits: unchanged
-  - **Button**: Remove direct Stripe checkout. New button: "Apply for a Session" → links to `/coaching`
-- **"View all consulting options" link**: Keep — it now makes more sense contextually
-- **Tier 2 Group Programs**: Keep exactly as-is — grid of 4 program cards. This is fine as self-serve
-- **Bundles (Tier 3)**: Keep exactly as-is — self-serve checkout modals are appropriate here
-- **Ask Marshall callout**: Keep — it's a soft entry point, appropriate at the bottom
-- **Remove**: `STRIPE_SINGLE` and `STRIPE_6SESSION` constants (no longer used in this file; they remain on the `/coaching` page)
-
-**3. Page Flow — Remove `CoachingCTA` (`src/pages/Index.tsx`)**
-
-The `CoachingCTA` section mid-page ("Still Deciding? Start With One Session — $1,000" with a direct Stripe link) undercuts the advisory positioning being built above. Remove it from the homepage. It can remain on the `/coaching` page where buyers are already researching.
-
-- Remove `<CoachingCTA />` from the JSX
-- Remove the `CoachingCTA` import
-
-**4. Move First Testimonial Higher (`src/pages/Index.tsx`)**
-
-Currently the first inline testimonial ("Marshall didn't just coach me — he rebuilt the way I think about business" — Ahron Gluck) appears *after* the Services section. Per the recommendation, a high-authority testimonial should appear *immediately after* the "Work With Marshall" section.
-
-New page flow:
-```text
-CinematicHero
-FeaturedIn
-Services (restructured)
-InlineTestimonial — Ahron Gluck (moved up — was after Services already, stays here)
-About
-InlineTestimonial — AJ Hoover
-CoachingTestimonials
-Testimonials
-ContactForm
-CTA
-Footer
-PersistentCTA
-```
-
-The first InlineTestimonial is already positioned after Services — so this ordering is correct as-is. We simply remove `CoachingCTA` which currently sits between the second testimonial and `CoachingTestimonials`.
-
-**5. About Section — Language Update (`src/components/About.tsx`)**
-
-Minor copy updates to shift from biography/construction-heavy framing to strategic capability framing:
-
-- Section header: "Meet Marshall" → "Why Marshall"
-- Subheadline: "Builder of systems, strategist, and architect of transformation" → "The strategic mind behind billion-dollar decisions."
-- Highlight card 1 title: "Proven Track Record" → "Executed at Scale" | description: remove "construction projects" → "Over $5B in high-stakes negotiations and executed projects"
-- Highlight card 3: "Focused Expertise" → "Decision Architecture" | description: "Specialized in high-leverage decision-making, negotiation, and scale"
-- In the body copy, soften the construction-specific references — keep them as proof points ("where failure wasn't an option") but don't lead with them
+So to summarize: **prices stay visible everywhere. Checkout buttons become "Apply" buttons that open an application form.**
 
 ---
 
-### What We Are NOT Changing
-- The visual design, color scheme, glassmorphism cards, or layout structure
-- The `/coaching` page (all Stripe links and full offer detail remain there)
-- Group program pages, bundle modals, or Ask Marshall page
-- The video/image cinematic sequence intro logic
-- FeaturedIn, CoachingTestimonials, Testimonials, ContactForm, CTA, Footer components
+### Part 2 — Application Form
+
+We will build a short advisory application form that captures the right qualifying information. This form will be a modal that appears when someone clicks "Apply for a Session" or "Request Advisory Access" on either the homepage or the `/coaching` page.
+
+**Form Fields (7 questions — concise, serious, qualifying):**
+1. Full Name
+2. Company Name
+3. Annual Revenue Range (dropdown: Under $500K / $500K–$2M / $2M–$10M / $10M+)
+4. Biggest Business Challenge Right Now (textarea)
+5. What have you already tried? (textarea)
+6. Which option are you applying for? (dropdown: Strategy Session $1,000 / Private Advisory $5,000)
+7. Email Address
+
+**Where it saves:** Applications are saved to the backend database so Marshall can review them and follow up manually. A notification email is also sent to Marshall via the existing `send-form-notification` edge function.
+
+**Where the form appears:**
+- Homepage Services section: "Apply for a Session" and "Request Advisory Access" buttons open this modal
+- `/coaching` page: All Stripe "Book Now" / "Book Your Session" / "Book the 6-Session Intensive" buttons are replaced with "Apply for a Session" / "Request Private Advisory Access" buttons that open the same modal
+- The `How It Works` section on `/coaching` (step 1: "Choose Your Package", step 2: "Marshall Reaches Out") updates to reflect the application flow: Step 1 → "Submit Your Application", Step 2 → "Marshall Reviews & Reaches Out"
+
+---
+
+### Part 3 — Fix Video Testimonial White Space
+
+**Root Cause:** The `VideoTestimonial` component auto-generates a poster thumbnail by drawing a video frame onto a canvas. While this is processing (or if it fails), `posterUrl` is `null`. The component only renders the visual overlay when `posterUrl` exists — so during loading there's a blank white/transparent box. On the Lovable preview environment, cross-origin restrictions or video preloading issues can cause the canvas grab to fail silently, leaving a permanent white box.
+
+**Fix:**
+- Add a `isLoading` state that shows a skeleton/placeholder background with a gold play button while the poster is generating
+- Add a dark background fallback (`bg-muted`) to the container so even if the poster never loads, you see a dark card with a centered play button — not white space
+- If `posterUrl` generation fails, fall back gracefully to showing just the play button on a dark background instead of a blank area
+- Add `poster` attribute directly to the `<video>` element using the generated URL once available, so browser-native controls show the thumbnail too
 
 ---
 
 ### Files to Edit
-1. `src/components/CinematicHero.tsx` — Rewrite hero copy + CTAs
-2. `src/components/Services.tsx` — Restructure offer hierarchy, remove Stripe links, update CTA language
-3. `src/pages/Index.tsx` — Remove `CoachingCTA`
-4. `src/components/About.tsx` — Update section header and highlight card copy
+
+1. **`src/components/VideoTestimonial.tsx`** — Add loading state, dark background fallback, improved error handling so white space never appears
+
+2. **`src/components/AdvisoryApplicationModal.tsx`** (new file) — The application form modal component with 7 fields, form validation, saves to database, and sends email notification
+
+3. **`src/components/Services.tsx`** — Change "Apply for a Session" and "Request Advisory Access" `<Link>` buttons to `<Button onClick>` that open the new AdvisoryApplicationModal
+
+4. **`src/pages/Coaching.tsx`** — Replace all Stripe checkout buttons with application-gating buttons that open the modal; update "How It Works" step copy; keep prices visible
+
+5. **Database migration** — Create an `advisory_applications` table to store submissions (name, company, revenue range, challenge, what they've tried, which service, email, submitted_at)
+
+### Database Table Design
+
+```text
+advisory_applications
+├── id (uuid, primary key)
+├── full_name (text, not null)
+├── company_name (text, not null)
+├── annual_revenue (text, not null)
+├── biggest_challenge (text, not null)
+├── already_tried (text, not null)
+├── service_applying_for (text, not null)
+├── email (text, not null)
+└── created_at (timestamptz, default now())
+```
+
+RLS: Insert allowed for everyone (public form). Select restricted (no public reads). This is a lead capture form — no auth required.
