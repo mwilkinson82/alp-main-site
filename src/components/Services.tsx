@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check } from "lucide-react";
+import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check, HardHat } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
@@ -59,6 +59,12 @@ const programs = [
     title: "ALP University",
     tagline: "Full video training library",
     link: "/alp-university",
+  },
+  {
+    icon: HardHat,
+    title: "Contractor School",
+    tagline: "Scale your construction business",
+    link: "/contractor-school",
   },
 ];
 
