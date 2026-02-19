@@ -8,7 +8,7 @@ import About from "@/components/About";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
-import CoachingCTA from "@/components/CoachingCTA";
+
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import PersistentCTA from "@/components/PersistentCTA";
@@ -42,7 +42,6 @@ const Index = () => {
           author="AJ Hoover"
           role="CEO, Beau Monde Builders"
         />
-        <CoachingCTA />
         <CoachingTestimonials />
         <Testimonials />
         <ContactForm />
