@@ -44,9 +44,7 @@ const AskMarshallHighlight = () => {
             </h2>
 
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Not ready for a live session? Get Marshall's direct analysis on
-              your most pressing business decision — delivered as a personalized
-              Loom video within 24 hours. No fluff. No waiting. Just leverage.
+              Not ready for a live engagement? Get Marshall's direct systems-level analysis on your most pressing business decision — delivered within 24 hours.
             </p>
 
             <ul className="space-y-3">

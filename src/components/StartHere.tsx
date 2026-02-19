@@ -14,6 +14,7 @@ const entries = [
     icon: Archive,
     title: "ALP University",
     subtitle: "The Operator's Archive. Updated daily.",
+    body: "Access the full repository of recorded Power Hour, Sales & Marketing School, and Contractor School sessions — indexed and expanded every week.",
     price: "$197/mo",
     cta: "Enter the Archive",
     href: "/alp-university",
@@ -23,6 +24,7 @@ const entries = [
     icon: MessageCircle,
     title: "Ask Marshall",
     subtitle: "Get a direct strategic answer — without booking a call.",
+    body: "Submit your most pressing business decision and receive a direct Loom breakdown of what to do next — with clear steps, structure, and leverage.",
     price: "$250",
     cta: "Submit a Question",
     href: "/ask-marshall",
@@ -32,6 +34,7 @@ const entries = [
     icon: Users,
     title: "Direct Advisory",
     subtitle: "Private strategy sessions and long-form intensives.",
+    body: "Private strategic engagements designed to install execution systems, sharpen leadership decisions, and remove bottlenecks.",
     price: "From $1,000",
     cta: "Explore 1-on-1 Options",
     href: "/coaching",
@@ -46,10 +49,10 @@ const StartHere = () => {
         {/* Section header */}
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-bold">
-            <span className="text-gradient-gold">How You Can Engage</span>
+            <span className="text-gradient-gold">Choose Your Access Level</span>
           </h2>
           <p className="text-muted-foreground mt-3 text-lg">
-            Three paths depending on how directly you want access.
+            Three paths depending on how directly you want systems, execution clarity, and decision leverage.
           </p>
         </div>
 
@@ -95,6 +98,7 @@ const StartHere = () => {
                   <div className="flex-1 space-y-1.5">
                     <h3 className="text-lg font-bold">{entry.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed">{entry.body}</p>
                   </div>
                   <p className="text-2xl font-bold text-primary">{entry.price}</p>
                   <div className="flex items-center gap-2 text-base font-bold text-primary pt-1 group-hover:gap-3 transition-all">
@@ -109,10 +113,11 @@ const StartHere = () => {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:shadow-glow transition-smooth">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <div className="flex-1 space-y-1.5">
-                  <h3 className="text-lg font-bold">{entry.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
-                </div>
+              <div className="flex-1 space-y-1.5">
+                <h3 className="text-lg font-bold">{entry.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
+                <p className="text-sm text-muted-foreground/80 leading-relaxed">{entry.body}</p>
+              </div>
                 <p className="text-xl font-bold text-primary">{entry.price}</p>
                 <div className="flex items-center gap-1.5 text-sm font-semibold text-primary pt-1 group-hover:gap-2 transition-all">
                   {entry.cta}
