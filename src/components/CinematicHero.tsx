@@ -139,7 +139,7 @@ const CinematicHero = () => {
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Marshall Wilkinson teaches negotiation, execution, and decision architecture — built from over $5B in real-world outcomes across high-stakes environments.
+                Marshall Wilkinson teaches negotiation, execution, and decision architecture — built from over $5B in real-world outcomes across enterprise deals and high-stakes business decisions.
               </p>
 
               {/* Micro line */}
@@ -172,16 +172,16 @@ const CinematicHero = () => {
               {/* Trust Indicators */}
               <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-3xl md:text-5xl font-bold text-primary">1 on 1</div>
-                  <div className="text-sm md:text-base text-muted-foreground">Private Advisory</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">1-on-1 Advisory</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Private Strategic Engagements</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-3xl md:text-5xl font-bold text-primary">1,000s</div>
-                  <div className="text-sm md:text-base text-muted-foreground">Training Hours</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">1,000+ Hours</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Training & Consulting</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-3xl md:text-5xl font-bold text-primary">Daily</div>
-                  <div className="text-sm md:text-base text-muted-foreground">Power Hour</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">Daily Live</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Power Hour Community</div>
                 </div>
               </div>
             </div>
