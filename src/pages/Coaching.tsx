@@ -79,9 +79,9 @@ const Coaching = () => {
   return (
     <>
       <SEO 
-        title="Marshall Wilkinson - 1-on-1 Business Consulting Sessions"
-        description="Get personalized business consulting from Marshall Wilkinson. Deep-dive 1-on-1 sessions tailored to your challenges with lifetime recording access. Elite consulting for CEOs, entrepreneurs, and sales professionals."
-        keywords="Marshall Wilkinson consulting, Marshall Wilkinson 1-on-1, Marshall Wilkinson consultant, 1-on-1 consulting, business consulting, personalized consulting, executive consulting, leadership consulting, ALP consulting"
+        title="Marshall Wilkinson - Private Advisory | 1-on-1 Strategic Sessions"
+        description="Apply for Private Advisory with Marshall Wilkinson. Single-session and 6-session intensive engagements — virtual via Zoom. Built for operators who need execution systems and decision leverage installed fast."
+        keywords="Marshall Wilkinson private advisory, Marshall Wilkinson 1-on-1, strategic advisory, business advisory, executive advisory, ALP private advisory, strategy session, 6-session intensive"
         canonical="/coaching"
       />
       <StructuredData 

@@ -12,6 +12,7 @@ const staticPages = [
   { loc: "/programs", changefreq: "weekly", priority: "0.9" },
   { loc: "/power-hour", changefreq: "weekly", priority: "0.9" },
   { loc: "/coaching", changefreq: "weekly", priority: "0.9" },
+  { loc: "/ask-marshall", changefreq: "weekly", priority: "0.9" },
   { loc: "/alp-university", changefreq: "weekly", priority: "0.9" },
   { loc: "/contractor-school", changefreq: "weekly", priority: "0.8" },
   { loc: "/sales-marketing-school", changefreq: "weekly", priority: "0.8" },
