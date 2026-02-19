@@ -1,59 +1,61 @@
 
-# Three Focused Changes: Section Rename, Ask Marshall Standout Card, Featured In Jazz-Up
+# Two Changes: Ask Marshall Card Redesign + Live Sessions vs. ALP University Separation
 
 ---
 
-## Change 1: Rename "Learn the ALP Framework" → "ALP Courses"
+## Problem 1: Ask Marshall Card Looks Sunken, Not Elevated
 
-**File: `src/components/Services.tsx`**
+### Why It Looks Wrong
+The standard cards use `.glass-card` which has `shadow-premium` (a multi-layer lifted shadow) and a subtle gradient background — they literally look like they're floating off the page. The Ask Marshall card currently replaces all of that with `bg-primary/5` (a flat tinted fill) and no elevation shadow. The result: the other two cards look like glass tiles hovering above the surface, and Ask Marshall looks like a pressed button inset into the surface.
 
-The `<h3>` heading that currently reads "Learn the ALP Framework" will be changed to **"ALP Courses"** — short, distinct, and doesn't conflict with the lead magnet section's "ALP Framework" language lower on the page.
+### The Fix: Elevate It Further, Not Differently
+Instead of using a different background treatment, the Ask Marshall card needs to be *more* elevated than its siblings — not differently styled. The approach:
 
----
+**Keep `.glass-card` as the base** (same floating aesthetic as siblings), then layer on top:
+- A brighter, more prominent gold border: `border-primary/60` instead of `border-primary/10`
+- A gold outer glow shadow on top of `shadow-premium`: add `shadow-[0_0_35px_-5px_hsl(45_100%_51%/0.4)]`
+- Slightly scale it up at rest: `scale-[1.02]` so it's physically taller/larger than its neighbors on desktop
+- Keep the top banner but give it a solid gold background (`bg-gradient-gold text-primary-foreground`) so it reads like a highlighted "RECOMMENDED" ribbon, not a muted note
+- The icon circle upgrades to `bg-primary/30` with the icon in gold
+- CTA text stays `font-bold text-base text-primary`
 
-## Change 2: Ask Marshall Card Stands Out in "Start Here"
+This way all three cards share the same material (glass, elevated) but Ask Marshall is unambiguously the biggest and brightest one in the group.
 
-**File: `src/components/StartHere.tsx`**
-
-Currently, all three cards use the exact same `glass-card` styling. The Ask Marshall card (index 2) needs to visually break from the pack as the recommended entry point. The fix applies conditional styling when `index === 2`:
-
-**Card container gets:**
-- A gold-tinted border: `border border-primary/40` (replaces the plain glass border)
-- A very subtle gold background tint: `bg-primary/5`
-- A soft gold glow shadow: `shadow-[0_0_30px_-5px_hsl(45_100%_51%/0.25)]`
-
-**Icon background gets:**
-- Upgraded from `bg-primary/10` to `bg-primary/20` — more visible gold circle
-
-**Badge gets upgraded from a tiny pill to a prominent label:**
-- Current: tiny 10px pill in the top-right corner with low contrast
-- New: full-width banner strip at the top of the card reading **"MOST POPULAR ENTRY POINT"** in gold text on a `bg-primary/10` background with a bottom border `border-b border-primary/20` — mimics a "recommended" ribbon treatment
-
-**CTA text gets a visual boost:**
-- The `Submit a Question` CTA link text gets bumped to `font-bold` and `text-base` (vs the other cards' `text-sm`) and the arrow gets a gold ring treatment
-
-This makes the Ask Marshall card feel like a featured/recommended product without being garish.
+**File:** `src/components/StartHere.tsx`
 
 ---
 
-## Change 3: "As Featured In" Strip — Credibility Chip Treatment
+## Problem 2: "ALP Courses" Misrepresents Live Group Sessions
 
-**File: `src/components/FeaturedIn.tsx`**
+### The Reality
+- **Power Hour** — live group call, daily, 8am EST
+- **Sales & Marketing School** — live group call, weekly
+- **Contractor School** — live group call, weekly
+- **ALP University** — recorded video library, $197/month (a passive content product)
 
-Right now the section is invisible: plain muted text on a muted background with no visual anchors. Three things change:
+Lumping all four under one label creates a false impression. ALP University is a fundamentally different product type (self-paced, subscription, recorded) from the three live programs.
 
-**Section header upgrade:**
-- "As Featured In" label gets a decorative treatment: two thin gold lines flanking it on left and right (using CSS flex + `border-t border-primary/40` dividers), making it feel like a formal credibility section rather than a footnote
+### The Fix: Split into Two Subsections
 
-**Publication names become bordered chips:**
-- Each name gets wrapped in a `border border-primary/20 rounded-full px-5 py-2` chip with `bg-primary/5` background tint
-- Text color lifts from `text-foreground/60` to `text-foreground/80` with `font-semibold`
-- On hover: `hover:border-primary/50 hover:bg-primary/10 transition-colors` for subtle interactivity
+**Rename the current section from "ALP Courses" to "Live Group Programs"** and keep only the three live sessions (Power Hour, Sales & Marketing, Contractor School) in a 3-column grid.
 
-**Section background:**
-- Stays muted but the padding increases slightly (`py-14`) so there's more breathing room around the chips — currently it feels cramped which contributes to the "invisible" feeling
+**Add a separate smaller row below it** for ALP University, positioned as the "on-demand" companion — a different value prop. It gets its own label like "On-Demand Library" with copy that makes clear it's the recorded archive, not a live program.
 
-These three together make the Featured In strip feel like a credibility statement, not an afterthought.
+This creates two distinct product categories:
+```text
+┌──────────────────────────────────────────────────────┐
+│  LIVE GROUP PROGRAMS                                 │
+│  [Power Hour] [Sales & Marketing] [Contractor School]│
+│  3 cards, full width, 3-col grid                     │
+├──────────────────────────────────────────────────────┤
+│  ON-DEMAND LIBRARY                                   │
+│  [ALP University — $197/mo]  (single wider card)     │
+└──────────────────────────────────────────────────────┘
+```
+
+ALP University's card gets a slightly different treatment — perhaps a horizontal layout (icon + text side by side) or a full-width banner card — to visually signal it's a different product type. Its tagline updates to something accurate like: "Recorded sessions + full video training library — $197/month."
+
+**File:** `src/components/Services.tsx`
 
 ---
 
@@ -61,8 +63,7 @@ These three together make the Featured In strip feel like a credibility statemen
 
 | Change | File | What Changes |
 |---|---|---|
-| Rename section header | `Services.tsx` | "Learn the ALP Framework" → "ALP Courses" |
-| Ask Marshall card standout | `StartHere.tsx` | Gold border, gold background tint, top banner badge, stronger CTA |
-| Featured In visual upgrade | `FeaturedIn.tsx` | Flanking dividers on label, chip-style publication names, lifted opacity |
+| Ask Marshall card elevated above siblings | `StartHere.tsx` | Glass base kept, gold border brightened, outer glow added, scale-up at rest, solid gold banner |
+| Live programs renamed + separated from University | `Services.tsx` | Section split into "Live Group Programs" (3-col) and "On-Demand Library" (ALP University, full-width card) |
 
-No new components. No database changes. Three targeted file edits.
+No new components. No database changes. Two targeted file edits.
