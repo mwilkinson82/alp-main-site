@@ -41,7 +41,7 @@ const LatestInsights = () => {
             <span className="text-gradient-gold">Latest Insights</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Strategic frameworks, negotiation insights, and execution models.
+            Where strategic thinking is sharpened publicly.
           </p>
         </div>
 
