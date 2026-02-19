@@ -8,8 +8,8 @@ import { VideoTestimonial } from "@/components/VideoTestimonial";
 const highlights = [
   {
     icon: Award,
-    title: "Proven Track Record",
-    description: "Over $2.5 billion in construction projects successfully delivered"
+    title: "Executed at Scale",
+    description: "Over $5B in high-stakes negotiations and executed projects"
   },
   {
     icon: TrendingUp,
@@ -18,13 +18,13 @@ const highlights = [
   },
   {
     icon: Target,
-    title: "Focused Expertise",
-    description: "Specialized in scaling businesses and developing leaders"
+    title: "Decision Architecture",
+    description: "Specialized in high-leverage decision-making, negotiation, and scale"
   },
   {
     icon: Shield,
     title: "Trusted Advisor",
-    description: "Decades of experience coaching top-tier executives"
+    description: "Decades of experience advising top-tier executives and operators"
   }
 ];
 
@@ -47,10 +47,10 @@ const About = () => {
         {/* Section Header */}
         <div className="text-center mb-20 space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold">
-            <span className="text-gradient-gold">Meet Marshall</span>
+            <span className="text-gradient-gold">Why Marshall</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Builder of systems, strategist, and architect of transformation
+            The strategic mind behind billion-dollar decisions
           </p>
         </div>
 
@@ -94,13 +94,13 @@ const About = () => {
           <div className="space-y-6">
             <div className="text-lg text-foreground space-y-4">
               <p>
-                Marshall Wilkinson is not just a business strategist. He is a builder of people, systems, and frameworks that win. With over <span className="text-primary font-bold">$2.5 billion in projects delivered by the age of 38</span> and a career forged in the trenches of high-stakes construction and enterprise, Marshall now teaches a philosophy that transcends industry.
+                Marshall Wilkinson is not just a business strategist. He is an architect of decisions, systems, and frameworks that win. With over <span className="text-primary font-bold">$5B in executed projects and negotiations</span> by the age of 38 and a career forged in high-stakes environments where failure wasn't an option, Marshall now teaches a philosophy that transcends industry.
               </p>
               <p>
-                Marshall built his reputation negotiating some of the most complex contracts in New York City. He mastered leverage, timing, and execution in environments where failure wasn't an option. But it wasn't just about construction—it was about the game of life.
+                Marshall built his reputation mastering leverage, timing, and execution in some of the most complex negotiations and enterprise environments in New York City. He didn't just manage — he controlled outcomes. That distinction defines everything he teaches.
               </p>
               <p>
-                <span className="text-primary font-semibold">The Mission:</span> Marshall created ALP to help others take back control of their lives. Whether you're trying to scale a business, rebuild after trauma, or restore a broken relationship, ALP offers a path. Not just a mindset, but a <span className="text-primary font-semibold">system of strategic thinking</span> that leads to action and transformation.
+                <span className="text-primary font-semibold">The Mission:</span> Marshall created ALP to give others the same decision-making edge he forged under pressure. Whether you're scaling a business, navigating a high-stakes negotiation, or restructuring your leadership approach, ALP delivers not just a mindset, but a <span className="text-primary font-semibold">precision framework for strategic action</span>.
               </p>
             </div>
 
@@ -126,7 +126,7 @@ const About = () => {
         {/* Legacy Section */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <p className="text-xl text-foreground leading-relaxed">
-            <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building more than a coaching company. He is building an army of empowered individuals ready to master life at the highest level. His mission is simple: to awaken clarity, ignite strength, and unleash decisive action in every area that matters.
+            <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building more than an advisory firm. He is building an army of empowered operators ready to execute at the highest level. His mission is precise: to sharpen clarity, forge strategic leverage, and unleash decisive action in every area that matters.
           </p>
         </div>
 

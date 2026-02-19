@@ -7,33 +7,33 @@ import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import GrowthAcademyModal from "@/components/GrowthAcademyModal";
 import FullAccessModal from "@/components/FullAccessModal";
 
-const STRIPE_SINGLE = "https://buy.stripe.com/bJeaEYe0h9L8ao0g5QeQM0R";
-const STRIPE_6SESSION = "https://buy.stripe.com/14A5kEf4l0ay7bOaLweQM0Q";
-
-const coachingPackages = [
+const advisoryPaths = [
   {
-    title: "Single Session",
+    title: "Strategy Session",
     price: "$1,000",
-    description: "One focused hour with Marshall",
+    description: "A focused 60-minute deep dive on your most pressing issue.",
     benefits: [
       "60-minute deep-dive on your biggest challenge",
       "Actionable takeaways you can implement immediately",
       "Follow-up summary with next steps",
     ],
-    checkoutUrl: STRIPE_SINGLE,
+    link: "/coaching",
+    cta: "Apply for a Session",
     highlight: false,
+    badge: undefined as string | undefined,
   },
   {
-    title: "6-Session Intensive",
+    title: "Private Advisory",
     price: "$5,000",
-    badge: "MOST POPULAR",
-    description: "Your strategic advisor on speed dial",
+    badge: "BY APPLICATION",
+    description: "Long-term strategic access for high-level operators.",
     benefits: [
       "Six 1-hour sessions tailored to your business",
       "Direct text & Discord access between sessions",
       "Custom strategic scaling roadmap",
     ],
-    checkoutUrl: STRIPE_6SESSION,
+    link: "/coaching",
+    cta: "Request Advisory Access",
     highlight: true,
   },
 ];
@@ -92,24 +92,24 @@ const Services = () => {
       <div className="container mx-auto px-4">
         <header className="text-center mb-16 space-y-6">
           <h2 className="text-4xl md:text-6xl font-bold">
-            <span className="text-gradient-gold">Programs</span>
+            <span className="text-gradient-gold">Work With Marshall</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Choose your path to unprecedented success
+            There is one path to working with Marshall directly. Choose your entry point.
           </p>
         </header>
 
-        {/* Tier 1: 1-on-1 Consulting */}
+        {/* Tier 1: Advisory Paths */}
         <div className="mb-20">
           <div className="flex items-center justify-center gap-2 mb-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
               <Users className="w-4 h-4 text-primary" />
-              <span className="text-primary font-medium">Work With Marshall Directly</span>
+              <span className="text-primary font-medium">Private Advisory Access</span>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {coachingPackages.map((pkg, index) => (
+            {advisoryPaths.map((pkg, index) => (
               <Card
                 key={index}
                 className={`glass-card hover-lift relative ${pkg.highlight ? "border-primary/40" : ""}`}
@@ -141,10 +141,10 @@ const Services = () => {
                     className="w-full gap-2 min-h-[48px]"
                     asChild
                   >
-                    <a href={pkg.checkoutUrl} target="_blank" rel="noopener noreferrer">
-                      Get Started
+                    <Link to={pkg.link}>
+                      {pkg.cta}
                       <ArrowRight className="w-4 h-4" />
-                    </a>
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>

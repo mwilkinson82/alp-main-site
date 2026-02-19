@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, ArrowRight, Calendar } from "lucide-react";
+import { Volume2, VolumeX, ArrowRight } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import marshallHero from "@/assets/marshall-hero.png";
@@ -134,30 +134,39 @@ const CinematicHero = () => {
 
               {/* Main Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl text-foreground leading-tight">
-                Transform Your Business with
-                <span className="text-gradient-gold block mt-2">Proven Expertise</span>
+                Strategic Advisory for
+                <span className="text-gradient-gold block mt-2">Operators Who Demand Results</span>
               </h1>
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Over <span className="text-primary font-bold">$5 Billion</span> in construction success. 
-                Elite coaching for entrepreneurs, CEOs, and sales professionals who demand results.
+                Marshall Wilkinson advises founders, executives, and high-performing professionals on negotiation, execution, and scale — using frameworks forged in high-stakes business environments.
+              </p>
+
+              {/* Authority Line */}
+              <p className="text-sm md:text-base text-muted-foreground/70 tracking-wide">
+                Over <span className="text-primary font-semibold">$5B</span> executed. Complex negotiations. Real-world leverage under pressure.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
-                  <a href="#services">
-                    Explore Services
-                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </Button>
-                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
-                  <Link to="/coaching">
-                    <Calendar className="mr-2" />
-                    Learn About 6-Session Intensive
-                  </Link>
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-4">
+                <div className="flex flex-col items-center gap-1.5">
+                  <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
+                    <Link to="/coaching">
+                      Request Private Advisory Access
+                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                  <p className="text-xs text-muted-foreground/60 italic">For founders and executives making consequential decisions.</p>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" asChild>
+                    <Link to="/coaching">
+                      Start With a Strategy Session
+                    </Link>
+                  </Button>
+                  <p className="text-xs text-muted-foreground/60 italic">A focused 60-minute deep dive. By application only.</p>
+                </div>
               </div>
 
               {/* Client Login Link */}
@@ -171,7 +180,7 @@ const CinematicHero = () => {
               <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
                   <div className="text-3xl md:text-5xl font-bold text-primary">1 on 1</div>
-                  <div className="text-sm md:text-base text-muted-foreground">Elite Coaching</div>
+                  <div className="text-sm md:text-base text-muted-foreground">Elite Consulting</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
                   <div className="text-3xl md:text-5xl font-bold text-primary">1,000s</div>
