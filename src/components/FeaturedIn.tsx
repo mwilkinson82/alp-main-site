@@ -8,7 +8,7 @@ const FeaturedIn = () => {
     "Business Insider", 
     "Forbes",
     "The Daily Pod",
-    "Construction Week"
+    "YouTube"
   ];
 
   return (

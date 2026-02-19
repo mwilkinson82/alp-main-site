@@ -34,7 +34,7 @@ const AskMarshallHighlight = () => {
           <div className="space-y-6 order-1 lg:order-2">
             <div>
               <span className="text-xs font-bold tracking-widest bg-primary/10 border border-primary/30 text-primary px-3 py-1 rounded-full">
-                ENTRY POINT — $250
+                MOST POPULAR ENTRY POINT — $250
               </span>
             </div>
 
