@@ -85,7 +85,7 @@ const bundles = [
   },
   {
     title: "Full Access (Annual)",
-    price: "$16,000",
+    price: "$15,000",
     period: "/year",
     description: "All live rooms + full community + 10 private advisory sessions annually. Maximum proximity. Maximum leverage.",
     modal: "full" as const,
