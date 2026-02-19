@@ -32,7 +32,7 @@ const CoachingTestimonials = () => {
         <div className="text-center mb-12 space-y-4">
           <h2 className="text-3xl md:text-5xl font-bold text-foreground">
             What Clients Say About{" "}
-            <span className="text-gradient-gold">1-on-1 Coaching</span>
+            <span className="text-gradient-gold">1-on-1 Consulting</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Real feedback from business owners who invested in themselves

@@ -105,8 +105,8 @@ const Programs = () => {
     <>
       <SEO
         title="ALP Programs - All Training & Coaching Packages | Marshall Wilkinson"
-        description="Explore Marshall Wilkinson's complete program offerings: 1-on-1 Coaching, Power Hour, Contractor School, Sales & Marketing School, ALP University, Growth Academy, and Full Access bundles."
-        keywords="Marshall Wilkinson programs, ALP programs, business coaching programs, 1-on-1 coaching, contractor training, sales training, Power Hour, Growth Academy, Full Access"
+        description="Explore Marshall Wilkinson's complete program offerings: 1-on-1 Consulting, Power Hour, Contractor School, Sales & Marketing School, ALP University, Growth Academy, and Full Access bundles."
+        keywords="Marshall Wilkinson programs, ALP programs, business consulting programs, 1-on-1 consulting, contractor training, sales training, Power Hour, Growth Academy, Full Access"
         canonical="/programs"
       />
       <StructuredData type="organization" />
@@ -126,7 +126,7 @@ const Programs = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
-                  <a href="#coaching">1-on-1 Coaching</a>
+                  <a href="#coaching">1-on-1 Consulting</a>
                 </Button>
                 <Button variant="outline" size="lg" className="gap-2" asChild>
                   <a href="#programs">Group Programs</a>
@@ -139,7 +139,7 @@ const Programs = () => {
           </div>
         </section>
 
-        {/* Tier 1: 1-on-1 Coaching */}
+        {/* Tier 1: 1-on-1 Consulting */}
         <section id="coaching" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-10 space-y-4">
@@ -147,7 +147,7 @@ const Programs = () => {
                 <Users className="w-4 h-4 text-primary" />
                 <span className="text-primary font-medium">Work With Marshall Directly</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold">1-on-1 Coaching</h2>
+              <h2 className="text-3xl md:text-5xl font-bold">1-on-1 Consulting</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Not everyone wants a daily group call. Some entrepreneurs need Marshall on speed dial — available to peel off an hour when a high-stakes decision demands it.
               </p>
@@ -201,7 +201,7 @@ const Programs = () => {
             <div className="text-center mt-6">
               <Button variant="link" className="text-primary gap-1" asChild>
                 <Link to="/coaching">
-                  Learn more about 1-on-1 coaching
+                  Learn more about 1-on-1 consulting
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </Button>

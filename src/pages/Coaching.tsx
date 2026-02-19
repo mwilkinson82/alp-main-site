@@ -81,9 +81,9 @@ const Coaching = () => {
   return (
     <>
       <SEO 
-        title="Marshall Wilkinson - 1-on-1 Business Coaching & Consulting Sessions"
-        description="Get personalized business coaching from Marshall Wilkinson. Deep-dive 1-on-1 sessions tailored to your challenges with lifetime recording access. Elite coaching for CEOs, entrepreneurs, and sales professionals."
-        keywords="Marshall Wilkinson coaching, Marshall Wilkinson 1-on-1, Marshall Wilkinson consultant, 1-on-1 coaching, business coaching, personalized coaching, executive coaching, business consulting, leadership coaching, ALP coaching"
+        title="Marshall Wilkinson - 1-on-1 Business Consulting Sessions"
+        description="Get personalized business consulting from Marshall Wilkinson. Deep-dive 1-on-1 sessions tailored to your challenges with lifetime recording access. Elite consulting for CEOs, entrepreneurs, and sales professionals."
+        keywords="Marshall Wilkinson consulting, Marshall Wilkinson 1-on-1, Marshall Wilkinson consultant, 1-on-1 consulting, business consulting, personalized consulting, executive consulting, leadership consulting, ALP consulting"
         canonical="/coaching"
       />
       <StructuredData 
@@ -117,10 +117,10 @@ const Coaching = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center space-y-8">
               <h1 className="text-5xl md:text-7xl font-bold">
-                <span className="text-gradient-gold">1-on-1 Coaching</span>
+                <span className="text-gradient-gold">1-on-1 Consulting</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Elite business coaching for entrepreneurs, CEOs, and sales professionals ready to scale beyond limits
+                Elite business consulting for entrepreneurs, CEOs, and sales professionals ready to scale beyond limits
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                 <Button
@@ -336,7 +336,7 @@ const Coaching = () => {
           <div className="max-w-3xl mx-auto">
             <Card className="border-primary/20 bg-muted/30">
               <CardContent className="p-8 md:p-10 text-center space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold">Not Sure About 1-on-1 Coaching?</h3>
+                <h3 className="text-2xl md:text-3xl font-bold">Not Sure About 1-on-1 Consulting?</h3>
                 <p className="text-muted-foreground text-lg max-w-xl mx-auto">
                   Start with a single question. Submit your toughest challenge and get a personalized video analysis from Marshall within 24 hours.
                 </p>

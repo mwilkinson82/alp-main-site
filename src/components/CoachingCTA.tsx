@@ -29,7 +29,7 @@ const CoachingCTA = () => {
             </Button>
             <Button variant="outline" size="lg" className="gap-2 border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground min-h-[48px] w-full sm:w-auto" asChild>
               <Link to="/coaching">
-                Explore All Coaching Options
+                Explore All Consulting Options
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
