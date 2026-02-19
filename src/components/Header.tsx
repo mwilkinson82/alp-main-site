@@ -156,78 +156,70 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden py-4 space-y-4">
-            <Link 
-              to="/" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
+      </div>
+
+      {/* Mobile Navigation — full-width solid white panel, rendered outside header padding */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-t border-gray-200 shadow-xl z-50">
+          <nav className="px-4 py-5 space-y-1">
+            <Link
+              to="/"
+              className="block px-3 py-3 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </Link>
-            
-            <Link 
-              to="/insights" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
+
+            <Link
+              to="/insights"
+              className="block px-3 py-3 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Insights
             </Link>
-            
+
             {/* Mobile Access Section */}
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground font-medium">Access</p>
-              <div className="pl-4 space-y-3 border-l border-border">
+            <div>
+              <p className="px-3 pt-3 pb-1 text-xs font-bold text-gray-400 uppercase tracking-wider">Access</p>
+              <div className="space-y-1">
                 {accessLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
-                    className="block"
+                    className="block px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className={`block text-sm font-semibold hover:text-primary transition-colors ${link.highlight ? 'text-primary' : 'text-foreground'}`}>{link.name}</span>
-                    {link.sub && <span className="block text-xs text-muted-foreground">{link.sub}</span>}
+                    <span className="block text-sm font-semibold text-gray-900 hover:text-primary">{link.name}</span>
+                    {link.sub && <span className="block text-xs text-gray-500 mt-0.5">{link.sub}</span>}
                   </Link>
                 ))}
               </div>
             </div>
 
-            <Link 
-              to="/coaching" 
-              className="block text-foreground hover:text-primary transition-colors font-medium"
+            <Link
+              to="/coaching"
+              className="block px-3 py-3 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               1-on-1 Advisory
             </Link>
-            <Button
-              variant="premium"
-              size="sm"
-              className="w-full"
-              asChild
-            >
-              <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
-                Ask Marshall
-              </Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full opacity-70"
-              asChild
-            >
-              <a
-                href="https://marshallwilkinson.mykajabi.com/login"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <LogIn className="mr-2 h-4 w-4" />
-                Client Portal
-              </a>
-            </Button>
+
+            <div className="pt-3 space-y-2 border-t border-gray-100">
+              <Button variant="premium" size="sm" className="w-full" asChild>
+                <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
+                  Ask Marshall
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="w-full opacity-70" asChild>
+                <a href="https://marshallwilkinson.mykajabi.com/login" target="_blank" rel="noopener noreferrer">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Client Portal
+                </a>
+              </Button>
+            </div>
           </nav>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 };
