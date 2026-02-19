@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check, HardHat } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
-import GrowthAcademyModal from "@/components/GrowthAcademyModal";
 import FullAccessModal from "@/components/FullAccessModal";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
 
@@ -70,17 +69,19 @@ const programs = [
 
 const bundles = [
   {
-    title: "Growth Academy",
-    price: "$2,000",
+    title: "Power Hour",
+    price: "$1,000",
     period: "for 1 month",
-    description: "All Live Rooms + community access. Active operator environment.",
-    modal: "growth" as const,
+    description: "Daily live execution room at 8am EST. Mindset, strategy, and business best practices — every weekday.",
+    link: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
+    modal: null as null,
   },
   {
     title: "Full Access",
     price: "$10,000",
     period: "for 6 months",
     description: "All Live Rooms + 10 private advisory sessions per year. Maximum proximity.",
+    link: null as null,
     modal: "full" as const,
   },
   {
@@ -88,13 +89,13 @@ const bundles = [
     price: "$15,000",
     period: "/year",
     description: "All live rooms + full community + 10 private advisory sessions annually. Maximum proximity. Maximum leverage.",
+    link: null as null,
     modal: "full" as const,
   },
 ];
 
 const Services = () => {
   const containerRef = useGsapStagger();
-  const [growthOpen, setGrowthOpen] = useState(false);
   const [fullOpen, setFullOpen] = useState(false);
   const [appModalOpen, setAppModalOpen] = useState(false);
   const [defaultService, setDefaultService] = useState<"Strategy Session — $1,000" | "Private Advisory — $5,000">("Strategy Session — $1,000");
@@ -282,16 +283,23 @@ const Services = () => {
                     <span className="text-muted-foreground text-sm">{bundle.period}</span>
                   </div>
                   <p className="text-muted-foreground text-sm">{bundle.description}</p>
-                  <Button
-                    size="lg"
-                    className="w-full min-h-[48px] gap-2"
-                    onClick={() =>
-                      bundle.modal === "growth" ? setGrowthOpen(true) : setFullOpen(true)
-                    }
-                  >
-                    Choose Duration
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+                  {bundle.link ? (
+                    <Button size="lg" className="w-full min-h-[48px] gap-2" asChild>
+                      <a href={bundle.link} target="_blank" rel="noopener noreferrer">
+                        Join Power Hour
+                        <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button
+                      size="lg"
+                      className="w-full min-h-[48px] gap-2"
+                      onClick={() => setFullOpen(true)}
+                    >
+                      Choose Duration
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -309,7 +317,7 @@ const Services = () => {
         </div>
       </div>
 
-      <GrowthAcademyModal open={growthOpen} onOpenChange={setGrowthOpen} />
+      
       <FullAccessModal open={fullOpen} onOpenChange={setFullOpen} />
       <AdvisoryApplicationModal
         open={appModalOpen}
