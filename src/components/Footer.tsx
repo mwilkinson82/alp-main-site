@@ -15,32 +15,22 @@ const Footer = () => {
               <span className="text-primary">ALP</span>
             </h3>
             <p className="text-sm text-secondary-foreground/70 max-w-xs">
-              Altitude Logic Pressure - Transforming businesses through proven expertise and elite coaching.
+              Altitude Logic Pressure — Execution systems, decision architecture, and strategic leverage for operators who want scale.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Services</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Access</h4>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link to="/ask-marshall" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  Ask Marshall
+                </Link>
+              </li>
+              <li>
                 <Link to="/coaching" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  1-on-1 Consulting
-                </Link>
-              </li>
-              <li>
-                <Link to="/power-hour" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Power Hour Membership
-                </Link>
-              </li>
-              <li>
-                <Link to="/contractor-school" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Contractor School
-                </Link>
-              </li>
-              <li>
-                <Link to="/sales-marketing-school" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Sales & Marketing School
+                  1-on-1 Advisory
                 </Link>
               </li>
               <li>
@@ -49,7 +39,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-              <Link to="/insights" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                <Link to="/programs" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  Live Training Rooms
+                </Link>
+              </li>
+              <li>
+                <Link to="/insights" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
                   Insights
                 </Link>
               </li>
@@ -62,15 +57,19 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link 
-                  to="/coaching"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  to="/ask-marshall"
                   className="text-primary hover:text-primary/80 transition-smooth font-semibold"
                 >
-                  Your next move deserves clarity →
+                  Start Here — Ask Marshall →
                 </Link>
               </li>
-              <li className="text-secondary-foreground/70">
-                Power Hour: Daily at 8:00 AM EST
+              <li>
+                <Link 
+                  to="/coaching"
+                  className="text-secondary-foreground/70 hover:text-primary transition-smooth"
+                >
+                  Apply for Private Advisory →
+                </Link>
               </li>
             </ul>
             <div className="flex gap-4 pt-2">
