@@ -25,7 +25,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/coaching" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  1-on-1 Coaching
+                  1-on-1 Consulting
                 </Link>
               </li>
               <li>

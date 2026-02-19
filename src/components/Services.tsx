@@ -77,7 +77,7 @@ const bundles = [
     title: "Full Access",
     price: "$10,000",
     period: "for 6 months",
-    description: "Everything + 1-on-1 coaching sessions",
+    description: "Everything + 1-on-1 consulting sessions",
     modal: "full" as const,
   },
 ];
@@ -99,7 +99,7 @@ const Services = () => {
           </p>
         </header>
 
-        {/* Tier 1: 1-on-1 Coaching */}
+        {/* Tier 1: 1-on-1 Consulting */}
         <div className="mb-20">
           <div className="flex items-center justify-center gap-2 mb-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
@@ -154,7 +154,7 @@ const Services = () => {
           <div className="text-center mt-6">
             <Button variant="link" className="text-primary gap-1" asChild>
               <Link to="/coaching">
-                View all coaching options
+                View all consulting options
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </Button>

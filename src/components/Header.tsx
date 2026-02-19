@@ -121,10 +121,10 @@ const Header = () => {
               to="/coaching" 
               className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
-              1-on-1 Coaching
+              1-on-1 Consulting
             </Link>
             <Link 
-              to="/ask-marshall" 
+              to="/ask-marshall"
               className={`${textColorClass} hover:text-primary transition-colors font-medium`}
             >
               Ask Marshall
@@ -197,7 +197,7 @@ const Header = () => {
               className="block text-foreground hover:text-primary transition-colors font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
-              1-on-1 Coaching
+              1-on-1 Consulting
             </Link>
             <Link 
               to="/ask-marshall" 
