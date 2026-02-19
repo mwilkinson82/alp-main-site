@@ -341,13 +341,13 @@ const Coaching = () => {
           <div className="max-w-3xl mx-auto">
             <Card className="border-primary/20 bg-muted/30">
               <CardContent className="p-8 md:p-10 text-center space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold">Not Sure About 1-on-1 Consulting?</h3>
+                <h3 className="text-2xl md:text-3xl font-bold">Prefer a Focused Written or Video Response?</h3>
                 <p className="text-muted-foreground text-lg max-w-xl mx-auto">
                   Start with a single question. Submit your toughest challenge and get a personalized video analysis from Marshall within 24 hours.
                 </p>
                 <Button size="lg" className="bg-gold hover:bg-gold/90 text-black font-semibold gap-2" asChild>
                   <Link to="/ask-marshall">
-                    Ask Marshall — $250
+                    Submit a Strategic Question — $250
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>

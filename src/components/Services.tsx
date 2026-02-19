@@ -19,7 +19,7 @@ const advisoryPaths = [
       "Follow-up summary with next steps",
     ],
     link: "/coaching",
-    cta: "Apply for a Session",
+    cta: "Submit Application",
     highlight: false,
     badge: undefined as string | undefined,
   },
@@ -27,14 +27,14 @@ const advisoryPaths = [
     title: "Private Advisory",
     price: "$5,000",
     badge: "BY APPLICATION",
-    description: "Long-term strategic access for high-level operators.",
+    description: "Direct strategic access for high-level operators navigating consequential decisions.",
     benefits: [
       "Six 1-hour sessions tailored to your business",
       "Direct text & Discord access between sessions",
       "Custom strategic scaling roadmap",
     ],
     link: "/coaching",
-    cta: "Request Advisory Access",
+    cta: "Request Private Advisory",
     highlight: true,
   },
 ];
@@ -173,7 +173,7 @@ const Services = () => {
 
         {/* Tier 2: Group Programs */}
         <div className="mb-20">
-          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Group Programs & Training</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">Structured Programs</h3>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
@@ -214,7 +214,7 @@ const Services = () => {
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-primary font-medium">Get Everything</span>
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold">Bundle & Save</h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Extended Engagement Options</h3>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -251,15 +251,15 @@ const Services = () => {
                 <MessageCircle className="w-7 h-7 text-primary" />
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h4 className="text-xl font-bold mb-1">Not ready for a live call?</h4>
+                <h4 className="text-xl font-bold mb-1">Prefer a focused written or video response?</h4>
                 <p className="text-muted-foreground text-sm">
                   Ask Marshall a specific question and get a personalized video answer within 24 hours — <strong className="text-primary">$250</strong>
                 </p>
               </div>
               <Button variant="premium" className="gap-2 whitespace-nowrap" asChild>
-                <Link to="/ask-marshall">
-                  Ask Marshall
-                  <ArrowRight className="w-4 h-4" />
+                 <Link to="/ask-marshall">
+                   Submit a Strategic Question
+                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
             </CardContent>
