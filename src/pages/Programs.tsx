@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import liveRoomsHero from "@/assets/live-rooms-hero.jpg";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
@@ -75,20 +76,33 @@ const Programs = () => {
         <Header />
 
         {/* Hero */}
-        <section className="pt-24 pb-12 bg-gradient-to-b from-muted/50 to-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold">
+        <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src={liveRoomsHero}
+              alt="Marshall Wilkinson leading a live group session"
+              className="w-full h-full object-cover object-center"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-transparent" />
+          </div>
+
+          {/* Hero Content */}
+          <div className="relative z-10 container mx-auto px-4">
+            <div className="max-w-3xl space-y-6">
+              <h1 className="text-4xl md:text-6xl font-bold text-white">
                 Train Live. <span className="text-gradient-gold">Execute Faster.</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-white/80 max-w-2xl">
                 Daily and weekly live rooms built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
                   <a href="#programs">Live Rooms</a>
                 </Button>
-                <Button variant="outline" size="lg" className="gap-2" asChild>
+                <Button variant="outline" size="lg" className="gap-2 border-white/40 text-white hover:bg-white/10" asChild>
                   <a href="#full-access">Full Access</a>
                 </Button>
               </div>
