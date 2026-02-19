@@ -75,34 +75,36 @@ const Programs = () => {
       <main className="min-h-screen">
         <Header />
 
-        {/* Hero */}
-        <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <img
-              src={liveRoomsHero}
-              alt="Marshall Wilkinson leading a live group session"
-              className="w-full h-full object-cover object-center"
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/20" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-transparent" />
-          </div>
+        {/* Hero Image */}
+        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+          <img
+            src={liveRoomsHero}
+            alt="Marshall Wilkinson leading a live group session"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
+        </section>
 
-          {/* Hero Content */}
-          <div className="relative z-10 container mx-auto px-4">
-            <div className="max-w-3xl space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold text-white">
+        {/* Hero Content */}
+        <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              <h1 className="text-5xl md:text-7xl font-bold">
                 Train Live. <span className="text-gradient-gold">Execute Faster.</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/80 max-w-2xl">
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
                 Daily and weekly live rooms built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
                   <a href="#programs">Live Rooms</a>
                 </Button>
-                <Button variant="outline" size="lg" className="gap-2 border-white/40 text-white hover:bg-white/10" asChild>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold px-8 h-12"
+                  asChild
+                >
                   <a href="#full-access">Full Access</a>
                 </Button>
               </div>
