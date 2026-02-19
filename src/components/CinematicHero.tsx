@@ -143,9 +143,14 @@ const CinematicHero = () => {
                 Marshall Wilkinson advises founders, executives, and high-performing professionals on negotiation, execution, and scale — using frameworks forged in high-stakes business environments.
               </p>
 
+              {/* Quiet selectivity line */}
+              <p className="text-sm text-muted-foreground/50 italic">
+                Not built for everyone. Designed for operators who move.
+              </p>
+
               {/* Authority Line */}
               <p className="text-sm md:text-base text-muted-foreground/70 tracking-wide">
-                Over <span className="text-primary font-semibold">$5B</span> executed. Complex negotiations. Real-world leverage under pressure.
+                Over <span className="text-primary font-semibold">$5B</span> executed across high-stakes negotiations and enterprise decisions.
               </p>
 
               {/* CTA Buttons */}
@@ -180,7 +185,7 @@ const CinematicHero = () => {
               <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
                   <div className="text-3xl md:text-5xl font-bold text-primary">1 on 1</div>
-                  <div className="text-sm md:text-base text-muted-foreground">Elite Consulting</div>
+                  <div className="text-sm md:text-base text-muted-foreground">Private Advisory</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
                   <div className="text-3xl md:text-5xl font-bold text-primary">1,000s</div>
