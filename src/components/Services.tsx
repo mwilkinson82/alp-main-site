@@ -122,9 +122,6 @@ const Services = () => {
                     <p className="text-xs font-bold text-primary uppercase tracking-wider mt-1">{pkg.sessionLabel}</p>
                     <p className="text-sm text-muted-foreground mt-1">{pkg.description}</p>
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-primary">{pkg.price}</span>
-                  </div>
                   <ul className="space-y-3">
                     {pkg.benefits.map((b, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
