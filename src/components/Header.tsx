@@ -46,12 +46,10 @@ const Header = () => {
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
 
-  const programLinks = [
-    { name: "All Programs", path: "/programs", highlight: true },
-    { name: "Power Hour", path: "/power-hour" },
-    { name: "Contractor School", path: "/contractor-school" },
-    { name: "Sales & Marketing School", path: "/sales-marketing-school" },
-    { name: "ALP University", path: "/alp-university" },
+  const accessLinks = [
+    { name: "ALP University", path: "/alp-university", sub: "On-Demand Archive", highlight: false },
+    { name: "Live Rooms", path: "/programs", sub: "Power Hour · Sales & Marketing · Contractor School", highlight: false },
+    { name: "Full Access Membership", path: "/programs", sub: "All Live Rooms + Advisory Sessions", highlight: true },
   ];
 
   return (
@@ -95,22 +93,23 @@ const Header = () => {
                 onClick={() => setProgramsOpen(!programsOpen)}
                 className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
               >
-                Ecosystem
+                Access
                 <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {programsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
-                  {programLinks.map((link, index) => (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
+                  {accessLinks.map((link, index) => (
                     <Link
                       key={index}
                       to={link.path}
-                      className={`block px-4 py-2 text-sm hover:bg-muted transition-colors ${
-                        link.highlight ? 'text-primary font-semibold border-b border-border mb-1 pb-3' : 'text-foreground'
+                      className={`block px-4 py-3 hover:bg-muted transition-colors ${
+                        link.highlight ? 'border-t border-border mt-1 pt-3' : ''
                       }`}
                       onClick={() => setProgramsOpen(false)}
                     >
-                      {link.name}
+                      <span className={`block text-sm font-semibold ${link.highlight ? 'text-primary' : 'text-foreground'}`}>{link.name}</span>
+                      {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
                     </Link>
                   ))}
                 </div>
@@ -173,20 +172,19 @@ const Header = () => {
               Insights
             </Link>
             
-            {/* Mobile Programs Section */}
+            {/* Mobile Access Section */}
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground font-medium">Programs</p>
-              <div className="pl-4 space-y-2 border-l border-border">
-                {programLinks.map((link, index) => (
+              <p className="text-sm text-muted-foreground font-medium">Access</p>
+              <div className="pl-4 space-y-3 border-l border-border">
+                {accessLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
-                    className={`block text-foreground hover:text-primary transition-colors ${
-                      link.highlight ? 'font-semibold text-primary' : ''
-                    }`}
+                    className="block"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    {link.name}
+                    <span className={`block text-sm font-semibold hover:text-primary transition-colors ${link.highlight ? 'text-primary' : 'text-foreground'}`}>{link.name}</span>
+                    {link.sub && <span className="block text-xs text-muted-foreground">{link.sub}</span>}
                   </Link>
                 ))}
               </div>

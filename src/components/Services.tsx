@@ -73,14 +73,14 @@ const bundles = [
     title: "Growth Academy",
     price: "$2,000",
     period: "for 1 month",
-    description: "All 4 group programs + community access",
+    description: "All Live Rooms + community access. Active operator environment.",
     modal: "growth" as const,
   },
   {
     title: "Full Access",
     price: "$10,000",
     period: "for 6 months",
-    description: "Everything + 1-on-1 consulting sessions",
+    description: "All Live Rooms + 10 private advisory sessions per year. Maximum proximity.",
     modal: "full" as const,
   },
 ];
@@ -259,9 +259,9 @@ const Services = () => {
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-4">
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-primary font-medium">Get Everything</span>
+              <span className="text-primary font-medium">Full Access Membership</span>
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold">Extended Engagement Options</h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Everything. Live.</h3>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
