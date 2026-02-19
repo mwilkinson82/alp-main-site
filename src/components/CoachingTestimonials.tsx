@@ -57,10 +57,10 @@ const CoachingTestimonials = () => {
 
         <div className="text-center mt-10">
           <Button size="lg" className="bg-gradient-gold hover:shadow-glow hover-gold-edge gap-2" asChild>
-            <Link to="/coaching">
+            <a href="/coaching#packages">
               Book a Strategy Session
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </a>
           </Button>
         </div>
       </div>
