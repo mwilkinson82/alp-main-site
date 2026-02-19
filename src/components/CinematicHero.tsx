@@ -1,6 +1,6 @@
 import { Volume2, VolumeX, ArrowRight } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import marshallHero from "@/assets/marshall-hero.png";
+import marshallHero from "@/assets/marshall-conference-hero.jpg";
 import alpLogo from "@/assets/alp-logo.png";
 import { gsap } from "gsap";
 import { Button } from "@/components/ui/button";
