@@ -9,22 +9,22 @@ const highlights = [
   {
     icon: Award,
     title: "Executed at Scale",
-    description: "Over $5B in high-stakes negotiations and executed projects"
+    description: "Real systems built inside enterprise environments."
   },
   {
     icon: TrendingUp,
     title: "Results-Driven",
-    description: "Strategies tested and refined through real-world application"
+    description: "Every framework is built for measurable outcomes."
   },
   {
     icon: Target,
     title: "Decision Architecture",
-    description: "Specialized in high-leverage decision-making, negotiation, and scale"
+    description: "Clarity, leverage, and structure under pressure."
   },
   {
     icon: Shield,
-    title: "Trusted Advisor",
-    description: "Decades of experience advising top-tier executives and operators"
+    title: "Operator Systems",
+    description: "Scale operations without losing control."
   }
 ];
 
@@ -50,7 +50,7 @@ const About = () => {
             <span className="text-gradient-gold">Why Marshall</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Marshall Wilkinson has advised on over $5B in negotiated outcomes and enterprise-scale execution environments. He now teaches the frameworks behind those decisions to founders, operators, and contractors building serious companies.
+            Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $5B in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is not motivation. It's infrastructure.
           </p>
         </div>
 

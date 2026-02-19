@@ -127,29 +127,29 @@ const CinematicHero = () => {
               {/* Overline */}
               <div className="inline-block">
                 <span className="text-primary text-xs md:text-sm font-bold tracking-widest uppercase px-3 py-1.5 bg-primary/10 rounded-full border border-primary/20">
-                  Altitude Logic Pressure
+                  ALTITUDE • LOGIC • PRESSURE
                 </span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl text-foreground leading-tight">
-                Strategic Leverage for
-                <span className="text-gradient-gold block mt-2">Founders and Operators</span>
+                Execution Systems for
+                <span className="text-gradient-gold block mt-2">Operators Who Want Scale</span>
               </h1>
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Marshall Wilkinson teaches negotiation, execution, and decision architecture — built from over $5B in real-world outcomes across enterprise deals and high-stakes business decisions.
+                Marshall Wilkinson teaches decision architecture, negotiation leverage, and execution systems built from over $5B in real-world outcomes across enterprise deals and high-stakes operations.
               </p>
 
               {/* Micro line */}
               <p className="text-sm text-muted-foreground/60 italic">
-                Frameworks, not motivation. Strategy, not noise.
+                Frameworks that create revenue, control, and operational dominance.
               </p>
 
               {/* Brand line */}
               <p className="text-base md:text-lg font-semibold italic" style={{ color: "hsl(var(--primary))", opacity: 0.85 }}>
-                "I teach the frameworks. I deliver the outcomes."
+                ALP installs execution systems that scale businesses without chaos.
               </p>
 
               {/* CTA Buttons */}
@@ -171,16 +171,16 @@ const CinematicHero = () => {
               {/* Trust Indicators */}
               <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto pt-8">
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">1-on-1 Advisory</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Private Strategic Engagements</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">$5B+ Outcomes</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Enterprise execution and negotiated results</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">1,000+ Hours</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Training & Consulting</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">Systems First</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Build infrastructure before scaling volume</div>
                 </div>
                 <div className="space-y-2 glass-card p-4 md:p-6 hover-lift">
-                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">Daily Live</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Power Hour Community</div>
+                  <div className="text-2xl md:text-4xl font-bold text-primary leading-tight">Live Operator Rooms</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Daily and weekly strategic execution sessions</div>
                 </div>
               </div>
             </div>

@@ -45,13 +45,13 @@ const programs = [
   {
     icon: Clock,
     title: "Power Hour",
-    tagline: "Daily live coaching at 8am EST",
+    tagline: "Daily live execution room at 8am EST.",
     link: "/power-hour",
   },
   {
     icon: TrendingUp,
     title: "Sales & Marketing",
-    tagline: "Close more deals, generate leads",
+    tagline: "Weekly systems for lead flow, persuasion, and deal control.",
     link: "/sales-marketing-school",
   },
   {
@@ -63,7 +63,7 @@ const programs = [
   {
     icon: HardHat,
     title: "Contractor School",
-    tagline: "Scale like an operator, not a tradesman.",
+    tagline: "Weekly systems for contractors scaling real operations.",
     link: "/contractor-school",
   },
 ];
@@ -81,6 +81,13 @@ const bundles = [
     price: "$10,000",
     period: "for 6 months",
     description: "All Live Rooms + 10 private advisory sessions per year. Maximum proximity.",
+    modal: "full" as const,
+  },
+  {
+    title: "Full Access (Annual)",
+    price: "$16,000",
+    period: "/year",
+    description: "All live rooms + full community + 10 private advisory sessions annually. Maximum proximity. Maximum leverage.",
     modal: "full" as const,
   },
 ];
@@ -105,7 +112,7 @@ const Services = () => {
             <span className="text-gradient-gold">Direct Access Options</span>
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Private, high-leverage engagements for operators ready to move.
+            Private engagements for operators who need execution clarity, leverage, and systems installed fast.
           </p>
         </header>
 
@@ -184,8 +191,8 @@ const Services = () => {
               <Users className="w-4 h-4 text-primary" />
               <span className="text-primary font-medium">Live Group Programs</span>
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-2">Train Live. Think Sharper. Move Faster.</h3>
-            <p className="text-muted-foreground text-sm">Daily and weekly strategic sessions for operators in motion.</p>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">Train Live. Execute Faster.</h3>
+            <p className="text-muted-foreground text-sm">Daily and weekly live sessions built to sharpen decision-making and install scalable business systems.</p>
           </div>
           <div
             ref={containerRef as React.RefObject<HTMLDivElement>}
@@ -240,6 +247,7 @@ const Services = () => {
                   <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
                     Access every recorded Power Hour, Sales &amp; Marketing School, and Contractor School session — indexed and updated daily. This is where serious operators study the thinking.
                   </p>
+                  <p className="text-muted-foreground text-sm mt-1 leading-relaxed font-medium">5+ years of recorded execution breakdowns. Updated weekly.</p>
                   <p className="text-primary font-semibold text-sm mt-2">$197/month — Cancel anytime.</p>
                 </div>
                 <div className="flex flex-col items-end gap-2 flex-shrink-0">
@@ -264,7 +272,7 @@ const Services = () => {
             <h3 className="text-2xl md:text-3xl font-bold">Everything. Live.</h3>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {bundles.map((bundle, index) => (
               <Card key={index} className="glass-card hover-lift">
                 <CardContent className="p-6 md:p-8 text-center space-y-4">
