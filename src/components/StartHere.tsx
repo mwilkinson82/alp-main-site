@@ -1,6 +1,5 @@
 import { PlayCircle, BookOpen, MessageCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
 
 const entries = [
   {
@@ -10,7 +9,7 @@ const entries = [
     cta: "Watch Now",
     href: "#origin-story",
     isAnchor: true,
-    badge: null,
+    featured: false,
   },
   {
     icon: BookOpen,
@@ -19,16 +18,16 @@ const entries = [
     cta: "Read Articles",
     href: "/blog",
     isAnchor: false,
-    badge: null,
+    featured: false,
   },
   {
     icon: MessageCircle,
-    title: "Ask Marshall — $250",
+    title: "Ask Marshall",
     subtitle: "Get a direct strategic response within 24 hours.",
-    cta: "Submit a Question",
+    cta: "Submit a Question — $250",
     href: "/ask-marshall",
     isAnchor: false,
-    badge: "ENTRY POINT",
+    featured: true,
   },
 ];
 
@@ -48,15 +47,34 @@ const StartHere = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {entries.map((entry, index) => {
             const Icon = entry.icon;
-            const content = (
-              <div className="glass-card hover-lift hover-glow p-6 md:p-8 space-y-4 h-full flex flex-col relative group">
-                {entry.badge && (
-                  <div className="absolute top-4 right-4">
-                    <span className="text-[10px] font-bold tracking-widest bg-primary/10 border border-primary/30 text-primary px-2 py-0.5 rounded-full">
-                      {entry.badge}
-                    </span>
+
+            const content = entry.featured ? (
+              /* ── Featured "Ask Marshall" card ── */
+              <div className="relative h-full flex flex-col rounded-xl overflow-hidden border border-primary/40 bg-primary/5 shadow-[0_0_40px_-8px_hsl(var(--primary)/0.3)] group">
+                {/* Top banner */}
+                <div className="bg-primary/10 border-b border-primary/20 px-6 py-2 flex items-center justify-center gap-2">
+                  <span className="text-[11px] font-bold tracking-widest text-primary uppercase">
+                    Most Popular Entry Point
+                  </span>
+                </div>
+
+                <div className="p-6 md:p-8 space-y-4 flex-1 flex flex-col">
+                  <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center group-hover:shadow-glow transition-smooth">
+                    <Icon className="w-6 h-6 text-primary" />
                   </div>
-                )}
+                  <div className="flex-1 space-y-1.5">
+                    <h3 className="text-lg font-bold">{entry.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{entry.subtitle}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-base font-bold text-primary pt-2 group-hover:gap-3 transition-all">
+                    {entry.cta}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* ── Standard card ── */
+              <div className="glass-card hover-lift hover-glow p-6 md:p-8 space-y-4 h-full flex flex-col relative group">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:shadow-glow transition-smooth">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
