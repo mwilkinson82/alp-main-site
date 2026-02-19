@@ -7,7 +7,7 @@ import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
-import InvestmentTable from "@/components/InvestmentTable";
+
 import FullAccessModal from "@/components/FullAccessModal";
 
 import { Button } from "@/components/ui/button";
@@ -249,9 +249,6 @@ const Programs = () => {
             </div>
           </div>
         </section>
-
-        {/* Investment Table */}
-        <InvestmentTable />
 
         {/* Program Testimonials */}
         <ProgramTestimonials />
