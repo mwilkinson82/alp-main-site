@@ -44,7 +44,7 @@ const PersistentCTA = () => {
                 className="bg-background text-foreground hover:bg-background/90"
                 onClick={() => navigate("/ask-marshall")}
               >
-                Start Here →
+                Submit Question →
               </Button>
               <button
                 onClick={() => setIsDismissed(true)}

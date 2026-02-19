@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import askMarshallLoomPreview from "@/assets/ask-marshall-loom-preview.png";
 
 const bullets = [
-  "Personalized Loom video analysis",
+  "Direct systems-level breakdown",
   "24-hour turnaround guaranteed",
   "No live call required",
 ];

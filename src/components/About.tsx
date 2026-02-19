@@ -50,7 +50,7 @@ const About = () => {
             <span className="text-gradient-gold">Why Marshall</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $5B in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is not motivation. It's infrastructure.
+            Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $5B in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is infrastructure for decisive operators.
           </p>
         </div>
 
@@ -94,13 +94,13 @@ const About = () => {
           <div className="space-y-6">
             <div className="text-lg text-foreground space-y-4">
               <p>
-                Marshall Wilkinson is not just a business strategist. He is an architect of decisions, systems, and frameworks that win. With over <span className="text-primary font-bold">$5B in executed projects and negotiations</span> by the age of 38 and a career forged in high-stakes environments where failure wasn't an option, Marshall now teaches a philosophy that transcends industry.
+                Marshall Wilkinson is an architect of decisions and systems that win. With over <span className="text-primary font-bold">$5B in executed projects and negotiated outcomes</span>, he built his reputation inside environments where failure wasn't tolerated — and results were measured.
               </p>
               <p>
-                Marshall built his reputation mastering leverage, timing, and execution in some of the most complex negotiations and enterprise environments in New York City. He didn't just manage — he controlled outcomes. That distinction defines everything he teaches.
+                Marshall built his reputation mastering leverage, timing, and execution in some of the most complex negotiations and enterprise environments in New York City. He didn't just manage — he controlled outcomes.
               </p>
               <p>
-                <span className="text-primary font-semibold">The Mission:</span> Marshall created ALP to give others the same decision-making edge he forged under pressure. Whether you're scaling a business, navigating a high-stakes negotiation, or restructuring your leadership approach, ALP delivers not just a mindset, but a <span className="text-primary font-semibold">precision framework for strategic action</span>.
+                <span className="text-primary font-semibold">The Mission:</span> ALP delivers a <span className="text-primary font-semibold">precision framework for strategic action</span> — built to install execution infrastructure, sharpen decisions under pressure, and scale operations without chaos.
               </p>
             </div>
 
@@ -126,7 +126,7 @@ const About = () => {
         {/* Legacy Section */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <p className="text-xl text-foreground leading-relaxed">
-            <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building more than an advisory firm. He is building an army of empowered operators ready to execute at the highest level. His mission is precise: to sharpen clarity, forge strategic leverage, and unleash decisive action in every area that matters.
+            <span className="text-primary font-semibold">Legacy & Vision:</span> Marshall is building a network of decisive operators prepared to execute at the highest level. His mission is precise: to sharpen clarity, forge strategic leverage, and drive decisive action in every area that matters.
           </p>
         </div>
 
