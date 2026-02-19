@@ -1,155 +1,140 @@
 
-# Homepage Restructure: Ascension Ladder + "Choose Your Access" Architecture
+# Copy Refresh: Hero, StartHere, About, Services & AskMarshallHighlight
 
-This is a strategic restructure of the homepage to express a clear **progression** rather than a menu of options. ChatGPT's core insight is correct: visitors need to see a ladder, not a list.
-
----
-
-## What's Actually Being Recommended (Interpreted)
-
-ChatGPT is proposing three core structural changes:
-
-1. **Replace "Start Here" (3 content-entry cards) with "How You Can Engage" (3 access-level cards)** — shifting the framing from "here's how to learn" to "here's how to access Marshall"
-2. **Restructure the Services section** to separate "Live Rooms" (group programs) from "Full Access Membership" (bundles) more clearly, and rename accordingly
-3. **Navigation rename**: "Ecosystem" → "Access", with a restructured dropdown separating ALP University, Live Rooms, and Full Access Membership
-
-There's also a suggestion for an **Ascension Ladder visual** — a horizontal progression strip showing the full ladder from cheapest to most intensive.
+This is a copy-only update — no structural changes, no new components, no routing changes. Every file already exists in the right shape; we're replacing text strings and swapping out a few labels. Five files touch.
 
 ---
 
-## What Already Exists (No Change Needed)
+## What's Changing (File by File)
 
-Reviewing the code, several of ChatGPT's suggestions are **already implemented**:
-- Hero headline, subheadline, and CTAs ("Submit a Strategic Question" + "Watch the Origin Story") — ✅ already done
-- "Direct Advisory" section header in CoachingTestimonials — ✅ done
-- ALP University card with "The Operator's Archive" copy and "Enter the Archive →" CTA — ✅ done
-- "Train Live. Think Sharper. Move Faster." heading in Services — ✅ done
-- Nav labels "Insights", "Ecosystem", "1-on-1 Advisory", "Ask Marshall" — ✅ done
+### 1. `src/components/CinematicHero.tsx`
 
----
+**Pill tag:**
+- Current: `Altitude Logic Pressure`
+- New: `ALTITUDE • LOGIC • PRESSURE`
 
-## What's NOT Being Changed (and Why)
+**Headline:**
+- Current: `Strategic Leverage for / Founders and Operators`
+- New: `Execution Systems for Operators Who Want Scale` (single line, no gold split needed — or keep the same two-line structure with the second line in gold)
 
-- **Section order**: The current flow (Hero → Start Here → FeaturedIn → About → AskMarshallHighlight → Services → Insights → Lead Magnet → Testimonials) is already well-structured. ChatGPT's proposed order moves "Why Marshall" above "Ask Marshall" — this is a minor reorder. The bigger concern is the current `About` section is very long (Origin Story video + photo + body copy + highlights grid). Moving it up before the Ask Marshall CTA would bury the conversion point under too much content. Current order is kept.
-- **Growth Academy / Full Access bundle removal**: These are real products with Stripe checkout. Leaving them as-is but renaming/repositioning slightly.
+**Subheadline:**
+- Current: "Marshall Wilkinson teaches negotiation, execution, and decision architecture — built from over $5B in real-world outcomes across enterprise deals and high-stakes business decisions."
+- New: "Marshall Wilkinson teaches decision architecture, negotiation leverage, and execution systems built from over $5B in real-world outcomes across enterprise deals and high-stakes operations."
 
----
+**Microline (italic small text):**
+- Current: `Frameworks, not motivation. Strategy, not noise.`
+- New: `Frameworks that create revenue, control, and operational dominance.`
 
-## Changes Being Made
+**Quote line (brand anchor)** — replace with the anchor sentence:
+- Current: `"I teach the frameworks. I deliver the outcomes."`
+- New: `ALP installs execution systems that scale businesses without chaos.`
 
-### Change 1: Replace "Start Here" with "How You Can Engage" — `src/components/StartHere.tsx`
+**3 Stat Cards:**
 
-This is the most important change. The section currently shows 3 content-entry cards (Watch the Framework, Read Insights, Ask Marshall). ChatGPT correctly points out these are content lane cards, not **access lane** cards.
-
-**New 3-card structure — 3 access tiers:**
-
-| Card | What It Is | Price | CTA |
-|---|---|---|---|
-| ALP University | On-demand archive | $197/mo | Enter the Archive → |
-| Ask Marshall | Direct strategic answer (no call) | $250 | Submit a Question → |
-| Direct Advisory | Private sessions | From $1,000 | Explore 1-on-1 Options → |
-
-**Visual treatment:**
-- Ask Marshall card keeps its elevated featured treatment (gold border, glow, scale, solid gold banner "MOST POPULAR ENTRY POINT")
-- ALP University card: standard glass-card, left-aligned, icon + copy
-- Direct Advisory card: standard glass-card, right-aligned
-
-**Section header copy changes:**
-- Title: `Start Here` → **`How You Can Engage`**
-- Subheadline: "Three ways to engage with the ALP framework." → **"Three paths depending on how directly you want access."**
+| Card | Current stat | New stat | Current sub | New sub |
+|---|---|---|---|---|
+| 1 | `1-on-1 Advisory` | `$5B+ Outcomes` | Private Strategic Engagements | Enterprise execution and negotiated results |
+| 2 | `1,000+ Hours` | `Systems First` | Training & Consulting | Build infrastructure before scaling volume |
+| 3 | `Daily Live` | `Live Operator Rooms` | Power Hour Community | Daily and weekly strategic execution sessions |
 
 ---
 
-### Change 2: Add Ascension Ladder Strip — Between Hero and "How You Can Engage" sections
+### 2. `src/components/StartHere.tsx`
 
-ChatGPT's strongest structural suggestion is a **visual ladder** showing the full progression. This goes inside `StartHere.tsx` as a narrow strip above the 3 cards, inside the same section:
+**Section title:**
+- Current: `How You Can Engage`
+- New: `Choose Your Access Level`
 
-```text
-ALP University ($197/mo) → Ask Marshall ($250) → Strategy Session ($1,000) → Private Advisory ($5,000) → Full Access Membership
-```
+**Subheadline:**
+- Current: `Three paths depending on how directly you want access.`
+- New: `Three paths depending on how directly you want systems, execution clarity, and decision leverage.`
 
-Rendered as a horizontal row of connected steps with arrows between them, using small chips with gold text. On mobile it wraps into 2 rows. This single element communicates the entire business model in one glance.
+**ALP University card body** (currently has no body text — we add it below the subtitle):
+- New body: `Access the full repository of recorded Power Hour, Sales & Marketing School, and Contractor School sessions — indexed and expanded every week.`
 
----
+**Ask Marshall card body** (currently has no body text — we add it below the subtitle):
+- New body: `Submit your most pressing business decision and receive a direct Loom breakdown of what to do next — with clear steps, structure, and leverage.`
 
-### Change 3: Rename "Ecosystem" nav dropdown → "Access" + Restructure Dropdown — `src/components/Header.tsx`
+**Direct Advisory card body** (currently has no body text — we add it below the subtitle):
+- New body: `Private strategic engagements designed to install execution systems, sharpen leadership decisions, and remove bottlenecks.`
 
-**New nav label:** "Ecosystem" → **"Access"**
-
-**New dropdown items** (replacing the current "All Programs / Power Hour / Contractor School / Sales & Marketing School / ALP University" list):
-
-```
-── ALP University        (On-Demand Archive)
-── Live Rooms            → /programs  (links to programs page with live programs anchor)
-── Full Access Membership → /programs
-```
-
-This matches ChatGPT's recommendation exactly and removes the confusing "All Programs" link in favor of clear category names.
-
-**Mobile nav** also updates: the "Programs" label under the mobile accordion becomes **"Access"**.
+The card data array (`entries`) currently only has a `subtitle` field. We'll add a `body` field to each entry and render it as a second paragraph below the subtitle in both the featured and standard card layouts.
 
 ---
 
-### Change 4: "Get Everything" → "Full Access Membership" Rename + Subtext — `src/components/Services.tsx`
+### 3. `src/components/About.tsx`
 
-The bundles section currently has a chip labeled "Get Everything" and a heading "Extended Engagement Options." These get renamed:
+**Section subheadline** (under "Why Marshall" heading):
+- Current: "Marshall Wilkinson has advised on over $5B in negotiated outcomes and enterprise-scale execution environments. He now teaches the frameworks behind those decisions to founders, operators, and contractors building serious companies."
+- New: "Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $5B in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is not motivation. It's infrastructure."
 
-- Chip label: "Get Everything" → **"Full Access Membership"**
-- Section heading: "Extended Engagement Options" → **"Everything. Live."**
-- Bundle descriptions update:
-  - Growth Academy: "All 4 group programs + community access" → **"All Live Rooms + community access. Active operator environment."**
-  - Full Access: "Everything + 1-on-1 consulting sessions" → **"All Live Rooms + 10 private advisory sessions per year. Maximum proximity."**
+**Four feature card copy:**
+
+| Card | Current title | New title | Current description | New description |
+|---|---|---|---|---|
+| 1 | Executed at Scale | Executed at Scale | Over $5B in high-stakes negotiations and executed projects | Real systems built inside enterprise environments. |
+| 2 | Results-Driven | Results-Driven | Strategies tested and refined through real-world application | Every framework is built for measurable outcomes. |
+| 3 | Decision Architecture | Decision Architecture | Specialized in high-leverage decision-making, negotiation, and scale | Clarity, leverage, and structure under pressure. |
+| 4 | Trusted Advisor | Operator Systems | Decades of experience advising top-tier executives and operators | Scale operations without losing control. |
+
+The fourth card icon changes from `Shield` to `TrendingUp` (or keep `Shield` — the copy is what matters). We'll swap the icon to `Cog` or `BarChart2` to better reflect "Operator Systems" — available in lucide-react.
+
+---
+
+### 4. `src/components/AskMarshallHighlight.tsx`
+
+**Opening paragraph:**
+- Current: "Not ready for a live session? Get Marshall's direct analysis on your most pressing business decision — delivered as a personalized Loom video within 24 hours. No fluff. No waiting. Just leverage."
+- New: "Not ready for a live engagement? Get Marshall's direct systems-level analysis on your most pressing business decision — delivered within 24 hours."
+
+(Keep the bullet points unchanged.)
+
+---
+
+### 5. `src/components/Services.tsx`
+
+**Section subheadline** (under "Direct Access Options"):
+- Current: `Private, high-leverage engagements for operators ready to move.`
+- New: `Private engagements for operators who need execution clarity, leverage, and systems installed fast.`
+
+**Live Group Programs heading:**
+- Current: `Train Live. Think Sharper. Move Faster.`
+- New: `Train Live. Execute Faster.`
+
+**Live Group Programs subheadline:**
+- Current: `Daily and weekly strategic sessions for operators in motion.`
+- New: `Daily and weekly live sessions built to sharpen decision-making and install scalable business systems.`
+
+**Three live program card taglines:**
+
+| Card | Current tagline | New tagline |
+|---|---|---|
+| Power Hour | `Daily live coaching at 8am EST` | `Daily live execution room at 8am EST.` |
+| Sales & Marketing | `Close more deals, generate leads` | `Weekly systems for lead flow, persuasion, and deal control.` |
+| Contractor School | `Scale like an operator, not a tradesman.` | `Weekly systems for contractors scaling real operations.` |
+
+**ALP University archive card** — add one line below the existing description:
+- Add: `5+ years of recorded execution breakdowns. Updated weekly.`
+
+**Full Access Membership — add a third bundle card:**
+- Title: `Full Access (Annual)`
+- Price: `$16,000`
+- Period: `/year`
+- Description: `All live rooms + full community + 10 private advisory sessions annually. Maximum proximity. Maximum leverage.`
+- CTA: `Choose Duration →` (opens the existing `FullAccessModal`)
+
+The `bundles` array currently has two items. We add a third. The grid changes from `md:grid-cols-2` to `md:grid-cols-3` to accommodate the new card.
 
 ---
 
 ## Files Being Edited
 
-| File | Change |
+| File | Type of Change |
 |---|---|
-| `src/components/StartHere.tsx` | Full rewrite — section title, subheadline, 3 access-lane cards, ascension ladder strip |
-| `src/components/Header.tsx` | "Ecosystem" → "Access", restructure dropdown items (desktop + mobile) |
-| `src/components/Services.tsx` | Bundles section: chip, heading, and description copy updates |
+| `src/components/CinematicHero.tsx` | Copy: pill, headline, subheadline, microline, brand quote, 3 stat cards |
+| `src/components/StartHere.tsx` | Copy: section title, subheadline, add body text to each of the 3 cards |
+| `src/components/About.tsx` | Copy: subheadline, 4 feature card titles + descriptions, card 4 icon |
+| `src/components/AskMarshallHighlight.tsx` | Copy: opening paragraph only |
+| `src/components/Services.tsx` | Copy: section subheadline, live programs heading + subheadline, 3 card taglines, ALP University add-on line, add 3rd bundle card, grid layout |
 
-No new components. No database changes. No routing changes. Three files.
-
----
-
-## What the Homepage Communicates After These Changes
-
-```text
-HERO
-"Strategic Leverage for Founders and Operators"
-[Submit a Strategic Question] [Watch the Origin Story]
-
-↓
-
-HOW YOU CAN ENGAGE
-Ascension Ladder: ALP University → Ask Marshall → Strategy Session → Private Advisory → Full Access
-[ALP University $197/mo] [★ Ask Marshall $250] [Direct Advisory from $1,000]
-
-↓
-
-FEATURED IN (credibility chips)
-
-↓
-
-WHY MARSHALL (Origin Story + authority copy)
-
-↓
-
-ASK MARSHALL HIGHLIGHT (full-width feature, $250 entry point)
-
-↓
-
-DIRECT ACCESS OPTIONS
-  ├─ Private Advisory section (Strategy Session + Private Advisory)
-  ├─ Live Rooms (Power Hour, Sales & Marketing, Contractor School)
-  ├─ On-Demand Library (ALP University)
-  └─ Full Access Membership (Growth Academy, Full Access bundles)
-
-↓
-
-LATEST INSIGHTS → LEAD MAGNET → TESTIMONIALS
-```
-
-This is the clearest expression of the ascension ladder the site has had.
+No new components. No routing changes. No database changes. Pure copy and one additional card.
