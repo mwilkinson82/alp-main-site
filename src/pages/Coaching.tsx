@@ -40,7 +40,7 @@ const Coaching = () => {
         "Personalized guidance and recommendations",
         "Follow-up resources and materials"
       ],
-      cta: "Apply for a Session",
+      cta: "Apply for Private Advisory",
       premium: false,
     },
     {
