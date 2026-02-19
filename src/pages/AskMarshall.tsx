@@ -65,11 +65,11 @@ const SalesLanding = () => (
             <span className="text-primary font-medium">New — Async Expert Analysis</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Get Marshall's Expert Analysis on Your Problem.{" "}
+            Get Systems-Level Clarity on Your Toughest Decision.{" "}
             <span className="text-gradient-gold">On Demand.</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Submit your toughest business question with all the details, and receive a personalized video analysis from Marshall within 24 hours. No live call required.
+            Submit your toughest business question with all the details, and receive a direct systems-level breakdown from Marshall within 24 hours. No live call required.
           </p>
           <div className="max-w-3xl mx-auto w-full rounded-xl overflow-hidden shadow-xl">
             <img
@@ -78,12 +78,15 @@ const SalesLanding = () => (
               className="w-full h-auto"
             />
           </div>
-          <Button size="lg" variant="premium" className="text-lg px-10 h-14 gap-2" asChild>
-            <a href={STRIPE_ASK_MARSHALL} target="_blank" rel="noopener noreferrer">
-              Get Your Answer — $250
-              <ArrowRight className="w-5 h-5" />
-            </a>
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            <Button size="lg" variant="premium" className="text-lg px-10 h-14 gap-2" asChild>
+              <a href={STRIPE_ASK_MARSHALL} target="_blank" rel="noopener noreferrer">
+                Submit My Question — $250
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            </Button>
+            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed. If not, your fee is refunded.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -162,12 +165,15 @@ const SalesLanding = () => (
               </li>
             ))}
           </ul>
-          <Button size="lg" variant="premium" className="text-lg px-10 h-14 gap-2" asChild>
-            <a href={STRIPE_ASK_MARSHALL} target="_blank" rel="noopener noreferrer">
-              Get Your Answer — $250
-              <ArrowRight className="w-5 h-5" />
-            </a>
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            <Button size="lg" variant="premium" className="text-lg px-10 h-14 gap-2" asChild>
+              <a href={STRIPE_ASK_MARSHALL} target="_blank" rel="noopener noreferrer">
+                Submit My Question — $250
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            </Button>
+            <p className="text-sm text-muted-foreground">24-hour delivery guaranteed. If not, your fee is refunded.</p>
+          </div>
         </div>
       </div>
     </section>
