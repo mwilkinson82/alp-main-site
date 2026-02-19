@@ -54,7 +54,7 @@ const LeadMagnet = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-foreground relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-foreground relative overflow-hidden">
       {/* Gold accent glow */}
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"

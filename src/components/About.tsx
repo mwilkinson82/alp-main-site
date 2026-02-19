@@ -35,7 +35,7 @@ const About = () => {
     <section 
       ref={sectionRef}
       id="about" 
-      className="py-20 md:py-32 bg-muted/30 relative overflow-hidden"
+      className="py-16 md:py-24 bg-muted/30 relative overflow-hidden"
     >
       {/* Background accent */}
       <div 
@@ -45,7 +45,7 @@ const About = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20 space-y-6">
+        <div className="text-center mb-12 space-y-4">
           <h2 className="text-4xl md:text-6xl font-bold">
             <span className="text-gradient-gold">Why Marshall</span>
           </h2>
@@ -55,8 +55,8 @@ const About = () => {
         </div>
 
         {/* Origin Story Video */}
-        <div id="origin-story" className="max-w-5xl mx-auto mb-24">
-          <div className="text-center mb-8">
+        <div id="origin-story" className="max-w-5xl mx-auto mb-16">
+          <div className="text-center mb-6">
             <h3 className="text-2xl md:text-3xl font-bold mb-2">The Origin Story</h3>
             <p className="text-lg text-muted-foreground">
               Discover how Marshall built a legacy of transformation
@@ -72,7 +72,7 @@ const About = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
           {/* Left - Photo */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-premium hover-lift">

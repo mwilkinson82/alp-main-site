@@ -11,7 +11,7 @@ const bullets = [
 
 const AskMarshallHighlight = () => {
   return (
-    <section className="py-20 md:py-28 bg-muted/30 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-muted/30 relative overflow-hidden">
       {/* Background accent */}
       <div
         className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none"
