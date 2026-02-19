@@ -1,20 +1,13 @@
-import { useState, useRef } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Clock, Users, Video, Calendar, Play } from "lucide-react";
+import { Check, Clock, Users, Video, Calendar } from "lucide-react";
+import powerHourHero from "@/assets/power-hour-hero.jpg";
+
 const PowerHour = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const handlePlayVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-  };
   return <>
       <SEO title="Marshall Wilkinson's Power Hour - Daily Morning Accountability & Coaching" description="Join Marshall Wilkinson's daily Power Hour at 8:00 AM EST. Start every morning with focus, strategy, and community through live coaching calls and accountability support." keywords="Marshall Wilkinson Power Hour, Marshall Wilkinson coaching, power hour, daily accountability, morning routine, business coaching, live coaching calls, entrepreneur community, Altitude Logic Pressure" canonical="/power-hour" />
       <StructuredData type="service" data={{
@@ -25,19 +18,15 @@ const PowerHour = () => {
       <main className="min-h-screen">
         <Header />
         
-        {/* Video Hero Section */}
+        {/* Hero Image Section */}
         <section className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-muted">
-          <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline webkit-playsinline="true" controls preload="metadata" poster="/images/power-hour-thumbnail.jpg" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}>
-            <source src="/videos/power-hour-explainer.mp4" />
-          </video>
+          <img
+            src={powerHourHero}
+            alt="Marshall Wilkinson leading a live Power Hour coaching session"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
           
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
-          
-          {!isPlaying && <button onClick={handlePlayVideo} className="absolute inset-0 flex items-center justify-center group cursor-pointer">
-              <div className="w-24 h-24 rounded-full bg-gold/90 hover:bg-gold flex items-center justify-center transition-all group-hover:scale-110">
-                <Play className="h-12 w-12 text-black ml-1" fill="currentColor" />
-              </div>
-            </button>}
         </section>
 
         {/* Content Section */}
