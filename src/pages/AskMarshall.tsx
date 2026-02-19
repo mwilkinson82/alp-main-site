@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Upload, FileText, X, CheckCircle2, Clock, Video, MessageCircle, Shield } from "lucide-react";
 import loomPreview from "@/assets/ask-marshall-loom-preview.png";
+import askMarshallHero from "@/assets/ask-marshall-hero.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -45,6 +46,16 @@ const AskMarshall = () => {
 /* ─── Sales / Landing State ─── */
 const SalesLanding = () => (
   <>
+    {/* Hero Image */}
+    <section className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-muted">
+      <img
+        src={askMarshallHero}
+        alt="Marshall Wilkinson reviewing business documents at his desk"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
+    </section>
+
     {/* Hero */}
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4">
