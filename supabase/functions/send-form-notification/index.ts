@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 // Email recipient
-const RECIPIENT_EMAIL = "marshall@marshallwilkinson.com";
+const RECIPIENT_EMAIL = "wilkinson.marshall@gmail.com";
 
 interface ContactFormData {
   formType: 'contact';
