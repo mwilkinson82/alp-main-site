@@ -31,16 +31,16 @@ const InsightsNewsletter = () => {
         .from("email_subscribers")
         .insert({ email: result.data, source: "insights_newsletter" });
 
-      if (dbError) {
-        if (dbError.code === "23505") {
-          // Duplicate — still show success
-          setIsSuccess(true);
-        } else {
-          throw dbError;
-        }
-      } else {
-        setIsSuccess(true);
+      if (dbError && dbError.code !== "23505") {
+        throw dbError;
       }
+
+      // Fire Resend notification (best-effort — don't block on failure)
+      supabase.functions.invoke("send-form-notification", {
+        body: { formType: "newsletter", email: result.data },
+      }).catch((err) => console.error("Newsletter notification error:", err));
+
+      setIsSuccess(true);
     } catch (err) {
       console.error("Newsletter signup error:", err);
       toast({

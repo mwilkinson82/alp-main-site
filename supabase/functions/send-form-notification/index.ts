@@ -50,7 +50,12 @@ interface AdvisoryApplicationFormData {
   serviceApplyingFor: string;
 }
 
-type FormData = ContactFormData | PricingFormData | AskMarshallFormData | AdvisoryApplicationFormData;
+interface NewsletterFormData {
+  formType: 'newsletter';
+  email: string;
+}
+
+type FormData = ContactFormData | PricingFormData | AskMarshallFormData | AdvisoryApplicationFormData | NewsletterFormData;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -63,7 +68,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Received form submission:", { formType: formData.formType, name: formData.name });
 
     // Validate form type
-    if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application'].includes(formData.formType)) {
+    if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application', 'newsletter'].includes(formData.formType)) {
       console.error("Invalid form type:", formData.formType);
       return new Response(
         JSON.stringify({ error: "Invalid form type" }),
@@ -72,6 +77,28 @@ const handler = async (req: Request): Promise<Response> => {
           headers: { "Content-Type": "application/json", ...corsHeaders },
         }
       );
+    }
+
+    // Newsletter — short-circuit: just send notification, no other validation needed
+    if (formData.formType === 'newsletter') {
+      const newsletterData = formData as NewsletterFormData;
+      const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', dateStyle: 'full', timeStyle: 'long' });
+      const emailResponse = await resend.emails.send({
+        from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
+        to: [RECIPIENT_EMAIL],
+        subject: `📬 New Newsletter Subscriber — ${newsletterData.email}`,
+        html: `
+          <h2>New Newsletter Subscriber 📬</h2>
+          <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+          <p><strong>Email:</strong> <a href="mailto:${newsletterData.email}">${newsletterData.email}</a></p>
+          <p><strong>Source:</strong> ALP Insights Newsletter (Homepage)</p>
+          <p style="color: #6b7280; font-size: 14px;"><small>Subscribed: ${timestamp}</small></p>
+        `,
+      });
+      return new Response(JSON.stringify({ success: true, id: emailResponse.data?.id }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
     }
 
     // Validate required fields
