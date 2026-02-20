@@ -37,7 +37,7 @@ const Index = () => {
         <Services />
         <LatestInsights />
         <InsightsNewsletter />
-        <LeadMagnet />
+        {/* <LeadMagnet /> */}
         <CoachingTestimonials />
         <Testimonials />
         <Footer />
