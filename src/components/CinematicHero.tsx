@@ -102,7 +102,7 @@ const CinematicHero = () => {
         {/* Scroll Cue - bouncing chevron at bottom of video */}
         {showContent && (
           <div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce transition-opacity duration-500"
+            className="absolute bottom-8 inset-x-0 mx-auto w-fit z-10 animate-bounce transition-opacity duration-500"
             style={{ opacity: scrollY < 100 ? 1 : 0 }}
           >
             <ChevronDown className="w-8 h-8 text-primary drop-shadow-lg" />
