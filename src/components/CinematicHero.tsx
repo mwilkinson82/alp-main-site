@@ -184,7 +184,7 @@ const CinematicHero = () => {
               </p>
 
               {/* Trust Indicators */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto pt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto pt-12 sm:pt-8">
                 <div className="flex sm:block items-center gap-4 sm:space-y-1.5 glass-card p-4 md:p-6 hover-lift">
                   <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight whitespace-nowrap sm:whitespace-normal">$5B+ Outcomes</div>
                   <div className="text-xs md:text-sm text-muted-foreground leading-snug">Enterprise execution and negotiated results</div>
