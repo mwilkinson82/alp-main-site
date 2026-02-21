@@ -65,8 +65,8 @@ const SalesLanding = () => (
             <span className="text-primary font-medium">New — Async Expert Analysis</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-            Get Systems-Level Clarity on Your Toughest Decision.{" "}
-            <span className="text-gradient-gold">On Demand.</span>
+            Get Systems-Level Clarity on Your Toughest Decision.
+            <span className="text-gradient-gold block mt-2">On Demand.</span>
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             Submit your toughest business question with all the details, and receive a direct systems-level breakdown from Marshall within 24 hours. No live call required.
