@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, ArrowRight } from "lucide-react";
+import { Volume2, VolumeX, ArrowRight, ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import marshallHero from "@/assets/marshall-conference-hero.jpg";
 import alpLogo from "@/assets/alp-logo.png";
@@ -98,6 +98,16 @@ const CinematicHero = () => {
         
         {/* Subtle gradient only at bottom for blend */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
+
+        {/* Scroll Cue - bouncing chevron at bottom of video */}
+        {showContent && (
+          <div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce transition-opacity duration-500"
+            style={{ opacity: scrollY < 100 ? 1 : 0 }}
+          >
+            <ChevronDown className="w-8 h-8 text-primary drop-shadow-lg" />
+          </div>
+        )}
       </div>
 
       {/* Black Screen with Logo Intro */}
@@ -154,13 +164,13 @@ const CinematicHero = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-                <Button size="lg" className="group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
+                <Button size="lg" className="w-full sm:w-auto group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
                   <a href="/ask-marshall">
                     Start Here — Get Marshall's Analysis
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/10" onClick={() => {
+                <Button size="default" variant="outline" className="text-sm border-primary/20 hover:bg-primary/10" onClick={() => {
                   const el = document.getElementById("origin-story");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}>
@@ -174,18 +184,18 @@ const CinematicHero = () => {
               </p>
 
               {/* Trust Indicators */}
-              <div className="grid grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto pt-8">
-                <div className="space-y-1.5 glass-card p-3 md:p-6 hover-lift">
-                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight">$5B+ Outcomes</div>
-                  <div className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">Enterprise execution and negotiated results</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-8 max-w-3xl mx-auto pt-8">
+                <div className="flex sm:block items-center gap-4 sm:space-y-1.5 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight whitespace-nowrap sm:whitespace-normal">$5B+ Outcomes</div>
+                  <div className="text-xs md:text-sm text-muted-foreground leading-snug">Enterprise execution and negotiated results</div>
                 </div>
-                <div className="space-y-1.5 glass-card p-3 md:p-6 hover-lift">
-                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight">Systems First</div>
-                  <div className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">Build infrastructure before scaling volume</div>
+                <div className="flex sm:block items-center gap-4 sm:space-y-1.5 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight whitespace-nowrap sm:whitespace-normal">Systems First</div>
+                  <div className="text-xs md:text-sm text-muted-foreground leading-snug">Build infrastructure before scaling volume</div>
                 </div>
-                <div className="space-y-1.5 glass-card p-3 md:p-6 hover-lift">
-                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight">Live Training Rooms</div>
-                  <div className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-snug">Daily and weekly strategic execution sessions</div>
+                <div className="flex sm:block items-center gap-4 sm:space-y-1.5 glass-card p-4 md:p-6 hover-lift">
+                  <div className="text-base sm:text-xl md:text-4xl font-bold text-primary leading-tight whitespace-nowrap sm:whitespace-normal">Live Training Rooms</div>
+                  <div className="text-xs md:text-sm text-muted-foreground leading-snug">Daily and weekly strategic execution sessions</div>
                 </div>
               </div>
             </div>
