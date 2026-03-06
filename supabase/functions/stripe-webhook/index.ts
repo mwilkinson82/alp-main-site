@@ -69,7 +69,7 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
     welcomeSubject: "Welcome to ALP — Handbook Special! 📘",
   },
   // ALP University
-  "alp-university": {
+  "8x2dRa1dvg9w1RudXIeQM0T": {
     name: "ALP University",
     kajabiOfferIds: ["2149157033"],
     welcomeSubject: "Welcome to ALP University! 🎓",

@@ -11,19 +11,6 @@ import alpAudiosMockup from "@/assets/alp-audios-mockup.png";
 import consultingMockup from "@/assets/consulting-mockup.png";
 
 const ALPUniversity = () => {
-  useEffect(() => {
-    // Load Stripe pricing table script
-    const script = document.createElement('script');
-    script.src = 'https://js.stripe.com/v3/pricing-table.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
 
   return (
     <>
@@ -309,13 +296,18 @@ const ALPUniversity = () => {
                 Everything. Every session. Every system. $197/month — cancel anytime.
               </p>
 
-              {/* Stripe Pricing Table */}
-              <div className="bg-card rounded-lg p-8 shadow-lg">
-                <stripe-pricing-table 
-                  pricing-table-id="prctbl_1SKaufJdDAUSVXbNTzAHj1Kl"
-                  publishable-key="pk_live_51HPL9DJdDAUSVXbNUTKTJ3iFWkm647TcFaWPxG7jEN5yxOQbOdoQKMr7EwQVdeqaXNJNWtFSZJPcIzsNpFu7wq2B00FraU36Xi"
-                />
-              </div>
+              <a
+                href="https://buy.stripe.com/8x2dRa1dvg9w1RudXIeQM0T"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  className="bg-gold hover:bg-gold/90 text-black font-semibold text-xl px-12 h-14"
+                >
+                  Subscribe — $197/month
+                </Button>
+              </a>
 
               <p className="text-sm text-muted-foreground mt-8">
                 Cancel anytime. Access begins immediately upon subscription.
