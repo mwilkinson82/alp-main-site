@@ -345,7 +345,7 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string, cu
   // Handbook Special
   if (productKey === "8x2bJ28FXg9wgMo1aWeQM0K") return handbookSpecialEmail(customerName);
   // ALP University
-  if (productKey === "alp-university") return alpUniversityEmail();
+  if (productKey === "8x2dRa1dvg9w1RudXIeQM0T") return alpUniversityEmail();
   // 1-on-1 Coaching: Single Session
   if (productKey === "bJeaEYe0h9L8ao0g5QeQM0R") return coachingSingleEmail(customerName);
   // 1-on-1 Coaching: 6-Session Intensive
