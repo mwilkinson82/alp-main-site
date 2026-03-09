@@ -1,6 +1,9 @@
 import { Resend } from "https://esm.sh/resend@4.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-import { getWelcomeEmailHtml } from "../stripe-webhook/email-templates.ts";
+// Inline the email template function import — edge functions can't cross-reference
+// We'll call the stripe-webhook's email-templates via a shared approach
+// For now, duplicate the getWelcomeEmailHtml reference by copying the file
+
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const supabase = createClient(
