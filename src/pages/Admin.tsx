@@ -26,6 +26,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Eye, LogOut, FileText, ShoppingCart, CheckCircle, XCircle } from "lucide-react";
+import { RetryFulfillmentDialog } from "@/components/admin/RetryFulfillmentDialog";
 import alpLogo from "@/assets/alp-logo.png";
 
 interface BlogPost {
