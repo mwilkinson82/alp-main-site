@@ -95,6 +95,12 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
   },
 };
 
+// Map Stripe Price IDs to product keys for fallback identification
+// This catches purchases made via pricing tables, invoices, or subscriptions
+const PRICE_ID_MAP: Record<string, string> = {
+  "price_1SKarMJdDAUSVXbNSJFzDORs": "8x2dRa1dvg9w1RudXIeQM0T", // ALP University
+};
+
 // Extract the product key from a Stripe Payment Link URL
 function getProductFromPaymentLink(paymentLinkUrl: string | null): typeof PRODUCT_MAP[string] | null {
   if (!paymentLinkUrl) return null;
@@ -124,9 +130,38 @@ function getProductFromSession(session: any): { product: typeof PRODUCT_MAP[stri
     }
   }
 
+  // 3. Fallback: Check line_items for known Stripe Price IDs
+  if (session.line_items?.data) {
+    for (const item of session.line_items.data) {
+      const priceId = typeof item.price === 'string' ? item.price : item.price?.id;
+      if (priceId && PRICE_ID_MAP[priceId]) {
+        const productKey = PRICE_ID_MAP[priceId];
+        console.log("Product identified via Price ID fallback:", priceId, "->", productKey);
+        return { product: PRODUCT_MAP[productKey], key: productKey };
+      }
+    }
+  }
+
+  // 4. Fallback: Check subscription line items / invoice data
+  if (session.subscription) {
+    // The subscription ID itself doesn't help, but sometimes display_items are present
+    if (session.display_items) {
+      for (const item of session.display_items) {
+        const priceId = item.plan?.id || item.price?.id;
+        if (priceId && PRICE_ID_MAP[priceId]) {
+          const productKey = PRICE_ID_MAP[priceId];
+          console.log("Product identified via subscription display_items:", priceId, "->", productKey);
+          return { product: PRODUCT_MAP[productKey], key: productKey };
+        }
+      }
+    }
+  }
+
   console.warn("Could not identify product from session:", JSON.stringify({
     payment_link: session.payment_link,
     metadata: session.metadata,
+    line_items: session.line_items,
+    subscription: session.subscription,
   }));
   return null;
 }
