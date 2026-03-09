@@ -400,6 +400,15 @@ const Admin = () => {
                             <TableCell className="text-sm text-destructive max-w-[200px] truncate">
                               {purchase.error_message || "-"}
                             </TableCell>
+                            <TableCell>
+                              <RetryFulfillmentDialog
+                                purchaseId={purchase.id}
+                                customerName={purchase.customer_name}
+                                customerEmail={purchase.customer_email}
+                                currentProductName={purchase.product_name}
+                                onSuccess={fetchPurchases}
+                              />
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
