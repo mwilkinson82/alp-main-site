@@ -367,7 +367,7 @@ const Admin = () => {
                           <TableHead className="text-center">Email Sent</TableHead>
                           <TableHead className="text-center">Kajabi</TableHead>
                           <TableHead>Errors</TableHead>
-                        </TableRow>
+                          <TableHead>Actions</TableHead>
                       </TableHeader>
                       <TableBody>
                         {purchases.map((purchase) => (
