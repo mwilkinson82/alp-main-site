@@ -26,6 +26,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2, Eye, LogOut, FileText, ShoppingCart, CheckCircle, XCircle } from "lucide-react";
+import { RetryFulfillmentDialog } from "@/components/admin/RetryFulfillmentDialog";
 import alpLogo from "@/assets/alp-logo.png";
 
 interface BlogPost {
@@ -366,6 +367,7 @@ const Admin = () => {
                           <TableHead className="text-center">Email Sent</TableHead>
                           <TableHead className="text-center">Kajabi</TableHead>
                           <TableHead>Errors</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -398,6 +400,15 @@ const Admin = () => {
                             </TableCell>
                             <TableCell className="text-sm text-destructive max-w-[200px] truncate">
                               {purchase.error_message || "-"}
+                            </TableCell>
+                            <TableCell>
+                              <RetryFulfillmentDialog
+                                purchaseId={purchase.id}
+                                customerName={purchase.customer_name}
+                                customerEmail={purchase.customer_email}
+                                currentProductName={purchase.product_name}
+                                onSuccess={fetchPurchases}
+                              />
                             </TableCell>
                           </TableRow>
                         ))}
