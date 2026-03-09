@@ -368,6 +368,7 @@ const Admin = () => {
                           <TableHead className="text-center">Kajabi</TableHead>
                           <TableHead>Errors</TableHead>
                           <TableHead>Actions</TableHead>
+                        </TableRow>
                       </TableHeader>
                       <TableBody>
                         {purchases.map((purchase) => (
