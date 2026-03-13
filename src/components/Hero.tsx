@@ -18,7 +18,7 @@ const Hero = () => {
   const [videoCanPlay, setVideoCanPlay] = useState(false);
   const [forceStatic, setForceStatic] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasVisitedBefore = useRef(false);
 
   // Detect AI browsers and force static mode
