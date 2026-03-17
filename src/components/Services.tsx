@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Check, HardHat, Video, Monitor } from "lucide-react";
+import { Clock, Users, ArrowRight, TrendingUp, Check, HardHat, Video, Monitor } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
@@ -53,12 +53,6 @@ const programs = [
     title: "Sales & Marketing",
     tagline: "Weekly systems for lead flow, persuasion, and deal control.",
     link: "/sales-marketing-school",
-  },
-  {
-    icon: GraduationCap,
-    title: "ALP University",
-    tagline: "Full video training library",
-    link: "/alp-university",
   },
   {
     icon: HardHat,
@@ -180,7 +174,7 @@ const Services = () => {
             ref={containerRef as React.RefObject<HTMLDivElement>}
             className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
           >
-            {programs.filter(p => p.title !== "ALP University").map((program, index) => {
+            {programs.map((program, index) => {
               const Icon = program.icon;
               return (
                 <Link key={index} to={program.link}>
@@ -209,40 +203,6 @@ const Services = () => {
           </div>
         </div>
 
-        {/* On-Demand Library: ALP University */}
-        <div className="mb-12">
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-muted border border-border rounded-full px-4 py-2 text-sm mb-3">
-              <GraduationCap className="w-4 h-4 text-muted-foreground" />
-              <span className="text-muted-foreground font-medium">On-Demand Library</span>
-            </div>
-            <p className="text-muted-foreground text-sm">Recorded sessions &amp; full video training — available anytime</p>
-          </div>
-          <Link to="/alp-university">
-            <Card className="glass-card hover-lift hover-glow group cursor-pointer max-w-3xl mx-auto">
-              <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-smooth">
-                  <GraduationCap className="w-7 h-7 text-primary group-hover:scale-110 transition-smooth" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xl font-bold group-hover:text-primary transition-colors">ALP University — The Operator's Archive</h4>
-                  <p className="text-muted-foreground text-sm mt-1 leading-relaxed">
-                    Access every recorded Power Hour, Sales &amp; Marketing School, and Contractor School session — indexed and updated daily. This is where serious operators study the thinking.
-                  </p>
-                  <p className="text-muted-foreground text-sm mt-1 leading-relaxed font-medium">5+ years of recorded execution breakdowns. Updated weekly.</p>
-                  <p className="text-primary font-semibold text-sm mt-2">$197/month — Cancel anytime.</p>
-                </div>
-                <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                    Enter the Archive
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-smooth" />
-                  </div>
-                  <p className="text-xs text-muted-foreground italic text-right max-w-[160px]">If you can't attend live, you can still study the room.</p>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
       </div>
 
       <AdvisoryApplicationModal

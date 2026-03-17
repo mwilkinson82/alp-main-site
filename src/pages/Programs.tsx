@@ -9,7 +9,7 @@ import ProgramTestimonials from "@/components/ProgramTestimonials";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, Video, ArrowRight, Monitor } from "lucide-react";
+import { Clock, HardHat, TrendingUp, ArrowRight, Monitor } from "lucide-react";
 
 const programs = [
   {
@@ -35,14 +35,6 @@ const programs = [
     description: "Presentations, negotiations, traffic, retargeting, offline marketing. Live Wednesdays at 7pm EST.",
     link: "/sales-marketing-school",
     pricing: "$497/mo",
-  },
-  {
-    icon: Video,
-    title: "ALP University",
-    tagline: "On-demand archive of every session",
-    description: "Access the full archive of Power Hours, Contractor School, and Sales & Marketing School recordings.",
-    link: "/alp-university",
-    pricing: "$197/mo",
   },
 ];
 

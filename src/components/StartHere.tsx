@@ -1,8 +1,7 @@
-import { Archive, MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-react";
+import { MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ladderSteps = [
-  { label: "ALP University" },
   { label: "Ask Marshall" },
   { label: "Live Training Rooms" },
   { label: "Strategy Session" },
@@ -10,15 +9,6 @@ const ladderSteps = [
 ];
 
 const entries = [
-  {
-    icon: Archive,
-    title: "ALP University",
-    subtitle: "The Operator's Archive. Updated daily.",
-    body: "Access the full repository of recorded Power Hour, Sales & Marketing School, and Contractor School sessions — indexed and expanded every week.",
-    cta: "Enter the Archive",
-    href: "/alp-university",
-    featured: false,
-  },
   {
     icon: MessageCircle,
     title: "Ask Marshall",

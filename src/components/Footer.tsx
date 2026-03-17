@@ -34,11 +34,6 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/alp-university" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  ALP University
-                </Link>
-              </li>
-              <li>
                 <Link to="/programs" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
                   Live Training Rooms
                 </Link>
