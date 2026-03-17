@@ -6,8 +6,7 @@ import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, HardHat, Calculator, FileText, DollarSign, Users, ClipboardList, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Check, HardHat, Calculator, FileText, DollarSign, Users, ClipboardList } from "lucide-react";
 
 const ContractorSchool = () => {
   const topics = [
@@ -25,14 +24,14 @@ const ContractorSchool = () => {
     "Real-world construction business strategies",
     "Direct access to Marshall during live sessions",
     "Community of like-minded builders",
-    "Included in the Full Access membership — not sold separately"
+    "Recordings archive grows every week"
   ];
 
   return (
     <>
       <SEO 
         title="Contractor School - Construction Business Training | Marshall Wilkinson"
-        description="Scale your construction company the right way with Marshall Wilkinson's Contractor School. Live weekly training on estimating, project management, legal, accounting, and operations."
+        description="Scale your construction company the right way with Marshall Wilkinson's Contractor School. Live weekly training on estimating, project management, legal, accounting, and operations. $497/mo or lock in your quarter for $1,497."
         keywords="Contractor School, construction business training, contractor coaching, Marshall Wilkinson, builder training, construction estimating, project management"
         canonical="/contractor-school"
       />
@@ -40,7 +39,8 @@ const ContractorSchool = () => {
         type="service" 
         data={{
           serviceType: "Contractor Business Training",
-          description: "Weekly live training for construction business owners on scaling operations"
+          description: "Weekly live training for construction business owners on scaling operations",
+          price: "497"
         }}
       />
       
@@ -74,7 +74,7 @@ const ContractorSchool = () => {
                   className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
                   asChild
                 >
-                  <Link to="/programs">View All Programs</Link>
+                  <a href="#pricing">Join Contractor School</a>
                 </Button>
               </div>
             </div>
@@ -138,16 +138,10 @@ const ContractorSchool = () => {
                 <Card className="border-2 border-primary/30">
                   <CardContent className="p-6 text-center space-y-4">
                     <HardHat className="w-16 h-16 text-primary mx-auto" />
-                    <h3 className="text-2xl font-bold">Included in Full Access</h3>
+                    <h3 className="text-2xl font-bold">Built for Builders</h3>
                     <p className="text-muted-foreground">
-                      Contractor School is not sold separately. It's included in the ALP Full Access membership — alongside Power Hour and Sales & Marketing School — for operators who want the complete training ecosystem.
+                      Contractor School is purpose-built for construction business owners who want to stop trading time for money and start building a real company.
                     </p>
-                    <Button asChild variant="premium" size="lg" className="w-full">
-                      <Link to="/programs">
-                        View Full Access Membership
-                        <ArrowRight className="ml-2 w-5 h-5" />
-                      </Link>
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -161,29 +155,67 @@ const ContractorSchool = () => {
         {/* Testimonials */}
         <ProgramTestimonials />
 
-        {/* CTA Section */}
-        <section className="py-20 bg-primary text-primary-foreground">
+        {/* Pricing Section */}
+        <section id="pricing" className="py-20 bg-gradient-dark">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Ready to Scale Your Construction Business?
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-secondary-foreground mb-6">
+                Join Contractor School
               </h2>
-              <p className="text-xl mb-8 opacity-90">
-                Contractor School is included in the ALP Full Access membership. Join to get access to the complete live training ecosystem.
+              <p className="text-xl text-secondary-foreground/80 mb-8">
+                Start building the business systems your construction company needs
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="text-lg px-8"
-                  asChild
-                >
-                  <Link to="/programs">
-                    Explore All Programs
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
+
+              <div className="bg-background rounded-lg p-8">
+                <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                  {/* Monthly Subscription */}
+                  <div className="border border-border rounded-lg p-6 space-y-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-foreground mb-1">$497<span className="text-lg font-normal text-muted-foreground">/mo</span></p>
+                      <p className="text-muted-foreground">Monthly Subscription</p>
+                      <p className="text-xs text-muted-foreground mt-1">Cancel anytime</p>
+                    </div>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full"
+                    >
+                      {/* TODO: Replace with Stripe Payment Link once created */}
+                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                        Subscribe Monthly
+                      </a>
+                    </Button>
+                  </div>
+
+                  {/* Lock in Your Quarter */}
+                  <div className="border-2 border-primary rounded-lg p-6 space-y-4 relative">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                      LOCK IN YOUR QUARTER
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-foreground mb-1">$1,497</p>
+                      <p className="text-muted-foreground">3 Months</p>
+                      <p className="text-sm text-primary">Save $494</p>
+                    </div>
+                    <Button 
+                      asChild 
+                      variant="premium" 
+                      size="lg" 
+                      className="w-full"
+                    >
+                      {/* TODO: Replace with Stripe Payment Link once created */}
+                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                        Lock in 3 Months
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               </div>
+
+              <p className="text-sm text-secondary-foreground/60 mt-6">
+                After payment, you'll receive immediate access to the member portal and live session invites every Tuesday at 7pm EST
+              </p>
             </div>
           </div>
         </section>

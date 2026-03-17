@@ -21,13 +21,17 @@ import { useToast } from "@/hooks/use-toast";
 import { RotateCcw, Loader2 } from "lucide-react";
 
 const PRODUCTS = [
-  { key: "7sYeVeaO52iGgMo4n8eQM0J", name: "Power Hour (1 Month)" },
-  { key: "bJe6oI8FX2iG9jW4n8eQM0I", name: "Power Hour (6 Months)" },
-  { key: "00wbJ23lDbTgfIk8DoeQM0z", name: "ALP Growth Academy (1 Month)" },
-  { key: "eVq28sbS9cXkgMo6vgeQM0A", name: "ALP Growth Academy (6 Months)" },
-  { key: "6oUbJ2aO53mK53G9HseQM0C", name: "ALP Growth Academy (Annual)" },
-  { key: "4gMaEY09r4qO67K8DoeQM0D", name: "ALP Full Access (6 Months)" },
-  { key: "3cI8wQ7BT1eCbs4bPAeQM0E", name: "ALP Full Access (Annual)" },
+  // Legacy products (still valid for existing purchases)
+  { key: "7sYeVeaO52iGgMo4n8eQM0J", name: "Power Hour (1 Month) [Legacy]" },
+  { key: "bJe6oI8FX2iG9jW4n8eQM0I", name: "Power Hour (6 Months) [Legacy]" },
+  // New standalone products
+  { key: "PH_MONTHLY_V2", name: "Power Hour (Monthly — $997)" },
+  { key: "PH_QUARTER_V2", name: "Power Hour (Quarter — $2,997)" },
+  { key: "CS_MONTHLY", name: "Contractor School (Monthly — $497/mo)" },
+  { key: "CS_QUARTER", name: "Contractor School (Quarter — $1,497)" },
+  { key: "SM_MONTHLY", name: "Sales & Marketing School (Monthly — $497/mo)" },
+  { key: "SM_QUARTER", name: "Sales & Marketing School (Quarter — $1,497)" },
+  // Other products
   { key: "8x2bJ28FXg9wgMo1aWeQM0K", name: "Handbook Special (1 Month)" },
   { key: "8x2dRa1dvg9w1RudXIeQM0T", name: "ALP University" },
   { key: "bJeaEYe0h9L8ao0g5QeQM0R", name: "1-on-1 Coaching (Single Session)" },

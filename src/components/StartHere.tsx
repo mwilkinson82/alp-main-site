@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 const ladderSteps = [
   { label: "ALP University" },
   { label: "Ask Marshall" },
+  { label: "Live Training Rooms" },
   { label: "Strategy Session" },
   { label: "Private Advisory" },
-  { label: "Full Access Membership" },
 ];
 
 const entries = [

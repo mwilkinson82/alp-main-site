@@ -6,8 +6,7 @@ import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, TrendingUp, Megaphone, Target, Presentation, Globe, Mail, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Check, TrendingUp, Megaphone, Target, Presentation, Globe, Mail } from "lucide-react";
 
 const SalesMarketingSchool = () => {
   const topics = [
@@ -25,14 +24,14 @@ const SalesMarketingSchool = () => {
     "Real strategies from real business results",
     "Direct access to Marshall during live sessions",
     "Community of ambitious entrepreneurs",
-    "Included in the Full Access membership — not sold separately"
+    "Recordings archive grows every week"
   ];
 
   return (
     <>
       <SEO 
         title="Sales & Marketing School - Business Growth Training | Marshall Wilkinson"
-        description="Generate leads. Close deals. Grow revenue. Marshall Wilkinson's Sales & Marketing School teaches you how to build a real marketing machine for your business."
+        description="Generate leads. Close deals. Grow revenue. Marshall Wilkinson's Sales & Marketing School teaches you how to build a real marketing machine for your business. $497/mo or lock in your quarter for $1,497."
         keywords="Sales training, marketing training, lead generation, Marshall Wilkinson, business growth, sales coaching, marketing school"
         canonical="/sales-marketing-school"
       />
@@ -40,7 +39,8 @@ const SalesMarketingSchool = () => {
         type="service" 
         data={{
           serviceType: "Sales & Marketing Training",
-          description: "Weekly live training on sales, marketing, and lead generation"
+          description: "Weekly live training on sales, marketing, and lead generation",
+          price: "497"
         }}
       />
       
@@ -76,7 +76,7 @@ const SalesMarketingSchool = () => {
                   className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
                   asChild
                 >
-                  <Link to="/programs">View All Programs</Link>
+                  <a href="#pricing">Join Sales & Marketing School</a>
                 </Button>
               </div>
             </div>
@@ -140,16 +140,10 @@ const SalesMarketingSchool = () => {
                 <Card className="border-2 border-primary/30">
                   <CardContent className="p-6 text-center space-y-4">
                     <TrendingUp className="w-16 h-16 text-primary mx-auto" />
-                    <h3 className="text-2xl font-bold">Included in Full Access</h3>
+                    <h3 className="text-2xl font-bold">Built for Growth</h3>
                     <p className="text-muted-foreground">
-                      Sales & Marketing School is not sold separately. It's included in the ALP Full Access membership — alongside Power Hour and Contractor School — for operators who want the complete training ecosystem.
+                      Sales & Marketing School is built for business owners who are tired of inconsistent revenue and want a repeatable system for growth.
                     </p>
-                    <Button asChild variant="premium" size="lg" className="w-full">
-                      <Link to="/programs">
-                        View Full Access Membership
-                        <ArrowRight className="ml-2 w-5 h-5" />
-                      </Link>
-                    </Button>
                   </CardContent>
                 </Card>
               </div>
@@ -163,29 +157,67 @@ const SalesMarketingSchool = () => {
         {/* Testimonials */}
         <ProgramTestimonials />
 
-        {/* CTA Section */}
-        <section className="py-20 bg-primary text-primary-foreground">
+        {/* Pricing Section */}
+        <section id="pricing" className="py-20 bg-gradient-dark">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Ready to Grow Your Revenue?
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-secondary-foreground mb-6">
+                Join Sales & Marketing School
               </h2>
-              <p className="text-xl mb-8 opacity-90">
-                Sales & Marketing School is included in the ALP Full Access membership. Join to get access to the complete live training ecosystem.
+              <p className="text-xl text-secondary-foreground/80 mb-8">
+                Start building a real marketing machine for your business
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="text-lg px-8"
-                  asChild
-                >
-                  <Link to="/programs">
-                    Explore All Programs
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
+
+              <div className="bg-background rounded-lg p-8">
+                <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                  {/* Monthly Subscription */}
+                  <div className="border border-border rounded-lg p-6 space-y-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-foreground mb-1">$497<span className="text-lg font-normal text-muted-foreground">/mo</span></p>
+                      <p className="text-muted-foreground">Monthly Subscription</p>
+                      <p className="text-xs text-muted-foreground mt-1">Cancel anytime</p>
+                    </div>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full"
+                    >
+                      {/* TODO: Replace with Stripe Payment Link once created */}
+                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                        Subscribe Monthly
+                      </a>
+                    </Button>
+                  </div>
+
+                  {/* Lock in Your Quarter */}
+                  <div className="border-2 border-primary rounded-lg p-6 space-y-4 relative">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                      LOCK IN YOUR QUARTER
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-foreground mb-1">$1,497</p>
+                      <p className="text-muted-foreground">3 Months</p>
+                      <p className="text-sm text-primary">Save $494</p>
+                    </div>
+                    <Button 
+                      asChild 
+                      variant="premium" 
+                      size="lg" 
+                      className="w-full"
+                    >
+                      {/* TODO: Replace with Stripe Payment Link once created */}
+                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                        Lock in 3 Months
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               </div>
+
+              <p className="text-sm text-secondary-foreground/60 mt-6">
+                After payment, you'll receive immediate access to the member portal and live session invites every Wednesday at 7pm EST
+              </p>
             </div>
           </div>
         </section>
