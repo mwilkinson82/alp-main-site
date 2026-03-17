@@ -12,7 +12,7 @@ const Header = () => {
   const location = useLocation();
 
   // Pages that should always have black text (no dark hero)
-  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/alp-university', '/insights'];
+  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/insights'];
 
   useEffect(() => {
     const handleScroll = () => {
