@@ -19,8 +19,9 @@ const corsHeaders = {
 const KAJABI_CLIENT_ID = Deno.env.get("KAJABI_CLIENT_ID");
 const KAJABI_CLIENT_SECRET = Deno.env.get("KAJABI_CLIENT_SECRET");
 
-// Product map (duplicated subset — only need names/offers/subjects for fulfillment)
+// Product map — all products for fulfillment
 const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welcomeSubject: string }> = {
+  // Legacy
   "7sYeVeaO52iGgMo4n8eQM0J": { name: "Power Hour (1 Month)", kajabiOfferIds: ["2150291427"], welcomeSubject: "Welcome to Power Hour! 🚀" },
   "bJe6oI8FX2iG9jW4n8eQM0I": { name: "Power Hour (6 Months)", kajabiOfferIds: ["2150291441"], welcomeSubject: "Welcome to Power Hour! 🚀" },
   "00wbJ23lDbTgfIk8DoeQM0z": { name: "ALP Growth Academy (1 Month)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to the ALP Growth Academy! 🎓" },
@@ -28,6 +29,14 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
   "6oUbJ2aO53mK53G9HseQM0C": { name: "ALP Growth Academy (Annual)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to the ALP Growth Academy! 🎓" },
   "4gMaEY09r4qO67K8DoeQM0D": { name: "ALP Full Access (6 Months)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to ALP Full Access! 👑" },
   "3cI8wQ7BT1eCbs4bPAeQM0E": { name: "ALP Full Access (Annual)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to ALP Full Access! 👑" },
+  // New standalone
+  "PH_MONTHLY_V2": { name: "Power Hour (Monthly — $997)", kajabiOfferIds: ["2150291427"], welcomeSubject: "Welcome to Power Hour! 🚀" },
+  "PH_QUARTER_V2": { name: "Power Hour (Quarter — $2,997)", kajabiOfferIds: ["2150291441"], welcomeSubject: "Welcome to Power Hour! 🚀" },
+  "CS_MONTHLY": { name: "Contractor School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
+  "CS_QUARTER": { name: "Contractor School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
+  "SM_MONTHLY": { name: "Sales & Marketing School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
+  "SM_QUARTER": { name: "Sales & Marketing School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
+  // Other
   "8x2bJ28FXg9wgMo1aWeQM0K": { name: "Handbook Special (1 Month)", kajabiOfferIds: ["2150291427", "2150966111"], welcomeSubject: "Welcome to ALP — Handbook Special! 📘" },
   "8x2dRa1dvg9w1RudXIeQM0T": { name: "ALP University", kajabiOfferIds: ["2149157033"], welcomeSubject: "Welcome to ALP University! 🎓" },
   "bJeaEYe0h9L8ao0g5QeQM0R": { name: "1-on-1 Coaching (Single Session)", kajabiOfferIds: [], welcomeSubject: "Welcome — Your 1-on-1 Session Is Confirmed 🤝" },
@@ -186,7 +195,6 @@ const handler = async (req: Request): Promise<Response> => {
         errorMessage += `Kajabi: ${e.message}. `;
       }
     } else if (product.kajabiOfferIds.length === 0) {
-      // No Kajabi offers for this product — mark as N/A
       kajabiProvisioned = true;
     }
 

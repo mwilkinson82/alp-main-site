@@ -20,48 +20,86 @@ const KAJABI_CLIENT_SECRET = Deno.env.get("KAJABI_CLIENT_SECRET");
 
 // Map Stripe checkout links (last segment) to product info and Kajabi offer IDs
 const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welcomeSubject: string }> = {
-  // Power Hour 1 Month
+  // === LEGACY PRODUCTS (keep for existing payment links) ===
+  // Power Hour 1 Month (old $1,000)
   "7sYeVeaO52iGgMo4n8eQM0J": {
     name: "Power Hour (1 Month)",
     kajabiOfferIds: ["2150291427"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
-  // Power Hour 6 Months
+  // Power Hour 6 Months (old $5,000)
   "bJe6oI8FX2iG9jW4n8eQM0I": {
     name: "Power Hour (6 Months)",
     kajabiOfferIds: ["2150291441"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
-  // Growth Academy 1 Month
+  // Growth Academy (legacy — kept for existing purchases)
   "00wbJ23lDbTgfIk8DoeQM0z": {
     name: "ALP Growth Academy (1 Month)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to the ALP Growth Academy! 🎓",
   },
-  // Growth Academy 6 Months
   "eVq28sbS9cXkgMo6vgeQM0A": {
     name: "ALP Growth Academy (6 Months)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to the ALP Growth Academy! 🎓",
   },
-  // Growth Academy Annual
   "6oUbJ2aO53mK53G9HseQM0C": {
     name: "ALP Growth Academy (Annual)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to the ALP Growth Academy! 🎓",
   },
-  // Full Access 6 Months
+  // Full Access (legacy — kept for existing purchases)
   "4gMaEY09r4qO67K8DoeQM0D": {
     name: "ALP Full Access (6 Months)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to ALP Full Access! 👑",
   },
-  // Full Access Annual
   "3cI8wQ7BT1eCbs4bPAeQM0E": {
     name: "ALP Full Access (Annual)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to ALP Full Access! 👑",
   },
+
+  // === NEW STANDALONE PRODUCTS ===
+  // Power Hour Monthly ($997 one-time)
+  "PH_MONTHLY_V2": {
+    name: "Power Hour (Monthly — $997)",
+    kajabiOfferIds: ["2150291427"],
+    welcomeSubject: "Welcome to Power Hour! 🚀",
+  },
+  // Power Hour Quarter ($2,997 one-time)
+  "PH_QUARTER_V2": {
+    name: "Power Hour (Quarter — $2,997)",
+    kajabiOfferIds: ["2150291441"],
+    welcomeSubject: "Welcome to Power Hour! 🚀",
+  },
+  // Contractor School Monthly ($497/mo subscription)
+  "CS_MONTHLY": {
+    name: "Contractor School (Monthly — $497/mo)",
+    kajabiOfferIds: ["2150966111"],
+    welcomeSubject: "Welcome to Contractor School! 🏗️",
+  },
+  // Contractor School Quarter ($1,497 one-time)
+  "CS_QUARTER": {
+    name: "Contractor School (Quarter — $1,497)",
+    kajabiOfferIds: ["2150966111"],
+    welcomeSubject: "Welcome to Contractor School! 🏗️",
+  },
+  // Sales & Marketing School Monthly ($497/mo subscription)
+  "SM_MONTHLY": {
+    name: "Sales & Marketing School (Monthly — $497/mo)",
+    kajabiOfferIds: ["2150966111"],
+    welcomeSubject: "Welcome to Sales & Marketing School! 📈",
+  },
+  // Sales & Marketing School Quarter ($1,497 one-time)
+  "SM_QUARTER": {
+    name: "Sales & Marketing School (Quarter — $1,497)",
+    kajabiOfferIds: ["2150966111"],
+    welcomeSubject: "Welcome to Sales & Marketing School! 📈",
+  },
+
+  // === OTHER PRODUCTS ===
   // Handbook Special
   "8x2bJ28FXg9wgMo1aWeQM0K": {
     name: "Handbook Special (1 Month)",
@@ -86,8 +124,7 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
     kajabiOfferIds: [],
     welcomeSubject: "Welcome — Your 6-Session Intensive Begins Now 🤝",
   },
-  // Ask Marshall — $250 async video analysis
-  // TODO: Replace ASK_MARSHALL_KEY with actual Stripe payment link ID
+  // Ask Marshall
   "cNi4gA1dvbTg1Ru5rceQM0S": {
     name: "Ask Marshall",
     kajabiOfferIds: [],
@@ -96,15 +133,21 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
 };
 
 // Map Stripe Price IDs to product keys for fallback identification
-// This catches purchases made via pricing tables, invoices, or subscriptions
 const PRICE_ID_MAP: Record<string, string> = {
-  "price_1SKarMJdDAUSVXbNSJFzDORs": "8x2dRa1dvg9w1RudXIeQM0T", // ALP University
+  // ALP University
+  "price_1SKarMJdDAUSVXbNSJFzDORs": "8x2dRa1dvg9w1RudXIeQM0T",
+  // New standalone products
+  "price_1TC5D7JdDAUSVXbNLEDL0L3S": "PH_MONTHLY_V2",    // Power Hour Monthly $997
+  "price_1TC5JoJdDAUSVXbNrYCoj4bf": "PH_QUARTER_V2",    // Power Hour Quarter $2,997
+  "price_1TC5NlJdDAUSVXbNPThxV7uS": "CS_MONTHLY",       // Contractor School Monthly $497/mo
+  "price_1TC5OHJdDAUSVXbNAbd3v94y": "CS_QUARTER",        // Contractor School Quarter $1,497
+  "price_1TC5PEJdDAUSVXbNrBkwLL9s": "SM_MONTHLY",        // Sales & Marketing Monthly $497/mo
+  "price_1TC5cdJdDAUSVXbNuMtsC85d": "SM_QUARTER",        // Sales & Marketing Quarter $1,497
 };
 
 // Extract the product key from a Stripe Payment Link URL
 function getProductFromPaymentLink(paymentLinkUrl: string | null): typeof PRODUCT_MAP[string] | null {
   if (!paymentLinkUrl) return null;
-  // Try to match the last segment of the URL
   for (const key of Object.keys(PRODUCT_MAP)) {
     if (paymentLinkUrl.includes(key)) {
       return PRODUCT_MAP[key];
@@ -144,7 +187,6 @@ function getProductFromSession(session: any): { product: typeof PRODUCT_MAP[stri
 
   // 4. Fallback: Check subscription line items / invoice data
   if (session.subscription) {
-    // The subscription ID itself doesn't help, but sometimes display_items are present
     if (session.display_items) {
       for (const item of session.display_items) {
         const priceId = item.plan?.id || item.price?.id;
@@ -238,7 +280,6 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
   console.log("Kajabi contact creation response:", resp.status, JSON.stringify(data));
   
   if (!resp.ok) {
-    // If contact already exists, find them and ensure they're subscribed
     if (resp.status === 422 || resp.status === 409) {
       console.log("Contact creation returned", resp.status, "- searching for existing contact...");
       const searchResp = await fetch(`https://api.kajabi.com/v1/contacts?filter[email]=${encodeURIComponent(email)}`, {
@@ -252,7 +293,6 @@ async function createOrUpdateKajabiContact(token: string, name: string, email: s
         const contactId = searchData.data[0].id;
         console.log("Found existing Kajabi contact:", contactId);
         
-        // Ensure existing contact is subscribed to marketing emails
         console.log("Ensuring contact is subscribed to marketing emails...");
         await fetch(`https://api.kajabi.com/v1/contacts/${contactId}`, {
           method: "PATCH",
@@ -299,13 +339,11 @@ async function grantKajabiOffer(token: string, contactId: string, offerId: strin
   if (!resp.ok) {
     const text = await resp.text();
     console.error("Kajabi offer grant error:", resp.status, text);
-    // Don't throw — log and continue so the email still sends
   } else {
     console.log(`Kajabi offer ${offerId} granted successfully`);
   }
 }
 
-// (Welcome email templates moved to email-templates.ts)
 // --- Main Handler ---
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -346,7 +384,6 @@ const handler = async (req: Request): Promise<Response> => {
     if (!result) {
       console.log("Unrecognized product — skipping customer email, notifying Marshall only");
       
-      // Only notify Marshall — no email to the customer for custom/ad-hoc purchases
       await resend.emails.send({
         from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
         to: ["marshall@marshallwilkinson.com"],
@@ -362,7 +399,6 @@ const handler = async (req: Request): Promise<Response> => {
         `,
         replyTo: customerEmail,
       });
-      // Log custom purchase
       await supabase.from("purchase_log").insert({
         customer_name: customerName,
         customer_email: customerEmail,
