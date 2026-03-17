@@ -1,27 +1,28 @@
 
 
-## Fix Favicon for Non-SPA Pages (robots.txt, sitemap, etc.)
+## Revised Schedule for Unbundling Plan
 
-### The Problem
-When visiting static files like `/robots.txt` directly, the browser does not load `index.html`, so the `<link rel="icon">` tag never applies. The browser falls back to looking for `/favicon.ico` at the root. Since no such file exists in `public/`, the hosting platform's default (Lovable) favicon is shown.
+The schedule correction is noted. Here are the updated times that will be used across all pages and components:
 
-### The Fix
-Add a `favicon.ico` file to the `public/` directory. This is the universal browser fallback that works for every page on the domain, including non-HTML files.
+| Program | Day(s) | Time |
+|---------|--------|------|
+| Power Hour | Monday–Friday | 8:00 AM EST |
+| Contractor School | Tuesday | 7:00 PM EST |
+| Sales & Marketing School | Wednesday | 7:00 PM EST |
 
-### Changes
+### What Changes
 
-**1. `public/favicon.ico`**
-- Download the existing favicon image (currently hosted at `https://storage.googleapis.com/gpt-engineer-file-uploads/6iWXmZqL0lNraTpN5woUupsc9OB3/uploads/1761039211774-ALP LOGO MOUNTAIN.png`) and save it as `public/favicon.ico`
-- Since the source is a PNG, we will reference it as `public/favicon.png` and update the fallback path accordingly
-- Alternatively, add a simple HTML redirect or copy the hosted image into `public/` so browsers can find it at the root
+1. **`WeeklySchedule.tsx`** — Update the schedule data: Contractor School stays on Tuesday at 7pm, Sales & Marketing moves to Wednesday at 7pm. These match the existing code almost exactly (only the current code already has these times), so minimal changes needed.
 
-**Concrete approach:** Copy the remote favicon URL into a local `public/favicon.png` file, then add a secondary `<link rel="icon">` in `index.html` pointing to `/favicon.png` (which is already effectively done). The real fix is ensuring a file exists at exactly `/favicon.ico` — the path browsers check automatically.
+2. **`ContractorSchool.tsx`** — Hero badge says "Live Tuesdays at 7pm EST" (already correct). Benefits list says "Live weekly training every Tuesday at 7pm EST" (already correct). No changes needed.
 
-**Simplest implementation:**
-- Update `index.html` to add a shortcut icon link: `<link rel="shortcut icon" href="https://storage.googleapis.com/gpt-engineer-file-uploads/6iWXmZqL0lNraTpN5woUupsc9OB3/uploads/1761039211774-ALP LOGO MOUNTAIN.png">`
-- More importantly, replace the existing `public/favicon.ico` file with your ALP logo. The current `public/favicon.ico` likely contains the default Lovable favicon. We will overwrite it by fetching your logo and saving it there.
+3. **`SalesMarketingSchool.tsx`** — Hero badge currently says "Live Wednesdays at 7pm EST" (already correct). Benefits list says "Live weekly training every Wednesday at 7pm EST" (already correct). No changes needed.
 
-### What This Changes
-- The favicon shown when visiting `/robots.txt`, `/sitemap.xml`, or any non-SPA route will display your ALP mountain logo instead of the Lovable logo
-- No impact on SPA pages (they already use the correct favicon via `index.html`)
+4. **Any memory/context references** — The stored memory saying "Contractor School on Wednesdays at 1:00 PM" and "Sales & Marketing School on Thursdays at 1:00 PM" is wrong and will be corrected during implementation.
+
+### Summary
+
+The existing code in `WeeklySchedule.tsx`, `ContractorSchool.tsx`, and `SalesMarketingSchool.tsx` already reflects the correct schedule (Tue 7pm / Wed 7pm). The only thing that was wrong was the stored memory context. When I implement the full unbundling plan, I'll use these correct times throughout and update the memory.
+
+The full unbundling plan (6 Stripe products, remove Full Access & Growth Academy, update all pages with new pricing) remains as previously approved — ready to implement on your go-ahead.
 
