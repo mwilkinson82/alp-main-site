@@ -203,8 +203,7 @@ const ContractorSchool = () => {
                       size="lg" 
                       className="w-full"
                     >
-                      {/* TODO: Replace with Stripe Payment Link once created */}
-                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                      <a href="https://buy.stripe.com/bJebJ22hzg9w7bO3j4eQM13" target="_blank" rel="noopener noreferrer">
                         Lock in 3 Months
                       </a>
                     </Button>

@@ -63,37 +63,37 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
 
   // === NEW STANDALONE PRODUCTS ===
   // Power Hour Monthly ($997 one-time)
-  "PH_MONTHLY_V2": {
+  "7sYdRacWd9L8gMocTEeQM10": {
     name: "Power Hour (Monthly — $997)",
     kajabiOfferIds: ["2150291427"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
   // Power Hour Quarter ($2,997 one-time)
-  "PH_QUARTER_V2": {
+  "8x25kE7BT5uS53Gf1MeQM11": {
     name: "Power Hour (Quarter — $2,997)",
     kajabiOfferIds: ["2150291441"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
   // Contractor School Monthly ($497/mo subscription)
-  "CS_MONTHLY": {
+  "5kQcN6g8p8H41RubPAeQM12": {
     name: "Contractor School (Monthly — $497/mo)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Contractor School! 🏗️",
   },
   // Contractor School Quarter ($1,497 one-time)
-  "CS_QUARTER": {
+  "bJebJ22hzg9w7bO3j4eQM13": {
     name: "Contractor School (Quarter — $1,497)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Contractor School! 🏗️",
   },
   // Sales & Marketing School Monthly ($497/mo subscription)
-  "SM_MONTHLY": {
+  "dRm4gAe0hg9w1Ru4n8eQM14": {
     name: "Sales & Marketing School (Monthly — $497/mo)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Sales & Marketing School! 📈",
   },
   // Sales & Marketing School Quarter ($1,497 one-time)
-  "SM_QUARTER": {
+  "00w9AU09r4qObs4dXIeQM15": {
     name: "Sales & Marketing School (Quarter — $1,497)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Sales & Marketing School! 📈",

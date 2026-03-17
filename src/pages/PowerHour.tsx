@@ -222,8 +222,7 @@ const PowerHour = () => {
                     size="lg" 
                     className="w-full"
                   >
-                    {/* TODO: Replace with Stripe Payment Link once created */}
-                    <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                    <a href="https://buy.stripe.com/8x25kE7BT5uS53Gf1MeQM11" target="_blank" rel="noopener noreferrer">
                       Lock in 3 Months
                     </a>
                   </Button>

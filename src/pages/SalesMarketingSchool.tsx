@@ -205,8 +205,7 @@ const SalesMarketingSchool = () => {
                       size="lg" 
                       className="w-full"
                     >
-                      {/* TODO: Replace with Stripe Payment Link once created */}
-                      <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                      <a href="https://buy.stripe.com/00w9AU09r4qObs4dXIeQM15" target="_blank" rel="noopener noreferrer">
                         Lock in 3 Months
                       </a>
                     </Button>
