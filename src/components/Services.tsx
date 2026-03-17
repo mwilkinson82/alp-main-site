@@ -174,7 +174,7 @@ const Services = () => {
             ref={containerRef as React.RefObject<HTMLDivElement>}
             className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
           >
-            {programs.filter(p => p.title !== "ALP University").map((program, index) => {
+            {programs.map((program, index) => {
               const Icon = program.icon;
               return (
                 <Link key={index} to={program.link}>
