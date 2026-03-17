@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Check, HardHat, Video, Monitor } from "lucide-react";
+import { Clock, Users, ArrowRight, TrendingUp, Check, HardHat, Video, Monitor } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
