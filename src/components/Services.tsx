@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Sparkles, Check, HardHat, Video, Monitor } from "lucide-react";
+import { Clock, Users, GraduationCap, ArrowRight, TrendingUp, Check, HardHat, Video, Monitor } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useGsapStagger } from "@/hooks/use-gsap-scroll";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
@@ -210,7 +210,7 @@ const Services = () => {
         </div>
 
         {/* On-Demand Library: ALP University */}
-        <div className="mb-20">
+        <div className="mb-12">
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-muted border border-border rounded-full px-4 py-2 text-sm mb-3">
               <GraduationCap className="w-4 h-4 text-muted-foreground" />
@@ -243,75 +243,8 @@ const Services = () => {
             </Card>
           </Link>
         </div>
-
-        {/* Maximum Proximity: Single Full Access highlight card */}
-        <div className="max-w-3xl mx-auto mb-12">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm mb-4">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-primary font-medium">Full Access Membership</span>
-            </div>
-            <h3 className="text-2xl md:text-3xl font-bold">Maximum Proximity.</h3>
-          </div>
-
-          <Link to="/programs">
-            <div className="relative group cursor-pointer rounded-2xl overflow-hidden">
-              {/* Premium gold border glow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary via-primary/60 to-primary/30 p-[1.5px]">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 via-background to-background" />
-              </div>
-              {/* Ambient glow behind card */}
-              <div className="absolute -inset-1 rounded-3xl bg-primary/15 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              <div className="relative rounded-2xl bg-gradient-to-br from-primary/10 via-background to-background border border-primary/50 shadow-[0_0_40px_-8px_hsl(var(--primary)/0.4)] group-hover:shadow-[0_0_55px_-8px_hsl(var(--primary)/0.6)] transition-all duration-500">
-                {/* Top accent bar */}
-                <div className="bg-gradient-gold px-6 py-2 flex items-center justify-between">
-                  <span className="text-[11px] font-bold tracking-widest text-primary-foreground uppercase">Maximum Proximity</span>
-                  <Sparkles className="w-3.5 h-3.5 text-primary-foreground/80" />
-                </div>
-
-                <div className="p-6 md:p-10">
-                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-gold flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]">
-                      <Sparkles className="w-7 h-7 text-primary-foreground" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xl md:text-2xl font-bold group-hover:text-primary transition-colors">
-                        Full Access — Every Live Room + Private Advisory
-                      </h4>
-                      <p className="text-muted-foreground text-sm mt-2 leading-relaxed">
-                        The highest level of proximity to Marshall's thinking, systems, and strategic frameworks — all in one membership. Every live session, every recorded archive, and direct private advisory access.
-                      </p>
-                      <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                        {[
-                          "All Live Rooms — Daily + Weekly",
-                          "10 Private Advisory Sessions/Year",
-                          "Full Recorded Session Archive",
-                          "Community & Direct Access",
-                        ].map((item) => (
-                          <li key={item} className="flex items-center gap-2 text-xs text-foreground/80">
-                            <Check className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="flex-shrink-0 mt-2 md:mt-0">
-                      <div className="inline-flex items-center gap-2 bg-gradient-gold text-primary-foreground text-sm font-bold px-5 py-2.5 rounded-lg whitespace-nowrap shadow-sm group-hover:shadow-md transition-shadow">
-                        Explore Full Access
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
       </div>
 
-
-      
       <AdvisoryApplicationModal
         open={appModalOpen}
         onOpenChange={setAppModalOpen}

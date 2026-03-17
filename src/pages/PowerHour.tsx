@@ -13,7 +13,7 @@ const PowerHour = () => {
       <StructuredData type="service" data={{
       serviceType: "Daily Accountability Coaching",
       description: "Daily morning accountability and coaching calls at 8:00 AM EST",
-      price: "197"
+      price: "997"
     }} />
       <main className="min-h-screen">
         <Header />
@@ -41,7 +41,7 @@ const PowerHour = () => {
               </p>
               <div className="inline-block bg-primary/10 border border-primary/20 rounded-lg px-6 py-4">
                 <p className="text-sm text-muted-foreground mb-1">Daily Live Call</p>
-                <p className="text-3xl font-bold text-primary">8:00 AM EST • Every Morning</p>
+                <p className="text-3xl font-bold text-primary">8:00 AM EST • Monday–Friday</p>
               </div>
             </div>
           </div>
@@ -115,7 +115,7 @@ const PowerHour = () => {
               What's Included
             </h2>
             <div className="space-y-4">
-              {["Daily live coaching calls at 8:00 AM EST", "Access to exclusive Power Hour community portal", "Recordings of all sessions for flexibility", "Weekly accountability check-ins", "Direct access to Marshall during calls", "Networking with successful entrepreneurs", "Action-oriented daily exercises", "Priority support and resources"].map((benefit, index) => <div key={index} className="flex items-start gap-4 p-4 bg-background rounded-lg">
+              {["Daily live coaching calls at 8:00 AM EST, Monday–Friday", "Access to exclusive Power Hour community portal", "Recordings of all sessions for flexibility", "Weekly accountability check-ins", "Direct access to Marshall during calls", "Networking with successful entrepreneurs", "Action-oriented daily exercises", "Priority support and resources"].map((benefit, index) => <div key={index} className="flex items-start gap-4 p-4 bg-background rounded-lg">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
                     <Check className="w-4 h-4 text-primary-foreground" />
                   </div>
@@ -134,7 +134,6 @@ const PowerHour = () => {
               Power Hour Success Stories
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Testimonial 1 */}
               <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
                 <div className="flex flex-col gap-6">
                   <div className="flex items-center gap-4">
@@ -153,7 +152,6 @@ const PowerHour = () => {
                 </div>
               </div>
 
-              {/* Testimonial 2 */}
               <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
                 <div className="flex flex-col gap-6">
                   <div className="flex items-center gap-4">
@@ -193,7 +191,7 @@ const PowerHour = () => {
                 {/* 1 Month Option */}
                 <div className="border border-border rounded-lg p-6 space-y-4">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-foreground mb-1">$1,000</p>
+                    <p className="text-3xl font-bold text-foreground mb-1">$997</p>
                     <p className="text-muted-foreground">1 Month</p>
                   </div>
                   <Button 
@@ -202,21 +200,22 @@ const PowerHour = () => {
                     size="lg" 
                     className="w-full"
                   >
-                    <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
+                    {/* TODO: Replace with Stripe Payment Link once created */}
+                    <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
                       Get Started
                     </a>
                   </Button>
                 </div>
 
-                {/* 6 Month Option - Best Value */}
+                {/* Lock in Your Quarter — Best Value */}
                 <div className="border-2 border-primary rounded-lg p-6 space-y-4 relative">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                    BEST VALUE
+                    LOCK IN YOUR QUARTER
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-foreground mb-1">$5,000</p>
-                    <p className="text-muted-foreground">6 Months</p>
-                    <p className="text-sm text-primary">Save $1,000</p>
+                    <p className="text-3xl font-bold text-foreground mb-1">$2,997</p>
+                    <p className="text-muted-foreground">3 Months</p>
+                    <p className="text-sm text-primary">Save $994</p>
                   </div>
                   <Button 
                     asChild 
@@ -224,8 +223,9 @@ const PowerHour = () => {
                     size="lg" 
                     className="w-full"
                   >
-                    <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
-                      Get 6 Months
+                    {/* TODO: Replace with Stripe Payment Link once created */}
+                    <a href="#payment-link-needed" target="_blank" rel="noopener noreferrer">
+                      Lock in 3 Months
                     </a>
                   </Button>
                 </div>

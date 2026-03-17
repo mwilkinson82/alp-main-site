@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import liveRoomsHero from "@/assets/live-rooms-hero.jpg";
 import Header from "@/components/Header";
@@ -8,11 +7,9 @@ import StructuredData from "@/components/StructuredData";
 import WeeklySchedule from "@/components/WeeklySchedule";
 import ProgramTestimonials from "@/components/ProgramTestimonials";
 
-import FullAccessModal from "@/components/FullAccessModal";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, Video, Check, Crown, ArrowRight, Monitor } from "lucide-react";
+import { Clock, HardHat, TrendingUp, Video, ArrowRight, Monitor } from "lucide-react";
 
 const programs = [
   {
@@ -21,12 +18,7 @@ const programs = [
     tagline: "Daily live execution room at 8am EST",
     description: "Morning strategy call for entrepreneurship, mindset, and business best practices. Recordings included.",
     link: "/power-hour",
-    pricing: {
-      monthly: "$1,000",
-      sixMonth: "$5,000",
-      monthlyLink: "https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J",
-      sixMonthLink: "https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I",
-    },
+    pricing: "$997/month",
   },
   {
     icon: HardHat,
@@ -34,6 +26,7 @@ const programs = [
     tagline: "Systems for contractors scaling real operations",
     description: "Estimating, project management, legal, accounting, C-suite operations. Live Tuesdays at 7pm EST.",
     link: "/contractor-school",
+    pricing: "$497/mo",
   },
   {
     icon: TrendingUp,
@@ -41,6 +34,7 @@ const programs = [
     tagline: "Lead flow, persuasion, and deal control",
     description: "Presentations, negotiations, traffic, retargeting, offline marketing. Live Wednesdays at 7pm EST.",
     link: "/sales-marketing-school",
+    pricing: "$497/mo",
   },
   {
     icon: Video,
@@ -48,26 +42,17 @@ const programs = [
     tagline: "On-demand archive of every session",
     description: "Access the full archive of Power Hours, Contractor School, and Sales & Marketing School recordings.",
     link: "/alp-university",
+    pricing: "$197/mo",
   },
 ];
 
-const fullAccessFeatures = [
-  "All Live Rooms — Power Hour, Contractor School, Sales & Marketing",
-  "10 private 1:1 sessions with Marshall",
-  "Direct group text chat access",
-  "Priority support & private elite community",
-  "Every recording included — archive grows weekly",
-];
-
 const Programs = () => {
-  const [fullAccessModalOpen, setFullAccessModalOpen] = useState(false);
-
   return (
     <>
       <SEO
         title="Live Rooms — ALP Training Programs | Altitude Logic Pressure"
         description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly execution rooms for operators who move fast."
-        keywords="ALP live rooms, Power Hour, Contractor School, Sales Marketing School, ALP Full Access, Marshall Wilkinson programs, operator training"
+        keywords="ALP live rooms, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
         canonical="/programs"
       />
       <StructuredData type="organization" />
@@ -97,15 +82,7 @@ const Programs = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
-                  <a href="#programs">Live Rooms</a>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold px-8 h-12"
-                  asChild
-                >
-                  <a href="#full-access">Full Access</a>
+                  <a href="#programs">Explore Programs</a>
                 </Button>
               </div>
             </div>
@@ -144,6 +121,7 @@ const Programs = () => {
                             {program.tagline}
                           </p>
                         </div>
+                        <p className="text-xs md:text-sm font-semibold text-primary">{program.pricing}</p>
                         <div className="flex items-center gap-1 text-xs md:text-sm text-primary font-medium pt-1">
                           Learn More
                           <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
@@ -154,108 +132,16 @@ const Programs = () => {
                 );
               })}
             </div>
-
-            {/* Power Hour standalone pricing */}
-            <div className="max-w-3xl mx-auto mt-12">
-              <Card className="rounded-xl border-primary/30 border-2">
-                <CardContent className="p-6 md:p-8">
-                  <div className="flex flex-col md:flex-row md:items-center gap-6">
-                    <div className="flex-1 space-y-2">
-                      <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-xs">
-                        <Clock className="w-3 h-3 text-primary" />
-                        <span className="text-primary">Available Standalone</span>
-                      </div>
-                      <h3 className="text-xl font-bold">Power Hour</h3>
-                      <p className="text-sm text-muted-foreground">
-                        The only live room available as a standalone purchase. Daily execution sessions at 8am EST.
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Button variant="outline" size="lg" className="min-h-[48px]" asChild>
-                        <a href="https://buy.stripe.com/7sYeVeaO52iGgMo4n8eQM0J" target="_blank" rel="noopener noreferrer">
-                          $1,000 for 1 month
-                        </a>
-                      </Button>
-                      <Button variant="premium" size="lg" className="min-h-[48px]" asChild>
-                        <a href="https://buy.stripe.com/bJe6oI8FX2iG9jW4n8eQM0I" target="_blank" rel="noopener noreferrer">
-                          $5,000 for 6 months
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </section>
 
         {/* Weekly Schedule */}
         <WeeklySchedule />
 
-        {/* Full Access */}
-        <section id="full-access" className="py-16 md:py-24 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10 space-y-4">
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
-                <Crown className="w-4 h-4 text-primary" />
-                <span className="text-primary font-medium">Maximum Proximity</span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold">
-                <span className="text-gradient-gold">ALP Full Access</span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Everything — all live rooms, all recordings, plus 10 private advisory sessions with Marshall. The highest-leverage way to operate inside the ALP ecosystem.
-              </p>
-            </div>
-
-            <div className="max-w-2xl mx-auto">
-              <Card className="rounded-xl border-2 border-primary relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10 pointer-events-none" />
-                <CardContent className="p-6 md:p-10 space-y-6 relative">
-                  <ul className="space-y-3">
-                    {fullAccessFeatures.map((f, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm">
-                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-foreground">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="space-y-3 border-t border-border pt-6">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">6 Months</span>
-                      <span className="text-xl font-bold text-primary">$10,000</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <span className="text-sm text-muted-foreground">Annual</span>
-                        <span className="text-xs text-primary ml-2">Best Value</span>
-                      </div>
-                      <span className="text-xl font-bold text-primary">$15,000</span>
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="premium"
-                    size="lg"
-                    className="w-full min-h-[48px] gap-2"
-                    onClick={() => setFullAccessModalOpen(true)}
-                  >
-                    Get Full Access
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Program Testimonials */}
         <ProgramTestimonials />
 
         <Footer />
-
-        <FullAccessModal open={fullAccessModalOpen} onOpenChange={setFullAccessModalOpen} />
       </main>
     </>
   );
