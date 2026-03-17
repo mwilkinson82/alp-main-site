@@ -9,7 +9,7 @@ import ProgramTestimonials from "@/components/ProgramTestimonials";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, Video, ArrowRight, Monitor } from "lucide-react";
+import { Clock, HardHat, TrendingUp, ArrowRight, Monitor } from "lucide-react";
 
 const programs = [
   {
