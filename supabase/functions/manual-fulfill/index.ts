@@ -30,12 +30,12 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
   "4gMaEY09r4qO67K8DoeQM0D": { name: "ALP Full Access (6 Months)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to ALP Full Access! 👑" },
   "3cI8wQ7BT1eCbs4bPAeQM0E": { name: "ALP Full Access (Annual)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to ALP Full Access! 👑" },
   // New standalone
-  "PH_MONTHLY_V2": { name: "Power Hour (Monthly — $997)", kajabiOfferIds: ["2150291427"], welcomeSubject: "Welcome to Power Hour! 🚀" },
-  "PH_QUARTER_V2": { name: "Power Hour (Quarter — $2,997)", kajabiOfferIds: ["2150291441"], welcomeSubject: "Welcome to Power Hour! 🚀" },
-  "CS_MONTHLY": { name: "Contractor School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
-  "CS_QUARTER": { name: "Contractor School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
-  "SM_MONTHLY": { name: "Sales & Marketing School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
-  "SM_QUARTER": { name: "Sales & Marketing School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
+  "7sYdRacWd9L8gMocTEeQM10": { name: "Power Hour (Monthly — $997)", kajabiOfferIds: ["2150291427"], welcomeSubject: "Welcome to Power Hour! 🚀" },
+  "8x25kE7BT5uS53Gf1MeQM11": { name: "Power Hour (Quarter — $2,997)", kajabiOfferIds: ["2150291441"], welcomeSubject: "Welcome to Power Hour! 🚀" },
+  "5kQcN6g8p8H41RubPAeQM12": { name: "Contractor School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
+  "bJebJ22hzg9w7bO3j4eQM13": { name: "Contractor School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Contractor School! 🏗️" },
+  "dRm4gAe0hg9w1Ru4n8eQM14": { name: "Sales & Marketing School (Monthly — $497/mo)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
+  "00w9AU09r4qObs4dXIeQM15": { name: "Sales & Marketing School (Quarter — $1,497)", kajabiOfferIds: ["2150966111"], welcomeSubject: "Welcome to Sales & Marketing School! 📈" },
   // Other
   "8x2bJ28FXg9wgMo1aWeQM0K": { name: "Handbook Special (1 Month)", kajabiOfferIds: ["2150291427", "2150966111"], welcomeSubject: "Welcome to ALP — Handbook Special! 📘" },
   "8x2dRa1dvg9w1RudXIeQM0T": { name: "ALP University", kajabiOfferIds: ["2149157033"], welcomeSubject: "Welcome to ALP University! 🎓" },
