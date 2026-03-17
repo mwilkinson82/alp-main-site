@@ -63,37 +63,37 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
 
   // === NEW STANDALONE PRODUCTS ===
   // Power Hour Monthly ($997 one-time)
-  "PH_MONTHLY_V2": {
+  "7sYdRacWd9L8gMocTEeQM10": {
     name: "Power Hour (Monthly — $997)",
     kajabiOfferIds: ["2150291427"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
   // Power Hour Quarter ($2,997 one-time)
-  "PH_QUARTER_V2": {
+  "8x25kE7BT5uS53Gf1MeQM11": {
     name: "Power Hour (Quarter — $2,997)",
     kajabiOfferIds: ["2150291441"],
     welcomeSubject: "Welcome to Power Hour! 🚀",
   },
   // Contractor School Monthly ($497/mo subscription)
-  "CS_MONTHLY": {
+  "5kQcN6g8p8H41RubPAeQM12": {
     name: "Contractor School (Monthly — $497/mo)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Contractor School! 🏗️",
   },
   // Contractor School Quarter ($1,497 one-time)
-  "CS_QUARTER": {
+  "bJebJ22hzg9w7bO3j4eQM13": {
     name: "Contractor School (Quarter — $1,497)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Contractor School! 🏗️",
   },
   // Sales & Marketing School Monthly ($497/mo subscription)
-  "SM_MONTHLY": {
+  "dRm4gAe0hg9w1Ru4n8eQM14": {
     name: "Sales & Marketing School (Monthly — $497/mo)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Sales & Marketing School! 📈",
   },
   // Sales & Marketing School Quarter ($1,497 one-time)
-  "SM_QUARTER": {
+  "00w9AU09r4qObs4dXIeQM15": {
     name: "Sales & Marketing School (Quarter — $1,497)",
     kajabiOfferIds: ["2150966111"],
     welcomeSubject: "Welcome to Sales & Marketing School! 📈",
@@ -137,12 +137,12 @@ const PRICE_ID_MAP: Record<string, string> = {
   // ALP University
   "price_1SKarMJdDAUSVXbNSJFzDORs": "8x2dRa1dvg9w1RudXIeQM0T",
   // New standalone products
-  "price_1TC5D7JdDAUSVXbNLEDL0L3S": "PH_MONTHLY_V2",    // Power Hour Monthly $997
-  "price_1TC5JoJdDAUSVXbNrYCoj4bf": "PH_QUARTER_V2",    // Power Hour Quarter $2,997
-  "price_1TC5NlJdDAUSVXbNPThxV7uS": "CS_MONTHLY",       // Contractor School Monthly $497/mo
-  "price_1TC5OHJdDAUSVXbNAbd3v94y": "CS_QUARTER",        // Contractor School Quarter $1,497
-  "price_1TC5PEJdDAUSVXbNrBkwLL9s": "SM_MONTHLY",        // Sales & Marketing Monthly $497/mo
-  "price_1TC5cdJdDAUSVXbNuMtsC85d": "SM_QUARTER",        // Sales & Marketing Quarter $1,497
+  "price_1TC5D7JdDAUSVXbNLEDL0L3S": "7sYdRacWd9L8gMocTEeQM10",    // Power Hour Monthly $997
+  "price_1TC5JoJdDAUSVXbNrYCoj4bf": "8x25kE7BT5uS53Gf1MeQM11",    // Power Hour Quarter $2,997
+  "price_1TC5NlJdDAUSVXbNPThxV7uS": "5kQcN6g8p8H41RubPAeQM12",    // Contractor School Monthly $497/mo
+  "price_1TC5OHJdDAUSVXbNAbd3v94y": "bJebJ22hzg9w7bO3j4eQM13",     // Contractor School Quarter $1,497
+  "price_1TC5PEJdDAUSVXbNrBkwLL9s": "dRm4gAe0hg9w1Ru4n8eQM14",    // Sales & Marketing Monthly $497/mo
+  "price_1TC5cdJdDAUSVXbNuMtsC85d": "00w9AU09r4qObs4dXIeQM15",     // Sales & Marketing Quarter $1,497
 };
 
 // Extract the product key from a Stripe Payment Link URL

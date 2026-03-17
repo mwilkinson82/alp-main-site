@@ -25,12 +25,12 @@ const PRODUCTS = [
   { key: "7sYeVeaO52iGgMo4n8eQM0J", name: "Power Hour (1 Month) [Legacy]" },
   { key: "bJe6oI8FX2iG9jW4n8eQM0I", name: "Power Hour (6 Months) [Legacy]" },
   // New standalone products
-  { key: "PH_MONTHLY_V2", name: "Power Hour (Monthly — $997)" },
-  { key: "PH_QUARTER_V2", name: "Power Hour (Quarter — $2,997)" },
-  { key: "CS_MONTHLY", name: "Contractor School (Monthly — $497/mo)" },
-  { key: "CS_QUARTER", name: "Contractor School (Quarter — $1,497)" },
-  { key: "SM_MONTHLY", name: "Sales & Marketing School (Monthly — $497/mo)" },
-  { key: "SM_QUARTER", name: "Sales & Marketing School (Quarter — $1,497)" },
+  { key: "7sYdRacWd9L8gMocTEeQM10", name: "Power Hour (Monthly — $997)" },
+  { key: "8x25kE7BT5uS53Gf1MeQM11", name: "Power Hour (Quarter — $2,997)" },
+  { key: "5kQcN6g8p8H41RubPAeQM12", name: "Contractor School (Monthly — $497/mo)" },
+  { key: "bJebJ22hzg9w7bO3j4eQM13", name: "Contractor School (Quarter — $1,497)" },
+  { key: "dRm4gAe0hg9w1Ru4n8eQM14", name: "Sales & Marketing School (Monthly — $497/mo)" },
+  { key: "00w9AU09r4qObs4dXIeQM15", name: "Sales & Marketing School (Quarter — $1,497)" },
   // Other products
   { key: "8x2bJ28FXg9wgMo1aWeQM0K", name: "Handbook Special (1 Month)" },
   { key: "8x2dRa1dvg9w1RudXIeQM0T", name: "ALP University" },
