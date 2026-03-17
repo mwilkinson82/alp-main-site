@@ -7,7 +7,7 @@ import HashScroller from "@/components/HashScroller";
 import Index from "./pages/Index";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
-import ALPUniversity from "./pages/ALPUniversity";
+
 import Programs from "./pages/Programs";
 import ContractorSchool from "./pages/ContractorSchool";
 import SalesMarketingSchool from "./pages/SalesMarketingSchool";
