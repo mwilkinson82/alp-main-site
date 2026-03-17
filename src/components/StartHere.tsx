@@ -1,4 +1,4 @@
-import { Archive, MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-react";
+import { MessageCircle, Users, ArrowRight, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ladderSteps = [
