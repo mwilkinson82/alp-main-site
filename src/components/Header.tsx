@@ -47,7 +47,6 @@ const Header = () => {
   const iconColorClass = isAtTop ? "text-white" : "";
 
   const accessLinks = [
-    { name: "ALP University", path: "/alp-university", sub: "On-Demand Archive", highlight: false },
     { name: "Live Rooms", path: "/programs", sub: "Power Hour · Sales & Marketing · Contractor School", highlight: false },
   ];
 

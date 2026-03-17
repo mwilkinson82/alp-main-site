@@ -55,12 +55,6 @@ const programs = [
     link: "/sales-marketing-school",
   },
   {
-    icon: GraduationCap,
-    title: "ALP University",
-    tagline: "Full video training library",
-    link: "/alp-university",
-  },
-  {
     icon: HardHat,
     title: "Contractor School",
     tagline: "Weekly systems for contractors scaling real operations.",

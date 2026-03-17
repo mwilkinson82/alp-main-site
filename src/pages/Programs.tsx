@@ -36,14 +36,6 @@ const programs = [
     link: "/sales-marketing-school",
     pricing: "$497/mo",
   },
-  {
-    icon: Video,
-    title: "ALP University",
-    tagline: "On-demand archive of every session",
-    description: "Access the full archive of Power Hours, Contractor School, and Sales & Marketing School recordings.",
-    link: "/alp-university",
-    pricing: "$197/mo",
-  },
 ];
 
 const Programs = () => {
