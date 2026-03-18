@@ -41,7 +41,7 @@ const Index = () => {
         <CoachingTestimonials />
         <Testimonials />
         <Footer />
-        <PersistentCTA />
+        
       </main>
     </>
   );
