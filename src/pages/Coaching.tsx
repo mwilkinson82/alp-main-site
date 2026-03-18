@@ -346,24 +346,27 @@ const Coaching = () => {
 
 
       {/* Final CTA */}
-      <section className="py-20 bg-primary text-primary-foreground">
+      <section id="ready-to-apply" className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl md:text-5xl font-bold">
               Ready to Apply?
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-lg md:text-xl opacity-90">
               Applications are reviewed personally by Marshall. If there's a fit, you'll hear back within 48 hours.
             </p>
-            <Button 
-              size="lg" 
-              variant="secondary"
-              onClick={() => openApplication("Private Advisory — $5,000")}
-              className="text-lg px-8"
-            >
-              Apply for Private Advisory — $5,000
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <div className="flex justify-center">
+              <Button 
+                size="lg" 
+                variant="secondary"
+                onClick={() => openApplication("Private Advisory — $5,000")}
+                className="text-sm md:text-lg px-6 md:px-8"
+              >
+                <span className="block">Apply for Private Advisory</span>
+                <span className="hidden sm:inline ml-1">— $5,000</span>
+                <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>

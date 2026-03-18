@@ -56,11 +56,12 @@ const CoachingTestimonials = () => {
         </div>
 
         <div className="text-center mt-10">
-          <Button size="lg" className="bg-gradient-gold hover:shadow-glow hover-gold-edge gap-2" asChild>
-            <Link to="/coaching">
+          <Button size="lg" className="bg-gradient-gold hover:shadow-glow hover-gold-edge gap-2" onClick={() => {
+            const el = document.getElementById('ready-to-apply');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}>
               Apply for Private Advisory
               <ArrowRight className="w-4 h-4" />
-            </Link>
           </Button>
         </div>
       </div>
