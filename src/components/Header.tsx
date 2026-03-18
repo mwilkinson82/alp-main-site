@@ -99,19 +99,25 @@ const Header = () => {
               
               {programsOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
-                  {accessLinks.map((link, index) => (
+                  {programLinks.map((link, index) => (
                     <Link
                       key={index}
                       to={link.path}
-                      className={`block px-4 py-3 hover:bg-muted transition-colors ${
-                        link.highlight ? 'border-t border-border mt-1 pt-3' : ''
-                      }`}
+                      className="block px-4 py-3 hover:bg-muted transition-colors"
                       onClick={() => setProgramsOpen(false)}
                     >
-                      <span className={`block text-sm font-semibold ${link.highlight ? 'text-primary' : 'text-foreground'}`}>{link.name}</span>
+                      <span className="block text-sm font-semibold text-foreground">{link.name}</span>
                       {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
                     </Link>
                   ))}
+                  <div className="border-t border-border mx-2 my-1" />
+                  <Link
+                    to="/programs"
+                    className="block px-4 py-3 hover:bg-muted transition-colors"
+                    onClick={() => setProgramsOpen(false)}
+                  >
+                    <span className="block text-sm font-semibold text-primary">View All Programs</span>
+                  </Link>
                 </div>
               )}
             </div>
