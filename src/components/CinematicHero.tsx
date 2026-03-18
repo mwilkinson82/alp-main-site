@@ -1,4 +1,4 @@
-import { Volume2, VolumeX, ArrowRight, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import marshallHero from "@/assets/marshall-conference-hero.jpg";
 import alpLogo from "@/assets/alp-logo.png";
