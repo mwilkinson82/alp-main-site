@@ -42,9 +42,9 @@ const Programs = () => {
   return (
     <>
       <SEO
-        title="Live Rooms — ALP Training Programs | Altitude Logic Pressure"
-        description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly execution rooms for operators who move fast."
-        keywords="ALP live rooms, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
+        title="Live Training Programs — ALP Training Programs | Altitude Logic Pressure"
+        description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly live training programs for operators who move fast."
+        keywords="ALP live training programs, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
         canonical="/programs"
       />
       <StructuredData type="organization" />
