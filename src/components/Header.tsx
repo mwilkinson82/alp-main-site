@@ -191,9 +191,9 @@ const Header = () => {
 
             {/* Mobile Access Section */}
             <div>
-              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Access</p>
+              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Programs</p>
               <div className="space-y-0">
-                {accessLinks.map((link, index) => (
+                {programLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
