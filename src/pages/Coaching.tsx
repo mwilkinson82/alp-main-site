@@ -135,7 +135,7 @@ const Coaching = () => {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 h-12"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold text-lg px-8 h-12"
                   asChild
                 >
                   <a href="#packages">View All Packages</a>
