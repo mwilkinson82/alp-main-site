@@ -93,7 +93,7 @@ const Header = () => {
                 onClick={() => setProgramsOpen(!programsOpen)}
                 className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
               >
-                Access
+                Programs
                 <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
               </button>
               
