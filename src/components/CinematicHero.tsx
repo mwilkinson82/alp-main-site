@@ -4,13 +4,12 @@ import marshallHero from "@/assets/marshall-conference-hero.jpg";
 import alpLogo from "@/assets/alp-logo.png";
 import { gsap } from "gsap";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+
 const CinematicHero = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
   const [showLogo, setShowLogo] = useState(true);
   const [showContent, setShowContent] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
 
   // Cinematic sequence on mount
