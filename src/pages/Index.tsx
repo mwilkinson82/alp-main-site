@@ -7,7 +7,7 @@ import About from "@/components/About";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
-import PersistentCTA from "@/components/PersistentCTA";
+
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import StartHere from "@/components/StartHere";
