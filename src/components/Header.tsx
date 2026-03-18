@@ -46,8 +46,10 @@ const Header = () => {
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
 
-  const accessLinks = [
-    { name: "Live Rooms", path: "/programs", sub: "Power Hour · Sales & Marketing · Contractor School", highlight: false },
+  const programLinks = [
+    { name: "Power Hour", path: "/power-hour", sub: "Daily at 8am EST" },
+    { name: "Contractor School", path: "/contractor-school", sub: "Tuesdays at 7pm EST" },
+    { name: "Sales & Marketing", path: "/sales-marketing-school", sub: "Wednesdays at 7pm EST" },
   ];
 
   return (
@@ -91,25 +93,31 @@ const Header = () => {
                 onClick={() => setProgramsOpen(!programsOpen)}
                 className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
               >
-                Access
+                Programs
                 <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {programsOpen && (
                 <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
-                  {accessLinks.map((link, index) => (
+                  {programLinks.map((link, index) => (
                     <Link
                       key={index}
                       to={link.path}
-                      className={`block px-4 py-3 hover:bg-muted transition-colors ${
-                        link.highlight ? 'border-t border-border mt-1 pt-3' : ''
-                      }`}
+                      className="block px-4 py-3 hover:bg-muted transition-colors"
                       onClick={() => setProgramsOpen(false)}
                     >
-                      <span className={`block text-sm font-semibold ${link.highlight ? 'text-primary' : 'text-foreground'}`}>{link.name}</span>
+                      <span className="block text-sm font-semibold text-foreground">{link.name}</span>
                       {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
                     </Link>
                   ))}
+                  <div className="border-t border-border mx-2 my-1" />
+                  <Link
+                    to="/programs"
+                    className="block px-4 py-3 hover:bg-muted transition-colors"
+                    onClick={() => setProgramsOpen(false)}
+                  >
+                    <span className="block text-sm font-semibold text-primary">View All Programs</span>
+                  </Link>
                 </div>
               )}
             </div>
@@ -183,9 +191,9 @@ const Header = () => {
 
             {/* Mobile Access Section */}
             <div>
-              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Access</p>
+              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Programs</p>
               <div className="space-y-0">
-                {accessLinks.map((link, index) => (
+                {programLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
