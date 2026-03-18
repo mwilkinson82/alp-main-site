@@ -63,7 +63,6 @@ const CoachingTestimonials = () => {
               Apply for Private Advisory
               <ArrowRight className="w-4 h-4" />
           </Button>
-          </Button>
         </div>
       </div>
     </section>
