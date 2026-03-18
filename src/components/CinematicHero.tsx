@@ -15,14 +15,6 @@ const CinematicHero = () => {
   // Cinematic sequence on mount
   useEffect(() => {
     const hasVisited = localStorage.getItem('alp-visited') === 'true';
-
-    // Detect AI browsers and disable video
-    const ua = (navigator?.userAgent || '').toLowerCase();
-    const isAiBrowser = /chatgpt|atlas|openai|bot|crawler/i.test(ua);
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (isAiBrowser || prefersReducedMotion || hasVisited) {
-      setVideoError(true);
-    }
     if (!hasVisited) {
       // First-time visitor: Full cinematic sequence
       if (logoRef.current) {
