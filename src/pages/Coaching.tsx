@@ -343,27 +343,7 @@ const Coaching = () => {
 
       <CoachingTestimonials />
 
-      {/* Ask Marshall Callout */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <Card className="border-primary/20 bg-muted/30">
-              <CardContent className="p-8 md:p-10 text-center space-y-4">
-                <h3 className="text-2xl md:text-3xl font-bold">Prefer a Focused Written or Video Response?</h3>
-                <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                  Start with a single question. Submit your toughest challenge and get a personalized video analysis from Marshall within 24 hours.
-                </p>
-                <Button size="lg" className="bg-gradient-gold hover:shadow-glow text-primary-foreground font-semibold gap-2" asChild>
-                  <Link to="/ask-marshall">
-                    Submit a Strategic Question — $250
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+
 
       {/* Final CTA */}
       <section className="py-20 bg-primary text-primary-foreground">
