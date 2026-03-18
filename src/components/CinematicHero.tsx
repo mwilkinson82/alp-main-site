@@ -80,12 +80,7 @@ const CinematicHero = () => {
   return <section className="relative overflow-hidden">
       {/* Video/Image Hero - Full height, no overlay */}
       <div className="relative h-[70vh] md:h-[80vh]">
-        {!videoError ? <video ref={videoRef} autoPlay muted loop playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover" onError={e => {
-        console.log('Video failed to load:', e);
-        setVideoError(true);
-      }}>
-            <source src="/videos/welcome-background.mp4" type="video/mp4" />
-          </video> : <img src={marshallHero} alt="Marshall Wilkinson" className="absolute inset-0 w-full h-full object-cover" />}
+        {<img src={marshallHero} alt="Marshall Wilkinson" className="absolute inset-0 w-full h-full object-cover" />}
         
         {/* Subtle gradient only at bottom for blend */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
