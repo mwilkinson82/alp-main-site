@@ -89,9 +89,12 @@ const Programs = () => {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Live training programs and a complete training archive — built for operators who execute, not just learn.
               </p>
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
-                <Monitor className="w-4 h-4 text-primary" />
-                <span className="text-primary font-medium">All sessions are virtual — delivered live through the ALP portal</span>
+              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-4 py-2.5 text-sm">
+                <Monitor className="w-4 h-4 text-primary flex-shrink-0" />
+                <span className="text-primary font-medium text-center leading-snug">
+                  All sessions are virtual<br className="sm:hidden" />
+                  <span className="hidden sm:inline"> — </span>delivered live through the ALP portal
+                </span>
               </div>
             </div>
 

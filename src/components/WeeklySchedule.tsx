@@ -42,7 +42,7 @@ const WeeklySchedule = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">Your Weekly Schedule</h2>
+            <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">ALP Class Schedule</h2>
             <p className="text-muted-foreground text-sm md:text-lg px-2">
               7 live sessions per week • 20+ sessions per month • All times EST
             </p>
