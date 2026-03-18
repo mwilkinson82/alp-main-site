@@ -107,14 +107,6 @@ const CinematicHero = () => {
         </div>}
 
       {/* Tap to Unmute Button */}
-      {showContent && !videoError && <button onClick={toggleAudio} className="fixed top-24 right-8 z-30 p-4 glass rounded-full hover:bg-background/60 hover-glow transition-smooth group" aria-label={isMuted ? "Unmute video" : "Mute video"}>
-          {isMuted ? <>
-              <VolumeX className="w-6 h-6 text-primary transition-transform group-hover:scale-110" />
-              <span className="absolute bottom-full right-0 mb-2 px-3 py-1 text-xs bg-background/90 backdrop-blur-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                Tap to Unmute
-              </span>
-            </> : <Volume2 className="w-6 h-6 text-primary transition-transform group-hover:scale-110" />}
-        </button>}
 
       {/* Hero Content - Below video, not overlaying */}
       {showContent && <div className="relative bg-background py-16 md:py-20 animate-fade-in">
