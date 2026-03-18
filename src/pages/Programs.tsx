@@ -42,9 +42,9 @@ const Programs = () => {
   return (
     <>
       <SEO
-        title="Live Rooms — ALP Training Programs | Altitude Logic Pressure"
-        description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly execution rooms for operators who move fast."
-        keywords="ALP live rooms, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
+        title="Live Training Programs — ALP Training Programs | Altitude Logic Pressure"
+        description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly live training programs for operators who move fast."
+        keywords="ALP live training programs, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
         canonical="/programs"
       />
       <StructuredData type="organization" />
@@ -70,7 +70,7 @@ const Programs = () => {
                 Train Live. <span className="text-gradient-gold">Execute Faster.</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Daily and weekly live rooms built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
+                Daily and weekly live training programs built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
@@ -87,7 +87,7 @@ const Programs = () => {
             <div className="text-center mb-10 space-y-4">
               <h2 className="text-3xl md:text-5xl font-bold">Group Programs & Training</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Live group sessions and a complete training archive — built for operators who execute, not just learn.
+                Live training programs and a complete training archive — built for operators who execute, not just learn.
               </p>
               <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 text-sm">
                 <Monitor className="w-4 h-4 text-primary" />

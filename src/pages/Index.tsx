@@ -7,11 +7,11 @@ import About from "@/components/About";
 import CoachingTestimonials from "@/components/CoachingTestimonials";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
-import PersistentCTA from "@/components/PersistentCTA";
+
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import StartHere from "@/components/StartHere";
-import AskMarshallHighlight from "@/components/AskMarshallHighlight";
+
 import LatestInsights from "@/components/LatestInsights";
 import LeadMagnet from "@/components/LeadMagnet";
 import InsightsNewsletter from "@/components/InsightsNewsletter";
@@ -33,7 +33,7 @@ const Index = () => {
         <StartHere />
         <FeaturedIn />
         <About />
-        <AskMarshallHighlight />
+        
         <Services />
         <LatestInsights />
         <InsightsNewsletter />
@@ -41,7 +41,7 @@ const Index = () => {
         <CoachingTestimonials />
         <Testimonials />
         <Footer />
-        <PersistentCTA />
+        
       </main>
     </>
   );

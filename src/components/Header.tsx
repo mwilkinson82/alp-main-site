@@ -129,15 +129,6 @@ const Header = () => {
               1-on-1 Advisory
             </Link>
             <Button
-              variant="premium"
-              size="sm"
-              asChild
-            >
-              <Link to="/ask-marshall">
-                Ask Marshall
-              </Link>
-            </Button>
-            <Button
               variant="outline"
               size="sm"
               asChild
@@ -218,11 +209,6 @@ const Header = () => {
             </Link>
 
             <div className="pt-4 space-y-2 border-t border-border mt-2">
-              <Button variant="premium" size="sm" className="w-full min-h-[44px]" asChild>
-                <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
-                  Ask Marshall
-                </Link>
-              </Button>
               <Button variant="outline" size="sm" className="w-full opacity-70 min-h-[44px]" asChild>
                 <a href="https://marshallwilkinson.mykajabi.com/login" target="_blank" rel="noopener noreferrer">
                   <LogIn className="mr-2 h-4 w-4" />

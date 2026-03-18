@@ -21,21 +21,16 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Access</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Programs</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/ask-marshall" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Ask Marshall
+                <Link to="/programs" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
+                  Live Training Programs
                 </Link>
               </li>
               <li>
                 <Link to="/coaching" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
                   1-on-1 Advisory
-                </Link>
-              </li>
-              <li>
-                <Link to="/programs" className="text-secondary-foreground/70 hover:text-primary transition-smooth">
-                  Programs
                 </Link>
               </li>
               <li>
@@ -52,16 +47,8 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link 
-                  to="/ask-marshall"
-                  className="text-primary hover:text-primary/80 transition-smooth font-semibold"
-                >
-                  Start Here — Ask Marshall →
-                </Link>
-              </li>
-              <li>
-                <Link 
                   to="/coaching"
-                  className="text-secondary-foreground/70 hover:text-primary transition-smooth"
+                  className="text-primary hover:text-primary/80 transition-smooth font-semibold"
                 >
                   Apply for Private Advisory →
                 </Link>
