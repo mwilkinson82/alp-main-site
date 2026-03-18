@@ -33,7 +33,7 @@ const Index = () => {
         <StartHere />
         <FeaturedIn />
         <About />
-        <AskMarshallHighlight />
+        
         <Services />
         <LatestInsights />
         <InsightsNewsletter />
