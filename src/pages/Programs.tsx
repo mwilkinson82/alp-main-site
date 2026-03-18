@@ -70,7 +70,7 @@ const Programs = () => {
                 Train Live. <span className="text-gradient-gold">Execute Faster.</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Daily and weekly live rooms built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
+                Daily and weekly live training programs built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button variant="premium" size="lg" className="gap-2" asChild>
