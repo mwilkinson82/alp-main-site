@@ -127,7 +127,7 @@ const Coaching = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                 <Button
                   size="lg"
-                  className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
+                  className="bg-gradient-gold hover:shadow-glow text-primary-foreground font-semibold text-lg px-8 h-12"
                   asChild
                 >
                   <a href="#intensive">See the 6-Session Intensive</a>
