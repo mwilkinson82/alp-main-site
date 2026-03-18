@@ -129,15 +129,6 @@ const Header = () => {
               1-on-1 Advisory
             </Link>
             <Button
-              variant="premium"
-              size="sm"
-              asChild
-            >
-              <Link to="/ask-marshall">
-                Ask Marshall
-              </Link>
-            </Button>
-            <Button
               variant="outline"
               size="sm"
               asChild

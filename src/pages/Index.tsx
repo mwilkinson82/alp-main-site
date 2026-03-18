@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import StartHere from "@/components/StartHere";
-import AskMarshallHighlight from "@/components/AskMarshallHighlight";
+
 import LatestInsights from "@/components/LatestInsights";
 import LeadMagnet from "@/components/LeadMagnet";
 import InsightsNewsletter from "@/components/InsightsNewsletter";
