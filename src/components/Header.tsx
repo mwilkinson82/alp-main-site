@@ -11,8 +11,8 @@ const Header = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  // Pages that should always have black text (no dark hero)
-  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/insights'];
+  // All pages now have dark background — text is always light at top
+  const forceBlackTextPages: string[] = [];
 
   useEffect(() => {
     const handleScroll = () => {
