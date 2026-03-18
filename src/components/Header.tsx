@@ -46,8 +46,10 @@ const Header = () => {
   const textColorClass = isAtTop ? "text-white" : "text-foreground";
   const iconColorClass = isAtTop ? "text-white" : "";
 
-  const accessLinks = [
-    { name: "Live Rooms", path: "/programs", sub: "Power Hour · Sales & Marketing · Contractor School", highlight: false },
+  const programLinks = [
+    { name: "Power Hour", path: "/power-hour", sub: "Daily at 8am EST" },
+    { name: "Contractor School", path: "/contractor-school", sub: "Tuesdays at 7pm EST" },
+    { name: "Sales & Marketing", path: "/sales-marketing-school", sub: "Wednesdays at 7pm EST" },
   ];
 
   return (
