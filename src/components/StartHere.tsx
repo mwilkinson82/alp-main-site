@@ -16,7 +16,8 @@ const tiers = [
     badge: "START HERE",
     description: "The foundational playbook for running a contracting business with systems, structure, and leverage — not gut instinct and guesswork.",
     cta: "Get the Handbook",
-    href: "#handbook-coming-soon",
+    href: "https://alphandbook.com",
+    external: true,
     featured: false,
   },
   {
@@ -35,7 +36,7 @@ const tiers = [
     price: "$1,000",
     description: "A focused 1-on-1 working session. Bring your biggest operational challenge — walk away with a clear action plan, SOPs, and a guardrail playbook you can execute the following week.",
     cta: "Book a Session",
-    href: "#strategy-session-coming-soon",
+    href: "/coaching",
     featured: false,
   },
   {
@@ -147,6 +148,14 @@ const StartHere = () => {
                 </div>
               </div>
             );
+
+            if (tier.external) {
+              return (
+                <a key={index} href={tier.href} target="_blank" rel="noopener noreferrer" className="block h-full">
+                  {content}
+                </a>
+              );
+            }
 
             return (
               <Link key={index} to={tier.href} className="block h-full">
