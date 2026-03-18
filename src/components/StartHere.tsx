@@ -36,7 +36,7 @@ const tiers = [
     price: "$1,000",
     description: "A focused 1-on-1 working session. Bring your biggest operational challenge — walk away with a clear action plan, SOPs, and a guardrail playbook you can execute the following week.",
     cta: "Book a Session",
-    href: "#strategy-session-coming-soon",
+    href: "/coaching",
     featured: false,
   },
   {
