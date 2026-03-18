@@ -16,7 +16,8 @@ const tiers = [
     badge: "START HERE",
     description: "The foundational playbook for running a contracting business with systems, structure, and leverage — not gut instinct and guesswork.",
     cta: "Get the Handbook",
-    href: "#handbook-coming-soon",
+    href: "https://alphandbook.com",
+    external: true,
     featured: false,
   },
   {
