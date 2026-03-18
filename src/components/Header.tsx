@@ -11,8 +11,8 @@ const Header = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  // Pages that should always have black text (no dark hero)
-  const forceBlackTextPages = ['/contractor-school', '/sales-marketing-school', '/insights'];
+  // All pages now have dark background — text is always light at top
+  const forceBlackTextPages: string[] = [];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -165,59 +165,59 @@ const Header = () => {
 
       </div>
 
-      {/* Mobile Navigation — full-width solid white panel, rendered outside header padding */}
+      {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-t border-gray-200 shadow-xl z-50">
+        <div className="md:hidden absolute top-16 left-0 right-0 bg-card border-t border-border shadow-xl z-50">
           <nav className="px-4 py-5 space-y-0">
             <Link
               to="/"
-              className="block px-3 py-3.5 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
               onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </Link>
 
-            <div className="mx-3 border-b border-gray-100" />
+            <div className="mx-3 border-b border-border" />
 
             <Link
               to="/insights"
-              className="block px-3 py-3.5 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
               onClick={() => setMobileMenuOpen(false)}
             >
               Insights
             </Link>
 
-            <div className="mx-3 border-b border-gray-100" />
+            <div className="mx-3 border-b border-border" />
 
-            {/* Mobile Access Section */}
+            {/* Mobile Programs Section */}
             <div>
-              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Programs</p>
+              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-muted-foreground uppercase tracking-[0.15em]">Programs</p>
               <div className="space-y-0">
                 {programLinks.map((link, index) => (
                   <Link
                     key={index}
                     to={link.path}
-                    className="block px-3 py-3 rounded-lg hover:bg-gray-50 transition-colors min-h-[44px]"
+                    className="block px-3 py-3 rounded-lg hover:bg-muted transition-colors min-h-[44px]"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <span className="block text-sm font-semibold text-gray-900 hover:text-primary">{link.name}</span>
-                    {link.sub && <span className="block text-xs text-gray-500 mt-0.5">{link.sub}</span>}
+                    <span className="block text-sm font-semibold text-foreground hover:text-primary">{link.name}</span>
+                    {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="mx-3 border-b border-gray-100" />
+            <div className="mx-3 border-b border-border" />
 
             <Link
               to="/coaching"
-              className="block px-3 py-3.5 text-gray-900 font-medium hover:text-primary hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
               onClick={() => setMobileMenuOpen(false)}
             >
               1-on-1 Advisory
             </Link>
 
-            <div className="pt-4 space-y-2 border-t border-gray-200 mt-2">
+            <div className="pt-4 space-y-2 border-t border-border mt-2">
               <Button variant="premium" size="sm" className="w-full min-h-[44px]" asChild>
                 <Link to="/ask-marshall" onClick={() => setMobileMenuOpen(false)}>
                   Ask Marshall
