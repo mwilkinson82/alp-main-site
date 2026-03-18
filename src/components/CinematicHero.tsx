@@ -71,12 +71,6 @@ const CinematicHero = () => {
     });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  const toggleAudio = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
   return <section className="relative overflow-hidden">
       {/* Video/Image Hero - Full height, no overlay */}
       <div className="relative h-[70vh] md:h-[80vh]">
