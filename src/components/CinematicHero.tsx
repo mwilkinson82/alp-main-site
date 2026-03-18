@@ -165,8 +165,8 @@ const CinematicHero = () => {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                 <Button size="lg" className="w-full sm:w-auto group bg-gradient-gold hover:shadow-glow hover-gold-edge" asChild>
-                  <a href="/ask-marshall">
-                    Start Here — Get Marshall's Analysis
+                  <a href="/programs">
+                    Explore Training Programs
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </Button>
