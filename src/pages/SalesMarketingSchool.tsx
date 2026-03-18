@@ -151,8 +151,20 @@ const SalesMarketingSchool = () => {
           </div>
         </section>
 
-        {/* Weekly Schedule */}
-        <WeeklySchedule />
+        {/* Schedule */}
+        <section className="py-12 md:py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-2xl mx-auto text-center space-y-6">
+              <h2 className="text-2xl md:text-4xl font-bold">When We Meet</h2>
+              <div className="bg-muted/50 border border-border rounded-xl p-6 md:p-8">
+                <TrendingUp className="w-10 h-10 text-primary mx-auto mb-4" />
+                <p className="text-xl md:text-2xl font-bold">Every Wednesday</p>
+                <p className="text-lg text-primary font-medium">7:00 PM EST</p>
+                <p className="text-muted-foreground text-sm mt-3">All sessions are recorded — watch on your schedule if you can't make it live.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Testimonials */}
         <ProgramTestimonials />
