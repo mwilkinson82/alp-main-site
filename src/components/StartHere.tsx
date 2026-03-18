@@ -149,6 +149,14 @@ const StartHere = () => {
               </div>
             );
 
+            if (tier.external) {
+              return (
+                <a key={index} href={tier.href} target="_blank" rel="noopener noreferrer" className="block h-full">
+                  {content}
+                </a>
+              );
+            }
+
             return (
               <Link key={index} to={tier.href} className="block h-full">
                 {content}
