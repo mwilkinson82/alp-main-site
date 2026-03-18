@@ -350,7 +350,7 @@ const Coaching = () => {
                 <p className="text-muted-foreground text-lg max-w-xl mx-auto">
                   Start with a single question. Submit your toughest challenge and get a personalized video analysis from Marshall within 24 hours.
                 </p>
-                <Button size="lg" className="bg-gold hover:bg-gold/90 text-black font-semibold gap-2" asChild>
+                <Button size="lg" className="bg-gradient-gold hover:shadow-glow text-primary-foreground font-semibold gap-2" asChild>
                   <Link to="/ask-marshall">
                     Submit a Strategic Question — $250
                     <ArrowRight className="w-4 h-4" />

@@ -73,7 +73,7 @@ const SalesMarketingSchool = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button
                   size="lg"
-                  className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 h-12"
+                  className="bg-gradient-gold hover:shadow-glow text-primary-foreground font-semibold text-lg px-8 h-12"
                   asChild
                 >
                   <a href="#pricing">Join Sales & Marketing School</a>
