@@ -53,7 +53,7 @@ const Programs = () => {
         <Header />
 
         {/* Hero Image */}
-        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+        <section className="relative h-[45vh] md:h-[80vh] overflow-hidden">
           <img
             src={liveRoomsHero}
             alt="Marshall Wilkinson leading a live group session"
