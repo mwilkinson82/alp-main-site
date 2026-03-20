@@ -106,8 +106,14 @@ const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welc
     kajabiOfferIds: ["2150291427", "2150966111"],
     welcomeSubject: "Welcome to ALP — Handbook Special! 📘",
   },
-  // ALP University
+  // ALP University ($197/mo)
   "8x2dRa1dvg9w1RudXIeQM0T": {
+    name: "ALP University",
+    kajabiOfferIds: ["2149157033"],
+    welcomeSubject: "Welcome to ALP University! 🎓",
+  },
+  // ALP University — 2026 Level Up ($98/mo)
+  "plink_1SU9nnJdDAUSVXbNbQdkZcLY": {
     name: "ALP University",
     kajabiOfferIds: ["2149157033"],
     welcomeSubject: "Welcome to ALP University! 🎓",

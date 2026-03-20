@@ -34,6 +34,7 @@ const PRODUCTS = [
   // Other products
   { key: "8x2bJ28FXg9wgMo1aWeQM0K", name: "Handbook Special (1 Month)" },
   { key: "8x2dRa1dvg9w1RudXIeQM0T", name: "ALP University" },
+  { key: "plink_1SU9nnJdDAUSVXbNbQdkZcLY", name: "ALP University (2026 Level Up — $98/mo)" },
   { key: "bJeaEYe0h9L8ao0g5QeQM0R", name: "1-on-1 Coaching (Single Session)" },
   { key: "14A5kEf4l0ay7bOaLweQM0Q", name: "1-on-1 Coaching (6-Session Intensive)" },
   { key: "cNi4gA1dvbTg1Ru5rceQM0S", name: "Ask Marshall" },
