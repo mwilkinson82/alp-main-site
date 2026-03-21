@@ -22,12 +22,23 @@ const bold = (text: string) => `<strong>${text}</strong>`;
 const heading = (text: string) => `<h2 style="font-size: 20px; color: #1a1a1a; margin: 28px 0 12px;">${text}</h2>`;
 const bullet = (text: string) => `<li style="margin-bottom: 6px;">${text}</li>`;
 const bulletList = (items: string[]) => `<ul style="font-size: 16px; color: #333; line-height: 1.8; padding-left: 20px;">${items.map(bullet).join("")}</ul>`;
-const kajabiNote = `
+
+// Product-specific Discord invite links
+const DISCORD_LINKS = {
+  powerHour: "https://discord.gg/HNFGs7G8ts",
+  contractorSchool: "https://discord.gg/X69TRWU7wb",
+  salesMarketing: "https://discord.gg/Hcn5m9MDYu",
+  general: "https://discord.gg/jnwDPTY6D3",
+};
+
+function kajabiNote(discordUrl: string): string {
+  return `
   ${p(`For the best experience, we strongly recommend downloading the ${bold("Kajabi App")} from the iOS or Android app store. This gives you seamless, mobile, on-the-go access to every ALP program directly from your phone.`)}
-  ${p(`Be sure to join the ${bold("ALP Discord")} and introduce yourself to the group: <a href="https://discord.gg/EjqADW3y" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
+  ${p(`Be sure to join the ${bold("ALP Discord")} and introduce yourself to the group: <a href="${discordUrl}" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
   ${p("Welcome to the next level.")}
   ${p("ALP Team")}
 `;
+}
 
 // --- ALP University ---
 function alpUniversityEmail(): string {
@@ -42,7 +53,7 @@ function alpUniversityEmail(): string {
       "New lessons and modules added continuously",
     ])}
     ${p("Every live training we host is uploaded into ALP U for you to revisit anytime, giving you complete flexibility to learn, study, and sharpen at your own pace.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -73,7 +84,7 @@ function powerHour1MonthEmail(): string {
     ${p("This month is about one thing:")}
     ${p(`${bold("proving to yourself that you can operate at a higher standard.")}`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.powerHour)}
   `);
 }
 
@@ -116,7 +127,146 @@ function powerHour6MonthEmail(): string {
     ${p("Because scaling doesn't come from comfort.")}
     ${p("It comes from compounding.<br>And compounding requires consistency.")}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.powerHour)}
+  `);
+}
+
+// --- Contractor School Monthly ---
+function contractorSchoolMonthlyEmail(): string {
+  return wrapEmail(`
+    ${heading("Welcome to Contractor School.")}
+    ${p("You just invested in the one thing that separates contractors who stay stuck from those who scale:")}
+    ${p(`${bold("Business education designed specifically for construction.")}`)}
+    ${p("Contractor School isn't generic business advice repackaged for builders. This is purpose-built training covering the exact systems you need to run a profitable, scalable construction company.")}
+
+    ${heading("What You Now Have Access To")}
+    ${bulletList([
+      "Live weekly training every Tuesday at 7pm EST",
+      "Estimating, project management, legal &amp; contracts",
+      "Accounting, C-suite activities, and operations",
+      "Full recordings of every session",
+      "Direct access to Marshall during live sessions",
+    ])}
+
+    ${heading("How It Works")}
+    ${p("All live sessions are hosted directly inside the ALP Platform.")}
+    ${p("When Marshall goes live, the ALP Platform will automatically send you an email notification to join the session.")}
+    ${p("No Zoom links. No friction. Just direct access.")}
+
+    ${heading("How to Get the Most Out of This")}
+    ${bulletList([
+      "Show up consistently every Tuesday",
+      "Bring real problems from your job sites and office",
+      "Apply what you learn immediately — don't wait",
+      "Use the community to pressure-test your decisions",
+    ])}
+    ${p(`This is about building a ${bold("business")}, not just running jobs.`)}
+    ${p("Welcome to the room.")}
+    ${kajabiNote(DISCORD_LINKS.contractorSchool)}
+  `);
+}
+
+// --- Contractor School Quarter ---
+function contractorSchoolQuarterEmail(): string {
+  return wrapEmail(`
+    ${heading("Welcome to Contractor School.")}
+    ${p("You locked in your quarter — and that tells me something about how you operate.")}
+    ${p(`${bold("You're not here to dabble. You're here to build.")}`)}
+    ${p("Over the next three months, you'll have consistent access to the systems, strategies, and frameworks that separate contractors who scale from those who stay stuck trading time for money.")}
+
+    ${heading("What You Now Have Access To")}
+    ${bulletList([
+      "Live weekly training every Tuesday at 7pm EST",
+      "Estimating, project management, legal &amp; contracts",
+      "Accounting, C-suite activities, and operations",
+      "Full recordings of every session",
+      "Direct access to Marshall during live sessions",
+    ])}
+
+    ${heading("How It Works")}
+    ${p("All live sessions are hosted directly inside the ALP Platform.")}
+    ${p("When Marshall goes live, the ALP Platform will automatically send you an email notification to join the session.")}
+    ${p("No Zoom links. No friction. Just direct access.")}
+
+    ${heading("Your Quarter Game Plan")}
+    ${bulletList([
+      "Month 1: Identify and fix your biggest operational bottleneck",
+      "Month 2: Install the systems that create leverage",
+      "Month 3: Optimize and scale what's working",
+    ])}
+    ${p("Three months of consistent execution will change your trajectory.")}
+    ${p("Welcome to the room.")}
+    ${kajabiNote(DISCORD_LINKS.contractorSchool)}
+  `);
+}
+
+// --- Sales & Marketing School Monthly ---
+function salesMarketingMonthlyEmail(): string {
+  return wrapEmail(`
+    ${heading("Welcome to Sales & Marketing School.")}
+    ${p("You just made the decision that most business owners avoid:")}
+    ${p(`${bold("You invested in learning how to consistently generate revenue.")}`)}
+    ${p("Sales & Marketing School isn't theory. It's the exact playbook for building a lead generation machine, closing deals with confidence, and growing revenue predictably.")}
+
+    ${heading("What You Now Have Access To")}
+    ${bulletList([
+      "Live weekly training every Wednesday at 7pm EST",
+      "Presentations, negotiation &amp; closing techniques",
+      "Website, landing pages &amp; retargeting campaigns",
+      "Offline marketing &amp; lead generation systems",
+      "Full recordings of every session",
+      "Direct access to Marshall during live sessions",
+    ])}
+
+    ${heading("How It Works")}
+    ${p("All live sessions are hosted directly inside the ALP Platform.")}
+    ${p("When Marshall goes live, the ALP Platform will automatically send you an email notification to join the session.")}
+    ${p("No Zoom links. No friction. Just direct access.")}
+
+    ${heading("How to Get the Most Out of This")}
+    ${bulletList([
+      "Show up every Wednesday ready to learn and apply",
+      "Bring your real sales challenges and marketing questions",
+      "Implement one new strategy each week",
+      "Track your results and share wins with the group",
+    ])}
+    ${p(`Revenue growth isn't luck — it's ${bold("systems")}.`)}
+    ${p("Welcome to the room.")}
+    ${kajabiNote(DISCORD_LINKS.salesMarketing)}
+  `);
+}
+
+// --- Sales & Marketing School Quarter ---
+function salesMarketingQuarterEmail(): string {
+  return wrapEmail(`
+    ${heading("Welcome to Sales & Marketing School.")}
+    ${p("You locked in your quarter — which means you're serious about building a revenue machine.")}
+    ${p(`${bold("Three months is enough time to completely transform how your business generates and closes leads.")}`)}
+
+    ${heading("What You Now Have Access To")}
+    ${bulletList([
+      "Live weekly training every Wednesday at 7pm EST",
+      "Presentations, negotiation &amp; closing techniques",
+      "Website, landing pages &amp; retargeting campaigns",
+      "Offline marketing &amp; lead generation systems",
+      "Full recordings of every session",
+      "Direct access to Marshall during live sessions",
+    ])}
+
+    ${heading("How It Works")}
+    ${p("All live sessions are hosted directly inside the ALP Platform.")}
+    ${p("When Marshall goes live, the ALP Platform will automatically send you an email notification to join the session.")}
+    ${p("No Zoom links. No friction. Just direct access.")}
+
+    ${heading("Your Quarter Game Plan")}
+    ${bulletList([
+      "Month 1: Audit your current pipeline and install lead generation systems",
+      "Month 2: Sharpen your sales process and close rate",
+      "Month 3: Scale what's working and build predictable revenue",
+    ])}
+    ${p("Consistent execution over three months will compound into serious results.")}
+    ${p("Welcome to the room.")}
+    ${kajabiNote(DISCORD_LINKS.salesMarketing)}
   `);
 }
 
@@ -159,7 +309,7 @@ function growthAcademyEmail(): string {
     ${p("You don't need to be perfect.")}
     ${p(`You just need to ${bold("execute")}.`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -208,7 +358,7 @@ function fullAccessEmail(): string {
     ${p(`It's about becoming ${bold("sharper, faster, and more decisive")}.`)}
     ${p("And if you apply pressure properly over the next six months, the results will speak for themselves.")}
     ${p(`${bold("Welcome to the inner circle.")}`)}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -272,6 +422,9 @@ function coaching6SessionEmail(name: string): string {
       "Real-time support when decisions can't wait for the next call",
     ])}
 
+    ${heading("Join the ALP Community")}
+    ${p(`As part of your coaching engagement, you have access to the ALP Discord community — connect with other high-level operators and get support between sessions: <a href="${DISCORD_LINKS.general}" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
+
     ${heading("How to Get the Most Out of This")}
     ${p("The entrepreneurs who get the biggest results from this do three things:")}
     ${bulletList([
@@ -304,7 +457,7 @@ function handbookSpecialEmail(name: string): string {
     ${p("If you have any questions, reply directly to this email — I read everything.")}
     ${p("Let's build something great together.")}
     ${p("— Marshall Wilkinson")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -334,10 +487,18 @@ function askMarshallEmail(name: string, email: string): string {
 export type ProductKey = string;
 
 export function getWelcomeEmailHtml(productKey: string, customerName: string, customerEmail?: string): string {
-  // Power Hour 1 Month
+  // Legacy Power Hour
   if (productKey === "7sYeVeaO52iGgMo4n8eQM0J") return powerHour1MonthEmail();
-  // Power Hour 6 Months
   if (productKey === "bJe6oI8FX2iG9jW4n8eQM0I") return powerHour6MonthEmail();
+  // New Power Hour
+  if (productKey === "7sYdRacWd9L8gMocTEeQM10") return powerHour1MonthEmail();
+  if (productKey === "8x25kE7BT5uS53Gf1MeQM11") return powerHour6MonthEmail();
+  // Contractor School
+  if (productKey === "5kQcN6g8p8H41RubPAeQM12") return contractorSchoolMonthlyEmail();
+  if (productKey === "bJebJ22hzg9w7bO3j4eQM13") return contractorSchoolQuarterEmail();
+  // Sales & Marketing School
+  if (productKey === "dRm4gAe0hg9w1Ru4n8eQM14") return salesMarketingMonthlyEmail();
+  if (productKey === "00w9AU09r4qObs4dXIeQM15") return salesMarketingQuarterEmail();
   // Growth Academy (all tiers)
   if (["00wbJ23lDbTgfIk8DoeQM0z", "eVq28sbS9cXkgMo6vgeQM0A", "6oUbJ2aO53mK53G9HseQM0C"].includes(productKey)) return growthAcademyEmail();
   // Full Access (all tiers)
@@ -361,6 +522,6 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string, cu
     ${p("Thank you for investing in yourself. You'll receive a separate email shortly with your login credentials and access details.")}
     ${p("If you have any questions, reply directly to this email.")}
     ${p("— Marshall Wilkinson")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }

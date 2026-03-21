@@ -22,12 +22,23 @@ const bold = (text: string) => `<strong>${text}</strong>`;
 const heading = (text: string) => `<h2 style="font-size: 20px; color: #1a1a1a; margin: 28px 0 12px;">${text}</h2>`;
 const bullet = (text: string) => `<li style="margin-bottom: 6px;">${text}</li>`;
 const bulletList = (items: string[]) => `<ul style="font-size: 16px; color: #333; line-height: 1.8; padding-left: 20px;">${items.map(bullet).join("")}</ul>`;
-const kajabiNote = `
+
+// Product-specific Discord invite links
+const DISCORD_LINKS = {
+  powerHour: "https://discord.gg/HNFGs7G8ts",
+  contractorSchool: "https://discord.gg/X69TRWU7wb",
+  salesMarketing: "https://discord.gg/Hcn5m9MDYu",
+  general: "https://discord.gg/jnwDPTY6D3",
+};
+
+function kajabiNote(discordUrl: string): string {
+  return `
   ${p(`For the best experience, we strongly recommend downloading the ${bold("Kajabi App")} from the iOS or Android app store. This gives you seamless, mobile, on-the-go access to every ALP program directly from your phone.`)}
-  ${p(`Be sure to join the ${bold("ALP Discord")} and introduce yourself to the group: <a href="https://discord.gg/EjqADW3y" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
+  ${p(`Be sure to join the ${bold("ALP Discord")} and introduce yourself to the group: <a href="${discordUrl}" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
   ${p("Welcome to the next level.")}
   ${p("ALP Team")}
 `;
+}
 
 // --- ALP University ---
 function alpUniversityEmail(): string {
@@ -42,7 +53,7 @@ function alpUniversityEmail(): string {
       "New lessons and modules added continuously",
     ])}
     ${p("Every live training we host is uploaded into ALP U for you to revisit anytime, giving you complete flexibility to learn, study, and sharpen at your own pace.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -73,7 +84,7 @@ function powerHour1MonthEmail(): string {
     ${p("This month is about one thing:")}
     ${p(`${bold("proving to yourself that you can operate at a higher standard.")}`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.powerHour)}
   `);
 }
 
@@ -116,7 +127,7 @@ function powerHourQuarterEmail(): string {
     ${p("Because scaling doesn't come from comfort.")}
     ${p("It comes from compounding.<br>And compounding requires consistency.")}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.powerHour)}
   `);
 }
 
@@ -151,7 +162,7 @@ function contractorSchoolMonthlyEmail(): string {
     ])}
     ${p(`This is about building a ${bold("business")}, not just running jobs.`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.contractorSchool)}
   `);
 }
 
@@ -185,7 +196,7 @@ function contractorSchoolQuarterEmail(): string {
     ])}
     ${p("Three months of consistent execution will change your trajectory.")}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.contractorSchool)}
   `);
 }
 
@@ -221,7 +232,7 @@ function salesMarketingMonthlyEmail(): string {
     ])}
     ${p(`Revenue growth isn't luck — it's ${bold("systems")}.`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.salesMarketing)}
   `);
 }
 
@@ -255,7 +266,7 @@ function salesMarketingQuarterEmail(): string {
     ])}
     ${p("Consistent execution over three months will compound into serious results.")}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.salesMarketing)}
   `);
 }
 
@@ -292,7 +303,7 @@ function growthAcademyEmail(): string {
     ])}
     ${p(`You just need to ${bold("execute")}.`)}
     ${p("Welcome to the room.")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -329,7 +340,7 @@ function fullAccessEmail(): string {
       "Execute fast, then refine",
     ])}
     ${p(`${bold("Welcome to the inner circle.")}`)}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -387,6 +398,9 @@ function coaching6SessionEmail(name: string): string {
       "Real-time support when decisions can't wait for the next call",
     ])}
 
+    ${heading("Join the ALP Community")}
+    ${p(`As part of your coaching engagement, you have access to the ALP Discord community — connect with other high-level operators and get support between sessions: <a href="${DISCORD_LINKS.general}" style="color: #c9a44a; text-decoration: underline;">Join the ALP Discord</a>`)}
+
     ${heading("How to Get the Most Out of This")}
     ${bulletList([
       "Come prepared with real numbers and real constraints",
@@ -416,7 +430,7 @@ function handbookSpecialEmail(name: string): string {
     ])}
     ${p("If you have any questions, reply directly to this email.")}
     ${p("— Marshall Wilkinson")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
 
@@ -450,14 +464,14 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string, cu
   if (productKey === "7sYeVeaO52iGgMo4n8eQM0J") return powerHour1MonthEmail();
   if (productKey === "bJe6oI8FX2iG9jW4n8eQM0I") return powerHourQuarterEmail();
   // New Power Hour
-  if (productKey === "PH_MONTHLY_V2") return powerHour1MonthEmail();
-  if (productKey === "PH_QUARTER_V2") return powerHourQuarterEmail();
+  if (productKey === "7sYdRacWd9L8gMocTEeQM10") return powerHour1MonthEmail();
+  if (productKey === "8x25kE7BT5uS53Gf1MeQM11") return powerHourQuarterEmail();
   // Contractor School
-  if (productKey === "CS_MONTHLY") return contractorSchoolMonthlyEmail();
-  if (productKey === "CS_QUARTER") return contractorSchoolQuarterEmail();
+  if (productKey === "5kQcN6g8p8H41RubPAeQM12") return contractorSchoolMonthlyEmail();
+  if (productKey === "bJebJ22hzg9w7bO3j4eQM13") return contractorSchoolQuarterEmail();
   // Sales & Marketing School
-  if (productKey === "SM_MONTHLY") return salesMarketingMonthlyEmail();
-  if (productKey === "SM_QUARTER") return salesMarketingQuarterEmail();
+  if (productKey === "dRm4gAe0hg9w1Ru4n8eQM14") return salesMarketingMonthlyEmail();
+  if (productKey === "00w9AU09r4qObs4dXIeQM15") return salesMarketingQuarterEmail();
   // Growth Academy (legacy)
   if (["00wbJ23lDbTgfIk8DoeQM0z", "eVq28sbS9cXkgMo6vgeQM0A", "6oUbJ2aO53mK53G9HseQM0C"].includes(productKey)) return growthAcademyEmail();
   // Full Access (legacy)
@@ -481,6 +495,6 @@ export function getWelcomeEmailHtml(productKey: string, customerName: string, cu
     ${p("Thank you for investing in yourself. You'll receive a separate email shortly with your login credentials and access details.")}
     ${p("If you have any questions, reply directly to this email.")}
     ${p("— Marshall Wilkinson")}
-    ${kajabiNote}
+    ${kajabiNote(DISCORD_LINKS.general)}
   `);
 }
