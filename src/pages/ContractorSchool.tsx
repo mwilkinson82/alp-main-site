@@ -31,7 +31,7 @@ const ContractorSchool = () => {
     <>
       <SEO 
         title="Contractor School - Construction Business Training | Marshall Wilkinson"
-        description="Scale your construction company the right way with Marshall Wilkinson's Contractor School. Live weekly training on estimating, project management, legal, accounting, and operations. $497/mo or lock in your quarter for $1,497."
+        description="Scale your construction company the right way with Marshall Wilkinson's Contractor School. Live weekly training on estimating, project management, legal, accounting, and operations. $497/mo or lock in your quarter for $1,341."
         keywords="Contractor School, construction business training, contractor coaching, Marshall Wilkinson, builder training, construction estimating, project management"
         canonical="/contractor-school"
       />
@@ -205,9 +205,9 @@ const ContractorSchool = () => {
                       LOCK IN YOUR QUARTER
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-foreground mb-1">$1,497</p>
+                      <p className="text-3xl font-bold text-foreground mb-1">$1,341</p>
                       <p className="text-muted-foreground">3 Months</p>
-                      <p className="text-sm text-primary">Save $494</p>
+                      <p className="text-sm text-primary">Save $150</p>
                     </div>
                     <Button 
                       asChild 

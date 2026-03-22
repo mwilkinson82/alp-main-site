@@ -65,7 +65,7 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const formData: FormData = await req.json();
-    console.log("Received form submission:", { formType: formData.formType, name: formData.name });
+    console.log("Received form submission:", { formType: formData.formType, ...('name' in formData ? { name: formData.name } : {}) });
 
     // Validate form type
     if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application', 'newsletter'].includes(formData.formType)) {

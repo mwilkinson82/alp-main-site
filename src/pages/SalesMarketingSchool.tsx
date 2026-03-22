@@ -31,7 +31,7 @@ const SalesMarketingSchool = () => {
     <>
       <SEO 
         title="Sales & Marketing School - Business Growth Training | Marshall Wilkinson"
-        description="Generate leads. Close deals. Grow revenue. Marshall Wilkinson's Sales & Marketing School teaches you how to build a real marketing machine for your business. $497/mo or lock in your quarter for $1,497."
+        description="Generate leads. Close deals. Grow revenue. Marshall Wilkinson's Sales & Marketing School teaches you how to build a real marketing machine for your business. $497/mo or lock in your quarter for $1,341."
         keywords="Sales training, marketing training, lead generation, Marshall Wilkinson, business growth, sales coaching, marketing school"
         canonical="/sales-marketing-school"
       />
@@ -207,9 +207,9 @@ const SalesMarketingSchool = () => {
                       LOCK IN YOUR QUARTER
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-foreground mb-1">$1,497</p>
+                      <p className="text-3xl font-bold text-foreground mb-1">$1,341</p>
                       <p className="text-muted-foreground">3 Months</p>
-                      <p className="text-sm text-primary">Save $494</p>
+                      <p className="text-sm text-primary">Save $150</p>
                     </div>
                     <Button 
                       asChild 
