@@ -212,9 +212,9 @@ const PowerHour = () => {
                     LOCK IN YOUR QUARTER
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-foreground mb-1">$2,997</p>
+                    <p className="text-3xl font-bold text-foreground mb-1">$2,691</p>
                     <p className="text-muted-foreground">3 Months</p>
-                    <p className="text-sm text-primary">Save $994</p>
+                    <p className="text-sm text-primary">Save $300</p>
                   </div>
                   <Button 
                     asChild 

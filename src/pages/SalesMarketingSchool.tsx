@@ -207,9 +207,9 @@ const SalesMarketingSchool = () => {
                       LOCK IN YOUR QUARTER
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-foreground mb-1">$1,497</p>
+                      <p className="text-3xl font-bold text-foreground mb-1">$1,341</p>
                       <p className="text-muted-foreground">3 Months</p>
-                      <p className="text-sm text-primary">Save $494</p>
+                      <p className="text-sm text-primary">Save $150</p>
                     </div>
                     <Button 
                       asChild 
