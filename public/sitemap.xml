@@ -2,67 +2,73 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://altitudelogicpressure.com/</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/programs</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/power-hour</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/coaching</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://altitudelogicpressure.com/ask-marshall</loc>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/alp-university</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/contractor-school</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/sales-marketing-school</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/handbook-special</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://altitudelogicpressure.com/blog</loc>
-    <lastmod>2026-02-06</lastmod>
+    <loc>https://altitudelogicpressure.com/insights</loc>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/privacy-policy</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://altitudelogicpressure.com/terms-of-service</loc>
-    <lastmod>2026-02-06</lastmod>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
