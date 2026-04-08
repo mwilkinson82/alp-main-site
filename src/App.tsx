@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import HashScroller from "@/components/HashScroller";
 import Index from "./pages/Index";
+import ALPUniversity from "./pages/ALPUniversity";
 import PowerHour from "./pages/PowerHour";
 import Coaching from "./pages/Coaching";
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/contractor-school" element={<ContractorSchool />} />
           <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
           <Route path="/handbook-special" element={<HandbookSpecial />} />
+          <Route path="/alp-university" element={<ALPUniversity />} />
           <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
