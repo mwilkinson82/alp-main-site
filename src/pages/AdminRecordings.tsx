@@ -108,6 +108,39 @@ const emptyForm: FormState = {
   is_published: true,
 };
 
+// Extract a clean video reference from whatever the user pastes:
+// - Full <iframe> embed code: pull the src
+// - Full embed/share URL: keep as-is
+// - Bare ID: keep as-is
+const extractVideoRef = (raw: string): string => {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  // <iframe ... src="..."> — extract src attribute
+  const iframeSrc = trimmed.match(/<iframe[^>]*\s+src=["']([^"']+)["']/i);
+  if (iframeSrc) return iframeSrc[1].trim();
+  // First http(s) URL anywhere in the string
+  const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/i);
+  if (urlMatch) return urlMatch[0];
+  return trimmed;
+};
+
+// Extract a clean image URL from whatever the user pastes:
+// - Full <a><img src="..."></a> block: pull the img src (last one wins — usually the actual thumbnail)
+// - Bare URL: keep as-is
+const extractThumbnailUrl = (raw: string): string => {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  // <img ... src="..."> — extract last img src (handles nested anchor markup)
+  const imgMatches = [...trimmed.matchAll(/<img[^>]*\s+src=["']([^"']+)["']/gi)];
+  if (imgMatches.length > 0) {
+    return imgMatches[imgMatches.length - 1][1].trim();
+  }
+  // First http(s) URL — but stop at any quote/space/angle-bracket
+  const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/i);
+  if (urlMatch) return urlMatch[0];
+  return trimmed;
+};
+
 const AdminRecordings = () => {
   const { loading, isAdmin } = usePortalAuth({ requireAdmin: true });
   const [list, setList] = useState<Recording[]>([]);
@@ -168,8 +201,10 @@ const AdminRecordings = () => {
     }
     setSaving(true);
     try {
-      const trimmedRef = form.video_ref.trim();
-      const trimmedThumb = form.thumbnail_url.trim();
+      // Auto-extract clean URLs/IDs in case the admin pasted full HTML
+      // (e.g. an <iframe> embed block or an <a><img></a> snippet)
+      const trimmedRef = extractVideoRef(form.video_ref);
+      const trimmedThumb = extractThumbnailUrl(form.thumbnail_url);
       const payload = {
         title: form.title.trim(),
         class_type: form.class_type,
@@ -319,12 +354,12 @@ const AdminRecordings = () => {
         </section>
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="max-w-lg">
-            <DialogHeader>
+          <DialogContent className="max-w-lg max-h-[90vh] flex flex-col p-0 gap-0">
+            <DialogHeader className="px-6 pt-6 pb-2 shrink-0">
               <DialogTitle>{form.id ? "Edit Recording" : "Add Recording"}</DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-4 py-2">
+            <div className="space-y-4 py-2 px-6 overflow-y-auto flex-1 min-h-0">
               <div className="space-y-2">
                 <Label htmlFor="title">Title</Label>
                 <Input
@@ -456,7 +491,7 @@ const AdminRecordings = () => {
               </div>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="px-6 py-4 border-t border-border shrink-0 bg-background">
               <Button variant="outline" onClick={() => setOpen(false)} disabled={saving}>
                 Cancel
               </Button>
