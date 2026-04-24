@@ -136,7 +136,8 @@ const AdminRecordings = () => {
       title: r.title,
       class_type: r.class_type,
       recording_date: r.recording_date,
-      cloudflare_video_id: r.cloudflare_video_id,
+      video_source: r.video_source ?? "cloudflare",
+      video_ref: r.video_ref ?? r.cloudflare_video_id ?? "",
       description: r.description ?? "",
       is_published: r.is_published,
     });
@@ -154,11 +155,17 @@ const AdminRecordings = () => {
       return;
     }
     setSaving(true);
+    const trimmedRef = form.video_ref.trim();
     const payload = {
       title: form.title.trim(),
       class_type: form.class_type,
       recording_date: form.recording_date,
-      cloudflare_video_id: form.cloudflare_video_id.trim(),
+      video_source: form.video_source,
+      video_ref: trimmedRef,
+      // Keep cloudflare_video_id populated (NOT NULL legacy column).
+      // For zoom clips we just mirror the ref so the constraint passes;
+      // the replay page reads video_source + video_ref to decide what to render.
+      cloudflare_video_id: trimmedRef,
       description: form.description.trim() || null,
       is_published: form.is_published,
     };
