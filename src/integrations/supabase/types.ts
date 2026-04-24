@@ -235,6 +235,8 @@ export type Database = {
           recording_date: string
           title: string
           updated_at: string
+          video_ref: string | null
+          video_source: Database["public"]["Enums"]["video_source"]
         }
         Insert: {
           class_type: Database["public"]["Enums"]["class_type"]
@@ -246,6 +248,8 @@ export type Database = {
           recording_date: string
           title: string
           updated_at?: string
+          video_ref?: string | null
+          video_source?: Database["public"]["Enums"]["video_source"]
         }
         Update: {
           class_type?: Database["public"]["Enums"]["class_type"]
@@ -257,6 +261,8 @@ export type Database = {
           recording_date?: string
           title?: string
           updated_at?: string
+          video_ref?: string | null
+          video_source?: Database["public"]["Enums"]["video_source"]
         }
         Relationships: []
       }
@@ -299,6 +305,7 @@ export type Database = {
       app_role: "admin" | "user" | "client"
       class_type: "power_hour" | "contractor_school" | "sales_marketing_school"
       profile_status: "active" | "inactive"
+      video_source: "cloudflare" | "zoom_clip"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -429,6 +436,7 @@ export const Constants = {
       app_role: ["admin", "user", "client"],
       class_type: ["power_hour", "contractor_school", "sales_marketing_school"],
       profile_status: ["active", "inactive"],
+      video_source: ["cloudflare", "zoom_clip"],
     },
   },
 } as const

@@ -8,6 +8,7 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import SEO from "@/components/SEO";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
+type VideoSource = "cloudflare" | "zoom_clip";
 
 type Recording = {
   id: string;
@@ -16,6 +17,8 @@ type Recording = {
   description: string | null;
   class_type: ClassType;
   cloudflare_video_id: string;
+  video_source: VideoSource | null;
+  video_ref: string | null;
 };
 
 const classLabel: Record<ClassType, string> = {
@@ -37,6 +40,21 @@ const formatDate = (iso: string) =>
     day: "numeric",
   });
 
+// Resolve the iframe src based on video source.
+// - cloudflare: use the video ID with Cloudflare Stream's iframe player
+// - zoom_clip: accept either a full embed URL or just a clip ID
+const resolveEmbedSrc = (r: Recording): string => {
+  const ref = (r.video_ref ?? r.cloudflare_video_id ?? "").trim();
+  const source = r.video_source ?? "cloudflare";
+  if (source === "zoom_clip") {
+    if (/^https?:\/\//i.test(ref)) return ref;
+    return `https://clips.zoom.us/embed/play/${ref}`;
+  }
+  // Cloudflare Stream
+  if (/^https?:\/\//i.test(ref)) return ref;
+  return `https://iframe.videodelivery.net/${ref}`;
+};
+
 const PortalReplay = () => {
   const { id } = useParams();
   const { loading, isAdmin, isActiveClient } = usePortalAuth();
@@ -50,7 +68,7 @@ const PortalReplay = () => {
     }
     supabase
       .from("recordings")
-      .select("id,title,recording_date,description,class_type,cloudflare_video_id")
+      .select("id,title,recording_date,description,class_type,cloudflare_video_id,video_source,video_ref")
       .eq("id", id)
       .maybeSingle()
       .then(({ data }) => {
@@ -99,7 +117,7 @@ const PortalReplay = () => {
 
               <div className="aspect-video rounded-xl overflow-hidden bg-black shadow-premium border border-border/60">
                 <iframe
-                  src={`https://iframe.videodelivery.net/${recording.cloudflare_video_id}`}
+                  src={resolveEmbedSrc(recording)}
                   title={recording.title}
                   loading="lazy"
                   className="w-full h-full"
