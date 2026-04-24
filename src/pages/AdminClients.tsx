@@ -17,7 +17,18 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, UserPlus, Send } from "lucide-react";
+import { Mail, UserPlus, Send, RotateCw, Users } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import SEO from "@/components/SEO";
 import { getPublicSiteUrl } from "@/lib/site-url";
 
@@ -114,6 +125,46 @@ const AdminClients = () => {
     } finally {
       setSending(false);
     }
+  };
+
+  const sendInvitesTo = async (list: string[], asAdminFlag = false, label = "invite") => {
+    if (list.length === 0) return;
+    try {
+      const { data, error } = await supabase.functions.invoke("invite-clients", {
+        body: {
+          emails: list,
+          asAdmin: asAdminFlag,
+          redirectTo: getPublicSiteUrl(),
+        },
+      });
+      if (error) throw error;
+      const r = (data?.results ?? []) as InviteResult[];
+      const ok = r.filter((x) => x.status === "invited" || x.status === "reinvited").length;
+      const errs = r.filter((x) => x.status === "error").length;
+      toast({
+        title: `${ok} ${label}${ok === 1 ? "" : "s"} sent`,
+        description: errs > 0 ? `${errs} failed.` : "All emails delivered.",
+        variant: errs > 0 ? "destructive" : "default",
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast({ title: "Send failed", description: msg, variant: "destructive" });
+    }
+  };
+
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const resendOne = async (c: ClientRow) => {
+    setResendingId(c.user_id);
+    await sendInvitesTo([c.email], c.is_admin, "reset link");
+    setResendingId(null);
+  };
+
+  const [resendingAll, setResendingAll] = useState(false);
+  const resendAllActive = async () => {
+    setResendingAll(true);
+    const active = clients.filter((c) => c.status === "active").map((c) => c.email);
+    await sendInvitesTo(active, false, "reset link");
+    setResendingAll(false);
   };
 
   const toggleStatus = async (c: ClientRow) => {
