@@ -66,11 +66,12 @@ const recordingSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(200),
   class_type: z.enum(["power_hour", "contractor_school", "sales_marketing_school"]),
   recording_date: z.string().min(1, "Date is required"),
-  cloudflare_video_id: z
+  video_source: z.enum(["cloudflare", "zoom_clip"]),
+  video_ref: z
     .string()
     .trim()
-    .min(1, "Cloudflare Stream video ID is required")
-    .max(200),
+    .min(1, "Video ID or embed URL is required")
+    .max(1000),
   description: z.string().max(5000).optional(),
   is_published: z.boolean(),
 });
@@ -80,7 +81,8 @@ type FormState = {
   title: string;
   class_type: ClassType;
   recording_date: string;
-  cloudflare_video_id: string;
+  video_source: VideoSource;
+  video_ref: string;
   description: string;
   is_published: boolean;
 };
@@ -89,7 +91,8 @@ const emptyForm: FormState = {
   title: "",
   class_type: "power_hour",
   recording_date: new Date().toISOString().slice(0, 10),
-  cloudflare_video_id: "",
+  video_source: "cloudflare",
+  video_ref: "",
   description: "",
   is_published: true,
 };
