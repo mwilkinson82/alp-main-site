@@ -122,6 +122,7 @@ type InviteRequest = {
   emails: string[];
   asAdmin?: boolean;
   redirectTo?: string;
+  template?: "invite" | "apology";
 };
 
 type InviteResult = {
