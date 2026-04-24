@@ -105,6 +105,7 @@ const App = () => (
           />
           <Route path="/portal/replay/:id" element={<PortalReplay />} />
           <Route path="/admin/recordings" element={<AdminRecordings />} />
+          <Route path="/admin/clients" element={<AdminClients />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
