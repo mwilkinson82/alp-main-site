@@ -93,11 +93,11 @@ const PortalReplay = () => {
         canonical={`/portal/replay/${id}`}
       />
       <PortalLayout isAdmin={isAdmin}>
-        <section className="container mx-auto px-4 py-10 md:py-14 max-w-5xl">
+        <section className="container mx-auto px-0 sm:px-4 py-4 sm:py-10 md:py-14 max-w-5xl">
           {loadingRec ? (
-            <div className="text-muted-foreground text-sm">Loading replay…</div>
+            <div className="text-muted-foreground text-sm px-4">Loading replay…</div>
           ) : !recording ? (
-            <div className="text-center py-20">
+            <div className="text-center py-20 px-4">
               <p className="text-foreground font-medium mb-2">Replay not found</p>
               <p className="text-sm text-muted-foreground mb-6">
                 This recording may have been removed or unpublished.
@@ -108,14 +108,17 @@ const PortalReplay = () => {
             </div>
           ) : (
             <>
-              <Button asChild variant="ghost" size="sm" className="mb-6 -ml-3">
-                <Link to={classRoute[recording.class_type]}>
-                  <ArrowLeft className="w-4 h-4 mr-1.5" />
-                  Back to {classLabel[recording.class_type]}
-                </Link>
-              </Button>
+              <div className="px-4 sm:px-0">
+                <Button asChild variant="ghost" size="sm" className="mb-4 sm:mb-6 -ml-3">
+                  <Link to={classRoute[recording.class_type]}>
+                    <ArrowLeft className="w-4 h-4 mr-1.5" />
+                    Back to {classLabel[recording.class_type]}
+                  </Link>
+                </Button>
+              </div>
 
-              <div className="aspect-video rounded-xl overflow-hidden bg-black shadow-premium border border-border/60">
+              {/* Edge-to-edge video on mobile, rounded card on larger screens */}
+              <div className="aspect-video sm:rounded-xl overflow-hidden bg-black sm:shadow-premium sm:border sm:border-border/60">
                 <iframe
                   src={resolveEmbedSrc(recording)}
                   title={recording.title}
@@ -126,19 +129,19 @@ const PortalReplay = () => {
                 />
               </div>
 
-              <div className="mt-6">
+              <div className="mt-5 sm:mt-6 px-4 sm:px-0">
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                   {classLabel[recording.class_type]}
                 </span>
-                <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-foreground mt-3">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight text-foreground mt-3 leading-snug">
                   {recording.title}
                 </h1>
                 <div className="flex items-center text-sm text-muted-foreground mt-2">
-                  <Calendar className="w-4 h-4 mr-1.5" />
+                  <Calendar className="w-4 h-4 mr-1.5 shrink-0" />
                   {formatDate(recording.recording_date)}
                 </div>
                 {recording.description && (
-                  <p className="text-base text-foreground/80 mt-5 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm sm:text-base text-foreground/80 mt-4 sm:mt-5 leading-relaxed whitespace-pre-line">
                     {recording.description}
                   </p>
                 )}

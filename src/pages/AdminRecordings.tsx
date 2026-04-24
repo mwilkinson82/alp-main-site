@@ -47,6 +47,7 @@ type Recording = {
   cloudflare_video_id: string;
   video_source: VideoSource;
   video_ref: string | null;
+  thumbnail_url: string | null;
   description: string | null;
   is_published: boolean;
 };
@@ -72,6 +73,14 @@ const recordingSchema = z.object({
     .trim()
     .min(1, "Video ID or embed URL is required")
     .max(1000),
+  thumbnail_url: z
+    .string()
+    .trim()
+    .max(2000)
+    .optional()
+    .refine((v) => !v || /^https?:\/\//i.test(v), {
+      message: "Thumbnail must be a full URL starting with http(s)://",
+    }),
   description: z.string().max(5000).optional(),
   is_published: z.boolean(),
 });
@@ -83,6 +92,7 @@ type FormState = {
   recording_date: string;
   video_source: VideoSource;
   video_ref: string;
+  thumbnail_url: string;
   description: string;
   is_published: boolean;
 };
@@ -93,6 +103,7 @@ const emptyForm: FormState = {
   recording_date: new Date().toISOString().slice(0, 10),
   video_source: "cloudflare",
   video_ref: "",
+  thumbnail_url: "",
   description: "",
   is_published: true,
 };
@@ -138,6 +149,7 @@ const AdminRecordings = () => {
       recording_date: r.recording_date,
       video_source: r.video_source ?? "cloudflare",
       video_ref: r.video_ref ?? r.cloudflare_video_id ?? "",
+      thumbnail_url: r.thumbnail_url ?? "",
       description: r.description ?? "",
       is_published: r.is_published,
     });
@@ -156,12 +168,14 @@ const AdminRecordings = () => {
     }
     setSaving(true);
     const trimmedRef = form.video_ref.trim();
+    const trimmedThumb = form.thumbnail_url.trim();
     const payload = {
       title: form.title.trim(),
       class_type: form.class_type,
       recording_date: form.recording_date,
       video_source: form.video_source,
       video_ref: trimmedRef,
+      thumbnail_url: trimmedThumb || null,
       // Keep cloudflare_video_id populated (NOT NULL legacy column).
       // For zoom clips we just mirror the ref so the constraint passes;
       // the replay page reads video_source + video_ref to decide what to render.
@@ -373,6 +387,30 @@ const AdminRecordings = () => {
                     ? "Paste just the video ID from Cloudflare Stream — not the full URL."
                     : "Paste the full embed URL from Zoom Clips, or just the clip ID."}
                 </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
+                <Input
+                  id="thumb"
+                  value={form.thumbnail_url}
+                  onChange={(e) => setForm({ ...form, thumbnail_url: e.target.value })}
+                  placeholder="https://… (image or animated GIF)"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {form.video_source === "zoom_clip"
+                    ? "On the Zoom Clip page, right-click the preview GIF → Copy image address, then paste here."
+                    : "Cloudflare Stream tip: https://videodelivery.net/{VIDEO_ID}/thumbnails/thumbnail.gif?time=2s&duration=4s"}
+                </p>
+                {form.thumbnail_url && /^https?:\/\//i.test(form.thumbnail_url.trim()) && (
+                  <div className="mt-2 aspect-video w-40 rounded-md overflow-hidden border border-border bg-muted">
+                    <img
+                      src={form.thumbnail_url.trim()}
+                      alt="Thumbnail preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">

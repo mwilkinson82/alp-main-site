@@ -233,6 +233,7 @@ export type Database = {
           id: string
           is_published: boolean
           recording_date: string
+          thumbnail_url: string | null
           title: string
           updated_at: string
           video_ref: string | null
@@ -246,6 +247,7 @@ export type Database = {
           id?: string
           is_published?: boolean
           recording_date: string
+          thumbnail_url?: string | null
           title: string
           updated_at?: string
           video_ref?: string | null
@@ -259,6 +261,7 @@ export type Database = {
           id?: string
           is_published?: boolean
           recording_date?: string
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
           video_ref?: string | null
