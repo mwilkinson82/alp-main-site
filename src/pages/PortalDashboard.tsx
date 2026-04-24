@@ -59,7 +59,7 @@ const PortalDashboard = () => {
                 <div>
                   <p className="font-semibold text-foreground">Your account is not active.</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Please contact <a href="mailto:support@altitudelogicpressure.com" className="underline hover:text-primary">support@altitudelogicpressure.com</a> to activate your portal access.
+                    Please contact <a href="mailto:marshall@marshallwilkinson.com" className="underline hover:text-primary">marshall@marshallwilkinson.com</a> to activate your portal access.
                   </p>
                 </div>
               </CardContent>
