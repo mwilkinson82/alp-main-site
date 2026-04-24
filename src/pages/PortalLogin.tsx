@@ -10,6 +10,7 @@ import { Lock, Mail, ArrowLeft } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
 import SEO from "@/components/SEO";
 import { z } from "zod";
+import { getPortalResetUrl } from "@/lib/site-url";
 
 const schema = z.object({
   email: z.string().trim().email("Please enter a valid email address").max(255),
@@ -77,7 +78,7 @@ const PortalLogin = () => {
     }
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/portal/reset-password`,
+      redirectTo: getPortalResetUrl(),
     });
     setLoading(false);
     if (error) {
