@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Archive, PlayCircle, ArrowRight, ExternalLink } from "lucide-react";
 
-const LEGACY_KAJABI_URL = "https://example.com/legacy-kajabi-library";
+const LEGACY_KAJABI_URL = "https://marshallwilkinson.mykajabi.com/login";
 
 const ClientLogin = () => {
   return (
