@@ -127,7 +127,12 @@ const AdminClients = () => {
     }
   };
 
-  const sendInvitesTo = async (list: string[], asAdminFlag = false, label = "invite") => {
+  const sendInvitesTo = async (
+    list: string[],
+    asAdminFlag = false,
+    label = "invite",
+    template: "invite" | "apology" = "invite",
+  ) => {
     if (list.length === 0) return;
     try {
       const { data, error } = await supabase.functions.invoke("invite-clients", {
@@ -135,6 +140,7 @@ const AdminClients = () => {
           emails: list,
           asAdmin: asAdminFlag,
           redirectTo: getPublicSiteUrl(),
+          template,
         },
       });
       if (error) throw error;
@@ -165,6 +171,14 @@ const AdminClients = () => {
     const active = clients.filter((c) => c.status === "active").map((c) => c.email);
     await sendInvitesTo(active, false, "reset link");
     setResendingAll(false);
+  };
+
+  const [sendingApology, setSendingApology] = useState(false);
+  const sendApologyToAllActive = async () => {
+    setSendingApology(true);
+    const active = clients.filter((c) => c.status === "active").map((c) => c.email);
+    await sendInvitesTo(active, false, "apology email", "apology");
+    setSendingApology(false);
   };
 
   const toggleStatus = async (c: ClientRow) => {
@@ -281,31 +295,59 @@ const AdminClients = () => {
                 </CardDescription>
               </div>
               {clients.some((c) => c.status === "active") && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="outline" size="sm" disabled={resendingAll}>
-                      <Users className="w-4 h-4 mr-2" />
-                      {resendingAll ? "Sending…" : "Resend to all active"}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Resend portal links to all active clients?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will send a fresh password-setup email to every active client
-                        ({clients.filter((c) => c.status === "active").length} people). Use this
-                        if a previous batch had broken links. Each recipient gets a new one-time
-                        link to set their password.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={resendAllActive}>
-                        Yes, resend to all
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="premium" size="sm" disabled={sendingApology}>
+                        <Mail className="w-4 h-4 mr-2" />
+                        {sendingApology ? "Sending…" : "Send apology + corrected link"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Send apology email to all active clients?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This sends a branded email signed by "The ALP Tech Team" to every active
+                          client ({clients.filter((c) => c.status === "active").length} people)
+                          apologizing for the broken link in the previous email and providing a
+                          fresh, working link to set their password.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={sendApologyToAllActive}>
+                          Yes, send apology to all
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" size="sm" disabled={resendingAll}>
+                        <Users className="w-4 h-4 mr-2" />
+                        {resendingAll ? "Sending…" : "Resend to all active"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Resend portal links to all active clients?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will send a fresh password-setup email to every active client
+                          ({clients.filter((c) => c.status === "active").length} people). Use this
+                          if a previous batch had broken links. Each recipient gets a new one-time
+                          link to set their password.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={resendAllActive}>
+                          Yes, resend to all
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               )}
             </CardHeader>
             <CardContent className="p-0">
