@@ -42,14 +42,26 @@ const formatDate = (iso: string) =>
 
 // Resolve the iframe src based on video source.
 // - cloudflare: use the video ID with Cloudflare Stream's iframe player
-// - zoom_clip: accept either a full embed URL or just a clip ID
+// - zoom_clip: accept any of:
+//     • full embed URL: https://us06web.zoom.us/clips/embed/{clipId}
+//     • full share URL: https://us06web.zoom.us/clips/share/{clipId}
+//     • just the clip ID
 const resolveEmbedSrc = (r: Recording): string => {
   const ref = (r.video_ref ?? r.cloudflare_video_id ?? "").trim();
   const source = r.video_source ?? "cloudflare";
+
   if (source === "zoom_clip") {
+    // Already an embed URL — use as-is
+    if (/\/clips\/embed\//i.test(ref)) return ref;
+    // Share URL — convert to embed URL
+    const shareMatch = ref.match(/^(https?:\/\/[^/]*zoom\.us)\/clips\/share\/([^?#/]+)/i);
+    if (shareMatch) return `${shareMatch[1]}/clips/embed/${shareMatch[2]}`;
+    // Some other URL we don't recognize — return it raw
     if (/^https?:\/\//i.test(ref)) return ref;
-    return `https://clips.zoom.us/embed/play/${ref}`;
+    // Bare clip ID — default to us06web subdomain
+    return `https://us06web.zoom.us/clips/embed/${ref}`;
   }
+
   // Cloudflare Stream
   if (/^https?:\/\//i.test(ref)) return ref;
   return `https://iframe.videodelivery.net/${ref}`;
