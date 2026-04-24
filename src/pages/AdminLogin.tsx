@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Lock, Mail } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
 import { z } from "zod";
+import { getAdminLoginUrl } from "@/lib/site-url";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -84,7 +85,7 @@ const AdminLogin = () => {
     try {
       if (isSignUp) {
         // Sign up flow
-        const redirectUrl = `${window.location.origin}/admin/login`;
+        const redirectUrl = getAdminLoginUrl();
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
