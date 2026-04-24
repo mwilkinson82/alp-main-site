@@ -74,12 +74,13 @@ const AdminClients = () => {
 
   const refresh = async () => {
     setListLoading(true);
-    const [{ data: profiles }, { data: roles }] = await Promise.all([
+    const [{ data: profiles }, { data: roles }, { data: signIns }] = await Promise.all([
       supabase
         .from("profiles")
         .select("user_id,email,full_name,status,created_at")
         .order("created_at", { ascending: false }),
       supabase.from("user_roles").select("user_id,role"),
+      supabase.rpc("admin_get_last_sign_ins"),
     ]);
 
     const adminIds = new Set(
@@ -88,10 +89,18 @@ const AdminClients = () => {
         .map((r: { user_id: string }) => r.user_id),
     );
 
+    const signInMap = new Map<string, string | null>(
+      ((signIns as { user_id: string; last_sign_in_at: string | null }[]) ?? []).map((s) => [
+        s.user_id,
+        s.last_sign_in_at,
+      ]),
+    );
+
     setClients(
-      ((profiles as Omit<ClientRow, "is_admin">[]) ?? []).map((p) => ({
+      ((profiles as Omit<ClientRow, "is_admin" | "last_sign_in_at">[]) ?? []).map((p) => ({
         ...p,
         is_admin: adminIds.has(p.user_id),
+        last_sign_in_at: signInMap.get(p.user_id) ?? null,
       })),
     );
     setListLoading(false);
