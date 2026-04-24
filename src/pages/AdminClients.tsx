@@ -39,6 +39,21 @@ type ClientRow = {
   status: "active" | "inactive";
   created_at: string;
   is_admin: boolean;
+  last_sign_in_at: string | null;
+};
+
+const formatLastSignIn = (iso: string | null): string => {
+  if (!iso) return "Never";
+  const d = new Date(iso);
+  const diffMs = Date.now() - d.getTime();
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 };
 
 type InviteResult = {
@@ -59,12 +74,13 @@ const AdminClients = () => {
 
   const refresh = async () => {
     setListLoading(true);
-    const [{ data: profiles }, { data: roles }] = await Promise.all([
+    const [{ data: profiles }, { data: roles }, { data: signIns }] = await Promise.all([
       supabase
         .from("profiles")
         .select("user_id,email,full_name,status,created_at")
         .order("created_at", { ascending: false }),
       supabase.from("user_roles").select("user_id,role"),
+      supabase.rpc("admin_get_last_sign_ins"),
     ]);
 
     const adminIds = new Set(
@@ -73,10 +89,18 @@ const AdminClients = () => {
         .map((r: { user_id: string }) => r.user_id),
     );
 
+    const signInMap = new Map<string, string | null>(
+      ((signIns as { user_id: string; last_sign_in_at: string | null }[]) ?? []).map((s) => [
+        s.user_id,
+        s.last_sign_in_at,
+      ]),
+    );
+
     setClients(
-      ((profiles as Omit<ClientRow, "is_admin">[]) ?? []).map((p) => ({
+      ((profiles as Omit<ClientRow, "is_admin" | "last_sign_in_at">[]) ?? []).map((p) => ({
         ...p,
         is_admin: adminIds.has(p.user_id),
+        last_sign_in_at: signInMap.get(p.user_id) ?? null,
       })),
     );
     setListLoading(false);
@@ -332,6 +356,7 @@ const AdminClients = () => {
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Last sign-in</TableHead>
                       <TableHead className="text-center">Active</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -356,6 +381,12 @@ const AdminClients = () => {
                           ) : (
                             <Badge variant="outline">Inactive</Badge>
                           )}
+                        </TableCell>
+                        <TableCell
+                          className="text-muted-foreground text-sm whitespace-nowrap"
+                          title={c.last_sign_in_at ? new Date(c.last_sign_in_at).toLocaleString() : "Never signed in"}
+                        >
+                          {formatLastSignIn(c.last_sign_in_at)}
                         </TableCell>
                         <TableCell className="text-center">
                           <Switch
