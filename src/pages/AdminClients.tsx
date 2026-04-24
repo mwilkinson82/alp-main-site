@@ -17,7 +17,18 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, UserPlus, Send } from "lucide-react";
+import { Mail, UserPlus, Send, RotateCw, Users } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import SEO from "@/components/SEO";
 import { getPublicSiteUrl } from "@/lib/site-url";
 
@@ -114,6 +125,46 @@ const AdminClients = () => {
     } finally {
       setSending(false);
     }
+  };
+
+  const sendInvitesTo = async (list: string[], asAdminFlag = false, label = "invite") => {
+    if (list.length === 0) return;
+    try {
+      const { data, error } = await supabase.functions.invoke("invite-clients", {
+        body: {
+          emails: list,
+          asAdmin: asAdminFlag,
+          redirectTo: getPublicSiteUrl(),
+        },
+      });
+      if (error) throw error;
+      const r = (data?.results ?? []) as InviteResult[];
+      const ok = r.filter((x) => x.status === "invited" || x.status === "reinvited").length;
+      const errs = r.filter((x) => x.status === "error").length;
+      toast({
+        title: `${ok} ${label}${ok === 1 ? "" : "s"} sent`,
+        description: errs > 0 ? `${errs} failed.` : "All emails delivered.",
+        variant: errs > 0 ? "destructive" : "default",
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast({ title: "Send failed", description: msg, variant: "destructive" });
+    }
+  };
+
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const resendOne = async (c: ClientRow) => {
+    setResendingId(c.user_id);
+    await sendInvitesTo([c.email], c.is_admin, "reset link");
+    setResendingId(null);
+  };
+
+  const [resendingAll, setResendingAll] = useState(false);
+  const resendAllActive = async () => {
+    setResendingAll(true);
+    const active = clients.filter((c) => c.status === "active").map((c) => c.email);
+    await sendInvitesTo(active, false, "reset link");
+    setResendingAll(false);
   };
 
   const toggleStatus = async (c: ClientRow) => {
@@ -219,14 +270,43 @@ const AdminClients = () => {
 
           {/* Clients list */}
           <Card className="border-border/60">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Mail className="w-5 h-5 text-primary" /> All Clients
-              </CardTitle>
-              <CardDescription>
-                Toggle status to instantly grant or revoke portal access. Inactive clients cannot
-                view any replays.
-              </CardDescription>
+            <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+              <div>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-primary" /> All Clients
+                </CardTitle>
+                <CardDescription className="mt-1.5">
+                  Toggle status to instantly grant or revoke portal access. Inactive clients cannot
+                  view any replays.
+                </CardDescription>
+              </div>
+              {clients.some((c) => c.status === "active") && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" size="sm" disabled={resendingAll}>
+                      <Users className="w-4 h-4 mr-2" />
+                      {resendingAll ? "Sending…" : "Resend to all active"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Resend portal links to all active clients?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will send a fresh password-setup email to every active client
+                        ({clients.filter((c) => c.status === "active").length} people). Use this
+                        if a previous batch had broken links. Each recipient gets a new one-time
+                        link to set their password.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={resendAllActive}>
+                        Yes, resend to all
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </CardHeader>
             <CardContent className="p-0">
               {listLoading ? (
@@ -243,7 +323,8 @@ const AdminClients = () => {
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Active</TableHead>
+                      <TableHead className="text-center">Active</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -267,11 +348,22 @@ const AdminClients = () => {
                             <Badge variant="outline">Inactive</Badge>
                           )}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                           <Switch
                             checked={c.status === "active"}
                             onCheckedChange={() => toggleStatus(c)}
                           />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={resendingId === c.user_id}
+                            onClick={() => resendOne(c)}
+                          >
+                            <RotateCw className={`w-3.5 h-3.5 mr-1.5 ${resendingId === c.user_id ? "animate-spin" : ""}`} />
+                            {resendingId === c.user_id ? "Sending…" : "Resend link"}
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
