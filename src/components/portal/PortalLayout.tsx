@@ -52,11 +52,18 @@ export default function PortalLayout({ children, isAdmin }: Props) {
                 </NavLink>
               ))}
               {isAdmin && (
-                <NavLink to="/admin/recordings" className={linkClass}>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5" /> Admin
-                  </span>
-                </NavLink>
+                <>
+                  <NavLink to="/admin/recordings" className={linkClass}>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5" /> Recordings
+                    </span>
+                  </NavLink>
+                  <NavLink to="/admin/clients" className={linkClass}>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5" /> Clients
+                    </span>
+                  </NavLink>
+                </>
               )}
               <Button
                 variant="ghost"
@@ -91,15 +98,26 @@ export default function PortalLayout({ children, isAdmin }: Props) {
                 </NavLink>
               ))}
               {isAdmin && (
-                <NavLink
-                  to="/admin/recordings"
-                  className={linkClass}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <span className="inline-flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5" /> Admin
-                  </span>
-                </NavLink>
+                <>
+                  <NavLink
+                    to="/admin/recordings"
+                    className={linkClass}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5" /> Admin: Recordings
+                    </span>
+                  </NavLink>
+                  <NavLink
+                    to="/admin/clients"
+                    className={linkClass}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5" /> Admin: Clients
+                    </span>
+                  </NavLink>
+                </>
               )}
               <button
                 onClick={handleLogout}

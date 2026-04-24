@@ -93,8 +93,8 @@ const ClientLogin = () => {
 
             <p className="text-center text-xs text-muted-foreground mt-10">
               Trouble logging in? Email{" "}
-              <a href="mailto:support@altitudelogicpressure.com" className="underline hover:text-primary">
-                support@altitudelogicpressure.com
+              <a href="mailto:marshall@marshallwilkinson.com" className="underline hover:text-primary">
+                marshall@marshallwilkinson.com
               </a>
             </p>
           </div>

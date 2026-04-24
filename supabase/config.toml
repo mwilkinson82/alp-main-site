@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.manual-fulfill]
 verify_jwt = false
+
+[functions.bootstrap-admin]
+verify_jwt = false
