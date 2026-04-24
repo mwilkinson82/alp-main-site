@@ -209,9 +209,24 @@ serve(async (req) => {
           throw new Error("Could not generate action link");
         }
 
-        // Replace the action_link host with our redirect host so it routes
-        // through Supabase verify endpoint -> redirectTo. The action_link
-        // already points to Supabase verify URL by default, so leave as-is.
+        // Bypass Supabase's Site URL / redirect allow-list entirely:
+        // extract the verify token from the action_link and rebuild it
+        // ourselves with our production redirect_to. This guarantees the
+        // email link goes to altitudelogicpressure.com regardless of
+        // whatever Site URL is configured in Supabase auth settings.
+        let finalLink = actionLink;
+        try {
+          const parsed = new URL(actionLink);
+          const token = parsed.searchParams.get("token");
+          const type = parsed.searchParams.get("type") ?? (isNew ? "invite" : "recovery");
+          if (token) {
+            finalLink = `${SUPABASE_URL}/auth/v1/verify?token=${encodeURIComponent(
+              token,
+            )}&type=${encodeURIComponent(type)}&redirect_to=${encodeURIComponent(redirectTo)}`;
+          }
+        } catch {
+          // fall back to original action_link
+        }
 
         // 2) Ensure profile exists & is active (trigger handles new users,
         //    but explicitly upsert in case)
@@ -255,7 +270,7 @@ serve(async (req) => {
           subject: "Your ALP Client Portal access",
           html: inviteEmailHtml({
             fullName: profile?.full_name ?? null,
-            inviteUrl: actionLink,
+            inviteUrl: finalLink,
             asAdmin,
           }),
         });
