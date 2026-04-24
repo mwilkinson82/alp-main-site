@@ -16,7 +16,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 
 const resend = new Resend(RESEND_API_KEY);
 
-const FROM_ADDRESS = "ALP Client Portal <noreply@altitudelogicpressure.com>";
+const FROM_ADDRESS = "ALP Client Portal <notifications@notifications.marshallwilkinson.com>";
 
 function inviteEmailHtml(opts: {
   fullName: string | null;

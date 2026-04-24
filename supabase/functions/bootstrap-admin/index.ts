@@ -17,7 +17,7 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 // admin slot, and only when there are zero admins in the system.
 const ALLOWED_BOOTSTRAP_EMAIL = "marshall@marshallwilkinson.com";
 
-const FROM_ADDRESS = "ALP Client Portal <noreply@altitudelogicpressure.com>";
+const FROM_ADDRESS = "ALP Client Portal <notifications@notifications.marshallwilkinson.com>";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
