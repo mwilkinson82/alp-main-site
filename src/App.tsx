@@ -28,6 +28,7 @@ import PortalDashboard from "./pages/PortalDashboard";
 import PortalLibrary from "./pages/PortalLibrary";
 import PortalReplay from "./pages/PortalReplay";
 import AdminRecordings from "./pages/AdminRecordings";
+import AdminClients from "./pages/AdminClients";
 import NotFound from "./pages/NotFound";
 
 const BlogSlugRedirect = () => {
