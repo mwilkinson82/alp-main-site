@@ -42,12 +42,12 @@ const PortalDashboard = () => {
     <>
       <SEO title="Client Portal Dashboard | ALP" description="Your ALP client portal dashboard." canonical="/portal/dashboard" />
       <PortalLayout isAdmin={isAdmin}>
-        <section className="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
-          <div className="mb-10 md:mb-14">
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-3">
+        <section className="container mx-auto px-4 py-8 md:py-16 max-w-6xl">
+          <div className="mb-6 md:mb-14">
+            <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-foreground mb-2 md:mb-3">
               Welcome to the Client Portal
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
+            <p className="text-sm md:text-lg text-muted-foreground max-w-2xl">
               Access your current class replay libraries below.
             </p>
           </div>
