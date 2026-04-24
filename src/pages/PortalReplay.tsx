@@ -40,6 +40,21 @@ const formatDate = (iso: string) =>
     day: "numeric",
   });
 
+// Resolve the iframe src based on video source.
+// - cloudflare: use the video ID with Cloudflare Stream's iframe player
+// - zoom_clip: accept either a full embed URL or just a clip ID
+const resolveEmbedSrc = (r: Recording): string => {
+  const ref = (r.video_ref ?? r.cloudflare_video_id ?? "").trim();
+  const source = r.video_source ?? "cloudflare";
+  if (source === "zoom_clip") {
+    if (/^https?:\/\//i.test(ref)) return ref;
+    return `https://clips.zoom.us/embed/play/${ref}`;
+  }
+  // Cloudflare Stream
+  if (/^https?:\/\//i.test(ref)) return ref;
+  return `https://iframe.videodelivery.net/${ref}`;
+};
+
 const PortalReplay = () => {
   const { id } = useParams();
   const { loading, isAdmin, isActiveClient } = usePortalAuth();
