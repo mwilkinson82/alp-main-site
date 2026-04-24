@@ -356,6 +356,7 @@ const AdminClients = () => {
                       <TableHead>Name</TableHead>
                       <TableHead>Role</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Last sign-in</TableHead>
                       <TableHead className="text-center">Active</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
