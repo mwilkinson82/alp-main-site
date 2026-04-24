@@ -390,6 +390,30 @@ const AdminRecordings = () => {
               </div>
 
               <div className="space-y-2">
+                <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
+                <Input
+                  id="thumb"
+                  value={form.thumbnail_url}
+                  onChange={(e) => setForm({ ...form, thumbnail_url: e.target.value })}
+                  placeholder="https://… (image or animated GIF)"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {form.video_source === "zoom_clip"
+                    ? "On the Zoom Clip page, right-click the preview GIF → Copy image address, then paste here."
+                    : "Cloudflare Stream tip: https://videodelivery.net/{VIDEO_ID}/thumbnails/thumbnail.gif?time=2s&duration=4s"}
+                </p>
+                {form.thumbnail_url && /^https?:\/\//i.test(form.thumbnail_url.trim()) && (
+                  <div className="mt-2 aspect-video w-40 rounded-md overflow-hidden border border-border bg-muted">
+                    <img
+                      src={form.thumbnail_url.trim()}
+                      alt="Thumbnail preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="desc">Description</Label>
                 <Textarea
                   id="desc"
