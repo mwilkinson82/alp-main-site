@@ -127,7 +127,12 @@ const AdminClients = () => {
     }
   };
 
-  const sendInvitesTo = async (list: string[], asAdminFlag = false, label = "invite") => {
+  const sendInvitesTo = async (
+    list: string[],
+    asAdminFlag = false,
+    label = "invite",
+    template: "invite" | "apology" = "invite",
+  ) => {
     if (list.length === 0) return;
     try {
       const { data, error } = await supabase.functions.invoke("invite-clients", {
@@ -135,6 +140,7 @@ const AdminClients = () => {
           emails: list,
           asAdmin: asAdminFlag,
           redirectTo: getPublicSiteUrl(),
+          template,
         },
       });
       if (error) throw error;
@@ -165,6 +171,14 @@ const AdminClients = () => {
     const active = clients.filter((c) => c.status === "active").map((c) => c.email);
     await sendInvitesTo(active, false, "reset link");
     setResendingAll(false);
+  };
+
+  const [sendingApology, setSendingApology] = useState(false);
+  const sendApologyToAllActive = async () => {
+    setSendingApology(true);
+    const active = clients.filter((c) => c.status === "active").map((c) => c.email);
+    await sendInvitesTo(active, false, "apology email", "apology");
+    setSendingApology(false);
   };
 
   const toggleStatus = async (c: ClientRow) => {
