@@ -308,15 +308,23 @@ serve(async (req) => {
           .eq("user_id", userId)
           .maybeSingle();
 
+        const isApology = template === "apology";
         await resend.emails.send({
           from: FROM_ADDRESS,
           to: email,
-          subject: "Your ALP Client Portal access",
-          html: inviteEmailHtml({
-            fullName: profile?.full_name ?? null,
-            inviteUrl: finalLink,
-            asAdmin,
-          }),
+          subject: isApology
+            ? "Corrected link — ALP Client Portal access"
+            : "Your ALP Client Portal access",
+          html: isApology
+            ? apologyEmailHtml({
+                fullName: profile?.full_name ?? null,
+                inviteUrl: finalLink,
+              })
+            : inviteEmailHtml({
+                fullName: profile?.full_name ?? null,
+                inviteUrl: finalLink,
+                asAdmin,
+              }),
         });
 
         results.push({
