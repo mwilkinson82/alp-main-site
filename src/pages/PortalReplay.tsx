@@ -8,6 +8,7 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import SEO from "@/components/SEO";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
+type VideoSource = "cloudflare" | "zoom_clip";
 
 type Recording = {
   id: string;
@@ -16,6 +17,8 @@ type Recording = {
   description: string | null;
   class_type: ClassType;
   cloudflare_video_id: string;
+  video_source: VideoSource | null;
+  video_ref: string | null;
 };
 
 const classLabel: Record<ClassType, string> = {
