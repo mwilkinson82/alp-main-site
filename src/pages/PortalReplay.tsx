@@ -53,7 +53,7 @@ const PortalReplay = () => {
     }
     supabase
       .from("recordings")
-      .select("id,title,recording_date,description,class_type,cloudflare_video_id")
+      .select("id,title,recording_date,description,class_type,cloudflare_video_id,video_source,video_ref")
       .eq("id", id)
       .maybeSingle()
       .then(({ data }) => {
