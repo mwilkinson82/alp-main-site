@@ -382,6 +382,12 @@ const AdminClients = () => {
                             <Badge variant="outline">Inactive</Badge>
                           )}
                         </TableCell>
+                        <TableCell
+                          className="text-muted-foreground text-sm whitespace-nowrap"
+                          title={c.last_sign_in_at ? new Date(c.last_sign_in_at).toLocaleString() : "Never signed in"}
+                        >
+                          {formatLastSignIn(c.last_sign_in_at)}
+                        </TableCell>
                         <TableCell className="text-center">
                           <Switch
                             checked={c.status === "active"}
