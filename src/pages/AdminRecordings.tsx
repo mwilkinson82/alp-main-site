@@ -47,6 +47,7 @@ type Recording = {
   cloudflare_video_id: string;
   video_source: VideoSource;
   video_ref: string | null;
+  thumbnail_url: string | null;
   description: string | null;
   is_published: boolean;
 };
@@ -72,6 +73,14 @@ const recordingSchema = z.object({
     .trim()
     .min(1, "Video ID or embed URL is required")
     .max(1000),
+  thumbnail_url: z
+    .string()
+    .trim()
+    .max(2000)
+    .optional()
+    .refine((v) => !v || /^https?:\/\//i.test(v), {
+      message: "Thumbnail must be a full URL starting with http(s)://",
+    }),
   description: z.string().max(5000).optional(),
   is_published: z.boolean(),
 });
@@ -83,6 +92,7 @@ type FormState = {
   recording_date: string;
   video_source: VideoSource;
   video_ref: string;
+  thumbnail_url: string;
   description: string;
   is_published: boolean;
 };
@@ -93,6 +103,7 @@ const emptyForm: FormState = {
   recording_date: new Date().toISOString().slice(0, 10),
   video_source: "cloudflare",
   video_ref: "",
+  thumbnail_url: "",
   description: "",
   is_published: true,
 };
