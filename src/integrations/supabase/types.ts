@@ -155,6 +155,36 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          status: Database["public"]["Enums"]["profile_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["profile_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["profile_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       purchase_log: {
         Row: {
           amount_cents: number | null
@@ -194,6 +224,42 @@ export type Database = {
         }
         Relationships: []
       }
+      recordings: {
+        Row: {
+          class_type: Database["public"]["Enums"]["class_type"]
+          cloudflare_video_id: string
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          recording_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          class_type: Database["public"]["Enums"]["class_type"]
+          cloudflare_video_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          recording_date: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          class_type?: Database["public"]["Enums"]["class_type"]
+          cloudflare_video_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          recording_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -227,9 +293,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_active_client: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "client"
+      class_type: "power_hour" | "contractor_school" | "sales_marketing_school"
+      profile_status: "active" | "inactive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -357,7 +426,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "client"],
+      class_type: ["power_hour", "contractor_school", "sales_marketing_school"],
+      profile_status: ["active", "inactive"],
     },
   },
 } as const

@@ -134,14 +134,10 @@ const Header = () => {
               asChild
               className="border-current opacity-60 hover:opacity-100"
             >
-              <a
-                href="https://marshallwilkinson.mykajabi.com/login"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/client-login">
                 <LogIn className="mr-2 h-4 w-4" />
-                Client Portal
-              </a>
+                Client Log In
+              </Link>
             </Button>
           </nav>
 
@@ -210,10 +206,10 @@ const Header = () => {
 
             <div className="pt-4 space-y-2 border-t border-border mt-2">
               <Button variant="outline" size="sm" className="w-full opacity-70 min-h-[44px]" asChild>
-                <a href="https://marshallwilkinson.mykajabi.com/login" target="_blank" rel="noopener noreferrer">
+                <Link to="/client-login" onClick={() => setMobileMenuOpen(false)}>
                   <LogIn className="mr-2 h-4 w-4" />
-                  Client Portal
-                </a>
+                  Client Log In
+                </Link>
               </Button>
             </div>
           </nav>

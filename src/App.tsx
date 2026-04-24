@@ -21,6 +21,13 @@ import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import AdminPostEditor from "./pages/AdminPostEditor";
 import AskMarshall from "./pages/AskMarshall";
+import ClientLogin from "./pages/ClientLogin";
+import PortalLogin from "./pages/PortalLogin";
+import PortalResetPassword from "./pages/PortalResetPassword";
+import PortalDashboard from "./pages/PortalDashboard";
+import PortalLibrary from "./pages/PortalLibrary";
+import PortalReplay from "./pages/PortalReplay";
+import AdminRecordings from "./pages/AdminRecordings";
 import NotFound from "./pages/NotFound";
 
 const BlogSlugRedirect = () => {
@@ -57,6 +64,46 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
           <Route path="/articles" element={<Navigate to="/insights" replace />} />
           <Route path="/articles/:slug" element={<BlogSlugRedirect />} />
+          {/* Client replay portal */}
+          <Route path="/client-login" element={<ClientLogin />} />
+          <Route path="/portal/login" element={<PortalLogin />} />
+          <Route path="/portal/reset-password" element={<PortalResetPassword />} />
+          <Route path="/portal/dashboard" element={<PortalDashboard />} />
+          <Route
+            path="/portal/power-hour"
+            element={
+              <PortalLibrary
+                classType="power_hour"
+                title="Power Hour"
+                description="Daily 8am EST high-impact strategy sessions. Most recent replays first."
+                canonical="/portal/power-hour"
+              />
+            }
+          />
+          <Route
+            path="/portal/contractor-school"
+            element={
+              <PortalLibrary
+                classType="contractor_school"
+                title="Contractor School"
+                description="Tuesday night deep-dives on contracting systems and operations."
+                canonical="/portal/contractor-school"
+              />
+            }
+          />
+          <Route
+            path="/portal/sales-marketing-school"
+            element={
+              <PortalLibrary
+                classType="sales_marketing_school"
+                title="Sales and Marketing School"
+                description="Wednesday night sessions on sales, marketing, and revenue growth."
+                canonical="/portal/sales-marketing-school"
+              />
+            }
+          />
+          <Route path="/portal/replay/:id" element={<PortalReplay />} />
+          <Route path="/admin/recordings" element={<AdminRecordings />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
