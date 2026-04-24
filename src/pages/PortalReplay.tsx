@@ -117,7 +117,7 @@ const PortalReplay = () => {
 
               <div className="aspect-video rounded-xl overflow-hidden bg-black shadow-premium border border-border/60">
                 <iframe
-                  src={`https://iframe.videodelivery.net/${recording.cloudflare_video_id}`}
+                  src={resolveEmbedSrc(recording)}
                   title={recording.title}
                   loading="lazy"
                   className="w-full h-full"
