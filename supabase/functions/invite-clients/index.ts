@@ -181,6 +181,7 @@ serve(async (req) => {
       .map((e) => e.trim().toLowerCase())
       .filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
     const asAdmin = !!body.asAdmin;
+    const template = body.template === "apology" ? "apology" : "invite";
     const origin = getAllowedOrigin(
       body.redirectTo || req.headers.get("origin") || PUBLIC_SITE_URL,
     );
