@@ -354,12 +354,12 @@ const AdminRecordings = () => {
         </section>
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="max-w-lg">
-            <DialogHeader>
+          <DialogContent className="max-w-lg max-h-[90vh] flex flex-col p-0 gap-0">
+            <DialogHeader className="px-6 pt-6 pb-2 shrink-0">
               <DialogTitle>{form.id ? "Edit Recording" : "Add Recording"}</DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-4 py-2">
+            <div className="space-y-4 py-2 px-6 overflow-y-auto flex-1 min-h-0">
               <div className="space-y-2">
                 <Label htmlFor="title">Title</Label>
                 <Input
