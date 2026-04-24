@@ -167,35 +167,52 @@ const AdminRecordings = () => {
       return;
     }
     setSaving(true);
-    const trimmedRef = form.video_ref.trim();
-    const trimmedThumb = form.thumbnail_url.trim();
-    const payload = {
-      title: form.title.trim(),
-      class_type: form.class_type,
-      recording_date: form.recording_date,
-      video_source: form.video_source,
-      video_ref: trimmedRef,
-      thumbnail_url: trimmedThumb || null,
-      // Keep cloudflare_video_id populated (NOT NULL legacy column).
-      // For zoom clips we just mirror the ref so the constraint passes;
-      // the replay page reads video_source + video_ref to decide what to render.
-      cloudflare_video_id: trimmedRef,
-      description: form.description.trim() || null,
-      is_published: form.is_published,
-    };
+    try {
+      const trimmedRef = form.video_ref.trim();
+      const trimmedThumb = form.thumbnail_url.trim();
+      const payload = {
+        title: form.title.trim(),
+        class_type: form.class_type,
+        recording_date: form.recording_date,
+        video_source: form.video_source,
+        video_ref: trimmedRef,
+        thumbnail_url: trimmedThumb || null,
+        // Keep cloudflare_video_id populated (NOT NULL legacy column).
+        cloudflare_video_id: trimmedRef,
+        description: form.description.trim() || null,
+        is_published: form.is_published,
+      };
 
-    const { error } = form.id
-      ? await supabase.from("recordings").update(payload).eq("id", form.id)
-      : await supabase.from("recordings").insert(payload);
+      console.log("[AdminRecordings] saving", { id: form.id, payload });
 
-    setSaving(false);
-    if (error) {
-      toast({ title: "Save failed", description: error.message, variant: "destructive" });
-      return;
+      const { data, error } = form.id
+        ? await supabase.from("recordings").update(payload).eq("id", form.id).select()
+        : await supabase.from("recordings").insert(payload).select();
+
+      console.log("[AdminRecordings] save result", { data, error });
+
+      if (error) {
+        toast({
+          title: "Save failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({ title: form.id ? "Recording updated" : "Recording added" });
+      setOpen(false);
+      refresh();
+    } catch (err: any) {
+      console.error("[AdminRecordings] save threw", err);
+      toast({
+        title: "Unexpected error",
+        description: err?.message ?? "Something went wrong saving the recording.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
     }
-    toast({ title: form.id ? "Recording updated" : "Recording added" });
-    setOpen(false);
-    refresh();
   };
 
   const handleDelete = async (id: string) => {
