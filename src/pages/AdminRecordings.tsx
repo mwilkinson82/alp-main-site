@@ -37,6 +37,7 @@ import SEO from "@/components/SEO";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
+type VideoSource = "cloudflare" | "zoom_clip";
 
 type Recording = {
   id: string;
@@ -44,6 +45,8 @@ type Recording = {
   class_type: ClassType;
   recording_date: string;
   cloudflare_video_id: string;
+  video_source: VideoSource;
+  video_ref: string | null;
   description: string | null;
   is_published: boolean;
 };
