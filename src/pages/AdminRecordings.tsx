@@ -108,6 +108,39 @@ const emptyForm: FormState = {
   is_published: true,
 };
 
+// Extract a clean video reference from whatever the user pastes:
+// - Full <iframe> embed code: pull the src
+// - Full embed/share URL: keep as-is
+// - Bare ID: keep as-is
+const extractVideoRef = (raw: string): string => {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  // <iframe ... src="..."> — extract src attribute
+  const iframeSrc = trimmed.match(/<iframe[^>]*\s+src=["']([^"']+)["']/i);
+  if (iframeSrc) return iframeSrc[1].trim();
+  // First http(s) URL anywhere in the string
+  const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/i);
+  if (urlMatch) return urlMatch[0];
+  return trimmed;
+};
+
+// Extract a clean image URL from whatever the user pastes:
+// - Full <a><img src="..."></a> block: pull the img src (last one wins — usually the actual thumbnail)
+// - Bare URL: keep as-is
+const extractThumbnailUrl = (raw: string): string => {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  // <img ... src="..."> — extract last img src (handles nested anchor markup)
+  const imgMatches = [...trimmed.matchAll(/<img[^>]*\s+src=["']([^"']+)["']/gi)];
+  if (imgMatches.length > 0) {
+    return imgMatches[imgMatches.length - 1][1].trim();
+  }
+  // First http(s) URL — but stop at any quote/space/angle-bracket
+  const urlMatch = trimmed.match(/https?:\/\/[^\s"'<>]+/i);
+  if (urlMatch) return urlMatch[0];
+  return trimmed;
+};
+
 const AdminRecordings = () => {
   const { loading, isAdmin } = usePortalAuth({ requireAdmin: true });
   const [list, setList] = useState<Recording[]>([]);
