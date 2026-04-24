@@ -396,13 +396,13 @@ const AdminRecordings = () => {
                   placeholder={
                     form.video_source === "cloudflare"
                       ? "e.g. 31c9291ab41fac05471db4e73aa11717"
-                      : "e.g. https://clips.zoom.us/embed/play/abc123..."
+                      : "e.g. https://us06web.zoom.us/clips/embed/LNUa2qZkRHm_4pxQm7YErA"
                   }
                 />
                 <p className="text-xs text-muted-foreground">
                   {form.video_source === "cloudflare"
                     ? "Paste just the video ID from Cloudflare Stream — not the full URL."
-                    : "Paste the full embed URL from Zoom Clips, or just the clip ID."}
+                    : "Paste the Zoom Clip embed URL, share URL, or just the clip ID — all work."}
                 </p>
               </div>
 
@@ -416,7 +416,7 @@ const AdminRecordings = () => {
                 />
                 <p className="text-xs text-muted-foreground">
                   {form.video_source === "zoom_clip"
-                    ? "On the Zoom Clip page, right-click the preview GIF → Copy image address, then paste here."
+                    ? "Heads up: Zoom thumbnail GIF URLs (file.zoom.us/...) contain expiring tokens and may stop working after a few days. For a permanent thumbnail, save the GIF and host it elsewhere."
                     : "Cloudflare Stream tip: https://videodelivery.net/{VIDEO_ID}/thumbnails/thumbnail.gif?time=2s&duration=4s"}
                 </p>
                 {form.thumbnail_url && /^https?:\/\//i.test(form.thumbnail_url.trim()) && (
