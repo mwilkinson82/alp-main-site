@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, UserPlus, Send } from "lucide-react";
 import SEO from "@/components/SEO";
+import { getPublicSiteUrl } from "@/lib/site-url";
 
 type ClientRow = {
   user_id: string;
@@ -90,7 +91,7 @@ const AdminClients = () => {
         body: {
           emails: list,
           asAdmin,
-          redirectTo: window.location.origin,
+          redirectTo: getPublicSiteUrl(),
         },
       });
       if (error) throw error;

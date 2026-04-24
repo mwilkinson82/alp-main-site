@@ -17,6 +17,21 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const resend = new Resend(RESEND_API_KEY);
 
 const FROM_ADDRESS = "ALP Client Portal <notifications@notifications.marshallwilkinson.com>";
+const PUBLIC_SITE_URL = "https://altitudelogicpressure.com";
+
+function getAllowedOrigin(input?: string | null) {
+  if (!input) return PUBLIC_SITE_URL;
+
+  try {
+    const url = new URL(input);
+    const hostname = url.hostname.toLowerCase();
+    const isLiveSite = hostname === "altitudelogicpressure.com" || hostname === "www.altitudelogicpressure.com";
+
+    return isLiveSite ? `${url.protocol}//${url.host}` : PUBLIC_SITE_URL;
+  } catch {
+    return PUBLIC_SITE_URL;
+  }
+}
 
 function inviteEmailHtml(opts: {
   fullName: string | null;
@@ -123,10 +138,9 @@ serve(async (req) => {
       .map((e) => e.trim().toLowerCase())
       .filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
     const asAdmin = !!body.asAdmin;
-    const origin =
-      body.redirectTo ||
-      req.headers.get("origin") ||
-      "https://altitudelogicpressure.com";
+    const origin = getAllowedOrigin(
+      body.redirectTo || req.headers.get("origin") || PUBLIC_SITE_URL,
+    );
     const redirectTo = `${origin}/portal/reset-password`;
 
     if (emails.length === 0) {
