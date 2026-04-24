@@ -33,6 +33,48 @@ function getAllowedOrigin(input?: string | null) {
   }
 }
 
+function apologyEmailHtml(opts: {
+  fullName: string | null;
+  inviteUrl: string;
+}) {
+  const greeting = opts.fullName ? `Hi ${opts.fullName},` : "Hi,";
+  return `
+  <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+    <div style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%); padding: 48px 30px; text-align: center; border-bottom: 3px solid #c9a44a;">
+      <h1 style="color: #c9a44a; font-size: 36px; font-weight: 800; letter-spacing: 6px; margin: 0; text-transform: uppercase;">ALP</h1>
+      <p style="color: #888; font-size: 11px; letter-spacing: 3px; margin: 8px 0 0; text-transform: uppercase;">Altitude Logic Pressure</p>
+    </div>
+    <div style="padding: 32px 30px;">
+      <h2 style="font-size: 22px; color: #1a1a1a; margin: 0 0 16px;">Quick fix — please use this new link</h2>
+      <p style="font-size: 16px; color: #333; line-height: 1.6;">${greeting}</p>
+      <p style="font-size: 16px; color: #333; line-height: 1.6;">
+        Apologies — the link in our previous email about the new ALP Client Replay Portal was misconfigured and didn't take you where it should have. That's on us, not on Marshall.
+      </p>
+      <p style="font-size: 16px; color: #333; line-height: 1.6;">
+        The button below is the corrected link. Click it to set your password and access the portal where all new class recordings from <strong>April 26, 2026 onward</strong> will live (Power Hour, Contractor School, and Sales &amp; Marketing School).
+      </p>
+      <p style="text-align: center; margin: 32px 0;">
+        <a href="${opts.inviteUrl}" style="display: inline-block; background: #c9a44a; color: #0a0a0a; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; letter-spacing: 0.5px;">Set Up My Account</a>
+      </p>
+      <p style="font-size: 13px; color: #888; line-height: 1.6;">
+        If the button doesn't work, copy and paste this URL into your browser:<br>
+        <span style="word-break: break-all; color: #555;">${opts.inviteUrl}</span>
+      </p>
+      <p style="font-size: 14px; color: #888; line-height: 1.6; margin-top: 28px;">
+        Your existing recordings from 2023 through April 2026 remain in the legacy Kajabi library — nothing has changed there.
+      </p>
+      <p style="font-size: 14px; color: #555; line-height: 1.6; margin-top: 28px;">
+        Thanks for your patience.<br>
+        — The ALP Tech Team
+      </p>
+    </div>
+    <div style="background: #1a1a1a; padding: 24px 30px; text-align: center; font-size: 12px; color: #888;">
+      <p style="margin: 0; color: #c9a44a; font-weight: 600;">ALP — Altitude Logic Pressure</p>
+      <p style="margin: 8px 0 0;"><a href="https://altitudelogicpressure.com" style="color: #888; text-decoration: none;">altitudelogicpressure.com</a></p>
+    </div>
+  </div>`;
+}
+
 function inviteEmailHtml(opts: {
   fullName: string | null;
   inviteUrl: string;
