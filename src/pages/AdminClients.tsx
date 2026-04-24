@@ -173,13 +173,8 @@ const AdminClients = () => {
     setResendingAll(false);
   };
 
-  const [sendingApology, setSendingApology] = useState(false);
-  const sendApologyToAllActive = async () => {
-    setSendingApology(true);
-    const active = clients.filter((c) => c.status === "active").map((c) => c.email);
-    await sendInvitesTo(active, false, "apology email", "apology");
-    setSendingApology(false);
-  };
+
+
 
   const toggleStatus = async (c: ClientRow) => {
     const next = c.status === "active" ? "inactive" : "active";
