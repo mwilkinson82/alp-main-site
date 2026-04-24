@@ -201,8 +201,10 @@ const AdminRecordings = () => {
     }
     setSaving(true);
     try {
-      const trimmedRef = form.video_ref.trim();
-      const trimmedThumb = form.thumbnail_url.trim();
+      // Auto-extract clean URLs/IDs in case the admin pasted full HTML
+      // (e.g. an <iframe> embed block or an <a><img></a> snippet)
+      const trimmedRef = extractVideoRef(form.video_ref);
+      const trimmedThumb = extractThumbnailUrl(form.thumbnail_url);
       const payload = {
         title: form.title.trim(),
         class_type: form.class_type,
