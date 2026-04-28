@@ -25,8 +25,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Edit, Trash2, Eye, LogOut, FileText, ShoppingCart, CheckCircle, XCircle } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, LogOut, FileText, ShoppingCart, CheckCircle, XCircle, Users, Video } from "lucide-react";
 import { RetryFulfillmentDialog } from "@/components/admin/RetryFulfillmentDialog";
+import ClientsPanel from "@/components/admin/ClientsPanel";
+import RecordingsPanel from "@/components/admin/RecordingsPanel";
 import alpLogo from "@/assets/alp-logo.png";
 
 interface BlogPost {
@@ -216,10 +218,18 @@ const Admin = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="posts">
-          <TabsList className="mb-8">
+          <TabsList className="mb-8 flex-wrap h-auto">
             <TabsTrigger value="posts" className="gap-2">
               <FileText className="w-4 h-4" />
               Articles
+            </TabsTrigger>
+            <TabsTrigger value="clients" className="gap-2">
+              <Users className="w-4 h-4" />
+              Clients
+            </TabsTrigger>
+            <TabsTrigger value="recordings" className="gap-2">
+              <Video className="w-4 h-4" />
+              Recordings
             </TabsTrigger>
             <TabsTrigger value="purchases" className="gap-2">
               <ShoppingCart className="w-4 h-4" />
@@ -331,6 +341,22 @@ const Admin = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="clients">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold">Clients</h1>
+              <p className="text-muted-foreground">Invite new clients and manage portal access</p>
+            </div>
+            <ClientsPanel />
+          </TabsContent>
+
+          <TabsContent value="recordings">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold">Recordings</h1>
+              <p className="text-muted-foreground">Manage class replay recordings</p>
+            </div>
+            <RecordingsPanel />
           </TabsContent>
 
           <TabsContent value="purchases">
