@@ -343,6 +343,22 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="clients">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold">Clients</h1>
+              <p className="text-muted-foreground">Invite new clients and manage portal access</p>
+            </div>
+            <ClientsPanel />
+          </TabsContent>
+
+          <TabsContent value="recordings">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold">Recordings</h1>
+              <p className="text-muted-foreground">Manage class replay recordings</p>
+            </div>
+            <RecordingsPanel />
+          </TabsContent>
+
           <TabsContent value="purchases">
             <div className="mb-8">
               <h1 className="text-3xl font-bold">Purchase Log</h1>
