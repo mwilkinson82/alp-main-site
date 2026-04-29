@@ -17,18 +17,73 @@ const PortalResetPassword = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Supabase will fire PASSWORD_RECOVERY when user lands here from email link
+    let cancelled = false;
+
+    // Handle both link formats:
+    //   1) Hash style: #access_token=...&type=recovery  (Supabase handles automatically)
+    //   2) Query style: ?code=...                       (must call exchangeCodeForSession)
+    //   3) Error in URL: ?error=...&error_description=...
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const errParam = url.searchParams.get("error_description") || url.searchParams.get("error");
+
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (cancelled) return;
       if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") setReady(true);
     });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true);
-    });
-    return () => sub.subscription.unsubscribe();
+
+    (async () => {
+      if (errParam) {
+        setLinkError(decodeURIComponent(errParam.replace(/\+/g, " ")));
+        return;
+      }
+
+      // Existing session (hash already processed by client) → ready
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        if (!cancelled) setReady(true);
+        return;
+      }
+
+      // Query-style code → exchange for session
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (cancelled) return;
+        if (error) {
+          setLinkError(
+            "This reset link is invalid or has already been used. Please request a new one.",
+          );
+          return;
+        }
+        setReady(true);
+        // Clean the code out of the URL so a refresh doesn't re-attempt
+        window.history.replaceState({}, "", window.location.pathname);
+        return;
+      }
+
+      // No session, no code, no error — give the hash listener a moment, then error out
+      setTimeout(() => {
+        if (cancelled) return;
+        supabase.auth.getSession().then(({ data: { session: s } }) => {
+          if (!s && !ready) {
+            setLinkError(
+              "We couldn't verify your reset link. Please use the most recent email or request a new link.",
+            );
+          }
+        });
+      }, 1500);
+    })();
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,10 +113,23 @@ const PortalResetPassword = () => {
           </div>
           <CardTitle className="text-2xl">Set a new password</CardTitle>
           <CardDescription>
-            {ready ? "Choose a strong password for your account." : "Verifying your reset link…"}
+            {linkError
+              ? linkError
+              : ready
+                ? "Choose a strong password for your account."
+                : "Verifying your reset link…"}
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {linkError ? (
+            <Button
+              variant="premium"
+              className="w-full"
+              onClick={() => navigate("/portal/login", { replace: true })}
+            >
+              Back to sign in
+            </Button>
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">New password</Label>
@@ -79,6 +147,7 @@ const PortalResetPassword = () => {
               {loading ? "Saving…" : "Update Password"}
             </Button>
           </form>
+          )}
         </CardContent>
       </Card>
     </div>
