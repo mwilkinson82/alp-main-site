@@ -147,6 +147,7 @@ const PortalResetPassword = () => {
               {loading ? "Saving…" : "Update Password"}
             </Button>
           </form>
+          )}
         </CardContent>
       </Card>
     </div>
