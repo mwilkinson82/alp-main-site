@@ -113,10 +113,23 @@ const PortalResetPassword = () => {
           </div>
           <CardTitle className="text-2xl">Set a new password</CardTitle>
           <CardDescription>
-            {ready ? "Choose a strong password for your account." : "Verifying your reset link…"}
+            {linkError
+              ? linkError
+              : ready
+                ? "Choose a strong password for your account."
+                : "Verifying your reset link…"}
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {linkError ? (
+            <Button
+              variant="premium"
+              className="w-full"
+              onClick={() => navigate("/portal/login", { replace: true })}
+            >
+              Back to sign in
+            </Button>
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">New password</Label>
