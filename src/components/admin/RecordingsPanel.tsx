@@ -440,27 +440,64 @@ export const RecordingsPanel = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
+              <div className="flex items-center justify-between gap-2">
+                <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
+                {form.video_source === "cloudflare" && (() => {
+                  const auto = buildCloudflareGifThumbnail(extractVideoRef(form.video_ref));
+                  if (!auto) return null;
+                  return (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs"
+                      onClick={() => setForm({ ...form, thumbnail_url: auto })}
+                    >
+                      Use auto thumbnail
+                    </Button>
+                  );
+                })()}
+              </div>
               <Input
                 id="thumb"
                 value={form.thumbnail_url}
                 onChange={(e) => setForm({ ...form, thumbnail_url: e.target.value })}
-                placeholder="https://… (image or animated GIF)"
+                placeholder={
+                  form.video_source === "cloudflare"
+                    ? "Leave blank to auto-generate an animated GIF from the video"
+                    : "https://… (image or animated GIF)"
+                }
               />
               <p className="text-xs text-muted-foreground">
                 {form.video_source === "zoom_clip"
                   ? "Heads up: Zoom thumbnail GIF URLs (file.zoom.us/...) contain expiring tokens and may stop working after a few days. For a permanent thumbnail, save the GIF and host it elsewhere."
-                  : "Cloudflare Stream tip: https://videodelivery.net/{VIDEO_ID}/thumbnails/thumbnail.gif?time=2s&duration=4s"}
+                  : "Leave blank — we'll auto-generate an animated GIF preview from the Cloudflare video on save. Or paste your own URL to override."}
               </p>
-              {form.thumbnail_url && /^https?:\/\//i.test(form.thumbnail_url.trim()) && (
-                <div className="mt-2 aspect-video w-40 rounded-md overflow-hidden border border-border bg-muted">
-                  <img
-                    src={form.thumbnail_url.trim()}
-                    alt="Thumbnail preview"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+              {(() => {
+                const manual = form.thumbnail_url.trim();
+                const preview = manual && /^https?:\/\//i.test(manual)
+                  ? manual
+                  : (form.video_source === "cloudflare"
+                      ? buildCloudflareGifThumbnail(extractVideoRef(form.video_ref))
+                      : "");
+                if (!preview) return null;
+                return (
+                  <div className="mt-2 space-y-1">
+                    <div className="aspect-video w-40 rounded-md overflow-hidden border border-border bg-muted">
+                      <img
+                        src={preview}
+                        alt="Thumbnail preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {!manual && (
+                      <p className="text-[11px] text-muted-foreground">
+                        Auto-generated preview (saved on submit).
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="space-y-2">
