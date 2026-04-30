@@ -169,7 +169,54 @@ export const RecordingsPanel = () => {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [uploadingThumb, setUploadingThumb] = useState(false);
+  const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const handleThumbnailUpload = async (file: File) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image (JPG, PNG, GIF, WebP).",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Thumbnails must be under 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setUploadingThumb(true);
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("recording-thumbnails")
+        .upload(path, file, {
+          cacheControl: "31536000",
+          contentType: file.type,
+          upsert: false,
+        });
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from("recording-thumbnails").getPublicUrl(path);
+      setForm((f) => ({ ...f, thumbnail_url: data.publicUrl }));
+      toast({ title: "Thumbnail uploaded" });
+    } catch (err: any) {
+      toast({
+        title: "Upload failed",
+        description: err?.message ?? "Could not upload thumbnail.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingThumb(false);
+      if (thumbFileRef.current) thumbFileRef.current.value = "";
+    }
+  };
 
   const refresh = async () => {
     setListLoading(true);
