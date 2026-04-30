@@ -222,7 +222,13 @@ export const RecordingsPanel = () => {
     setSaving(true);
     try {
       const trimmedRef = extractVideoRef(form.video_ref);
-      const trimmedThumb = extractThumbnailUrl(form.thumbnail_url);
+      let trimmedThumb = extractThumbnailUrl(form.thumbnail_url);
+
+      // Auto-derive an animated GIF thumbnail from the Cloudflare embed when blank
+      if (!trimmedThumb && form.video_source === "cloudflare") {
+        trimmedThumb = buildCloudflareGifThumbnail(trimmedRef);
+      }
+
       const payload = {
         title: form.title.trim(),
         class_type: form.class_type,
