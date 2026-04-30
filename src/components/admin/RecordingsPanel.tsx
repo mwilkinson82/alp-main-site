@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -169,7 +169,54 @@ export const RecordingsPanel = () => {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [uploadingThumb, setUploadingThumb] = useState(false);
+  const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const handleThumbnailUpload = async (file: File) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image (JPG, PNG, GIF, WebP).",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Thumbnails must be under 10MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setUploadingThumb(true);
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("recording-thumbnails")
+        .upload(path, file, {
+          cacheControl: "31536000",
+          contentType: file.type,
+          upsert: false,
+        });
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from("recording-thumbnails").getPublicUrl(path);
+      setForm((f) => ({ ...f, thumbnail_url: data.publicUrl }));
+      toast({ title: "Thumbnail uploaded" });
+    } catch (err: any) {
+      toast({
+        title: "Upload failed",
+        description: err?.message ?? "Could not upload thumbnail.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingThumb(false);
+      if (thumbFileRef.current) thumbFileRef.current.value = "";
+    }
+  };
 
   const refresh = async () => {
     setListLoading(true);
@@ -440,23 +487,50 @@ export const RecordingsPanel = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
-                {form.video_source === "cloudflare" && (() => {
-                  const auto = buildCloudflareGifThumbnail(extractVideoRef(form.video_ref));
-                  if (!auto) return null;
-                  return (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 text-xs"
-                      onClick={() => setForm({ ...form, thumbnail_url: auto })}
-                    >
-                      Use auto thumbnail
-                    </Button>
-                  );
-                })()}
+                <div className="flex items-center gap-1">
+                  <input
+                    ref={thumbFileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleThumbnailUpload(f);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => thumbFileRef.current?.click()}
+                    disabled={uploadingThumb}
+                  >
+                    {uploadingThumb ? (
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    ) : (
+                      <Upload className="w-3 h-3 mr-1" />
+                    )}
+                    {uploadingThumb ? "Uploading…" : "Upload image"}
+                  </Button>
+                  {form.video_source === "cloudflare" && (() => {
+                    const auto = buildCloudflareGifThumbnail(extractVideoRef(form.video_ref));
+                    if (!auto) return null;
+                    return (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 text-xs"
+                        onClick={() => setForm({ ...form, thumbnail_url: auto })}
+                      >
+                        Use auto thumbnail
+                      </Button>
+                    );
+                  })()}
+                </div>
               </div>
               <Input
                 id="thumb"
@@ -464,10 +538,11 @@ export const RecordingsPanel = () => {
                 onChange={(e) => setForm({ ...form, thumbnail_url: e.target.value })}
                 placeholder={
                   form.video_source === "cloudflare"
-                    ? "Leave blank to auto-generate an animated GIF from the video"
-                    : "https://… (image or animated GIF)"
+                    ? "Upload an image, paste a URL, or leave blank to auto-generate"
+                    : "Upload an image or paste a URL (image or animated GIF)"
                 }
               />
+
               <p className="text-xs text-muted-foreground">
                 {form.video_source === "zoom_clip"
                   ? "Heads up: Zoom thumbnail GIF URLs (file.zoom.us/...) contain expiring tokens and may stop working after a few days. For a permanent thumbnail, save the GIF and host it elsewhere."
