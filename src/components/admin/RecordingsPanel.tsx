@@ -487,23 +487,50 @@ export const RecordingsPanel = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <Label htmlFor="thumb">Thumbnail URL <span className="text-muted-foreground font-normal">(optional)</span></Label>
-                {form.video_source === "cloudflare" && (() => {
-                  const auto = buildCloudflareGifThumbnail(extractVideoRef(form.video_ref));
-                  if (!auto) return null;
-                  return (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 text-xs"
-                      onClick={() => setForm({ ...form, thumbnail_url: auto })}
-                    >
-                      Use auto thumbnail
-                    </Button>
-                  );
-                })()}
+                <div className="flex items-center gap-1">
+                  <input
+                    ref={thumbFileRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) handleThumbnailUpload(f);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 text-xs"
+                    onClick={() => thumbFileRef.current?.click()}
+                    disabled={uploadingThumb}
+                  >
+                    {uploadingThumb ? (
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    ) : (
+                      <Upload className="w-3 h-3 mr-1" />
+                    )}
+                    {uploadingThumb ? "Uploading…" : "Upload image"}
+                  </Button>
+                  {form.video_source === "cloudflare" && (() => {
+                    const auto = buildCloudflareGifThumbnail(extractVideoRef(form.video_ref));
+                    if (!auto) return null;
+                    return (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 text-xs"
+                        onClick={() => setForm({ ...form, thumbnail_url: auto })}
+                      >
+                        Use auto thumbnail
+                      </Button>
+                    );
+                  })()}
+                </div>
               </div>
               <Input
                 id="thumb"
@@ -511,10 +538,11 @@ export const RecordingsPanel = () => {
                 onChange={(e) => setForm({ ...form, thumbnail_url: e.target.value })}
                 placeholder={
                   form.video_source === "cloudflare"
-                    ? "Leave blank to auto-generate an animated GIF from the video"
-                    : "https://… (image or animated GIF)"
+                    ? "Upload an image, paste a URL, or leave blank to auto-generate"
+                    : "Upload an image or paste a URL (image or animated GIF)"
                 }
               />
+
               <p className="text-xs text-muted-foreground">
                 {form.video_source === "zoom_clip"
                   ? "Heads up: Zoom thumbnail GIF URLs (file.zoom.us/...) contain expiring tokens and may stop working after a few days. For a permanent thumbnail, save the GIF and host it elsewhere."
