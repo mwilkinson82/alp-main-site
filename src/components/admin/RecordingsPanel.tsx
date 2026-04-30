@@ -127,6 +127,41 @@ const extractThumbnailUrl = (raw: string): string => {
   return trimmed;
 };
 
+// Build an animated GIF thumbnail URL from a Cloudflare Stream video reference.
+// Accepts:
+//   - customer subdomain URL: https://customer-{sub}.cloudflarestream.com/{id}/iframe?...
+//   - generic iframe URL: https://iframe.videodelivery.net/{id}
+//   - bare video ID
+// Returns "" if we can't confidently derive one.
+const buildCloudflareGifThumbnail = (videoRef: string): string => {
+  const ref = videoRef.trim();
+  if (!ref) return "";
+
+  // Customer-subdomain URL — preferred, keeps the same subdomain
+  const customerMatch = ref.match(
+    /https?:\/\/(customer-[a-z0-9]+\.cloudflarestream\.com)\/([a-f0-9]{20,})/i
+  );
+  if (customerMatch) {
+    const [, host, id] = customerMatch;
+    return `https://${host}/${id}/thumbnails/thumbnail.gif?time=3s&duration=4s&height=600`;
+  }
+
+  // Generic videodelivery.net URL
+  const genericMatch = ref.match(
+    /https?:\/\/(?:iframe\.)?videodelivery\.net\/([a-f0-9]{20,})/i
+  );
+  if (genericMatch) {
+    return `https://videodelivery.net/${genericMatch[1]}/thumbnails/thumbnail.gif?time=3s&duration=4s&height=600`;
+  }
+
+  // Bare ID (32-char hex is typical for Cloudflare Stream)
+  if (/^[a-f0-9]{20,}$/i.test(ref)) {
+    return `https://videodelivery.net/${ref}/thumbnails/thumbnail.gif?time=3s&duration=4s&height=600`;
+  }
+
+  return "";
+};
+
 export const RecordingsPanel = () => {
   const [list, setList] = useState<Recording[]>([]);
   const [listLoading, setListLoading] = useState(true);
