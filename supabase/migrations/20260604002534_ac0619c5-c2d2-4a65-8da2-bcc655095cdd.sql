@@ -1,0 +1,1 @@
+ALTER TYPE public.video_source ADD VALUE IF NOT EXISTS 'google_drive';
