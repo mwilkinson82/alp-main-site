@@ -8,7 +8,7 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import SEO from "@/components/SEO";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
-type VideoSource = "cloudflare" | "zoom_clip";
+type VideoSource = "cloudflare" | "zoom_clip" | "google_drive";
 
 type Recording = {
   id: string;
@@ -46,6 +46,19 @@ const formatDate = (iso: string) =>
 //     • full embed URL: https://us06web.zoom.us/clips/embed/{clipId}
 //     • full share URL: https://us06web.zoom.us/clips/share/{clipId}
 //     • just the clip ID
+// Extract a Google Drive file ID from any common Drive URL form, or treat the
+// input as a bare ID if it looks like one.
+const extractDriveId = (ref: string): string | null => {
+  const fileMatch = ref.match(/\/file\/d\/([a-zA-Z0-9_-]{20,})/);
+  if (fileMatch) return fileMatch[1];
+  const idParam = ref.match(/[?&]id=([a-zA-Z0-9_-]{20,})/);
+  if (idParam) return idParam[1];
+  const folderlessOpen = ref.match(/\/d\/([a-zA-Z0-9_-]{20,})/);
+  if (folderlessOpen) return folderlessOpen[1];
+  if (/^[a-zA-Z0-9_-]{20,}$/.test(ref)) return ref;
+  return null;
+};
+
 const resolveEmbedSrc = (r: Recording): string => {
   const ref = (r.video_ref ?? r.cloudflare_video_id ?? "").trim();
   const source = r.video_source ?? "cloudflare";
@@ -60,6 +73,13 @@ const resolveEmbedSrc = (r: Recording): string => {
     if (/^https?:\/\//i.test(ref)) return ref;
     // Bare clip ID — default to us06web subdomain
     return `https://us06web.zoom.us/clips/embed/${ref}`;
+  }
+
+  if (source === "google_drive") {
+    const id = extractDriveId(ref);
+    if (id) return `https://drive.google.com/file/d/${id}/preview`;
+    // Fallback: return raw if we can't parse
+    return ref;
   }
 
   // Cloudflare Stream

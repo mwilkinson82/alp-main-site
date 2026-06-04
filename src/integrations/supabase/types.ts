@@ -315,7 +315,7 @@ export type Database = {
       app_role: "admin" | "user" | "client"
       class_type: "power_hour" | "contractor_school" | "sales_marketing_school"
       profile_status: "active" | "inactive"
-      video_source: "cloudflare" | "zoom_clip"
+      video_source: "cloudflare" | "zoom_clip" | "google_drive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -446,7 +446,7 @@ export const Constants = {
       app_role: ["admin", "user", "client"],
       class_type: ["power_hour", "contractor_school", "sales_marketing_school"],
       profile_status: ["active", "inactive"],
-      video_source: ["cloudflare", "zoom_clip"],
+      video_source: ["cloudflare", "zoom_clip", "google_drive"],
     },
   },
 } as const
