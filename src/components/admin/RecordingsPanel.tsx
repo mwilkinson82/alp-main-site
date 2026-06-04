@@ -34,7 +34,7 @@ import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
-type VideoSource = "cloudflare" | "zoom_clip";
+type VideoSource = "cloudflare" | "zoom_clip" | "google_drive";
 
 type Recording = {
   id: string;
@@ -64,7 +64,7 @@ const recordingSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(200),
   class_type: z.enum(["power_hour", "contractor_school", "sales_marketing_school"]),
   recording_date: z.string().min(1, "Date is required"),
-  video_source: z.enum(["cloudflare", "zoom_clip"]),
+  video_source: z.enum(["cloudflare", "zoom_clip", "google_drive"]),
   video_ref: z
     .string()
     .trim()
@@ -459,6 +459,7 @@ export const RecordingsPanel = () => {
                 <SelectContent>
                   <SelectItem value="cloudflare">Cloudflare Stream</SelectItem>
                   <SelectItem value="zoom_clip">Zoom Clip</SelectItem>
+                  <SelectItem value="google_drive">Google Drive</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -467,7 +468,9 @@ export const RecordingsPanel = () => {
               <Label htmlFor="vref">
                 {form.video_source === "cloudflare"
                   ? "Cloudflare Stream Video ID"
-                  : "Zoom Clip Embed URL or Clip ID"}
+                  : form.video_source === "zoom_clip"
+                  ? "Zoom Clip Embed URL or Clip ID"
+                  : "Google Drive File URL or File ID"}
               </Label>
               <Input
                 id="vref"
@@ -476,13 +479,17 @@ export const RecordingsPanel = () => {
                 placeholder={
                   form.video_source === "cloudflare"
                     ? "e.g. 31c9291ab41fac05471db4e73aa11717"
-                    : "e.g. https://us06web.zoom.us/clips/embed/LNUa2qZkRHm_4pxQm7YErA"
+                    : form.video_source === "zoom_clip"
+                    ? "e.g. https://us06web.zoom.us/clips/embed/LNUa2qZkRHm_4pxQm7YErA"
+                    : "e.g. https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view"
                 }
               />
               <p className="text-xs text-muted-foreground">
                 {form.video_source === "cloudflare"
                   ? "Paste just the video ID from Cloudflare Stream — not the full URL."
-                  : "Paste the Zoom Clip embed URL, share URL, or just the clip ID — all work."}
+                  : form.video_source === "zoom_clip"
+                  ? "Paste the Zoom Clip embed URL, share URL, or just the clip ID — all work."
+                  : "Paste the Drive share/view URL. The file must be shared as \"Anyone with the link → Viewer\" so clients can play it."}
               </p>
             </div>
 
