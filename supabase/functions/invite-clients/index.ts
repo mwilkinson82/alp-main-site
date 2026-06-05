@@ -201,50 +201,41 @@ serve(async (req) => {
 
     for (const email of emails) {
       try {
-        // 1) Find or create user via inviteUserByEmail (sends nothing if we
-        //    handle email ourselves — but invite returns an action link too).
-        //    We use generateLink which works for new + existing users.
-
-        // Check if user already exists
-        const { data: existing } = await admin.auth.admin.listUsers({
-          page: 1,
-          perPage: 1,
-          // listUsers has no email filter — fetch by getUserByEmail-like helper:
-        });
-
-        // Try to look up existing via filter
+        // 1) Existing clients should receive a recovery link, not a fresh
+        //    invite. Invite links can become invalid after the account is
+        //    confirmed, while recovery links are the safest password setup path.
         let userId: string | null = null;
-        // Use admin generate link "invite" which creates user if missing
-        const { data: linkData, error: linkErr } = await admin.auth.admin
+        let actionLink: string | undefined;
+        let isNew = false;
+
+        const { data: rec, error: recErr } = await admin.auth.admin
           .generateLink({
-            type: "invite",
+            type: "recovery",
             email,
             options: { redirectTo },
           });
 
-        let actionLink: string | undefined;
-        let isNew = true;
-
-        if (linkErr) {
-          // If user already exists, generate a recovery link instead
-          if (
-            linkErr.message?.toLowerCase().includes("already") ||
-            linkErr.message?.toLowerCase().includes("registered")
-          ) {
-            isNew = false;
-            const { data: rec, error: recErr } = await admin.auth.admin
-              .generateLink({
-                type: "recovery",
-                email,
-                options: { redirectTo },
-              });
-            if (recErr) throw recErr;
-            actionLink = rec.properties?.action_link;
-            userId = rec.user?.id ?? null;
-          } else {
-            throw linkErr;
-          }
+        if (!recErr) {
+          actionLink = rec.properties?.action_link;
+          userId = rec.user?.id ?? null;
         } else {
+          const recoveryMessage = recErr.message?.toLowerCase() ?? "";
+          const canInvite =
+            recoveryMessage.includes("not found") ||
+            recoveryMessage.includes("does not exist") ||
+            recoveryMessage.includes("not confirmed");
+
+          if (!canInvite) throw recErr;
+
+          isNew = true;
+          const { data: linkData, error: linkErr } = await admin.auth.admin
+            .generateLink({
+              type: "invite",
+              email,
+              options: { redirectTo },
+            });
+
+          if (linkErr) throw linkErr;
           actionLink = linkData.properties?.action_link;
           userId = linkData.user?.id ?? null;
         }
