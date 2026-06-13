@@ -29,12 +29,31 @@ serve(async (req) => {
     const redirectTo = "https://altitudelogicpressure.com/portal/reset-password";
 
     const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    const { data: rec, error: recErr } = await admin.auth.admin.generateLink({
+    let rec: any; let recErr: any;
+    ({ data: rec, error: recErr } = await admin.auth.admin.generateLink({
       type: "recovery",
       email,
       options: { redirectTo },
-    });
-    if (recErr) throw recErr;
+    }));
+    if (recErr || !rec?.properties?.action_link) {
+      ({ data: rec, error: recErr } = await admin.auth.admin.generateLink({
+        type: "invite",
+        email,
+        options: { redirectTo },
+      }));
+      if (recErr) throw recErr;
+      const newUserId = rec.user?.id;
+      if (newUserId) {
+        await admin.from("profiles").upsert(
+          { user_id: newUserId, email, full_name: fullName, status: "active" },
+          { onConflict: "user_id" },
+        );
+        await admin.from("user_roles").upsert(
+          { user_id: newUserId, role: "client" },
+          { onConflict: "user_id,role" },
+        );
+      }
+    }
     const actionLink = rec.properties?.action_link;
     if (!actionLink) throw new Error("no link");
 
