@@ -18,12 +18,37 @@ const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 function cleanHtml(raw: string): string {
   const bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
   let body = bodyMatch ? bodyMatch[1] : raw;
-  // Remove Google's c0/c1 class noise + inline color styles, keep structure
+
+  // Strip Google's class/id/style noise but keep structural tags.
   body = body.replace(/\sclass="[^"]*"/g, "");
   body = body.replace(/\sid="[^"]*"/g, "");
   body = body.replace(/\sstyle="[^"]*"/g, "");
   body = body.replace(/<span>([\s\S]*?)<\/span>/g, "$1");
-  body = body.replace(/<p>\s*(&nbsp;|\s)*\s*<\/p>/g, "");
+
+  // Cut everything from the verbatim transcript section onward. Gemini docs
+  // mark this as a second <h2> whose text contains "Transcript" (e.g.
+  // "ALP Hardcore Power Hour - Transcript"). We keep summary/decisions/
+  // next steps/details (which live above it) and drop the timestamped body.
+  const transcriptHeading = body.match(/<h2[^>]*>[\s\S]*?Transcript[\s\S]*?<\/h2>/i);
+  if (transcriptHeading && transcriptHeading.index !== undefined) {
+    body = body.slice(0, transcriptHeading.index);
+  } else {
+    // Fallback: cut from the first timestamp-style heading we see (00:00:12).
+    const tsHeading = body.match(/<h3[^>]*>\s*\d{1,2}:\d{2}:\d{2}\s*<\/h3>/);
+    if (tsHeading && tsHeading.index !== undefined) {
+      body = body.slice(0, tsHeading.index);
+    }
+  }
+
+  // Drop the "Invited ..." attendee list — it leaks emails of other clients.
+  body = body.replace(/<p>\s*Invited[\s\S]*?<\/p>/i, "");
+
+  // Drop the leading "📝 Notes" stub and a redundant date line above the title.
+  body = body.replace(/<p>\s*(?:&#128221;|📝)\s*Notes\s*<\/p>/i, "");
+
+  // Collapse empty paragraphs left behind.
+  body = body.replace(/<p>\s*(?:&nbsp;|\s)*\s*<\/p>/g, "");
+
   return body.trim();
 }
 
