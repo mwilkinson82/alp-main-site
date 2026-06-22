@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
