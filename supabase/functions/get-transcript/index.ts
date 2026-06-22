@@ -15,6 +15,10 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 
+function stripTags(s: string): string {
+  return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
+}
+
 function cleanHtml(raw: string): string {
   const bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
   let body = bodyMatch ? bodyMatch[1] : raw;
@@ -25,28 +29,41 @@ function cleanHtml(raw: string): string {
   body = body.replace(/\sstyle="[^"]*"/g, "");
   body = body.replace(/<span>([\s\S]*?)<\/span>/g, "$1");
 
-  // Cut everything from the verbatim transcript section onward. Gemini docs
-  // mark this as a second <h2> whose text contains "Transcript" (e.g.
-  // "ALP Hardcore Power Hour - Transcript"). We keep summary/decisions/
-  // next steps/details (which live above it) and drop the timestamped body.
-  const transcriptHeading = body.match(/<h2[^>]*>[\s\S]*?Transcript[\s\S]*?<\/h2>/i);
-  if (transcriptHeading && transcriptHeading.index !== undefined) {
-    body = body.slice(0, transcriptHeading.index);
+  // Gemini docs wrap the header block (title, attendee email list, attachments,
+  // meeting-records links) inside <table> elements. None of the content we want
+  // to show (Summary / Decisions / Next steps / Details) is in a table, so we
+  // can safely strip them all. This also removes the "Invited ..." email list.
+  body = body.replace(/<table[\s\S]*?<\/table>/gi, "");
+
+  // Cut everything from the verbatim transcript section onward. The transcript
+  // section starts at an <h2> whose own text ends with "Transcript" (e.g.
+  // "ALP Hardcore Power Hour - Transcript"). We iterate every <h2> and slice at
+  // the first one whose text matches — this avoids greedy regex pulling in the
+  // word "Transcript" from elsewhere.
+  const h2Re = /<h2[^>]*>([\s\S]*?)<\/h2>/gi;
+  let m: RegExpExecArray | null;
+  let cutIdx = -1;
+  while ((m = h2Re.exec(body)) !== null) {
+    const text = stripTags(m[1]);
+    if (/transcript/i.test(text)) {
+      cutIdx = m.index;
+      break;
+    }
+  }
+  if (cutIdx >= 0) {
+    body = body.slice(0, cutIdx);
   } else {
-    // Fallback: cut from the first timestamp-style heading we see (00:00:12).
+    // Fallback: cut from the first timestamp-style heading (00:00:12).
     const tsHeading = body.match(/<h3[^>]*>\s*\d{1,2}:\d{2}:\d{2}\s*<\/h3>/);
     if (tsHeading && tsHeading.index !== undefined) {
       body = body.slice(0, tsHeading.index);
     }
   }
 
-  // Drop the "Invited ..." attendee list — it leaks emails of other clients.
-  body = body.replace(/<p>\s*Invited[\s\S]*?<\/p>/i, "");
-
-  // Drop the leading "📝 Notes" stub and a redundant date line above the title.
+  // Drop the leading "📝 Notes" stub line.
   body = body.replace(/<p>\s*(?:&#128221;|📝)\s*Notes\s*<\/p>/i, "");
 
-  // Collapse empty paragraphs left behind.
+  // Collapse empty paragraphs.
   body = body.replace(/<p>\s*(?:&nbsp;|\s)*\s*<\/p>/g, "");
 
   return body.trim();
