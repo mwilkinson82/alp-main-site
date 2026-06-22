@@ -6,6 +6,7 @@ import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { PlayCircle, Calendar, Play } from "lucide-react";
 import SEO from "@/components/SEO";
+import { getRecordingThumbnail } from "@/lib/recordingThumbnail";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
 
@@ -106,21 +107,12 @@ const PortalLibrary = ({ classType, title, description, canonical }: Props) => {
                 >
                   {/* Large 16:9 thumbnail */}
                   <div className="relative aspect-video bg-muted overflow-hidden">
-                    {r.thumbnail_url ? (
-                      <img
-                        src={r.thumbnail_url}
-                        alt={r.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                        <PlayCircle className="w-12 h-12 text-muted-foreground/40" />
-                      </div>
-                    )}
+                    <img
+                      src={getRecordingThumbnail(r.class_type, r.thumbnail_url)}
+                      alt={r.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center bg-background/0 group-hover:bg-background/20 transition-colors">
                       <div className="bg-primary/90 rounded-full p-3.5 md:p-4 shadow-lg opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
