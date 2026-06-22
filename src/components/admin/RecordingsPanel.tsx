@@ -184,7 +184,7 @@ export const RecordingsPanel = () => {
         title: count > 0 ? `Imported ${count} recording${count === 1 ? "" : "s"}` : "No new recordings",
         description: count > 0 ? "New replays are now live in the portal." : "Drive is up to date.",
       });
-      if (count > 0) await load();
+      if (count > 0) await refresh();
     } catch (e) {
       toast({
         title: "Sync failed",
