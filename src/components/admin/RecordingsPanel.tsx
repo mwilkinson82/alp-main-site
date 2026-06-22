@@ -170,8 +170,31 @@ export const RecordingsPanel = () => {
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingThumb, setUploadingThumb] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const syncFromDrive = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-recordings");
+      if (error) throw error;
+      const count = (data as { inserted_count?: number })?.inserted_count ?? 0;
+      toast({
+        title: count > 0 ? `Imported ${count} recording${count === 1 ? "" : "s"}` : "No new recordings",
+        description: count > 0 ? "New replays are now live in the portal." : "Drive is up to date.",
+      });
+      if (count > 0) await load();
+    } catch (e) {
+      toast({
+        title: "Sync failed",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const handleThumbnailUpload = async (file: File) => {
     if (!file) return;
