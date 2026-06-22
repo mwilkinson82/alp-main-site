@@ -433,6 +433,19 @@ export const RecordingsPanel = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => regenerateTitle(r.id)}
+                        disabled={retitlingId === r.id}
+                        title="Regenerate title from transcript"
+                      >
+                        {retitlingId === r.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Sparkles className="w-4 h-4" />
+                        )}
+                      </Button>
                       <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>
                         <Pencil className="w-4 h-4" />
                       </Button>
