@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -170,8 +170,31 @@ export const RecordingsPanel = () => {
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingThumb, setUploadingThumb] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const syncFromDrive = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-recordings");
+      if (error) throw error;
+      const count = (data as { inserted_count?: number })?.inserted_count ?? 0;
+      toast({
+        title: count > 0 ? `Imported ${count} recording${count === 1 ? "" : "s"}` : "No new recordings",
+        description: count > 0 ? "New replays are now live in the portal." : "Drive is up to date.",
+      });
+      if (count > 0) await refresh();
+    } catch (e) {
+      toast({
+        title: "Sync failed",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const handleThumbnailUpload = async (file: File) => {
     if (!file) return;
@@ -332,10 +355,20 @@ export const RecordingsPanel = () => {
             Add, edit, publish, or remove class replay recordings.
           </p>
         </div>
-        <Button onClick={openCreate} variant="premium">
-          <Plus className="w-4 h-4 mr-1.5" />
-          Add Recording
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={syncFromDrive} variant="outline" disabled={syncing}>
+            {syncing ? (
+              <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4 mr-1.5" />
+            )}
+            Sync from Drive
+          </Button>
+          <Button onClick={openCreate} variant="premium">
+            <Plus className="w-4 h-4 mr-1.5" />
+            Add Recording
+          </Button>
+        </div>
       </div>
 
       <Card className="border-border/60">
