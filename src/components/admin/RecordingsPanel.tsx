@@ -171,8 +171,30 @@ export const RecordingsPanel = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingThumb, setUploadingThumb] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [retitlingId, setRetitlingId] = useState<string | null>(null);
   const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const regenerateTitle = async (id: string) => {
+    setRetitlingId(id);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-recordings", {
+        body: { mode: "retitle", recording_id: id },
+      });
+      if (error) throw error;
+      const title = (data as { title?: string })?.title;
+      toast({ title: "Title regenerated", description: title ?? "" });
+      await refresh();
+    } catch (e) {
+      toast({
+        title: "Could not regenerate title",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setRetitlingId(null);
+    }
+  };
 
   const syncFromDrive = async () => {
     setSyncing(true);
