@@ -100,10 +100,12 @@ async function listFolder(folderId: string): Promise<DriveFile[]> {
   return (json.files ?? []) as DriveFile[];
 }
 
-// Flatten a Google Docs document body to plain text.
+// Export a Google Doc as plain text via the Drive API (uses the Drive connector).
 async function fetchDocText(docId: string): Promise<string | null> {
   try {
-    const url = `https://connector-gateway.lovable.dev/google_docs/v1/documents/${docId}`;
+    const url =
+      `https://connector-gateway.lovable.dev/google_drive/drive/v3/files/${docId}/export` +
+      `?mimeType=text/plain`;
     const res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${LOVABLE_API_KEY}`,
@@ -111,20 +113,10 @@ async function fetchDocText(docId: string): Promise<string | null> {
       },
     });
     if (!res.ok) {
-      console.warn("docs fetch failed", docId, res.status, await res.text());
+      console.warn("docs export failed", docId, res.status, await res.text());
       return null;
     }
-    const doc = await res.json();
-    const parts: string[] = [];
-    for (const el of doc?.body?.content ?? []) {
-      const p = el?.paragraph;
-      if (!p) continue;
-      for (const r of p.elements ?? []) {
-        const t = r?.textRun?.content;
-        if (t) parts.push(t);
-      }
-    }
-    const text = parts.join("").replace(/\n{3,}/g, "\n\n").trim();
+    const text = (await res.text()).replace(/\r\n/g, "\n").trim();
     return text || null;
   } catch (e) {
     console.warn("fetchDocText error", e);
