@@ -124,6 +124,34 @@ async function fetchDocText(docId: string): Promise<string | null> {
   }
 }
 
+// Set a Drive file to "Anyone with the link can view" so portal clients can stream it.
+async function makeAnyoneViewer(fileId: string): Promise<boolean> {
+  try {
+    const res = await fetch(
+      `https://connector-gateway.lovable.dev/google_drive/drive/v3/files/${fileId}/permissions?supportsAllDrives=true`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY!,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ role: "reader", type: "anyone" }),
+      },
+    );
+    if (!res.ok) {
+      console.warn("share failed", fileId, res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.warn("makeAnyoneViewer error", e);
+    return false;
+  }
+}
+
+
+
 // Ask Lovable AI for a short topical title. Returns null on any failure.
 async function generateTopicTitle(
   classType: ClassType,
