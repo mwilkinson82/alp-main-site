@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Upload, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -332,10 +332,20 @@ export const RecordingsPanel = () => {
             Add, edit, publish, or remove class replay recordings.
           </p>
         </div>
-        <Button onClick={openCreate} variant="premium">
-          <Plus className="w-4 h-4 mr-1.5" />
-          Add Recording
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={syncFromDrive} variant="outline" disabled={syncing}>
+            {syncing ? (
+              <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4 mr-1.5" />
+            )}
+            Sync from Drive
+          </Button>
+          <Button onClick={openCreate} variant="premium">
+            <Plus className="w-4 h-4 mr-1.5" />
+            Add Recording
+          </Button>
+        </div>
       </div>
 
       <Card className="border-border/60">
