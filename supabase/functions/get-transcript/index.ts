@@ -29,11 +29,19 @@ function cleanHtml(raw: string): string {
   body = body.replace(/\sstyle="[^"]*"/g, "");
   body = body.replace(/<span>([\s\S]*?)<\/span>/g, "$1");
 
-  // Gemini docs wrap the header block (title, attendee email list, attachments,
-  // meeting-records links) inside <table> elements. None of the content we want
-  // to show (Summary / Decisions / Next steps / Details) is in a table, so we
-  // can safely strip them all. This also removes the "Invited ..." email list.
-  body = body.replace(/<table[\s\S]*?<\/table>/gi, "");
+  // Drop everything before the first "Summary" heading. The preamble (title,
+  // "Invited ..." attendee list with emails, Attachments, Meeting records) all
+  // lives above Summary and varies in structure (sometimes tables, sometimes
+  // plain paragraphs), so anchoring on Summary is the most reliable cut.
+  const summaryRe = /<h[1-6][^>]*>\s*Summary\s*<\/h[1-6]>/i;
+  const summaryMatch = body.match(summaryRe);
+  if (summaryMatch && summaryMatch.index !== undefined) {
+    body = body.slice(summaryMatch.index);
+  } else {
+    // Fallback: at least strip any tables (older docs sometimes wrap the
+    // attendee block in a table).
+    body = body.replace(/<table[\s\S]*?<\/table>/gi, "");
+  }
 
   // Cut everything from the verbatim transcript section onward. The transcript
   // section starts at an <h2> whose own text ends with "Transcript" (e.g.
