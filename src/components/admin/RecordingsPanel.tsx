@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw } from "lucide-react";
+import { Plus, Pencil, Trash2, Upload, Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { z } from "zod";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -171,8 +171,30 @@ export const RecordingsPanel = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [uploadingThumb, setUploadingThumb] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [retitlingId, setRetitlingId] = useState<string | null>(null);
   const thumbFileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const regenerateTitle = async (id: string) => {
+    setRetitlingId(id);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-recordings", {
+        body: { mode: "retitle", recording_id: id },
+      });
+      if (error) throw error;
+      const title = (data as { title?: string })?.title;
+      toast({ title: "Title regenerated", description: title ?? "" });
+      await refresh();
+    } catch (e) {
+      toast({
+        title: "Could not regenerate title",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setRetitlingId(null);
+    }
+  };
 
   const syncFromDrive = async () => {
     setSyncing(true);
@@ -411,6 +433,19 @@ export const RecordingsPanel = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => regenerateTitle(r.id)}
+                        disabled={retitlingId === r.id}
+                        title="Regenerate title from transcript"
+                      >
+                        {retitlingId === r.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Sparkles className="w-4 h-4" />
+                        )}
+                      </Button>
                       <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>
                         <Pencil className="w-4 h-4" />
                       </Button>

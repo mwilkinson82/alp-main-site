@@ -1,5 +1,6 @@
 // Pulls new recordings + Gemini transcripts from the shared Drive folder
 // and inserts them into public.recordings. Idempotent: dedupes on video_ref.
+// Also supports { mode: "retitle", recording_id } to regenerate a single title.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
@@ -8,8 +9,6 @@ const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-// Shared folder where Power Hour / Contractor School / Sales & Marketing
-// recordings + Gemini transcript Docs land.
 const DRIVE_FOLDER_ID = "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -21,7 +20,6 @@ type DriveFile = {
   createdTime: string;
 };
 
-// Classify a filename to a class_type by prefix. Returns null for non-class files.
 function classify(name: string): ClassType | null {
   const n = name.toLowerCase();
   if (n.startsWith("alp hardcore power hour") || n.startsWith("alp power hour")) {
@@ -38,7 +36,6 @@ function classify(name: string): ClassType | null {
   return null;
 }
 
-// Extract YYYY-MM-DD from filenames like "... - 2026/06/22 08:00 GMT-04:00 - Recording"
 function extractDate(name: string): string | null {
   const m = name.match(/(\d{4})[\/\-](\d{2})[\/\-](\d{2})/);
   if (!m) return null;
@@ -58,22 +55,34 @@ const CLASS_LABEL: Record<ClassType, string> = {
   sales_marketing_school: "Sales & Marketing School",
 };
 
-function makeTitle(classType: ClassType, isoDate: string, part?: number | null) {
-  const d = new Date(isoDate + "T00:00:00");
-  const human = d.toLocaleDateString("en-US", {
+function formatHumanDate(isoDate: string) {
+  return new Date(isoDate + "T00:00:00").toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-  const base = `${CLASS_LABEL[classType]} — ${human}`;
+}
+
+function baseTitle(classType: ClassType, isoDate: string, part?: number | null) {
+  const base = `${CLASS_LABEL[classType]} — ${formatHumanDate(isoDate)}`;
   return part ? `${base} (Part ${part})` : base;
 }
 
+function fullTitle(
+  classType: ClassType,
+  isoDate: string,
+  topic: string | null,
+  part?: number | null,
+) {
+  const base = baseTitle(classType, isoDate, part);
+  if (!topic) return base;
+  return `${base}: ${topic}`;
+}
+
 async function listFolder(folderId: string): Promise<DriveFile[]> {
-  // Pull the last 30 days of items so a missed sync still backfills.
   const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
   const q = encodeURIComponent(
-    `'${folderId}' in parents and trashed=false and modifiedTime > '${since}'`
+    `'${folderId}' in parents and trashed=false and modifiedTime > '${since}'`,
   );
   const url =
     `https://connector-gateway.lovable.dev/google_drive/drive/v3/files` +
@@ -91,6 +100,111 @@ async function listFolder(folderId: string): Promise<DriveFile[]> {
   return (json.files ?? []) as DriveFile[];
 }
 
+// Export a Google Doc as plain text via the Drive API (uses the Drive connector).
+async function fetchDocText(docId: string): Promise<string | null> {
+  try {
+    const url =
+      `https://connector-gateway.lovable.dev/google_drive/drive/v3/files/${docId}/export` +
+      `?mimeType=text/plain`;
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY!,
+      },
+    });
+    if (!res.ok) {
+      console.warn("docs export failed", docId, res.status, await res.text());
+      return null;
+    }
+    const text = (await res.text()).replace(/\r\n/g, "\n").trim();
+    return text || null;
+  } catch (e) {
+    console.warn("fetchDocText error", e);
+    return null;
+  }
+}
+
+// Ask Lovable AI for a short topical title. Returns null on any failure.
+async function generateTopicTitle(
+  classType: ClassType,
+  transcript: string,
+): Promise<string | null> {
+  try {
+    const excerpt = transcript.slice(0, 12_000);
+    const className = CLASS_LABEL[classType];
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Lovable-API-Key": LOVABLE_API_KEY!,
+        "X-Lovable-AIG-SDK": "vercel-ai-sdk",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You write very short, specific session titles. Reply with ONLY the title text — no quotes, no punctuation at the end, no labels, no markdown. Max 8 words. Do NOT include the date or the class name.",
+          },
+          {
+            role: "user",
+            content:
+              `This is a transcript / Gemini notes from a "${className}" session. ` +
+              `Write a short, specific title (max 8 words) capturing the main topic discussed.\n\n` +
+              `Transcript / notes:\n${excerpt}`,
+          },
+        ],
+      }),
+    });
+    if (!res.ok) {
+      console.warn("ai title failed", res.status, await res.text());
+      return null;
+    }
+    const json = await res.json();
+    let text: string | undefined = json?.choices?.[0]?.message?.content;
+    if (!text || typeof text !== "string") return null;
+    text = text.trim().replace(/^["'`]+|["'`]+$/g, "").replace(/[.!?]+$/, "").trim();
+    // Sanity: drop if absurdly long or empty
+    if (!text || text.length > 120) return null;
+    return text;
+  } catch (e) {
+    console.warn("generateTopicTitle error", e);
+    return null;
+  }
+}
+
+async function retitleOne(
+  supabase: ReturnType<typeof createClient>,
+  recordingId: string,
+) {
+  const { data: rec, error } = await supabase
+    .from("recordings")
+    .select("id,class_type,recording_date,part_number,transcript_doc_id")
+    .eq("id", recordingId)
+    .single();
+  if (error || !rec) throw new Error(error?.message ?? "Recording not found");
+  if (!rec.transcript_doc_id) {
+    throw new Error("No transcript on this recording yet — try again later.");
+  }
+  const text = await fetchDocText(rec.transcript_doc_id);
+  if (!text) throw new Error("Could not read transcript from Drive.");
+  const topic = await generateTopicTitle(rec.class_type as ClassType, text);
+  if (!topic) throw new Error("AI did not return a usable title.");
+  const newTitle = fullTitle(
+    rec.class_type as ClassType,
+    rec.recording_date as string,
+    topic,
+    (rec.part_number as number | null) ?? undefined,
+  );
+  const { error: upErr } = await supabase
+    .from("recordings")
+    .update({ title: newTitle })
+    .eq("id", recordingId);
+  if (upErr) throw new Error(upErr.message);
+  return newTitle;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -98,14 +212,28 @@ Deno.serve(async (req) => {
     if (!LOVABLE_API_KEY || !GOOGLE_DRIVE_API_KEY) {
       return new Response(
         JSON.stringify({ error: "Missing Drive credentials" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+    // Optional body for single-recording retitle
+    let body: { mode?: string; recording_id?: string } = {};
+    if (req.method === "POST") {
+      try { body = await req.json(); } catch { /* empty body ok */ }
+    }
+
+    if (body.mode === "retitle" && body.recording_id) {
+      const title = await retitleOne(supabase, body.recording_id);
+      return new Response(
+        JSON.stringify({ ok: true, title }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const files = await listFolder(DRIVE_FOLDER_ID);
 
-    // Bucket files by (class, date)
     type Bucket = { videos: DriveFile[]; docs: DriveFile[] };
     const buckets = new Map<string, Bucket>();
     for (const f of files) {
@@ -120,7 +248,6 @@ Deno.serve(async (req) => {
       buckets.set(key, b);
     }
 
-    // Fetch existing rows for these dates to dedupe
     const { data: existing } = await supabase
       .from("recordings")
       .select("video_ref")
@@ -131,7 +258,7 @@ Deno.serve(async (req) => {
       if (m) existingIds.add(m[1]);
     }
 
-    const inserted: Array<{ class_type: ClassType; date: string; part?: number }> = [];
+    const inserted: Array<{ class_type: ClassType; date: string; part?: number; ai_title?: boolean }> = [];
     const skipped: Array<{ reason: string; name: string }> = [];
 
     for (const [key, b] of buckets) {
@@ -140,26 +267,32 @@ Deno.serve(async (req) => {
         skipped.push({ reason: "no_video", name: key });
         continue;
       }
-      // Sort videos chronologically for stable part numbering
       b.videos.sort((a, c) => a.createdTime.localeCompare(c.createdTime));
       const total = b.videos.length;
-      // Use the most recent doc as the transcript pair (Gemini may produce one combined doc)
       const transcript = b.docs.sort((a, c) =>
         c.createdTime.localeCompare(a.createdTime)
       )[0];
       const transcriptDocId = transcript?.id ?? null;
+
+      // Generate one AI topic per (class, date) — shared across parts.
+      let aiTopic: string | null = null;
+      const hasNewVideo = b.videos.some((v) => !existingIds.has(v.id));
+      if (hasNewVideo && transcriptDocId) {
+        const text = await fetchDocText(transcriptDocId);
+        if (text) aiTopic = await generateTopicTitle(cls, text);
+      }
 
       for (let i = 0; i < b.videos.length; i++) {
         const v = b.videos[i];
         if (existingIds.has(v.id)) continue;
         const part = total > 1 ? i + 1 : null;
         const row = {
-          title: makeTitle(cls, date, part),
+          title: fullTitle(cls, date, aiTopic, part),
           class_type: cls,
           recording_date: date,
           video_source: "google_drive" as const,
           video_ref: `https://drive.google.com/file/d/${v.id}/view?usp=sharing`,
-          cloudflare_video_id: v.id, // legacy NOT NULL column; reuse Drive file ID
+          cloudflare_video_id: v.id,
           transcript_doc_id: transcriptDocId,
           part_number: part,
           part_total: total > 1 ? total : null,
@@ -169,7 +302,7 @@ Deno.serve(async (req) => {
         if (error) {
           skipped.push({ reason: `insert_error:${error.message}`, name: v.name });
         } else {
-          inserted.push({ class_type: cls, date, part: part ?? undefined });
+          inserted.push({ class_type: cls, date, part: part ?? undefined, ai_title: !!aiTopic });
         }
       }
     }
@@ -182,13 +315,13 @@ Deno.serve(async (req) => {
         inserted,
         skipped,
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
     console.error("sync-recordings error", e);
     return new Response(
       JSON.stringify({ error: String((e as Error).message ?? e) }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }
 });
