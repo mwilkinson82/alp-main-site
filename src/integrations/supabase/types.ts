@@ -232,9 +232,13 @@ export type Database = {
           description: string | null
           id: string
           is_published: boolean
+          part_number: number | null
+          part_total: number | null
           recording_date: string
           thumbnail_url: string | null
           title: string
+          transcript_content: string | null
+          transcript_doc_id: string | null
           updated_at: string
           video_ref: string | null
           video_source: Database["public"]["Enums"]["video_source"]
@@ -246,9 +250,13 @@ export type Database = {
           description?: string | null
           id?: string
           is_published?: boolean
+          part_number?: number | null
+          part_total?: number | null
           recording_date: string
           thumbnail_url?: string | null
           title: string
+          transcript_content?: string | null
+          transcript_doc_id?: string | null
           updated_at?: string
           video_ref?: string | null
           video_source?: Database["public"]["Enums"]["video_source"]
@@ -260,9 +268,13 @@ export type Database = {
           description?: string | null
           id?: string
           is_published?: boolean
+          part_number?: number | null
+          part_total?: number | null
           recording_date?: string
           thumbnail_url?: string | null
           title?: string
+          transcript_content?: string | null
+          transcript_doc_id?: string | null
           updated_at?: string
           video_ref?: string | null
           video_source?: Database["public"]["Enums"]["video_source"]

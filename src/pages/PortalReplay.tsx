@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import PortalLayout from "@/components/portal/PortalLayout";
 import { usePortalAuth } from "@/hooks/usePortalAuth";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, FileText, Loader2 } from "lucide-react";
 import SEO from "@/components/SEO";
 
 type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
@@ -19,6 +19,9 @@ type Recording = {
   cloudflare_video_id: string;
   video_source: VideoSource | null;
   video_ref: string | null;
+  transcript_doc_id: string | null;
+  part_number: number | null;
+  part_total: number | null;
 };
 
 const classLabel: Record<ClassType, string> = {
@@ -40,14 +43,6 @@ const formatDate = (iso: string) =>
     day: "numeric",
   });
 
-// Resolve the iframe src based on video source.
-// - cloudflare: use the video ID with Cloudflare Stream's iframe player
-// - zoom_clip: accept any of:
-//     • full embed URL: https://us06web.zoom.us/clips/embed/{clipId}
-//     • full share URL: https://us06web.zoom.us/clips/share/{clipId}
-//     • just the clip ID
-// Extract a Google Drive file ID from any common Drive URL form, or treat the
-// input as a bare ID if it looks like one.
 const extractDriveId = (ref: string): string | null => {
   const fileMatch = ref.match(/\/file\/d\/([a-zA-Z0-9_-]{20,})/);
   if (fileMatch) return fileMatch[1];
@@ -64,25 +59,19 @@ const resolveEmbedSrc = (r: Recording): string => {
   const source = r.video_source ?? "cloudflare";
 
   if (source === "zoom_clip") {
-    // Already an embed URL — use as-is
     if (/\/clips\/embed\//i.test(ref)) return ref;
-    // Share URL — convert to embed URL
     const shareMatch = ref.match(/^(https?:\/\/[^/]*zoom\.us)\/clips\/share\/([^?#/]+)/i);
     if (shareMatch) return `${shareMatch[1]}/clips/embed/${shareMatch[2]}`;
-    // Some other URL we don't recognize — return it raw
     if (/^https?:\/\//i.test(ref)) return ref;
-    // Bare clip ID — default to us06web subdomain
     return `https://us06web.zoom.us/clips/embed/${ref}`;
   }
 
   if (source === "google_drive") {
     const id = extractDriveId(ref);
     if (id) return `https://drive.google.com/file/d/${id}/preview`;
-    // Fallback: return raw if we can't parse
     return ref;
   }
 
-  // Cloudflare Stream
   if (/^https?:\/\//i.test(ref)) return ref;
   return `https://iframe.videodelivery.net/${ref}`;
 };
@@ -93,6 +82,12 @@ const PortalReplay = () => {
   const [recording, setRecording] = useState<Recording | null>(null);
   const [loadingRec, setLoadingRec] = useState(true);
 
+  // Transcript state
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
+  const [transcriptHtml, setTranscriptHtml] = useState<string | null>(null);
+  const [transcriptLoading, setTranscriptLoading] = useState(false);
+  const [transcriptError, setTranscriptError] = useState<string | null>(null);
+
   useEffect(() => {
     if (!id || !isActiveClient) {
       setLoadingRec(false);
@@ -100,7 +95,9 @@ const PortalReplay = () => {
     }
     supabase
       .from("recordings")
-      .select("id,title,recording_date,description,class_type,cloudflare_video_id,video_source,video_ref")
+      .select(
+        "id,title,recording_date,description,class_type,cloudflare_video_id,video_source,video_ref,transcript_doc_id,part_number,part_total",
+      )
       .eq("id", id)
       .maybeSingle()
       .then(({ data }) => {
@@ -108,6 +105,36 @@ const PortalReplay = () => {
         setLoadingRec(false);
       });
   }, [id, isActiveClient]);
+
+  // Reset transcript when recording changes
+  useEffect(() => {
+    setTranscriptOpen(false);
+    setTranscriptHtml(null);
+    setTranscriptError(null);
+  }, [recording?.id]);
+
+  const loadTranscript = async () => {
+    if (!recording?.transcript_doc_id) return;
+    setTranscriptOpen(true);
+    if (transcriptHtml || transcriptLoading) return;
+    setTranscriptLoading(true);
+    setTranscriptError(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("get-transcript", {
+        body: { docId: recording.transcript_doc_id },
+      });
+      if (error) throw error;
+      if ((data as any)?.html) {
+        setTranscriptHtml((data as any).html as string);
+      } else {
+        setTranscriptError("Transcript unavailable.");
+      }
+    } catch (e: any) {
+      setTranscriptError(e?.message ?? "Failed to load transcript.");
+    } finally {
+      setTranscriptLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -149,7 +176,6 @@ const PortalReplay = () => {
                 </Button>
               </div>
 
-              {/* Edge-to-edge video on mobile, rounded card on larger screens */}
               <div className="aspect-video sm:rounded-xl overflow-hidden bg-black sm:shadow-premium sm:border sm:border-border/60">
                 <iframe
                   src={resolveEmbedSrc(recording)}
@@ -162,9 +188,16 @@ const PortalReplay = () => {
               </div>
 
               <div className="mt-5 sm:mt-6 px-4 sm:px-0">
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                  {classLabel[recording.class_type]}
-                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-semibold tracking-widest uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                    {classLabel[recording.class_type]}
+                  </span>
+                  {recording.part_number && recording.part_total && recording.part_total > 1 && (
+                    <span className="text-[10px] font-semibold tracking-widest uppercase text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded-full">
+                      Part {recording.part_number} of {recording.part_total}
+                    </span>
+                  )}
+                </div>
                 <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight text-foreground mt-3 leading-snug">
                   {recording.title}
                 </h1>
@@ -176,6 +209,50 @@ const PortalReplay = () => {
                   <p className="text-sm sm:text-base text-foreground/80 mt-4 sm:mt-5 leading-relaxed whitespace-pre-line">
                     {recording.description}
                   </p>
+                )}
+
+                {/* Transcript section */}
+                {recording.transcript_doc_id && (
+                  <div className="mt-8 border-t border-border/60 pt-6">
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-primary" />
+                        <h2 className="text-base sm:text-lg font-semibold text-foreground">
+                          Session Notes & Transcript
+                        </h2>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant={transcriptOpen ? "ghost" : "outline"}
+                        onClick={() =>
+                          transcriptOpen ? setTranscriptOpen(false) : loadTranscript()
+                        }
+                      >
+                        {transcriptOpen ? "Hide" : "Show transcript"}
+                      </Button>
+                    </div>
+
+                    {transcriptOpen && (
+                      <div className="mt-4 rounded-xl border border-border/60 bg-card/40 p-4 sm:p-6">
+                        {transcriptLoading && (
+                          <div className="flex items-center text-sm text-muted-foreground">
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Loading transcript…
+                          </div>
+                        )}
+                        {transcriptError && (
+                          <p className="text-sm text-destructive">{transcriptError}</p>
+                        )}
+                        {transcriptHtml && (
+                          <div
+                            className="transcript-content prose prose-invert max-w-none prose-sm sm:prose-base prose-p:leading-relaxed prose-headings:font-semibold prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                            // Content comes from a trusted Google Doc fetched server-side via our auth-gated edge function.
+                            dangerouslySetInnerHTML={{ __html: transcriptHtml }}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </>
