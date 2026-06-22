@@ -159,6 +159,7 @@ Deno.serve(async (req) => {
           recording_date: date,
           video_source: "google_drive" as const,
           video_ref: `https://drive.google.com/file/d/${v.id}/view?usp=sharing`,
+          cloudflare_video_id: v.id, // legacy NOT NULL column; reuse Drive file ID
           transcript_doc_id: transcriptDocId,
           part_number: part,
           part_total: total > 1 ? total : null,
