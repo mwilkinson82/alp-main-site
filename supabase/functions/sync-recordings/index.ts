@@ -330,6 +330,8 @@ Deno.serve(async (req) => {
         if (error) {
           skipped.push({ reason: `insert_error:${error.message}`, name: v.name });
         } else {
+          // Make the video publicly viewable so portal clients can stream it.
+          await makeAnyoneViewer(v.id);
           inserted.push({ class_type: cls, date, part: part ?? undefined, ai_title: !!aiTopic });
         }
       }
