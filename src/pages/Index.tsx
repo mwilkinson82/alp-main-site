@@ -135,6 +135,9 @@ const Index = () => (
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-background/65">
               Most construction companies are carrying the right answers in one person’s head. ALP helps expose the work, assign ownership, install the operating cadence, and create evidence the team can act on without waiting for the owner to rescue the day.
             </p>
+            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-background/55">
+              That doctrine runs through <Link to="/contractor-circle" className="text-background underline decoration-background/35 underline-offset-4">ALP Contractor Circle</Link>, the <a href="https://alphandbook.com/preview" className="text-background underline decoration-background/35 underline-offset-4">ALP Handbook</a>, <a href="https://alpos.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">AOS by ALP</a>, and <a href="https://overwatch.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">OverWatch by ALP</a>. <Link to="/ecosystem" className="text-background underline decoration-background/35 underline-offset-4">See how the ALP ecosystem fits together.</Link>
+            </p>
           </div>
           <div className="grid gap-8 border-t border-background/20 pt-8 sm:grid-cols-2 lg:grid-cols-1">
             {[

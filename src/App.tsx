@@ -5,10 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import HashScroller from "@/components/HashScroller";
+import RouteIndexing from "@/components/RouteIndexing";
 
 const Index = lazy(() => import("./pages/Index"));
 const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
 const Partnerships = lazy(() => import("./pages/Partnerships"));
+const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const ALPUniversity = lazy(() => import("./pages/ALPUniversity"));
 const PowerHour = lazy(() => import("./pages/PowerHour"));
 const Coaching = lazy(() => import("./pages/Coaching"));
@@ -56,6 +58,7 @@ const App = () => (
           <Route path="/contractor-circle" element={<ContractorCircle />} />
           <Route path="/circle" element={<Navigate to="/contractor-circle" replace />} />
           <Route path="/partnerships" element={<Partnerships />} />
+          <Route path="/ecosystem" element={<Ecosystem />} />
           
           <Route path="/contractor-school" element={<ContractorSchool />} />
           <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
@@ -120,6 +123,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <RouteIndexing />
         {/* Smooth scroll to hash anchors across routes */}
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore - component returns null */}

@@ -20,6 +20,7 @@ const AdminClients = () => {
         title="Manage Clients | ALP Admin"
         description="Admin: invite and manage client portal access."
         canonical="/admin/clients"
+        noIndex
       />
       <PortalLayout isAdmin>
         <section className="container mx-auto px-4 py-12 md:py-16 max-w-5xl">

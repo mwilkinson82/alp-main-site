@@ -40,7 +40,7 @@ const PortalDashboard = () => {
 
   return (
     <>
-      <SEO title="Client Portal Dashboard | ALP" description="Your ALP client portal dashboard." canonical="/portal/dashboard" />
+      <SEO title="Client Portal Dashboard | ALP" description="Your ALP client portal dashboard." canonical="/portal/dashboard" noIndex />
       <PortalLayout isAdmin={isAdmin}>
         <section className="container mx-auto px-4 py-8 md:py-16 max-w-6xl">
           <div className="mb-6 md:mb-14">

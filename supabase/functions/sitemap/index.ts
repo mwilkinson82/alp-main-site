@@ -10,6 +10,7 @@ const SITE_URL = "https://altitudelogicpressure.com";
 const staticPages = [
   { loc: "/", changefreq: "weekly", priority: "1.0" },
   { loc: "/contractor-circle", changefreq: "weekly", priority: "1.0" },
+  { loc: "/ecosystem", changefreq: "monthly", priority: "0.9" },
   { loc: "/programs", changefreq: "weekly", priority: "0.9" },
   { loc: "/power-hour", changefreq: "weekly", priority: "0.9" },
   { loc: "/coaching", changefreq: "weekly", priority: "0.9" },
@@ -17,7 +18,6 @@ const staticPages = [
   { loc: "/alp-university", changefreq: "weekly", priority: "0.9" },
   { loc: "/contractor-school", changefreq: "weekly", priority: "0.8" },
   { loc: "/sales-marketing-school", changefreq: "weekly", priority: "0.8" },
-  { loc: "/handbook-special", changefreq: "monthly", priority: "0.7" },
   { loc: "/insights", changefreq: "daily", priority: "0.8" },
   { loc: "/privacy-policy", changefreq: "monthly", priority: "0.3" },
   { loc: "/terms-of-service", changefreq: "monthly", priority: "0.3" },

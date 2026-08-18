@@ -16,7 +16,7 @@ const AdminRecordings = () => {
 
   return (
     <>
-      <SEO title="Manage Recordings | ALP Admin" description="Admin: manage class replay recordings." canonical="/admin/recordings" />
+      <SEO title="Manage Recordings | ALP Admin" description="Admin: manage class replay recordings." canonical="/admin/recordings" noIndex />
       <PortalLayout isAdmin>
         <section className="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
           <div className="mb-8">

@@ -150,6 +150,7 @@ const PortalReplay = () => {
         title={recording ? `${recording.title} | ALP Client Portal` : "Replay | ALP Client Portal"}
         description="ALP class replay."
         canonical={`/portal/replay/${id}`}
+        noIndex
       />
       <PortalLayout isAdmin={isAdmin}>
         <section className="container mx-auto px-0 sm:px-4 py-4 sm:py-10 md:py-14 max-w-5xl">

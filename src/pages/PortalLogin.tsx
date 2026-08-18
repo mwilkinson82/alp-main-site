@@ -102,7 +102,7 @@ const PortalLogin = () => {
 
   return (
     <>
-      <SEO title="Sign In | ALP Client Portal" description="Sign in to the Altitude Logic Pressure client replay portal." canonical="/portal/login" />
+      <SEO title="Sign In | ALP Client Portal" description="Sign in to the Altitude Logic Pressure client replay portal." canonical="/portal/login" noIndex />
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-secondary/40 p-4">
         <div className="w-full max-w-md">
           <Link to="/client-login" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6 transition-colors">

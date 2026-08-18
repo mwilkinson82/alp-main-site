@@ -15,6 +15,7 @@ const ClientLogin = () => {
         title="Client Replay Access | Altitude Logic Pressure"
         description="Access your ALP class replay libraries. Choose between the Legacy Library (2023 – April 2026) and the Current Client Portal (April 26, 2026 onward)."
         canonical="/client-login"
+        noIndex
       />
       <div className="min-h-screen flex flex-col bg-background">
         <Header />

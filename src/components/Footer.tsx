@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="bg-foreground text-background">
       <div className="alp-shell py-16 md:py-20">
-        <div className="grid gap-12 border-b border-background/20 pb-14 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-12 border-b border-background/20 pb-14 md:grid-cols-2 lg:grid-cols-[1.45fr_1fr_1fr_1fr]">
           <div>
             <img src={alpLogo} alt="ALP" className="h-14 w-auto" />
             <p className="mt-6 max-w-md text-2xl leading-tight tracking-[-0.03em]">
@@ -25,6 +25,16 @@ const Footer = () => {
               <Link to="/programs" className="hover:text-background/60">Live training</Link>
               <Link to="/coaching" className="hover:text-background/60">Private intensives</Link>
               <Link to="/partnerships" className="hover:text-background/60">Partnerships</Link>
+            </div>
+          </div>
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/45">ALP ecosystem</p>
+            <div className="mt-5 grid gap-3 text-sm">
+              <Link to="/ecosystem" className="hover:text-background/60">Ecosystem overview</Link>
+              <a href="https://alphandbook.com/preview" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">ALP Handbook</a>
+              <a href="https://alpos.alpcontractorcircle.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">AOS by ALP</a>
+              <a href="https://overwatch.alpcontractorcircle.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">OverWatch by ALP</a>
+              <a href="https://marshallwilkinson.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">MarshallWilkinson.com</a>
             </div>
           </div>
           <div>

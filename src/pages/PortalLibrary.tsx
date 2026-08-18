@@ -71,7 +71,7 @@ const PortalLibrary = ({ classType, title, description, canonical }: Props) => {
 
   return (
     <>
-      <SEO title={`${title} Replays | ALP Client Portal`} description={description} canonical={canonical} />
+      <SEO title={`${title} Replays | ALP Client Portal`} description={description} canonical={canonical} noIndex />
       <PortalLayout isAdmin={isAdmin}>
         <section className="container mx-auto px-4 py-8 md:py-16 max-w-5xl">
           <div className="mb-6 md:mb-10">
