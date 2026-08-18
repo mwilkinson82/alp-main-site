@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,7 +28,7 @@ type FormValues = z.infer<typeof schema>;
 interface AdvisoryApplicationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  defaultService?: "Strategy Session — $1,000" | "Private Advisory — $5,000";
+  defaultService?: "3-Week Intensive — $5,000" | "6-Week Intensive — $10,000";
 }
 
 const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: AdvisoryApplicationModalProps) => {
@@ -43,12 +43,16 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
     },
   });
 
+  useEffect(() => {
+    if (defaultService) setValue("service_applying_for", defaultService);
+  }, [defaultService, setValue]);
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
       // 1. Save to database
       const { error: dbError } = await supabase
-        .from("advisory_applications" as any)
+        .from("advisory_applications")
         .insert({
           full_name: data.full_name,
           company_name: data.company_name,
@@ -202,8 +206,8 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Strategy Session — $1,000">Strategy Session — $1,000</SelectItem>
-                    <SelectItem value="Private Advisory — $5,000">Private Advisory — $5,000</SelectItem>
+                    <SelectItem value="3-Week Intensive — $5,000">3-Week Intensive — $5,000</SelectItem>
+                    <SelectItem value="6-Week Intensive — $10,000">6-Week Intensive — $10,000</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.service_applying_for && <p className="text-destructive text-xs">{errors.service_applying_for.message}</p>}

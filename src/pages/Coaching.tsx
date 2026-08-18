@@ -1,388 +1,98 @@
 import { useState } from "react";
-import marshallCasual from "@/assets/marshall-casual.jpg";
-import { Link } from "react-router-dom";
+import { ArrowRight, Check } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Clock, Video, Users, ArrowRight, Monitor } from "lucide-react";
-import CustomPricingForm from "@/components/CustomPricingForm";
-import CoachingTestimonials from "@/components/CoachingTestimonials";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
+import marshallCasual from "@/assets/marshall-casual.jpg";
+
+type Intensive = "3-Week Intensive — $5,000" | "6-Week Intensive — $10,000";
+
+const engagements: Array<{
+  name: Intensive;
+  eyebrow: string;
+  price: string;
+  duration: string;
+  purpose: string;
+  outcomes: string[];
+}> = [
+  {
+    name: "3-Week Intensive — $5,000",
+    eyebrow: "Focused intervention",
+    price: "$5,000",
+    duration: "3 weeks",
+    purpose: "For one expensive problem that needs diagnosis, decisions, installation, and a clean handoff—not an open-ended coaching relationship.",
+    outcomes: ["Defined problem and success condition", "Three private working sessions", "Live evidence review and decision support", "Written next moves, owners, and deadlines", "Session recordings and working materials"],
+  },
+  {
+    name: "6-Week Intensive — $10,000",
+    eyebrow: "Operating reset",
+    price: "$10,000",
+    duration: "6 weeks",
+    purpose: "For a deeper operating problem that crosses people, process, financial control, leadership, or execution and requires implementation over time.",
+    outcomes: ["Structural diagnosis across the business", "Six private working sessions", "Between-session decision access", "Operating cadence and accountability design", "Implementation inspection and final handoff"],
+  },
+];
 
 const Coaching = () => {
-  const [customPricingOpen, setCustomPricingOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState("");
-  const [appModalOpen, setAppModalOpen] = useState(false);
-  const [defaultService, setDefaultService] = useState<"Strategy Session — $1,000" | "Private Advisory — $5,000">("Strategy Session — $1,000");
+  const [applicationOpen, setApplicationOpen] = useState(false);
+  const [selectedIntensive, setSelectedIntensive] = useState<Intensive>("3-Week Intensive — $5,000");
 
-  const openApplication = (service: "Strategy Session — $1,000" | "Private Advisory — $5,000") => {
-    setDefaultService(service);
-    setAppModalOpen(true);
+  const applyFor = (intensive: Intensive) => {
+    setSelectedIntensive(intensive);
+    setApplicationOpen(true);
   };
-
-  const openCustomPricingForm = (packageName: string) => {
-    setSelectedPackage(packageName);
-    setCustomPricingOpen(true);
-  };
-
-  const packages = [
-    {
-      name: "Strategy Session",
-      subtitle: "Single-session intensive",
-      price: "$1,000",
-      duration: "1 Hour",
-      features: [
-        "Deep dive into your specific challenges",
-        "Actionable strategies and solutions",
-        "Recorded session with lifetime access",
-        "Personalized guidance and recommendations",
-        "Follow-up resources and materials"
-      ],
-      cta: "Apply for Private Advisory",
-      premium: false,
-    },
-    {
-      name: "6-Session Intensive",
-      subtitle: "ALP's Premier Advisory Experience",
-      price: "$5,000",
-      duration: "Six 1-Hour Sessions",
-      features: [
-        "Six dedicated 1-on-1 sessions with Marshall",
-        "Direct access to Marshall between sessions via text & Discord",
-        "Real-time guidance as challenges arise during your day",
-        "Recorded sessions with lifetime access",
-        "Strategic scaling roadmap tailored to your business",
-        "Risk mitigation and decision-making support"
-      ],
-      cta: "Apply for Private Advisory",
-      premium: true
-    },
-    {
-      name: "Ongoing Support",
-      subtitle: "Daily, Weekly, or Monthly",
-      price: "Custom Pricing",
-      duration: "Flexible Terms",
-      features: [
-        "Regular accountability and guidance",
-        "Continuous strategy refinement",
-        "All single session benefits",
-        "Priority scheduling",
-        "Direct messaging access between sessions"
-      ],
-      cta: "Discuss Your Needs"
-    }
-  ];
 
   return (
     <>
-      <SEO 
-        title="Marshall Wilkinson - Private Advisory | 1-on-1 Strategic Sessions"
-        description="Apply for Private Advisory with Marshall Wilkinson. Single-session and 6-session intensive engagements — virtual via Zoom. Built for operators who need execution systems and decision leverage installed fast."
-        keywords="Marshall Wilkinson private advisory, Marshall Wilkinson 1-on-1, strategic advisory, business advisory, executive advisory, ALP private advisory, strategy session, 6-session intensive"
-        canonical="/coaching"
-      />
-      <StructuredData 
-        type="service" 
-        data={{
-          serviceType: "1-on-1 Business Coaching",
-          description: "Personalized coaching sessions with lifetime recording access",
-          price: "1000",
-          offers: {
-            "@type": "AggregateOffer",
-            "lowPrice": "1000",
-            "highPrice": "10000",
-            "priceCurrency": "USD"
-          }
-        }}
-      />
+      <SEO title="Private Intensives with Marshall Wilkinson" description="Apply for a 3-week $5,000 or 6-week $10,000 private ALP intensive with Marshall Wilkinson." keywords="Marshall Wilkinson private advisory, ALP intensive, construction business advisory" canonical="/coaching" />
+      <StructuredData type="service" data={{ serviceType: "Private business intensive", description: "Application-only private operating intensives with Marshall Wilkinson", price: "5000", offers: { "@type": "AggregateOffer", lowPrice: "5000", highPrice: "10000", priceCurrency: "USD" } }} />
       <main className="min-h-screen">
         <Header />
-
-        {/* Hero Image Section */}
-        <section className="relative h-[70vh] md:h-[80vh] overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${marshallCasual})` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-        </section>
-
-        {/* Content Section */}
-        <section className="relative bg-background py-16 md:py-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-                <h1 className="text-5xl md:text-7xl font-bold">
-                <span className="text-gradient-gold">Private Advisory</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Private strategic engagements for operators and founders who need execution systems, decision leverage, and real accountability installed fast.
-              </p>
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-4 py-2.5 text-sm mx-auto">
-                <Video className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="text-primary font-medium text-center leading-snug">
-                  All sessions conducted virtually via Zoom<br className="sm:hidden" />
-                  <span className="hidden sm:inline"> — </span>1-on-1 with Marshall
-                </span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-                <Button
-                  size="lg"
-                  className="bg-gradient-gold hover:shadow-glow text-primary-foreground font-semibold text-lg px-8 h-12"
-                  asChild
-                >
-                  <a href="#intensive">See the 6-Session Intensive</a>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold text-lg px-8 h-12"
-                  asChild
-                >
-                  <a href="#packages">View All Packages</a>
-                </Button>
-              </div>
+        <section className="border-b border-border pt-[72px]">
+          <div className="alp-shell grid lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="flex flex-col justify-center py-20 pr-0 md:py-28 lg:border-r lg:border-border lg:pr-14">
+              <p className="alp-eyebrow">Application-only private work</p>
+              <h1 className="alp-display mt-7 text-[clamp(4rem,7vw,7.5rem)]">Come in with the real problem.</h1>
+              <p className="alp-italic mt-5 text-3xl text-accent">Leave with the company able to carry the answer.</p>
+              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">These are tightly scoped working engagements for owners facing a decision, operating constraint, leadership failure, or commercial problem expensive enough to require direct attention.</p>
             </div>
+            <div className="relative min-h-[480px] bg-foreground"><img src={marshallCasual} alt="Marshall Wilkinson" className="absolute inset-0 h-full w-full object-cover object-top grayscale-[0.25]" /><div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" /><p className="absolute inset-x-8 bottom-8 border-t border-white/35 pt-4 text-sm text-white/70">Private. Direct. Built around live evidence and required decisions.</p></div>
           </div>
         </section>
 
-      {/* What's Included */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-              What You Get in Every Session
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 text-lg">
-              One hour that could change everything
-            </p>
+        <section className="border-b border-border bg-secondary/55">
+          <div className="alp-shell py-16 md:py-20"><p className="alp-eyebrow">The rule</p><p className="mt-5 max-w-5xl text-3xl leading-tight tracking-[-0.035em] md:text-5xl">No vague “business coaching.” The engagement starts with a defined problem, a hard time box, and a result that can be verified.</p></div>
+        </section>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="border-2">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <Clock className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle>Deep Dive Analysis</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    We'll thoroughly examine your specific challenges, identify root causes, and develop targeted solutions tailored to your situation.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <Video className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle>Lifetime Recording Access</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Every session is recorded and yours forever. Review insights, strategies, and action items whenever you need them.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle>Personalized Guidance</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Get expert advice customized to your business, industry, and goals. No generic solutions—just what works for you.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6-Session Intensive Feature Section */}
-      <section id="intensive" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <span className="inline-block bg-primary/10 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                ALP's Flagship Coaching Package
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                The 6-Session Intensive
-              </h2>
-            </div>
-            <div className="prose prose-lg mx-auto text-muted-foreground space-y-6 text-center">
-              <p className="text-xl leading-relaxed">
-                Scaling a business is one of the most high-stakes endeavors you'll ever undertake. Every decision carries weight—hiring, pricing, operations, client acquisition—and the cost of getting it wrong compounds fast. That's why the 6-Session Intensive exists.
-              </p>
-              <p className="text-lg leading-relaxed">
-                This is ALP's top-tier coaching service, designed for founders and operators who need more than a single conversation. Over six dedicated sessions, Marshall works alongside you to build a strategic roadmap tailored to your business—addressing the real challenges you're facing in real time.
-              </p>
-              <p className="text-lg leading-relaxed">
-                But the value doesn't stop when the call ends. Between sessions, you have <strong className="text-foreground">direct access to Marshall via text and Discord</strong>—so when a critical decision lands on your desk, you're not guessing. You have an experienced advisor in your corner helping you mitigate risk, seize opportunities, and move with confidence.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Most clients find this is the format that fits. It gives you enough time to implement, adjust, and come back with results—while keeping the momentum and accountability that drives real transformation.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Packages */}
-      <section id="packages" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-              Choose Your Investment
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 text-lg">
-              Flexible options to match your commitment level
-            </p>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {packages.map((pkg, index) => (
-                <Card 
-                  key={index} 
-                  className={`relative ${pkg.premium ? 'border-primary border-2 shadow-lg' : ''}`}
-                >
-                  {pkg.premium && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </div>
-                  )}
-                  
-                  <CardHeader>
-                    <CardTitle className="text-2xl">{pkg.name}</CardTitle>
-                    {pkg.subtitle && (
-                      <p className="text-sm text-muted-foreground">{pkg.subtitle}</p>
-                    )}
-                    <div className="mt-4">
-                      <div className="text-4xl font-bold">{pkg.price}</div>
-                      <div className="text-sm text-muted-foreground mt-1">{pkg.duration}</div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-6">
-                    <ul className="space-y-3">
-                      {pkg.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                          <span className="text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Button 
-                      className="w-full" 
-                      variant={pkg.premium ? "default" : "outline"}
-                      onClick={() => {
-                        if (pkg.price === "Custom Pricing") {
-                          openCustomPricingForm(pkg.name);
-                        } else if (pkg.premium) {
-                          openApplication("Private Advisory — $5,000");
-                        } else {
-                          openApplication("Strategy Session — $1,000");
-                        }
-                      }}
-                      size="lg"
-                    >
-                      {pkg.cta}
-                    </Button>
-                  </CardContent>
-                </Card>
+        <section className="border-b border-border" id="intensives">
+          <div className="alp-shell py-20 md:py-28">
+            <div className="grid gap-8 lg:grid-cols-2">
+              {engagements.map((engagement, index) => (
+                <article key={engagement.name} className={`flex flex-col border border-border p-7 sm:p-10 ${index === 1 ? "bg-foreground text-background" : "bg-card"}`}>
+                  <div className={`flex items-center justify-between border-b pb-6 ${index === 1 ? "border-background/20" : "border-border"}`}><p className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${index === 1 ? "text-background/45" : "text-muted-foreground"}`}>{engagement.eyebrow}</p><span className={`alp-italic text-lg ${index === 1 ? "text-background/35" : "text-muted-foreground"}`}>0{index + 1}</span></div>
+                  <h2 className="mt-8 text-4xl">{engagement.name.split(" — ")[0]}</h2>
+                  <div className="mt-4 flex items-baseline gap-3"><span className="text-5xl tracking-[-0.05em]">{engagement.price}</span><span className={index === 1 ? "text-background/50" : "text-muted-foreground"}>/ {engagement.duration}</span></div>
+                  <p className={`mt-7 text-lg leading-relaxed ${index === 1 ? "text-background/65" : "text-muted-foreground"}`}>{engagement.purpose}</p>
+                  <ul className={`mt-8 grid gap-3 border-t pt-6 text-sm ${index === 1 ? "border-background/20 text-background/75" : "border-border"}`}>{engagement.outcomes.map((outcome) => <li key={outcome} className="flex gap-3"><Check className={`mt-0.5 h-4 w-4 shrink-0 ${index === 1 ? "text-background" : "text-accent"}`} />{outcome}</li>)}</ul>
+                  <button type="button" onClick={() => applyFor(engagement.name)} className={`mt-10 inline-flex min-h-12 items-center justify-center gap-2 px-6 py-3 text-sm font-semibold ${index === 1 ? "bg-background text-foreground hover:bg-secondary" : "bg-foreground text-background hover:bg-accent"}`}>Apply for this intensive <ArrowRight className="h-4 w-4" /></button>
+                </article>
               ))}
             </div>
-
-            <p className="text-center text-muted-foreground mt-8 text-sm">
-              * Custom packages are priced based on frequency, duration, and specific needs. 
-              Book a consultation to discuss the perfect plan for you.
-            </p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How It Works */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-              How It Works
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 text-lg">
-              A simple process designed around your schedule
-            </p>
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">1</div>
-                <h3 className="text-xl font-semibold">Submit Your Application</h3>
-                <p className="text-muted-foreground">Complete the short advisory application so Marshall can understand your business and determine if there's a fit.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">2</div>
-                <h3 className="text-xl font-semibold">Marshall Reviews & Reaches Out</h3>
-                <p className="text-muted-foreground">Marshall reviews every application personally. If there's a fit, he'll reach out within 48 hours to schedule your sessions.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto text-2xl font-bold">3</div>
-                <h3 className="text-xl font-semibold">Start Transforming</h3>
-                <p className="text-muted-foreground">Get on the call, dive deep into your business challenges, and walk away with actionable strategies you can implement immediately.</p>
-              </div>
-            </div>
+        <section className="border-b border-border bg-secondary/55">
+          <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-[0.7fr_1.3fr]">
+            <div><p className="alp-eyebrow">How it works</p><h2 className="mt-5 text-4xl leading-tight md:text-5xl">Application first. Scope before access.</h2></div>
+            <div className="grid gap-7 sm:grid-cols-3">{[["01", "Apply", "Name the business, the problem, what you have tried, and the intensive you want."], ["02", "Review", "Marshall reviews the evidence and determines whether the issue and engagement are a fit."], ["03", "Work", "If accepted, the work begins with the problem, required decisions, and success condition already visible."]].map(([number, title, copy]) => <div key={number} className="border-t border-foreground pt-5"><span className="alp-number">{number}</span><h3 className="mt-4 text-2xl">{title}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy}</p></div>)}</div>
           </div>
-        </div>
-      </section>
+        </section>
 
-
-      <CoachingTestimonials />
-
-
-
-      {/* Final CTA */}
-      <section id="ready-to-apply" className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold">
-              Ready to Apply?
-            </h2>
-            <p className="text-lg md:text-xl opacity-90">
-              Applications are reviewed personally by Marshall. If there's a fit, you'll hear back within 48 hours.
-            </p>
-            <div className="flex justify-center">
-              <Button 
-                size="lg" 
-                variant="secondary"
-                onClick={() => openApplication("Private Advisory — $5,000")}
-                className="text-sm md:text-lg px-6 md:px-8"
-              >
-                <span className="block">Apply for Private Advisory</span>
-                <span className="hidden sm:inline ml-1">— $5,000</span>
-                <ArrowRight className="ml-2 w-5 h-5 flex-shrink-0" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
+        <section className="bg-foreground text-background"><div className="alp-shell grid gap-9 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-24"><div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Ready to put the real issue on the table?</p><h2 className="alp-display mt-5 max-w-4xl text-5xl sm:text-6xl">Apply for the engagement that matches the work.</h2></div><button type="button" onClick={() => applyFor("6-Week Intensive — $10,000")} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Start the application <ArrowRight className="h-4 w-4" /></button></div></section>
         <Footer />
-        
-        <CustomPricingForm 
-          open={customPricingOpen}
-          onOpenChange={setCustomPricingOpen}
-          packageType={selectedPackage}
-        />
-        <AdvisoryApplicationModal
-          open={appModalOpen}
-          onOpenChange={setAppModalOpen}
-          defaultService={defaultService}
-        />
+        <AdvisoryApplicationModal open={applicationOpen} onOpenChange={setApplicationOpen} defaultService={selectedIntensive} />
       </main>
     </>
   );

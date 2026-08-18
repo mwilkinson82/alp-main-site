@@ -1,219 +1,86 @@
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { LogIn, Menu, X, ChevronDown } from "lucide-react";
-import alpLogo from "@/assets/alp-logo.png";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ChevronDown, LogIn, Menu, X } from "lucide-react";
+import alpLogo from "@/assets/alp-logo.png";
+
+const schools = [
+  { label: "Power Hour", detail: "Daily owner execution", to: "/power-hour" },
+  { label: "Contractor School", detail: "Construction management", to: "/contractor-school" },
+  { label: "Sales & Marketing School", detail: "Demand and deal control", to: "/sales-marketing-school" },
+];
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [programsOpen, setProgramsOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [schoolsOpen, setSchoolsOpen] = useState(false);
   const location = useLocation();
 
-  // All pages now have dark background — text is always light at top
-  const forceBlackTextPages: string[] = [];
-
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setProgramsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Header background becomes visible after scrolling past initial viewport
-  const headerOpacity = Math.min(1, Math.max(0, (scrollY - 400) / 200));
-  const showBorder = scrollY > 600;
-  
-  // Text color transitions from white (on dark hero) to foreground as you scroll
-  // Force black text on pages without dark heroes
-  const shouldForceBlack = forceBlackTextPages.includes(location.pathname) || location.pathname.startsWith('/insights/');
-  const isAtTop = scrollY < 300 && !shouldForceBlack;
-  const textColorClass = isAtTop ? "text-white" : "text-foreground";
-  const iconColorClass = isAtTop ? "text-white" : "";
-
-  const programLinks = [
-    { name: "Power Hour", path: "/power-hour", sub: "Daily at 8am EST" },
-    { name: "Contractor School", path: "/contractor-school", sub: "Tuesdays at 7pm EST" },
-    { name: "Sales & Marketing", path: "/sales-marketing-school", sub: "Wednesdays at 7pm EST" },
-  ];
+    setMobileOpen(false);
+    setSchoolsOpen(false);
+  }, [location.pathname]);
 
   return (
-    <header 
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-all duration-300"
-      style={{
-        backgroundColor: `rgba(var(--background-rgb), ${headerOpacity * 0.8})`,
-        borderColor: showBorder ? 'hsl(var(--border))' : 'transparent'
-      }}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src={alpLogo} 
-              alt="ALP - Altitude Logic Pressure" 
-              className="h-10 w-auto"
-            />
-          </Link>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-xl">
+      <div className="alp-shell flex h-[72px] items-center justify-between">
+        <Link to="/" className="flex items-center gap-3" aria-label="ALP home">
+          <img src={alpLogo} alt="ALP" className="h-9 w-auto brightness-0" />
+          <span className="hidden border-l border-border pl-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:block">
+            Altitude Logic Pressure
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            <Link 
-              to="/" 
-              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
+          <Link to="/contractor-circle" className="text-sm font-semibold hover:text-accent">Contractor Circle</Link>
+          <div className="relative">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-sm font-medium hover:text-accent"
+              onClick={() => setSchoolsOpen((value) => !value)}
+              aria-expanded={schoolsOpen}
             >
-              Home
-            </Link>
-            
-            <Link 
-              to="/insights" 
-              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
-            >
-            Insights
-            </Link>
-            
-            {/* Programs Dropdown */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setProgramsOpen(!programsOpen)}
-                className={`flex items-center gap-1 ${textColorClass} hover:text-primary transition-colors font-medium`}
-              >
-                Programs
-                <ChevronDown className={`w-4 h-4 transition-transform ${programsOpen ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {programsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-lg py-2 z-50">
-                  {programLinks.map((link, index) => (
-                    <Link
-                      key={index}
-                      to={link.path}
-                      className="block px-4 py-3 hover:bg-muted transition-colors"
-                      onClick={() => setProgramsOpen(false)}
-                    >
-                      <span className="block text-sm font-semibold text-foreground">{link.name}</span>
-                      {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
-                    </Link>
-                  ))}
-                  <div className="border-t border-border mx-2 my-1" />
-                  <Link
-                    to="/programs"
-                    className="block px-4 py-3 hover:bg-muted transition-colors"
-                    onClick={() => setProgramsOpen(false)}
-                  >
-                    <span className="block text-sm font-semibold text-primary">View All Programs</span>
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            <Link 
-              to="/coaching" 
-              className={`${textColorClass} hover:text-primary transition-colors font-medium`}
-            >
-              1-on-1 Advisory
-            </Link>
-            <Button
-              variant="outline"
-              size="sm"
-              asChild
-              className="border-current opacity-60 hover:opacity-100"
-            >
-              <Link to="/client-login">
-                <LogIn className="mr-2 h-4 w-4" />
-                Client Log In
-              </Link>
-            </Button>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            className={`md:hidden ${iconColorClass}`}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className={iconColorClass} /> : <Menu className={iconColorClass} />}
-          </button>
-        </div>
-
-      </div>
-
-      {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 bg-card border-t border-border shadow-xl z-50">
-          <nav className="px-4 py-5 space-y-0">
-            <Link
-              to="/"
-              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-
-            <div className="mx-3 border-b border-border" />
-
-            <Link
-              to="/insights"
-              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Insights
-            </Link>
-
-            <div className="mx-3 border-b border-border" />
-
-            {/* Mobile Programs Section */}
-            <div>
-              <p className="px-3 pt-4 pb-2 text-[11px] font-bold text-muted-foreground uppercase tracking-[0.15em]">Programs</p>
-              <div className="space-y-0">
-                {programLinks.map((link, index) => (
-                  <Link
-                    key={index}
-                    to={link.path}
-                    className="block px-3 py-3 rounded-lg hover:bg-muted transition-colors min-h-[44px]"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="block text-sm font-semibold text-foreground hover:text-primary">{link.name}</span>
-                    {link.sub && <span className="block text-xs text-muted-foreground mt-0.5">{link.sub}</span>}
+              Training <ChevronDown className={`h-4 w-4 transition-transform ${schoolsOpen ? "rotate-180" : ""}`} />
+            </button>
+            {schoolsOpen && (
+              <div className="absolute left-0 top-9 w-72 border border-border bg-card p-2 shadow-elegant">
+                {schools.map((school) => (
+                  <Link key={school.to} to={school.to} className="block border-b border-border px-4 py-3 last:border-0 hover:bg-secondary/60">
+                    <span className="block text-sm font-semibold">{school.label}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{school.detail}</span>
                   </Link>
                 ))}
+                <Link to="/programs" className="block px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all training →</Link>
               </div>
-            </div>
+            )}
+          </div>
+          <Link to="/coaching" className="text-sm font-medium hover:text-accent">Private Intensives</Link>
+          <Link to="/insights" className="text-sm font-medium hover:text-accent">Insights</Link>
+          <Link to="/client-login" className="alp-button-outline min-h-10 px-4 py-2">
+            <LogIn className="h-4 w-4" /> Replay login
+          </Link>
+        </nav>
 
-            <div className="mx-3 border-b border-border" />
+        <button
+          type="button"
+          className="grid h-11 w-11 place-items-center lg:hidden"
+          onClick={() => setMobileOpen((value) => !value)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+        >
+          {mobileOpen ? <X /> : <Menu />}
+        </button>
+      </div>
 
-            <Link
-              to="/coaching"
-              className="block px-3 py-3.5 text-foreground font-medium hover:text-primary hover:bg-muted rounded-lg transition-colors min-h-[44px] flex items-center"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              1-on-1 Advisory
-            </Link>
-
-            <div className="pt-4 space-y-2 border-t border-border mt-2">
-              <Button variant="outline" size="sm" className="w-full opacity-70 min-h-[44px]" asChild>
-                <Link to="/client-login" onClick={() => setMobileMenuOpen(false)}>
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Client Log In
-                </Link>
-              </Button>
-            </div>
-          </nav>
-        </div>
+      {mobileOpen && (
+        <nav className="border-t border-border bg-background px-5 py-5 lg:hidden" aria-label="Mobile navigation">
+          <div className="mx-auto grid max-w-2xl gap-1">
+            <Link to="/contractor-circle" className="border-b border-border py-3 text-base font-semibold">Contractor Circle</Link>
+            <p className="pt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Training</p>
+            {schools.map((school) => <Link key={school.to} to={school.to} className="border-b border-border py-3 text-sm">{school.label}</Link>)}
+            <Link to="/coaching" className="border-b border-border py-3 text-sm">Private Intensives</Link>
+            <Link to="/insights" className="border-b border-border py-3 text-sm">Insights</Link>
+            <Link to="/client-login" className="alp-button mt-4"><LogIn className="h-4 w-4" /> Replay login</Link>
+          </div>
+        </nav>
       )}
     </header>
   );

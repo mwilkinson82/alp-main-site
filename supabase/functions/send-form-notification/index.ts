@@ -10,6 +10,29 @@ const corsHeaders = {
 
 // Email recipient
 const RECIPIENT_EMAIL = "wilkinson.marshall@gmail.com";
+const PARTNERSHIP_RECIPIENT_EMAIL =
+  Deno.env.get("PARTNERSHIP_RECIPIENT_EMAIL") || RECIPIENT_EMAIL;
+
+const escapeHtml = (value: string): string =>
+  value.replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  })[character] || character);
+
+const subjectText = (value: string): string =>
+  value.replace(/[\r\n]+/g, " ").trim().slice(0, 120);
+
+const safeHttpUrl = (value: string): string => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : "";
+  } catch {
+    return "";
+  }
+};
 
 interface ContactFormData {
   formType: 'contact';
@@ -55,7 +78,27 @@ interface NewsletterFormData {
   email: string;
 }
 
-type FormData = ContactFormData | PricingFormData | AskMarshallFormData | AdvisoryApplicationFormData | NewsletterFormData;
+interface PartnershipFormData {
+  formType: 'partnership';
+  name: string;
+  email: string;
+  companyName: string;
+  productName: string;
+  companyUrl: string;
+  campaignObjective: string;
+  intendedDeliverables: string;
+  campaignBudget: string;
+  organicUsage: string;
+  paidUsageRequirements: string;
+  whitelistingRequirements: string;
+  exclusivityTerms: string;
+  timeline: string;
+  productAccess: string;
+  contractorRelevance: string;
+  engagementType: string;
+}
+
+type FormData = ContactFormData | PricingFormData | AskMarshallFormData | AdvisoryApplicationFormData | NewsletterFormData | PartnershipFormData;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -68,7 +111,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Received form submission:", { formType: formData.formType, ...('name' in formData ? { name: formData.name } : {}) });
 
     // Validate form type
-    if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application', 'newsletter'].includes(formData.formType)) {
+    if (!formData.formType || !['contact', 'pricing', 'ask-marshall', 'advisory-application', 'newsletter', 'partnership'].includes(formData.formType)) {
       console.error("Invalid form type:", formData.formType);
       return new Response(
         JSON.stringify({ error: "Invalid form type" }),
@@ -102,9 +145,31 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Validate required fields
-    const isAskMarshall = formData.formType === 'ask-marshall';
-    const isAdvisoryApplication = formData.formType === 'advisory-application';
-    if (!formData.name || !formData.email || (!isAskMarshall && !isAdvisoryApplication && !(formData as any).message) || (isAskMarshall && !(formData as AskMarshallFormData).question) || (isAdvisoryApplication && !(formData as AdvisoryApplicationFormData).biggestChallenge)) {
+    const missingRequiredFields =
+      !formData.name ||
+      !formData.email ||
+      (formData.formType === 'contact' && !formData.message) ||
+      (formData.formType === 'pricing' && (!formData.message || !formData.packageType)) ||
+      (formData.formType === 'ask-marshall' && !formData.question) ||
+      (formData.formType === 'advisory-application' && (!formData.biggestChallenge || !formData.companyName || !formData.serviceApplyingFor)) ||
+      (formData.formType === 'partnership' && [
+        formData.companyName,
+        formData.productName,
+        safeHttpUrl(formData.companyUrl),
+        formData.campaignObjective,
+        formData.intendedDeliverables,
+        formData.campaignBudget,
+        formData.organicUsage,
+        formData.paidUsageRequirements,
+        formData.whitelistingRequirements,
+        formData.exclusivityTerms,
+        formData.timeline,
+        formData.productAccess,
+        formData.contractorRelevance,
+        formData.engagementType,
+      ].some((value) => !value));
+
+    if (missingRequiredFields) {
       console.error("Missing required fields");
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
@@ -117,6 +182,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     let subject: string;
     let html: string;
+    let recipientEmail = RECIPIENT_EMAIL;
     const timestamp = new Date().toLocaleString('en-US', { 
       timeZone: 'America/New_York',
       dateStyle: 'full',
@@ -165,6 +231,45 @@ const handler = async (req: Request): Promise<Response> => {
         <p style="background: #dcfce7; padding: 12px; border-radius: 5px; font-weight: bold;">✅ Review this application and follow up manually within 48 hours if qualified.</p>
         <p style="color: #6b7280; font-size: 14px;"><small>Submitted: ${timestamp}</small></p>
       `;
+    } else if (formData.formType === 'partnership') {
+      const partnershipData = formData as PartnershipFormData;
+      const companyUrl = safeHttpUrl(partnershipData.companyUrl);
+      recipientEmail = PARTNERSHIP_RECIPIENT_EMAIL;
+      subject = `Strategic Brand Partnership Inquiry — ${subjectText(partnershipData.companyName)} / ${subjectText(partnershipData.productName)}`;
+      html = `
+        <h2>Strategic Brand Partnership Inquiry</h2>
+        <p style="background: #fef3c7; padding: 12px; border-radius: 5px; font-weight: bold;">Requested engagement: ${escapeHtml(partnershipData.engagementType)}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 2px solid #e5e7eb;">
+        <h3>Company and Contact</h3>
+        <p><strong>Name:</strong> ${escapeHtml(partnershipData.name)}</p>
+        <p><strong>Email:</strong> <a href="mailto:${escapeHtml(partnershipData.email)}">${escapeHtml(partnershipData.email)}</a></p>
+        <p><strong>Company:</strong> ${escapeHtml(partnershipData.companyName)}</p>
+        <p><strong>Product or Service:</strong> ${escapeHtml(partnershipData.productName)}</p>
+        <p><strong>URL:</strong> ${companyUrl ? `<a href="${escapeHtml(companyUrl)}">${escapeHtml(companyUrl)}</a>` : "Invalid or missing URL"}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <h3>Campaign Scope</h3>
+        <p><strong>Objective:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${escapeHtml(partnershipData.campaignObjective)}</p>
+        <p><strong>Intended Deliverables:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${escapeHtml(partnershipData.intendedDeliverables)}</p>
+        <p><strong>Campaign Budget:</strong> ${escapeHtml(partnershipData.campaignBudget)}</p>
+        <p><strong>Timeline:</strong> ${escapeHtml(partnershipData.timeline)}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <h3>Usage and Commercial Terms</h3>
+        <p><strong>Organic Usage:</strong> ${escapeHtml(partnershipData.organicUsage)}</p>
+        <p><strong>Whitelisting / Partnership Ads:</strong> ${escapeHtml(partnershipData.whitelistingRequirements)}</p>
+        <p><strong>Paid-Media Usage:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${escapeHtml(partnershipData.paidUsageRequirements)}</p>
+        <p><strong>Exclusivity Terms:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${escapeHtml(partnershipData.exclusivityTerms)}</p>
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+        <h3>Product Fit</h3>
+        <p><strong>Product Access or Trial:</strong> ${escapeHtml(partnershipData.productAccess)}</p>
+        <p><strong>Why It Is Relevant to Contractors:</strong></p>
+        <p style="white-space: pre-wrap; background: #f9fafb; padding: 15px; border-radius: 5px;">${escapeHtml(partnershipData.contractorRelevance)}</p>
+        <p style="background: #dcfce7; padding: 12px; border-radius: 5px; font-weight: bold;">Review audience fit, substantiation, usage rights, exclusivity, and whether advisory requires a separate scope before responding.</p>
+        <p style="color: #6b7280; font-size: 14px;"><small>Submitted: ${timestamp}</small></p>
+      `;
     } else if (formData.formType === 'contact') {
       // Contact form email
       subject = `New Contact Form Submission from ${formData.name}`;
@@ -203,7 +308,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send email via Resend
     const emailResponse = await resend.emails.send({
       from: "ALP Website <notifications@notifications.marshallwilkinson.com>",
-      to: [RECIPIENT_EMAIL],
+      to: [recipientEmail],
       subject: subject,
       html: html,
       replyTo: formData.email,

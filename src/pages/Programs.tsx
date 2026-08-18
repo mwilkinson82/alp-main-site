@@ -1,145 +1,90 @@
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import liveRoomsHero from "@/assets/live-rooms-hero.jpg";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
-import StructuredData from "@/components/StructuredData";
-import WeeklySchedule from "@/components/WeeklySchedule";
-import ProgramTestimonials from "@/components/ProgramTestimonials";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, HardHat, TrendingUp, ArrowRight, Monitor } from "lucide-react";
+const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
 
-const programs = [
+const schools = [
   {
-    icon: Clock,
+    number: "01",
     title: "Power Hour",
-    tagline: "Daily live execution room at 8am EST",
-    description: "Morning strategy call for entrepreneurship, mindset, and business best practices. Recordings included.",
-    link: "/power-hour",
-    pricing: "$997/month",
+    schedule: "Monday–Friday · 8:00 AM EST",
+    price: "$997/month",
+    thesis: "Daily pressure for the entrepreneurial work that otherwise gets pushed behind the urgent jobsite noise.",
+    details: "Decision-making, execution, accountability, leadership, business judgment, and the next move.",
+    to: "/power-hour",
   },
   {
-    icon: HardHat,
+    number: "02",
     title: "Contractor School",
-    tagline: "Systems for contractors scaling real operations",
-    description: "Estimating, project management, legal, accounting, C-suite operations. Live Tuesdays at 7pm EST.",
-    link: "/contractor-school",
-    pricing: "$497/mo",
+    schedule: "Tuesdays · 7:00 PM EST",
+    price: "$497/month",
+    thesis: "The machinations of running the construction work correctly—not the entrepreneurial owner work around it.",
+    details: "Estimating, project controls, contracts, accounting, field management, cost, schedule, and commercial discipline.",
+    to: "/contractor-school",
   },
   {
-    icon: TrendingUp,
-    title: "Sales & Marketing",
-    tagline: "Lead flow, persuasion, and deal control",
-    description: "Presentations, negotiations, traffic, retargeting, offline marketing. Live Wednesdays at 7pm EST.",
-    link: "/sales-marketing-school",
-    pricing: "$497/mo",
+    number: "03",
+    title: "Sales & Marketing School",
+    schedule: "Wednesdays · 7:00 PM EST",
+    price: "$497/month",
+    thesis: "A working room for creating demand, controlling the sale, and converting attention into profitable work.",
+    details: "Positioning, presentations, negotiation, closing, traffic, retargeting, follow-up, and lead generation.",
+    to: "/sales-marketing-school",
   },
 ];
 
-const Programs = () => {
-  return (
-    <>
-      <SEO
-        title="Live Training Programs — ALP Training Programs | Altitude Logic Pressure"
-        description="Train live with Marshall Wilkinson. Power Hour, Contractor School, and Sales & Marketing School — daily and weekly live training programs for operators who move fast."
-        keywords="ALP live training programs, Power Hour, Contractor School, Sales Marketing School, Marshall Wilkinson programs, operator training"
-        canonical="/programs"
-      />
-      <StructuredData type="organization" />
+const Programs = () => (
+  <>
+    <SEO title="ALP Programs — Contractor Circle and Live Training" description="Explore ALP Contractor Circle, Power Hour, Contractor School, Sales and Marketing School, and the ALP replay library." canonical="/programs" />
+    <main className="min-h-screen">
+      <Header />
+      <section className="border-b border-border pt-[72px]">
+        <div className="alp-shell py-20 md:py-28">
+          <p className="alp-eyebrow">ALP programs</p>
+          <h1 className="alp-display mt-7 max-w-6xl text-[clamp(4rem,8vw,8rem)]">One flagship. Three focused training rooms.</h1>
+          <p className="mt-9 max-w-3xl text-xl leading-relaxed text-muted-foreground">Contractor Circle is the center of the ALP ecosystem. The schools remain available for owners and teams who need direct access to a specific operating discipline.</p>
+        </div>
+      </section>
 
-      <main className="min-h-screen">
-        <Header />
+      <section className="border-b border-border bg-foreground text-background">
+        <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-[0.9fr_1.1fr]">
+          <div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Flagship · Contractor Circle</p><h2 className="alp-display mt-5 text-5xl sm:text-7xl">Build the company behind the projects.</h2></div>
+          <div>
+            <p className="text-xl leading-relaxed text-background/65">A standing operating environment for construction owners: live working sessions, bootcamps, AOS, Ask Marshall, tools, templates, replays, and a private operator community.</p>
+            <div className="mt-8 grid gap-3 text-sm text-background/65 sm:grid-cols-2">{["Owner-level operating work", "Full AOS access", "Live calls and bootcamps", "Tools, templates, and replays"].map((item) => <p key={item} className="border-t border-background/20 pt-3">{item}</p>)}</div>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a href={CIRCLE_CHECKOUT} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Join · $497/month <ArrowRight className="h-4 w-4" /></a><Link to="/contractor-circle" className="inline-flex min-h-12 items-center justify-center border border-background/35 px-6 py-3 text-sm font-semibold hover:bg-background hover:text-foreground">Explore the Circle</Link></div>
+          </div>
+        </div>
+      </section>
 
-        {/* Hero Image */}
-        <section className="relative h-[45vh] md:h-[80vh] overflow-hidden">
-          <img
-            src={liveRoomsHero}
-            alt="Marshall Wilkinson leading a live group session"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
-        </section>
-
-        {/* Hero Content */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <h1 className="text-5xl md:text-7xl font-bold">
-                Train Live. <span className="text-gradient-gold">Execute Faster.</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-                Daily and weekly live training programs built to sharpen decision-making, install scalable systems, and keep operators moving at pace.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Button variant="premium" size="lg" className="gap-2" asChild>
-                  <a href="#programs">Explore Programs</a>
-                </Button>
-              </div>
+      <section className="border-b border-border">
+        <div className="alp-shell py-20 md:py-28">
+          <div className="grid gap-10 lg:grid-cols-[0.58fr_1.42fr]">
+            <div><p className="alp-eyebrow">Focused access</p><h2 className="mt-5 text-4xl leading-tight md:text-5xl">Choose the room that matches the work.</h2></div>
+            <div className="border-t border-foreground">
+              {schools.map((school) => (
+                <Link key={school.to} to={school.to} className="group block border-b border-border py-8">
+                  <div className="grid gap-5 sm:grid-cols-[56px_1fr_auto] sm:items-start">
+                    <span className="alp-number">{school.number}</span>
+                    <div><div className="flex flex-wrap items-baseline gap-x-4 gap-y-2"><h3 className="text-3xl group-hover:text-accent">{school.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{school.schedule}</span></div><p className="mt-4 max-w-2xl text-lg leading-relaxed">{school.thesis}</p><p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{school.details}</p></div>
+                    <div className="flex items-center gap-3 text-sm font-semibold"><span>{school.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Group Programs */}
-        <section id="programs" className="py-16 md:py-24 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10 space-y-4">
-              <h2 className="text-3xl md:text-5xl font-bold">Group Programs & Training</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Live training programs and a complete training archive — built for operators who execute, not just learn.
-              </p>
-              <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-xl px-4 py-2.5 text-sm">
-                <Monitor className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="text-primary font-medium text-center leading-snug">
-                  All sessions are virtual<br className="sm:hidden" />
-                  <span className="hidden sm:inline"> — </span>delivered live through the ALP portal
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-              {programs.map((program, index) => {
-                const Icon = program.icon;
-                return (
-                  <Link key={index} to={program.link}>
-                    <Card className="h-full rounded-xl border-border hover:border-primary/50 hover:shadow-md transition-all group cursor-pointer">
-                      <CardContent className="p-4 md:p-6 space-y-3">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary group-hover:scale-110 transition-transform" />
-                        </div>
-                        <div>
-                          <h4 className="text-base md:text-lg font-bold group-hover:text-primary transition-colors leading-tight">
-                            {program.title}
-                          </h4>
-                          <p className="text-xs md:text-sm text-muted-foreground mt-1 leading-snug">
-                            {program.tagline}
-                          </p>
-                        </div>
-                        <p className="text-xs md:text-sm font-semibold text-primary">{program.pricing}</p>
-                        <div className="flex items-center gap-1 text-xs md:text-sm text-primary font-medium pt-1">
-                          Learn More
-                          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Weekly Schedule */}
-        <WeeklySchedule />
-
-        {/* Program Testimonials */}
-        <ProgramTestimonials />
-
-        <Footer />
-      </main>
-    </>
-  );
-};
+      <section className="bg-secondary/55">
+        <div className="alp-shell grid gap-8 py-16 md:grid-cols-[1fr_auto] md:items-center md:py-20"><div><p className="alp-eyebrow">Already a client?</p><h2 className="mt-4 text-4xl">Your class archive is still here.</h2><p className="mt-3 text-muted-foreground">Access Power Hour, Contractor School, and Sales & Marketing School replays.</p></div><Link to="/client-login" className="alp-button">Open the replay libraries <ArrowRight className="h-4 w-4" /></Link></div>
+      </section>
+      <Footer />
+    </main>
+  </>
+);
 
 export default Programs;

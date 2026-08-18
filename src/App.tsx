@@ -2,34 +2,37 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import HashScroller from "@/components/HashScroller";
-import Index from "./pages/Index";
-import ALPUniversity from "./pages/ALPUniversity";
-import PowerHour from "./pages/PowerHour";
-import Coaching from "./pages/Coaching";
 
-import Programs from "./pages/Programs";
-import ContractorSchool from "./pages/ContractorSchool";
-import SalesMarketingSchool from "./pages/SalesMarketingSchool";
-import HandbookSpecial from "./pages/HandbookSpecial";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import AdminLogin from "./pages/AdminLogin";
-import Admin from "./pages/Admin";
-import AdminPostEditor from "./pages/AdminPostEditor";
-import AskMarshall from "./pages/AskMarshall";
-import ClientLogin from "./pages/ClientLogin";
-import PortalLogin from "./pages/PortalLogin";
-import PortalResetPassword from "./pages/PortalResetPassword";
-import PortalDashboard from "./pages/PortalDashboard";
-import PortalLibrary from "./pages/PortalLibrary";
-import PortalReplay from "./pages/PortalReplay";
-import AdminRecordings from "./pages/AdminRecordings";
-import AdminClients from "./pages/AdminClients";
-import NotFound from "./pages/NotFound";
+const Index = lazy(() => import("./pages/Index"));
+const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
+const Partnerships = lazy(() => import("./pages/Partnerships"));
+const ALPUniversity = lazy(() => import("./pages/ALPUniversity"));
+const PowerHour = lazy(() => import("./pages/PowerHour"));
+const Coaching = lazy(() => import("./pages/Coaching"));
+const Programs = lazy(() => import("./pages/Programs"));
+const ContractorSchool = lazy(() => import("./pages/ContractorSchool"));
+const SalesMarketingSchool = lazy(() => import("./pages/SalesMarketingSchool"));
+const HandbookSpecial = lazy(() => import("./pages/HandbookSpecial"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const Admin = lazy(() => import("./pages/Admin"));
+const AdminPostEditor = lazy(() => import("./pages/AdminPostEditor"));
+const AskMarshall = lazy(() => import("./pages/AskMarshall"));
+const ClientLogin = lazy(() => import("./pages/ClientLogin"));
+const PortalLogin = lazy(() => import("./pages/PortalLogin"));
+const PortalResetPassword = lazy(() => import("./pages/PortalResetPassword"));
+const PortalDashboard = lazy(() => import("./pages/PortalDashboard"));
+const PortalLibrary = lazy(() => import("./pages/PortalLibrary"));
+const PortalReplay = lazy(() => import("./pages/PortalReplay"));
+const AdminRecordings = lazy(() => import("./pages/AdminRecordings"));
+const AdminClients = lazy(() => import("./pages/AdminClients"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const BlogSlugRedirect = () => {
   const { slug } = useParams();
@@ -44,11 +47,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
+        <Suspense fallback={<div className="min-h-screen bg-background" aria-label="Loading page" />}>
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/programs" element={<Programs />} />
           <Route path="/power-hour" element={<PowerHour />} />
           <Route path="/coaching" element={<Coaching />} />
+          <Route path="/contractor-circle" element={<ContractorCircle />} />
+          <Route path="/circle" element={<Navigate to="/contractor-circle" replace />} />
+          <Route path="/partnerships" element={<Partnerships />} />
           
           <Route path="/contractor-school" element={<ContractorSchool />} />
           <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
@@ -111,7 +118,8 @@ const App = () => (
           <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
+          </Routes>
+        </Suspense>
         {/* Smooth scroll to hash anchors across routes */}
         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
         {/* @ts-ignore - component returns null */}

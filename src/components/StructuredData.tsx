@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 
 interface StructuredDataProps {
   type: "organization" | "service" | "course";
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }
 
 const StructuredData = ({ type, data }: StructuredDataProps) => {
@@ -12,22 +12,22 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     organization: {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "Marshall Wilkinson - ALP (Altitude Logic Pressure)",
-      "alternateName": ["Marshall Wilkinson Coaching", "ALP", "Altitude Logic Pressure"],
+      "name": "ALP - Altitude Logic Pressure",
+      "alternateName": ["ALP", "Altitude Logic Pressure", "ALP Contractor Circle"],
       "url": baseUrl,
       "logo": `${baseUrl}/alp-logo.png`,
-      "description": "Marshall Wilkinson is an elite business coach and strategic consultant. Over $2.5 billion in proven results. Expert guidance for entrepreneurs, CEOs, and sales professionals through ALP (Altitude Logic Pressure).",
+      "description": "Field-tested operating doctrine, training, and private intensives for construction owners building the company behind the projects.",
       "founder": {
         "@type": "Person",
         "name": "Marshall Wilkinson",
-        "jobTitle": "Business Coach, Strategic Consultant & Founder",
+        "jobTitle": "Founder, Operator and Strategic Advisor",
         "url": baseUrl,
         "sameAs": [
           "https://www.marshallwilkinson.com"
         ]
       },
       "areaServed": "US",
-      "serviceType": ["Business Coaching", "Executive Coaching", "Sales Training", "Leadership Development", "Strategic Consulting"],
+      "serviceType": ["Construction Business Advisory", "Owner Training", "Operating System Implementation", "Leadership Development", "Strategic Consulting"],
       "priceRange": "$$$$"
     },
     service: {
