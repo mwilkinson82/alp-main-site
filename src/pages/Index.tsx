@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import marshallConference from "@/assets/marshall-conference-hero.jpg";
+import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallOffice from "@/assets/marshall-office.jpg";
 
 const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
@@ -81,8 +81,8 @@ const Index = () => (
           </div>
 
           <div className="relative min-h-[520px] bg-foreground lg:min-h-0">
-            <img src={marshallConference} alt="Marshall Wilkinson teaching at a business conference" className="absolute inset-0 h-full w-full object-cover object-center saturate-[0.72]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            <img src={marshallCasual} alt="Marshall Wilkinson reviewing company operating documents" className="absolute inset-0 h-full w-full object-cover object-[64%_center] saturate-[0.78]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/5 to-transparent" />
             <div className="absolute inset-x-7 bottom-8 border-t border-white/35 pt-5 text-white sm:inset-x-10 sm:bottom-10">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
               <p className="mt-3 max-w-md text-xl leading-snug">Field-tested systems built inside high-pressure construction and enterprise environments.</p>

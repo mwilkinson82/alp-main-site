@@ -23,7 +23,7 @@ const Header = () => {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-xl">
       <div className="alp-shell flex h-[72px] items-center justify-between">
         <Link to="/" className="flex items-center gap-3" aria-label="ALP home">
-          <img src={alpLogo} alt="ALP" className="h-9 w-auto brightness-0" />
+          <img src={alpLogo} alt="ALP" className="h-11 w-11 shrink-0 object-contain" />
           <span className="hidden border-l border-border pl-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground sm:block">
             Altitude Logic Pressure
           </span>
