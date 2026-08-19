@@ -4,8 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import marshallCasual from "@/assets/marshall-casual.jpg";
 import marshallOffice from "@/assets/marshall-office.jpg";
+import advisoryTransition from "@/assets/advisory-transition.mp4";
+import advisoryPoster from "@/assets/advisory-transition-poster.jpg";
+import marginCrumble from "@/assets/margin-crumble.mp4";
+import { useEffect, useRef } from "react";
 
 const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
 
@@ -44,6 +47,44 @@ const supportingPrograms = [
   },
 ];
 
+const SilentLoopVideo = ({ src, poster, className, label }: { src: string; poster?: string; className?: string; label: string }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPlayback = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      if (mediaQuery.matches) {
+        video.pause();
+        video.currentTime = 0;
+      } else {
+        void video.play().catch(() => undefined);
+      }
+    };
+
+    syncPlayback();
+    mediaQuery.addEventListener("change", syncPlayback);
+    return () => mediaQuery.removeEventListener("change", syncPlayback);
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      className={className}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      poster={poster}
+      aria-label={label}
+    >
+      <source src={src} type="video/mp4" />
+    </video>
+  );
+};
+
 const Index = () => (
   <>
     <SEO
@@ -57,11 +98,11 @@ const Index = () => (
       <Header />
 
       <section className="border-b border-border pt-[72px]">
-        <div className="alp-shell grid min-h-[calc(100vh-72px)] lg:grid-cols-[1.16fr_0.84fr]">
-          <div className="flex flex-col justify-between py-14 pr-0 sm:py-20 lg:border-r lg:border-border lg:py-24 lg:pr-14">
+        <div className="alp-shell grid min-h-[calc(100vh-72px)] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="flex flex-col justify-between py-14 pr-0 sm:py-20 lg:min-h-[calc(100vh-72px)] lg:border-r lg:border-border lg:py-24 lg:pr-12">
             <p className="alp-eyebrow">Altitude Logic Pressure · Built for construction owners</p>
-            <div className="my-16 max-w-4xl lg:my-24">
-              <h1 className="alp-display text-[clamp(4rem,8.7vw,9rem)]">
+            <div className="my-14 max-w-4xl lg:my-20">
+              <h1 className="alp-display text-[clamp(4rem,7.2vw,7.7rem)]">
                 The project is not the business.
                 <span className="alp-italic mt-3 block text-accent">The company is.</span>
               </h1>
@@ -80,22 +121,48 @@ const Index = () => (
             </div>
           </div>
 
-          <div className="relative min-h-[520px] bg-foreground lg:min-h-0">
-            <img src={marshallCasual} alt="Marshall Wilkinson reviewing company operating documents" className="absolute inset-0 h-full w-full object-cover object-[64%_center] saturate-[0.78]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/5 to-transparent" />
-            <div className="absolute inset-x-7 bottom-8 border-t border-white/35 pt-5 text-white sm:inset-x-10 sm:bottom-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
-              <p className="mt-3 max-w-md text-xl leading-snug">Field-tested systems built inside high-pressure construction and enterprise environments.</p>
+          <div className="py-8 lg:py-16 lg:pl-12">
+            <div className="relative aspect-video overflow-hidden bg-foreground">
+              <SilentLoopVideo
+                src={advisoryTransition}
+                poster={advisoryPoster}
+                className="h-full w-full object-cover saturate-[0.82]"
+                label="Marshall Wilkinson transitioning from a portrait into a live private advisory session"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10" />
+              <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
+                <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
+              </div>
+            </div>
+            <div className="grid gap-3 border-x border-b border-border px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:grid-cols-3 sm:px-7">
+              <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-border bg-secondary/55">
-        <div className="alp-shell grid gap-8 py-12 md:grid-cols-3 md:py-16">
-          {["Growth does not fix disorder.", "If everything flows back to the owner, the owner is still the operating system.", "Not motivation. Command."].map((line) => (
-            <p key={line} className="max-w-sm text-2xl leading-tight tracking-[-0.035em] md:text-3xl">{line}</p>
-          ))}
+      <section className="border-b border-border bg-foreground text-background">
+        <div className="alp-shell py-12 md:py-16">
+          <div className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+            <div className="aspect-video overflow-hidden border border-background/15 bg-black">
+              <SilentLoopVideo
+                src={marginCrumble}
+                className="h-full w-full object-cover"
+                label="The word margin built from cinder blocks collapsing into rubble"
+              />
+            </div>
+            <div className="lg:pl-8">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-background/45">The commercial consequence</p>
+              <h2 className="mt-5 max-w-xl text-4xl leading-[1.02] tracking-[-0.05em] sm:text-5xl">Margin rarely disappears in one event.</h2>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-background/62">It crumbles through late decisions, weak commitments, invisible exposure, owner bottlenecks, and work nobody truly owns. ALP makes the pressure visible before the structure gives way.</p>
+            </div>
+          </div>
+          <div className="mt-10 grid gap-5 border-t border-background/20 pt-6 text-sm text-background/58 md:grid-cols-3">
+            <span>Growth does not fix disorder.</span>
+            <span>If everything flows back to the owner, the owner is still the operating system.</span>
+            <span>Not motivation. Command.</span>
+          </div>
         </div>
       </section>
 
