@@ -18,6 +18,24 @@ const corsHeaders = {
 const KAJABI_CLIENT_ID = Deno.env.get("KAJABI_CLIENT_ID");
 const KAJABI_CLIENT_SECRET = Deno.env.get("KAJABI_CLIENT_SECRET");
 
+// These products are fulfilled by the dedicated Delay Intensive webhook. This
+// general ALP webhook must never send a second welcome or claim that no welcome
+// was sent when it sees the same Stripe checkout event.
+const DEDICATED_INTENSIVE_PAYMENT_LINKS = new Set([
+  "plink_1U7n37JdDAUSVXbNG7XStxnN", // Individual
+  "plink_1U7n39JdDAUSVXbNIreq7bTB", // Company
+]);
+
+function paymentLinkId(session: any): string {
+  return typeof session.payment_link === "string"
+    ? session.payment_link
+    : String(session.payment_link?.id || "");
+}
+
+function isDedicatedIntensivePurchase(session: any): boolean {
+  return DEDICATED_INTENSIVE_PAYMENT_LINKS.has(paymentLinkId(session));
+}
+
 // Map Stripe checkout links (last segment) to product info and Kajabi offer IDs
 const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welcomeSubject: string }> = {
   // === LEGACY PRODUCTS (keep for existing payment links) ===
@@ -380,6 +398,27 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("No customer email found in session");
       return new Response(JSON.stringify({ error: "No customer email" }), {
         status: 400,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    if (isDedicatedIntensivePurchase(session)) {
+      console.log("Delay Intensive purchase — customer onboarding is handled by the dedicated Intensive webhook");
+      await supabase.from("purchase_log").insert({
+        customer_name: customerName,
+        customer_email: customerEmail,
+        product_name: "ALP Construction Delay & Damages Intensive (dedicated fulfillment)",
+        stripe_session_id: session.id,
+        amount_cents: session.amount_total,
+        kajabi_provisioned: false,
+      });
+
+      return new Response(JSON.stringify({
+        received: true,
+        product: "ALP Construction Delay & Damages Intensive",
+        fulfillment: "dedicated_intensive_webhook",
+      }), {
+        status: 200,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
