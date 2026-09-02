@@ -5,12 +5,11 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
-import advisoryTransition from "@/assets/advisory-transition.mp4";
-import advisoryPoster from "@/assets/advisory-transition-poster.jpg";
+import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
-const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
+const CIRCLE_CHECKOUT = "https://alpcontractorcircle.com";
 
 const circleIncludes = [
   "Live owner calls and working sessions",
@@ -23,29 +22,24 @@ const circleIncludes = [
 const supportingPrograms = [
   {
     number: "01",
-    title: "Power Hour",
-    cadence: "Weekdays · 8:00 AM EST",
-    copy: "A daily execution room for owners who want pressure, perspective, and a finished next move before the day gets away from them.",
-    price: "$997/month",
-    to: "/power-hour",
+    title: "Private Intensives",
+    format: "Application only · Virtual",
+    copy: "Short, hard-working engagements built around a defined operating problem, live evidence, and the decisions the company has been avoiding.",
+    price: "From $5,000",
+    to: "/coaching",
+    external: false,
   },
   {
     number: "02",
-    title: "Contractor School",
-    cadence: "Tuesdays · 7:00 PM EST",
-    copy: "The machinations of managing construction: estimating, project controls, contracts, accounting, field operations, and commercial discipline.",
-    price: "$497/month",
-    to: "/contractor-school",
-  },
-  {
-    number: "03",
-    title: "Sales & Marketing School",
-    cadence: "Wednesdays · 7:00 PM EST",
-    copy: "Sales, positioning, lead generation, negotiation, and the systems that turn attention into profitable work.",
-    price: "$497/month",
-    to: "/sales-marketing-school",
+    title: "ALP Handbook",
+    format: "Self-directed · Field doctrine",
+    copy: "The written operating doctrine for construction owners—structure, accountability, cash discipline, and command of the work.",
+    price: "$47",
+    to: "https://alphandbook.com",
+    external: true,
   },
 ];
+
 
 const SilentLoopVideo = ({ src, poster, className, label }: { src: string; poster?: string; className?: string; label: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -124,13 +118,13 @@ const Index = () => (
 
           <div className="py-8 lg:py-16 lg:pl-12">
             <div className="relative aspect-video overflow-hidden bg-foreground">
-              <SilentLoopVideo
-                src={advisoryTransition}
-                poster={advisoryPoster}
-                className="h-full w-full object-cover saturate-[0.82]"
-                label="Marshall Wilkinson transitioning from a portrait into a live private advisory session"
+              <img
+                src={marshallHeroProfile}
+                alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
+                className="h-full w-full object-cover object-top saturate-[0.9]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10" />
+
               <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
                 <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
@@ -204,7 +198,7 @@ const Index = () => (
               Most construction companies are carrying the right answers in one person’s head. ALP helps expose the work, assign ownership, install the operating cadence, and create evidence the team can act on without waiting for the owner to rescue the day.
             </p>
             <p className="mt-5 max-w-2xl text-sm leading-relaxed text-background/55">
-              That doctrine runs through <Link to="/contractor-circle" className="text-background underline decoration-background/35 underline-offset-4">ALP Contractor Circle</Link>, the <a href="https://alphandbook.com/preview" className="text-background underline decoration-background/35 underline-offset-4">ALP Handbook</a>, <a href="https://alpos.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">AOS by ALP</a>, and <a href="https://overwatch.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">OverWatch by ALP</a>. <Link to="/ecosystem" className="text-background underline decoration-background/35 underline-offset-4">See how the ALP ecosystem fits together.</Link>
+              That doctrine runs through <a href="https://alpcontractorcircle.com" className="text-background underline decoration-background/35 underline-offset-4">ALP Contractor Circle</a> and the <a href="https://alphandbook.com" className="text-background underline decoration-background/35 underline-offset-4">ALP Handbook</a>.
             </p>
           </div>
           <div className="grid gap-8 border-t border-background/20 pt-8 sm:grid-cols-2 lg:grid-cols-1">
@@ -231,16 +225,19 @@ const Index = () => (
               <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">These programs remain available, but they are supporting offers—not the center of the ALP story.</p>
             </div>
             <div className="border-t border-foreground">
-              {supportingPrograms.map((program) => (
-                <Link key={program.to} to={program.to} className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">
-                  <span className="alp-number">{program.number}</span>
-                  <div>
-                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.cadence}</span></div>
-                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{program.copy}</p>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm font-semibold sm:justify-end"><span>{program.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
-                </Link>
-              ))}
+              {supportingPrograms.map((program) => {
+                const content = (
+                  <>
+                    <span className="alp-number">{program.number}</span>
+                    <div>
+                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.format}</span></div>
+                      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{program.copy}</p>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm font-semibold sm:justify-end"><span>{program.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
+                  </>
+                );
+                return program.external ? <a key={program.to} href={program.to} target="_blank" rel="noopener noreferrer" className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">{content}</a> : <Link key={program.to} to={program.to} className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">{content}</Link>;
+              })}
             </div>
           </div>
         </div>

@@ -68,34 +68,10 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
       "@id": "https://alphandbook.com/#book",
       name: "The ALP Handbook",
       alternateName: "ALP Handbook",
-      url: "https://alphandbook.com/preview",
+      url: "https://alphandbook.com",
       description: "Marshall Wilkinson's operating handbook for building stronger construction companies.",
       author: { "@id": marshallId },
       publisher: { "@id": organizationId },
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://alpos.alpcontractorcircle.com/#software",
-      name: "AOS by ALP",
-      alternateName: ["ALP Operating System", "AOS"],
-      url: "https://alpos.alpcontractorcircle.com/",
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
-      description: "The ALP company operating system for leadership accountability, operating cadence, priorities, scorecards, and execution.",
-      author: { "@id": organizationId },
-      brand: { "@id": brandId },
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://overwatch.alpcontractorcircle.com/#software",
-      name: "OverWatch by ALP",
-      alternateName: ["ALP OverWatch", "OverWatch"],
-      url: "https://overwatch.alpcontractorcircle.com/",
-      applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
-      description: "The ALP project-control platform for construction risk, commitments, work in progress, commercial control, and daily project evidence.",
-      author: { "@id": organizationId },
-      brand: { "@id": brandId },
     },
   ];
 
@@ -126,8 +102,8 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
           "@type": "WebPage",
           "@id": `${baseUrl}/ecosystem/#webpage`,
           url: `${baseUrl}/ecosystem`,
-          name: "Marshall Wilkinson and the ALP Ecosystem",
-          description: "The connected ALP ecosystem: Altitude Logic Pressure, ALP Contractor Circle, the ALP Handbook, AOS by ALP, OverWatch by ALP, and founder Marshall Wilkinson.",
+          name: "Marshall Wilkinson and ALP",
+          description: "Altitude Logic Pressure, ALP Contractor Circle, the ALP Handbook, and founder Marshall Wilkinson.",
           about: [{ "@id": organizationId }, { "@id": marshallId }, ...ecosystemEntities.map((entity) => ({ "@id": entity["@id"] }))],
           isPartOf: { "@id": `${baseUrl}/#website` },
           inLanguage: "en-US",
@@ -141,7 +117,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
               name: "Who is Marshall Wilkinson?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Marshall Wilkinson is the founder of Altitude Logic Pressure and the operator, author, and strategic advisor behind ALP Contractor Circle, the ALP Handbook, AOS by ALP, and OverWatch by ALP.",
+                text: "Marshall Wilkinson is the founder of Altitude Logic Pressure and the operator, author, and strategic advisor behind ALP Contractor Circle and the ALP Handbook.",
               },
             },
             {
@@ -149,7 +125,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
               name: "What is Altitude Logic Pressure?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Altitude Logic Pressure, commonly called ALP, is the parent construction-business doctrine and education brand. It develops the operating systems, training, advisory, and tools that connect the ALP ecosystem.",
+                text: "Altitude Logic Pressure, commonly called ALP, is a construction-business doctrine and advisory firm for owners and leadership teams.",
               },
             },
             {
@@ -157,15 +133,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
               name: "What is ALP Contractor Circle?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "ALP Contractor Circle is the flagship owner environment in the ALP ecosystem. It is built for construction company owners working on the entrepreneurial and operating side of the business, not just the mechanics of an individual project.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "How do AOS and OverWatch work together?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "AOS by ALP works at the company level: accountability, leadership cadence, priorities, and execution. OverWatch by ALP works at the project level: risk, commitments, work in progress, commercial control, and project evidence.",
+                text: "ALP Contractor Circle is the flagship owner environment for construction company owners. It is built for construction company owners working on the entrepreneurial and operating side of the business, not just the mechanics of an individual project.",
               },
             },
             {
@@ -173,7 +141,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
               name: "What is the ALP Handbook?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives the ideas behind the ALP ecosystem a durable reference owners and leadership teams can use in the real work.",
+                text: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
               },
             },
           ],
