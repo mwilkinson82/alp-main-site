@@ -37,7 +37,7 @@ const BlogArticleSchema = ({
         "https://www.instagram.com/realmarshallwilkinson",
         "https://www.tiktok.com/@realmarshallwilkinson",
         "https://marshallinbio.com/",
-        "https://www.marshallwilkinson.com",
+        "https://marshallwilkinson.com",
       ],
     },
 

@@ -121,7 +121,7 @@ const CinematicHero = () => {
 
               {/* Subheadline */}
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Decision architecture, negotiation leverage, and execution systems built from over $2.5B+ in real-world enterprise outcomes.
+                Decision architecture, negotiation leverage, and execution systems built from $2.5B+ in real-world enterprise outcomes.
               </p>
 
               {/* Micro line */}
