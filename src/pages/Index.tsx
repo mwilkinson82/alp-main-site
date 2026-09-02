@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
-import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg.asset.json";
+import marshallHeroProfile from "@/assets/marshall-hero-portrait.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
@@ -119,7 +119,7 @@ const Index = () => (
           <div className="lg:pl-12">
             <div className="relative aspect-[4/5] max-h-[calc(100vh-160px)] overflow-hidden bg-foreground">
               <img
-                src={marshallHeroProfile.url}
+                src={marshallHeroProfile}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
                 className="h-full w-full object-cover object-[50%_35%] saturate-[0.9]"
               />
