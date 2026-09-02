@@ -8,8 +8,8 @@ const FeaturedIn = () => {
     "Business Insider",
     "Forbes",
     "The Daily Pod",
-    "YouTube",
   ];
+
 
   return (
     <section
