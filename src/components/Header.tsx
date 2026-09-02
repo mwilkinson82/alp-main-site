@@ -51,7 +51,7 @@ const Header = () => {
                     <span className="mt-0.5 block text-xs text-muted-foreground">{school.detail}</span>
                   </Link>
                 ))}
-                <Link to="/programs" className="block px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all programs →</Link>
+                <Link to="/programs" className="block px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all programs</Link>
               </div>
             )}
           </div>
