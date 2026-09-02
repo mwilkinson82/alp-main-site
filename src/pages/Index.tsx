@@ -139,8 +139,6 @@ const Index = () => (
                 <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
               </div>
             </div>
-
-            </div>
             <div className="grid gap-3 border-x border-b border-border px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:grid-cols-3 sm:px-7">
               <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
             </div>
