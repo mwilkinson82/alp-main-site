@@ -48,7 +48,7 @@ const Programs = () => (
           <div>
             <p className="text-xl leading-relaxed text-background/65">A standing operating environment for construction owners: live working sessions, bootcamps, AOS, Ask Marshall, tools, templates, replays, and a private operator community.</p>
             <div className="mt-8 grid gap-3 text-sm text-background/65 sm:grid-cols-2">{["Owner-level operating work", "Full AOS access", "Live calls and bootcamps", "Tools, templates, and replays"].map((item) => <p key={item} className="border-t border-background/20 pt-3">{item}</p>)}</div>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a href={CIRCLE_CHECKOUT} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Join · $497/month <ArrowRight className="h-4 w-4" /></a><Link to="/contractor-circle" className="inline-flex min-h-12 items-center justify-center border border-background/35 px-6 py-3 text-sm font-semibold hover:bg-background hover:text-foreground">Explore the Circle</Link></div>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a href={CIRCLE_CHECKOUT} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a><Link to="/contractor-circle" className="inline-flex min-h-12 items-center justify-center border border-background/35 px-6 py-3 text-sm font-semibold hover:bg-background hover:text-foreground">Explore the Circle</Link></div>
           </div>
         </div>
       </section>

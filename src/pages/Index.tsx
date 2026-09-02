@@ -182,7 +182,7 @@ const Index = () => (
                 ))}
               </div>
               <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <a href={CIRCLE_CHECKOUT} className="alp-button">Join the Circle · $497/month <ArrowRight className="h-4 w-4" /></a>
+                <a href={CIRCLE_CHECKOUT} className="alp-button">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a>
                 <Link to="/contractor-circle" className="alp-link">See everything inside</Link>
               </div>
             </div>
