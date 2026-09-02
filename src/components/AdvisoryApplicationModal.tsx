@@ -206,8 +206,8 @@ const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: Adviso
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="3-Week Intensive — $5,000">3-Week Intensive — $5,000</SelectItem>
-                    <SelectItem value="6-Week Intensive — $10,000">6-Week Intensive — $10,000</SelectItem>
+                    <SelectItem value="Three-Week Sprint — $5,000">Three-Week Sprint — $5,000</SelectItem>
+                    <SelectItem value="Six-Week Installation — $10,000">Six-Week Installation — $10,000</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.service_applying_for && <p className="text-destructive text-xs">{errors.service_applying_for.message}</p>}

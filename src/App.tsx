@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import HashScroller from "@/components/HashScroller";
 import RouteIndexing from "@/components/RouteIndexing";
@@ -31,6 +31,13 @@ const AdminRecordings = lazy(() => import("./pages/AdminRecordings"));
 const AdminClients = lazy(() => import("./pages/AdminClients"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+const ExternalRedirect = ({ to }: { to: string }) => {
+  useEffect(() => {
+    window.location.replace(to);
+  }, [to]);
+  return null;
+};
+
 const BlogSlugRedirect = () => {
   const { slug } = useParams();
   return <Navigate to={`/insights/${slug}`} replace />;
@@ -57,7 +64,7 @@ const App = () => (
           
           <Route path="/contractor-school" element={<Navigate to="/programs" replace />} />
           <Route path="/sales-marketing-school" element={<Navigate to="/programs" replace />} />
-          <Route path="/handbook-special" element={<Navigate to="/programs" replace />} />
+          <Route path="/handbook-special" element={<ExternalRedirect to="https://alphandbook.com" />} />
           <Route path="/alp-university" element={<Navigate to="/programs" replace />} />
           <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

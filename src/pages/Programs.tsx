@@ -13,7 +13,7 @@ const schools = [
     schedule: "Application only · Virtual",
     price: "Application only",
     thesis: "A focused working engagement for a defined operating problem, live evidence, and required decisions.",
-    details: "Choose a 3-week or 6-week engagement based on the problem and depth of work required.",
+    details: "Choose the Three-Week Sprint (3 sessions, $5,000) or the Six-Week Installation (6 sessions, $10,000) based on the depth of work required.",
     to: "/coaching",
     external: false,
   },

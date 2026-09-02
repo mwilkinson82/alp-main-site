@@ -251,8 +251,8 @@ const Index = () => (
             <h2 className="alp-display mt-5 text-5xl sm:text-6xl">When the issue is too expensive for general advice.</h2>
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground">Private intensives are short, hard-working engagements built around a defined operating problem, live evidence, required decisions, and a result your team can carry forward.</p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="border-t border-foreground pt-4"><p className="text-sm font-semibold">3-Week Intensive</p><p className="mt-1 text-3xl">$5,000</p></div>
-              <div className="border-t border-foreground pt-4"><p className="text-sm font-semibold">6-Week Intensive</p><p className="mt-1 text-3xl">$10,000</p></div>
+              <div className="border-t border-foreground pt-4"><p className="text-sm font-semibold">Three-Week Sprint</p><p className="mt-1 text-3xl">$5,000</p></div>
+              <div className="border-t border-foreground pt-4"><p className="text-sm font-semibold">Six-Week Installation</p><p className="mt-1 text-3xl">$10,000</p></div>
             </div>
             <Link to="/coaching" className="alp-button mt-8">Review the intensives <ArrowRight className="h-4 w-4" /></Link>
           </div>
