@@ -4,9 +4,8 @@ import { ChevronDown, LogIn, Menu, X } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
 
 const schools = [
-  { label: "Power Hour", detail: "Daily owner execution", to: "/power-hour" },
-  { label: "Contractor School", detail: "Construction management", to: "/contractor-school" },
-  { label: "Sales & Marketing School", detail: "Demand and deal control", to: "/sales-marketing-school" },
+  { label: "Private Intensives", detail: "Application-only advisory", to: "/coaching", external: false },
+  { label: "ALP Handbook", detail: "Field-tested contractor doctrine", to: "https://alphandbook.com", external: true },
 ];
 
 const Header = () => {
@@ -42,7 +41,12 @@ const Header = () => {
             </button>
             {schoolsOpen && (
               <div className="absolute left-0 top-9 w-72 border border-border bg-card p-2 shadow-elegant">
-                {schools.map((school) => (
+                {schools.map((school) => school.external ? (
+                  <a key={school.to} href={school.to} target="_blank" rel="noopener noreferrer" className="block border-b border-border px-4 py-3 last:border-0 hover:bg-secondary/60">
+                    <span className="block text-sm font-semibold">{school.label}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{school.detail}</span>
+                  </a>
+                ) : (
                   <Link key={school.to} to={school.to} className="block border-b border-border px-4 py-3 last:border-0 hover:bg-secondary/60">
                     <span className="block text-sm font-semibold">{school.label}</span>
                     <span className="mt-0.5 block text-xs text-muted-foreground">{school.detail}</span>
@@ -75,7 +79,11 @@ const Header = () => {
           <div className="mx-auto grid max-w-2xl gap-1">
             <Link to="/contractor-circle" className="border-b border-border py-3 text-base font-semibold">Contractor Circle</Link>
             <p className="pt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Training</p>
-            {schools.map((school) => <Link key={school.to} to={school.to} className="border-b border-border py-3 text-sm">{school.label}</Link>)}
+            {schools.map((school) => school.external ? (
+              <a key={school.to} href={school.to} target="_blank" rel="noopener noreferrer" className="border-b border-border py-3 text-sm">{school.label}</a>
+            ) : (
+              <Link key={school.to} to={school.to} className="border-b border-border py-3 text-sm">{school.label}</Link>
+            ))}
             <Link to="/coaching" className="border-b border-border py-3 text-sm">Private Intensives</Link>
             <Link to="/insights" className="border-b border-border py-3 text-sm">Insights</Link>
             <Link to="/client-login" className="alp-button mt-4"><LogIn className="h-4 w-4" /> Replay login</Link>

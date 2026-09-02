@@ -4,48 +4,41 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 
-const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
+const CIRCLE_CHECKOUT = "https://alpcontractorcircle.com";
 
 const schools = [
   {
     number: "01",
-    title: "Power Hour",
-    schedule: "Monday–Friday · 8:00 AM EST",
-    price: "$997/month",
-    thesis: "Daily pressure for the entrepreneurial work that otherwise gets pushed behind the urgent jobsite noise.",
-    details: "Decision-making, execution, accountability, leadership, business judgment, and the next move.",
-    to: "/power-hour",
+    title: "Private Intensives",
+    schedule: "Application only · Virtual",
+    price: "Application only",
+    thesis: "A focused working engagement for a defined operating problem, live evidence, and required decisions.",
+    details: "Choose a 3-week or 6-week engagement based on the problem and depth of work required.",
+    to: "/coaching",
+    external: false,
   },
   {
     number: "02",
-    title: "Contractor School",
-    schedule: "Tuesdays · 7:00 PM EST",
-    price: "$497/month",
-    thesis: "The machinations of running the construction work correctly—not the entrepreneurial owner work around it.",
-    details: "Estimating, project controls, contracts, accounting, field management, cost, schedule, and commercial discipline.",
-    to: "/contractor-school",
-  },
-  {
-    number: "03",
-    title: "Sales & Marketing School",
-    schedule: "Wednesdays · 7:00 PM EST",
-    price: "$497/month",
-    thesis: "A working room for creating demand, controlling the sale, and converting attention into profitable work.",
-    details: "Positioning, presentations, negotiation, closing, traffic, retargeting, follow-up, and lead generation.",
-    to: "/sales-marketing-school",
+    title: "ALP Handbook",
+    schedule: "Self-directed · Field doctrine",
+    price: "$47",
+    thesis: "Written doctrine for construction owners who need stronger structure, accountability, cash discipline, and command of the work.",
+    details: "A practical reference for building the company behind the projects.",
+    to: "https://alphandbook.com",
+    external: true,
   },
 ];
 
 const Programs = () => (
   <>
-    <SEO title="ALP Programs — Contractor Circle and Live Training" description="Explore ALP Contractor Circle, Power Hour, Contractor School, Sales and Marketing School, and the ALP replay library." canonical="/programs" />
+    <SEO title="ALP Programs — Contractor Circle and Private Intensives" description="Explore ALP Contractor Circle, private intensives, the ALP Handbook, and the replay library." canonical="/programs" />
     <main className="min-h-screen">
       <Header />
       <section className="border-b border-border pt-[72px]">
         <div className="alp-shell py-20 md:py-28">
           <p className="alp-eyebrow">ALP programs</p>
-          <h1 className="alp-display mt-7 max-w-6xl text-[clamp(4rem,8vw,8rem)]">One flagship. Three focused training rooms.</h1>
-          <p className="mt-9 max-w-3xl text-xl leading-relaxed text-muted-foreground">Contractor Circle is the center of the ALP ecosystem. The schools remain available for owners and teams who need direct access to a specific operating discipline.</p>
+          <h1 className="alp-display mt-7 max-w-6xl text-[clamp(4rem,8vw,8rem)]">One flagship. Focused work for construction owners.</h1>
+          <p className="mt-9 max-w-3xl text-xl leading-relaxed text-muted-foreground">Contractor Circle is the center of the ALP work. Private intensives and the ALP Handbook provide focused access for owners who need a defined next move.</p>
         </div>
       </section>
 
@@ -65,15 +58,16 @@ const Programs = () => (
           <div className="grid gap-10 lg:grid-cols-[0.58fr_1.42fr]">
             <div><p className="alp-eyebrow">Focused access</p><h2 className="mt-5 text-4xl leading-tight md:text-5xl">Choose the room that matches the work.</h2></div>
             <div className="border-t border-foreground">
-              {schools.map((school) => (
-                <Link key={school.to} to={school.to} className="group block border-b border-border py-8">
+              {schools.map((school) => {
+                const content = (
                   <div className="grid gap-5 sm:grid-cols-[56px_1fr_auto] sm:items-start">
                     <span className="alp-number">{school.number}</span>
                     <div><div className="flex flex-wrap items-baseline gap-x-4 gap-y-2"><h3 className="text-3xl group-hover:text-accent">{school.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{school.schedule}</span></div><p className="mt-4 max-w-2xl text-lg leading-relaxed">{school.thesis}</p><p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{school.details}</p></div>
                     <div className="flex items-center gap-3 text-sm font-semibold"><span>{school.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
                   </div>
-                </Link>
-              ))}
+                );
+                return school.external ? <a key={school.to} href={school.to} target="_blank" rel="noopener noreferrer" className="group block border-b border-border py-8">{content}</a> : <Link key={school.to} to={school.to} className="group block border-b border-border py-8">{content}</Link>;
+              })}
             </div>
           </div>
         </div>

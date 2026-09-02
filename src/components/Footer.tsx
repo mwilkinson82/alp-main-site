@@ -21,8 +21,8 @@ const Footer = () => {
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/45">Work With Marshall</p>
             <div className="mt-5 grid gap-3 text-sm">
-              <Link to="/contractor-circle" className="hover:text-background/60">Contractor Circle</Link>
-              <Link to="/programs" className="hover:text-background/60">Live training</Link>
+              <a href="https://alpcontractorcircle.com" className="hover:text-background/60">Contractor Circle</a>
+              <Link to="/programs" className="hover:text-background/60">Programs</Link>
               <Link to="/coaching" className="hover:text-background/60">Private intensives</Link>
               <Link to="/partnerships" className="hover:text-background/60">Partnerships</Link>
               <a href="https://marshallinbio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">Connect with Marshall</a>
@@ -30,12 +30,10 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/45">ALP ecosystem</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/45">ALP resources</p>
             <div className="mt-5 grid gap-3 text-sm">
               <Link to="/ecosystem" className="hover:text-background/60">Ecosystem overview</Link>
-              <a href="https://alphandbook.com/preview" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">ALP Handbook</a>
-              <a href="https://alpos.alpcontractorcircle.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">AOS by ALP</a>
-              <a href="https://overwatch.alpcontractorcircle.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">OverWatch by ALP</a>
+              <a href="https://alphandbook.com" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">ALP Handbook</a>
               <a href="https://marshallwilkinson.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">MarshallWilkinson.com</a>
             </div>
           </div>

@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 
-const CHECKOUT_URL = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
+const CHECKOUT_URL = "https://alpcontractorcircle.com";
 
 const included = [
   ["Live owner calls", "Bring the real decision, constraint, or pressure point in your company this week. Leave with a move."],
