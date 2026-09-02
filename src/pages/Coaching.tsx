@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
-import marshallHeroProfile from "@/assets/marshall-hero-portrait.jpg";
+import marshallHeroProfile from "@/assets/marshall-profile.jpg";
 
 type Intensive = "Three-Week Sprint — $5,000" | "Six-Week Installation — $10,000";
 
