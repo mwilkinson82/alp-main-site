@@ -5,12 +5,11 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
-import advisoryTransition from "@/assets/advisory-transition.mp4";
-import advisoryPoster from "@/assets/advisory-transition-poster.jpg";
+import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
-const CIRCLE_CHECKOUT = "https://buy.stripe.com/28EcN66xPcXk53GdXIeQM18";
+const CIRCLE_CHECKOUT = "https://alpcontractorcircle.com";
 
 const circleIncludes = [
   "Live owner calls and working sessions",
@@ -23,29 +22,24 @@ const circleIncludes = [
 const supportingPrograms = [
   {
     number: "01",
-    title: "Power Hour",
-    cadence: "Weekdays · 8:00 AM EST",
-    copy: "A daily execution room for owners who want pressure, perspective, and a finished next move before the day gets away from them.",
-    price: "$997/month",
-    to: "/power-hour",
+    title: "Private Intensives",
+    cadence: "Application only · Virtual",
+    copy: "Short, hard-working engagements built around a defined operating problem, live evidence, and the decisions the company has been avoiding.",
+    price: "From $5,000",
+    to: "/coaching",
+    external: false,
   },
   {
     number: "02",
-    title: "Contractor School",
-    cadence: "Tuesdays · 7:00 PM EST",
-    copy: "The machinations of managing construction: estimating, project controls, contracts, accounting, field operations, and commercial discipline.",
-    price: "$497/month",
-    to: "/contractor-school",
-  },
-  {
-    number: "03",
-    title: "Sales & Marketing School",
-    cadence: "Wednesdays · 7:00 PM EST",
-    copy: "Sales, positioning, lead generation, negotiation, and the systems that turn attention into profitable work.",
-    price: "$497/month",
-    to: "/sales-marketing-school",
+    title: "ALP Handbook",
+    cadence: "Self-directed · Field doctrine",
+    copy: "The written operating doctrine for construction owners—structure, accountability, cash discipline, and command of the work.",
+    price: "$47",
+    to: "https://alphandbook.com",
+    external: true,
   },
 ];
+
 
 const SilentLoopVideo = ({ src, poster, className, label }: { src: string; poster?: string; className?: string; label: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
