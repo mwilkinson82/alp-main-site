@@ -90,8 +90,9 @@ const Index = () => (
     <SEO
       title="ALP — Build the Company Behind the Projects"
       description="Altitude Logic Pressure helps construction owners build the operating company behind the work. Explore ALP Contractor Circle, live training, and private intensives with Marshall Wilkinson."
-      keywords="Altitude Logic Pressure, ALP Contractor Circle, construction business operating system, contractor coaching, Marshall Wilkinson"
+      keywords="Altitude Logic Pressure, ALP Contractor Circle, construction owners, operating doctrine, Marshall Wilkinson"
       canonical="/"
+
     />
     <StructuredData type="organization" />
     <main className="min-h-screen overflow-hidden">

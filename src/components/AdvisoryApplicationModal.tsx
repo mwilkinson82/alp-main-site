@@ -28,7 +28,7 @@ type FormValues = z.infer<typeof schema>;
 interface AdvisoryApplicationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  defaultService?: "3-Week Intensive — $5,000" | "6-Week Intensive — $10,000";
+  defaultService?: string;
 }
 
 const AdvisoryApplicationModal = ({ open, onOpenChange, defaultService }: AdvisoryApplicationModalProps) => {

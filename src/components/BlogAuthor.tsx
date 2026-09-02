@@ -64,8 +64,9 @@ const BlogAuthor = () => {
           <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Written by</p>
           <p className="text-lg font-bold">Marshall Wilkinson</p>
           <p className="text-sm text-muted-foreground">
-            Business Coach, Strategic Consultant & Founder of ALP
+            Founder & Operator of ALP — Strategic Advisor to Construction Owners
           </p>
+
         </div>
       </div>
 
