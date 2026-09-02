@@ -102,31 +102,17 @@ const Index = () => (
       <Header />
 
       <section className="border-b border-border pt-[72px]">
-        <div className="alp-shell grid min-h-[calc(100vh-72px)] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-          <div className="flex flex-col justify-between py-14 pr-0 sm:py-20 lg:min-h-[calc(100vh-72px)] lg:border-r lg:border-border lg:py-24 lg:pr-12">
+        <div className="alp-shell grid min-h-[calc(100vh-72px)] min-[616px]:grid-cols-[0.92fr_1.08fr] min-[616px]:items-center">
+          <div className="pt-14 pr-0 sm:pt-20 min-[616px]:col-start-1 min-[616px]:row-start-1 lg:border-r lg:border-border lg:pt-24 lg:pr-12">
             <p className="alp-eyebrow">Altitude Logic Pressure · Built for construction owners</p>
-            <div className="my-10 max-w-4xl lg:my-14">
-              <h1 className="alp-display text-[clamp(3rem,5.2vw,5.6rem)]">
-                The project is not the business.
-                <span className="alp-italic mt-3 block text-accent">The company is.</span>
-              </h1>
-              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                ALP gives serious construction owners the operating doctrine, working environment, and direct pressure required to build a company that can perform without routing every decision back through the owner.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href={CIRCLE_CHECKOUT} className="alp-button">
-                  Learn more about Contractor Circle <ArrowRight className="h-4 w-4" />
-                </a>
-                <Link to="/client-login" className="alp-button-outline">Access class replays</Link>
-              </div>
-            </div>
-            <div className="grid gap-4 border-t border-border pt-5 text-xs uppercase tracking-[0.14em] text-muted-foreground sm:grid-cols-3">
-              <span>Operating systems</span><span>Owner-level execution</span><span>Commercial command</span>
-            </div>
+            <h1 className="alp-display mt-10 max-w-4xl text-[clamp(2.6rem,5.2vw,5.6rem)] lg:mt-14">
+              The project is not the business.
+              <span className="alp-italic mt-3 block text-accent">The company is.</span>
+            </h1>
           </div>
 
-          <div className="lg:pl-12">
-            <div className="relative mx-auto aspect-square w-full max-w-[520px] overflow-hidden rounded-full bg-foreground">
+          <div className="py-10 min-[616px]:col-start-2 min-[616px]:row-start-1 min-[616px]:row-span-2 min-[616px]:py-14 lg:pl-12">
+            <div className="relative mx-auto aspect-square w-full max-w-[300px] overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[280px] lg:max-w-[520px]">
               <img
                 src={marshallHeroProfile}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
@@ -145,8 +131,23 @@ const Index = () => (
             </div>
           </div>
 
+          <div className="pb-14 pr-0 sm:pb-20 min-[616px]:col-start-1 min-[616px]:row-start-2 lg:border-r lg:border-border lg:pb-24 lg:pr-12">
+            <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              ALP gives serious construction owners the operating doctrine, working environment, and direct pressure required to build a company that can perform without routing every decision back through the owner.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href={CIRCLE_CHECKOUT} className="alp-button">
+                Learn more about Contractor Circle <ArrowRight className="h-4 w-4" />
+              </a>
+              <Link to="/client-login" className="alp-button-outline">Access class replays</Link>
+            </div>
+            <div className="mt-10 grid gap-4 border-t border-border pt-5 text-xs uppercase tracking-[0.14em] text-muted-foreground sm:grid-cols-3">
+              <span>Operating systems</span><span>Owner-level execution</span><span>Commercial command</span>
+            </div>
+          </div>
         </div>
       </section>
+
 
       <section className="border-b border-border bg-foreground text-background">
         <div className="alp-shell py-12 md:py-16">
@@ -255,8 +256,9 @@ const Index = () => (
       </section>
 
       <section className="border-b border-border bg-secondary/50">
-        <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-2 lg:items-center">
-          <div className="relative mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
+        <div className="alp-shell grid gap-12 py-20 md:py-28 min-[616px]:grid-cols-2 min-[616px]:items-center">
+          <div className="relative mx-auto aspect-square w-full max-w-[300px] overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[280px] lg:max-w-[420px]"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
+
           <div className="lg:pl-10">
             <p className="alp-eyebrow">Application-only private work</p>
             <h2 className="alp-display mt-5 text-5xl sm:text-6xl">When the issue is too expensive for general advice.</h2>
