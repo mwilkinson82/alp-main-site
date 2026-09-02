@@ -7,7 +7,7 @@ import StructuredData from "@/components/StructuredData";
 import AdvisoryApplicationModal from "@/components/AdvisoryApplicationModal";
 import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg";
 
-type Intensive = "3-Week Intensive — $5,000" | "6-Week Intensive — $10,000";
+type Intensive = "Three-Week Sprint — $5,000" | "Six-Week Installation — $10,000";
 
 const engagements: Array<{
   name: Intensive;
@@ -18,18 +18,18 @@ const engagements: Array<{
   outcomes: string[];
 }> = [
   {
-    name: "3-Week Intensive — $5,000",
+    name: "Three-Week Sprint — $5,000",
     eyebrow: "Focused intervention",
     price: "$5,000",
-    duration: "3 weeks",
+    duration: "3 sessions",
     purpose: "For one expensive problem that needs diagnosis, decisions, installation, and a clean handoff—not an open-ended coaching relationship.",
     outcomes: ["Defined problem and success condition", "Three private working sessions", "Live evidence review and decision support", "Written next moves, owners, and deadlines", "Session recordings and working materials"],
   },
   {
-    name: "6-Week Intensive — $10,000",
+    name: "Six-Week Installation — $10,000",
     eyebrow: "Operating reset",
     price: "$10,000",
-    duration: "6 weeks",
+    duration: "6 sessions",
     purpose: "For a deeper operating problem that crosses people, process, financial control, leadership, or execution and requires implementation over time.",
     outcomes: ["Structural diagnosis across the business", "Six private working sessions", "Between-session decision access", "Operating cadence and accountability design", "Implementation inspection and final handoff"],
   },
@@ -37,7 +37,7 @@ const engagements: Array<{
 
 const Coaching = () => {
   const [applicationOpen, setApplicationOpen] = useState(false);
-  const [selectedIntensive, setSelectedIntensive] = useState<Intensive>("3-Week Intensive — $5,000");
+  const [selectedIntensive, setSelectedIntensive] = useState<Intensive>("Three-Week Sprint — $5,000");
 
   const applyFor = (intensive: Intensive) => {
     setSelectedIntensive(intensive);
@@ -46,7 +46,7 @@ const Coaching = () => {
 
   return (
     <>
-      <SEO title="Private Intensives with Marshall Wilkinson" description="Apply for a 3-week $5,000 or 6-week $10,000 private ALP intensive with Marshall Wilkinson." keywords="Marshall Wilkinson private advisory, ALP intensive, construction business advisory" canonical="/coaching" />
+      <SEO title="Private Advisory with Marshall Wilkinson" description="Apply for the Three-Week Sprint ($5,000) or the Six-Week Installation ($10,000) with Marshall Wilkinson." keywords="Marshall Wilkinson private advisory, Three-Week Sprint, Six-Week Installation, construction business advisory" canonical="/coaching" />
       <StructuredData type="service" data={{ serviceType: "Private business intensive", description: "Application-only private operating intensives with Marshall Wilkinson", price: "5000", offers: { "@type": "AggregateOffer", lowPrice: "5000", highPrice: "10000", priceCurrency: "USD" } }} />
       <main className="min-h-screen">
         <Header />
@@ -90,7 +90,7 @@ const Coaching = () => {
           </div>
         </section>
 
-        <section className="bg-foreground text-background"><div className="alp-shell grid gap-9 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-24"><div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Ready to put the real issue on the table?</p><h2 className="alp-display mt-5 max-w-4xl text-5xl sm:text-6xl">Apply for the engagement that matches the work.</h2></div><button type="button" onClick={() => applyFor("6-Week Intensive — $10,000")} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Start the application <ArrowRight className="h-4 w-4" /></button></div></section>
+        <section className="bg-foreground text-background"><div className="alp-shell grid gap-9 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-24"><div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Ready to put the real issue on the table?</p><h2 className="alp-display mt-5 max-w-4xl text-5xl sm:text-6xl">Apply for the engagement that matches the work.</h2></div><button type="button" onClick={() => applyFor("Six-Week Installation — $10,000")} className="inline-flex min-h-12 items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Start the application <ArrowRight className="h-4 w-4" /></button></div></section>
         <Footer />
         <AdvisoryApplicationModal open={applicationOpen} onOpenChange={setApplicationOpen} defaultService={selectedIntensive} />
       </main>
