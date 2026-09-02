@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
-import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg";
+import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg.asset.json";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
@@ -96,15 +96,15 @@ const Index = () => (
         <div className="alp-shell grid min-h-[calc(100vh-72px)] lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div className="flex flex-col justify-between py-14 pr-0 sm:py-20 lg:min-h-[calc(100vh-72px)] lg:border-r lg:border-border lg:py-24 lg:pr-12">
             <p className="alp-eyebrow">Altitude Logic Pressure · Built for construction owners</p>
-            <div className="my-14 max-w-4xl lg:my-20">
-              <h1 className="alp-display text-[clamp(4rem,7.2vw,7.7rem)]">
+            <div className="my-10 max-w-4xl lg:my-14">
+              <h1 className="alp-display text-[clamp(3rem,5.2vw,5.6rem)]">
                 The project is not the business.
                 <span className="alp-italic mt-3 block text-accent">The company is.</span>
               </h1>
-              <p className="mt-10 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                 ALP gives serious construction owners the operating doctrine, working environment, and direct pressure required to build a company that can perform without routing every decision back through the owner.
               </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link to="/contractor-circle" className="alp-button">
                   Explore Contractor Circle <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -116,14 +116,14 @@ const Index = () => (
             </div>
           </div>
 
-          <div className="py-8 lg:py-16 lg:pl-12">
-            <div className="relative aspect-video overflow-hidden bg-foreground">
+          <div className="lg:pl-12">
+            <div className="relative aspect-[4/5] max-h-[calc(100vh-160px)] overflow-hidden bg-foreground">
               <img
-                src={marshallHeroProfile}
+                src={marshallHeroProfile.url}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
-                className="h-full w-full object-cover object-top saturate-[0.9]"
+                className="h-full w-full object-cover object-[50%_35%] saturate-[0.9]"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
               <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
@@ -134,6 +134,7 @@ const Index = () => (
               <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -181,7 +182,7 @@ const Index = () => (
                 ))}
               </div>
               <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                <a href={CIRCLE_CHECKOUT} className="alp-button">Join the Circle · $497/month <ArrowRight className="h-4 w-4" /></a>
+                <a href={CIRCLE_CHECKOUT} className="alp-button">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a>
                 <Link to="/contractor-circle" className="alp-link">See everything inside</Link>
               </div>
             </div>

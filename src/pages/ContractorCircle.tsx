@@ -26,7 +26,7 @@ const ContractorCircle = () => (
           <h1 className="alp-display mt-8 max-w-6xl text-[clamp(4rem,9vw,9rem)]">Build the company <span className="alp-italic text-accent">behind the projects.</span></h1>
           <div className="mt-12 grid gap-8 border-t border-border pt-8 md:grid-cols-[1.2fr_0.8fr] md:items-end">
             <p className="max-w-3xl text-xl leading-relaxed text-muted-foreground md:text-2xl">The project is not the business. The company is. Contractor Circle is the standing operating environment for construction owners who are done running everything through themselves.</p>
-            <div className="flex flex-col gap-3 md:items-end"><a href={CHECKOUT_URL} className="alp-button">Join the Circle · $497/month <ArrowRight className="h-4 w-4" /></a><Link to="/client-login" className="text-sm underline underline-offset-4">Already a client? Access replays</Link></div>
+            <div className="flex flex-col gap-3 md:items-end"><a href={CHECKOUT_URL} className="alp-button">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a><Link to="/client-login" className="text-sm underline underline-offset-4">Already a client? Access replays</Link></div>
           </div>
         </div>
       </section>
@@ -62,7 +62,7 @@ const ContractorCircle = () => (
       <section className="bg-foreground text-background">
         <div className="alp-shell grid gap-10 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-28">
           <div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Circle membership</p><h2 className="alp-display mt-5 max-w-4xl text-5xl sm:text-7xl">Stop being the operating system.</h2><p className="mt-6 max-w-2xl text-lg text-background/60">Live calls, bootcamps, replays, templates, tools, community, and full AOS access with unlimited workspaces and seats.</p></div>
-          <div className="md:text-right"><p className="text-5xl tracking-[-0.05em]">$497<span className="text-lg text-background/50">/month</span></p><a href={CHECKOUT_URL} className="mt-6 inline-flex min-h-12 items-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Join the Circle <ArrowRight className="h-4 w-4" /></a></div>
+          <div className="md:text-right"><p className="text-5xl tracking-[-0.05em]">$497<span className="text-lg text-background/50">/month</span></p><a href={CHECKOUT_URL} className="mt-6 inline-flex min-h-12 items-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a></div>
         </div>
       </section>
       <Footer />
