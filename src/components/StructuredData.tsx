@@ -19,11 +19,12 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     url: "https://marshallwilkinson.com/",
     worksFor: { "@id": organizationId },
     sameAs: [
-      "https://marshallwilkinson.com/",
-      "https://www.linkedin.com/in/marshallwilkinson",
-      "https://instagram.com/realmarshallwilkinson",
+      "https://www.instagram.com/realmarshallwilkinson",
+      "https://www.tiktok.com/@realmarshallwilkinson",
       "https://marshallinbio.com/",
+      "https://marshallwilkinson.com/",
     ],
+
   };
 
   const organization = {
@@ -183,11 +184,12 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     service: {
       "@context": "https://schema.org",
       "@type": "Service",
-      "serviceType": data?.serviceType || "Business Coaching",
+      "serviceType": data?.serviceType || "Private Advisory and Operating Intensives",
       "provider": {
         "@id": organizationId,
       },
-      "description": data?.description || "Professional business coaching and consulting services by Marshall Wilkinson",
+      "description": data?.description || "Private advisory and operating intensives for construction owners, led by Marshall Wilkinson",
+
       "areaServed": "US",
       "offers": data?.offers || {
         "@type": "Offer",

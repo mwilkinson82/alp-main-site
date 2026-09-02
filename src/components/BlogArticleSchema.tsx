@@ -32,9 +32,15 @@ const BlogArticleSchema = ({
       "@type": "Person",
       "name": "Marshall Wilkinson",
       "url": siteUrl,
-      "jobTitle": "Business Coach, Strategic Consultant & Founder",
-      "sameAs": ["https://www.marshallwilkinson.com"],
+      "jobTitle": "Founder, Operator and Strategic Advisor",
+      "sameAs": [
+        "https://www.instagram.com/realmarshallwilkinson",
+        "https://www.tiktok.com/@realmarshallwilkinson",
+        "https://marshallinbio.com/",
+        "https://www.marshallwilkinson.com",
+      ],
     },
+
     "publisher": {
       "@type": "Organization",
       "name": "ALP - Altitude Logic Pressure",

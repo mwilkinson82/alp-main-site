@@ -50,7 +50,7 @@ const About = () => {
             <span className="text-gradient-gold">Why Marshall</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $5B in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is infrastructure for decisive operators.
+            Marshall Wilkinson has operated inside high-stakes environments where execution wasn't optional. He has advised on and executed over $2.5B+ in outcomes, building systems that protect margin, create leverage, and scale operations without chaos. ALP is infrastructure for decisive operators.
           </p>
         </div>
 
@@ -94,7 +94,7 @@ const About = () => {
           <div className="space-y-6">
             <div className="text-lg text-foreground space-y-4">
               <p>
-                Marshall Wilkinson is an architect of decisions and systems that win. With over <span className="text-primary font-bold">$5B in executed projects and negotiated outcomes</span>, he built his reputation inside environments where failure wasn't tolerated — and results were measured.
+                Marshall Wilkinson is an architect of decisions and systems that win. With over <span className="text-primary font-bold">$2.5B+ in executed projects and negotiated outcomes</span>, he built his reputation inside environments where failure wasn't tolerated — and results were measured.
               </p>
               <p>
                 Marshall built his reputation mastering leverage, timing, and execution in some of the most complex negotiations and enterprise environments in New York City. He didn't just manage — he controlled outcomes.
