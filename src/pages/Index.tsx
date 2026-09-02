@@ -102,17 +102,26 @@ const Index = () => (
       <Header />
 
       <section className="border-b border-border pt-[72px]">
-        <div className="alp-shell grid min-h-[calc(100vh-72px)] min-[616px]:grid-cols-[0.92fr_1.08fr] min-[616px]:items-center">
+        <div className="alp-shell grid min-[616px]:grid-cols-[0.92fr_1.08fr] min-[616px]:items-center min-[835px]:min-h-[calc(100vh-72px)]">
           <div className="pt-14 pr-0 sm:pt-20 min-[616px]:col-start-1 min-[616px]:row-start-1 lg:border-r lg:border-border lg:pt-24 lg:pr-12">
             <p className="alp-eyebrow">Altitude Logic Pressure · Built for construction owners</p>
-            <h1 className="alp-display mt-10 max-w-4xl text-[clamp(2.6rem,5.2vw,5.6rem)] lg:mt-14">
-              The project is not the business.
-              <span className="alp-italic mt-3 block text-accent">The company is.</span>
-            </h1>
+            <div className="mt-8 flex items-start gap-4 lg:mt-14">
+              <h1 className="alp-display max-w-4xl flex-1 text-[clamp(2.1rem,5.2vw,5.6rem)]">
+                The project is not the business.
+                <span className="alp-italic mt-3 block text-accent">The company is.</span>
+              </h1>
+              <div className="relative aspect-square w-28 shrink-0 overflow-hidden rounded-full bg-foreground sm:w-40 min-[616px]:hidden">
+                <img
+                  src={marshallHeroProfile}
+                  alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
+                  className="h-full w-full object-cover object-center saturate-[0.9]"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="py-10 min-[616px]:col-start-2 min-[616px]:row-start-1 min-[616px]:row-span-2 min-[616px]:py-14 lg:pl-12">
-            <div className="relative mx-auto aspect-square w-full max-w-[300px] overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[280px] lg:max-w-[520px]">
+          <div className="hidden py-10 min-[616px]:block min-[616px]:col-start-2 min-[616px]:row-start-1 min-[616px]:row-span-2 min-[616px]:py-14 lg:pl-12">
+            <div className="relative mx-auto aspect-square w-full overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[220px] min-[835px]:max-w-[300px] lg:max-w-[520px]">
               <img
                 src={marshallHeroProfile}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
@@ -130,6 +139,7 @@ const Index = () => (
               <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
             </div>
           </div>
+
 
           <div className="pb-14 pr-0 sm:pb-20 min-[616px]:col-start-1 min-[616px]:row-start-2 lg:border-r lg:border-border lg:pb-24 lg:pr-12">
             <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
