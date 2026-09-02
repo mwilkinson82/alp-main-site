@@ -83,7 +83,9 @@ const Header = () => {
             ) : (
               <Link key={school.to} to={school.to} className="border-b border-border py-3 text-sm">{school.label}</Link>
             ))}
+            <Link to="/programs" className="border-b border-border py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all programs</Link>
             <Link to="/coaching" className="border-b border-border py-3 text-sm">Private Intensives</Link>
+
             <Link to="/insights" className="border-b border-border py-3 text-sm">Insights</Link>
             <Link to="/client-login" className="alp-button mt-4"><LogIn className="h-4 w-4" /> Replay login</Link>
           </div>
