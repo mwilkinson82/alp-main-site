@@ -58,7 +58,7 @@ const Coaching = () => {
               <p className="alp-italic mt-5 text-3xl text-accent">Leave with the company able to carry the answer.</p>
               <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">These are tightly scoped working engagements for owners facing a decision, operating constraint, leadership failure, or commercial problem expensive enough to require direct attention.</p>
             </div>
-            <div className="flex items-center justify-center bg-foreground py-0 lg:py-14"><div className="relative aspect-[4/5] w-full max-h-[calc(100vh-140px)] overflow-hidden"><img src={marshallHeroProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="absolute inset-0 h-full w-full object-cover object-[50%_30%] grayscale-[0.15]" /><div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" /><p className="absolute inset-x-8 bottom-8 border-t border-white/35 pt-4 text-sm text-white/70">Private. Direct. Built around live evidence and required decisions.</p></div></div>
+            <div className="flex flex-col items-center justify-center gap-6 py-14 lg:py-20"><div className="relative aspect-square w-full max-w-[440px] overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="h-full w-full object-cover object-center" /></div><p className="max-w-[440px] border-t border-border pt-4 text-sm text-muted-foreground">Private. Direct. Built around live evidence and required decisions.</p></div>
           </div>
         </section>
 
