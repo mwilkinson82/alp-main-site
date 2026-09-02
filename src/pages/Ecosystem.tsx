@@ -64,7 +64,7 @@ const Ecosystem = () => (
               Marshall Wilkinson built Altitude Logic Pressure around one conviction: the project is not the business. The company is.
             </p>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              ALP is the parent doctrine and education brand. Contractor Circle is the flagship owner environment. The ALP Handbook carries the doctrine in print. AOS and OverWatch put it into the company and the projects.
+              ALP is the parent doctrine and advisory firm. Contractor Circle is the flagship owner environment. The ALP Handbook carries the doctrine in print.
             </p>
             <a href="https://marshallwilkinson.com/" target="_blank" rel="noopener noreferrer" className="alp-link mt-7 inline-flex items-center gap-2">
               About Marshall Wilkinson <ExternalLink className="h-4 w-4" />
