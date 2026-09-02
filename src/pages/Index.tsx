@@ -22,6 +22,15 @@ const circleIncludes = [
 const supportingPrograms = [
   {
     number: "01",
+    title: "Contractor Circle",
+    format: "Membership · Virtual",
+    copy: "The standing room for construction owners installing structure, accountability, and command of the work alongside other operators.",
+    price: "Learn more",
+    to: "https://alpcontractorcircle.com",
+    external: true,
+  },
+  {
+    number: "02",
     title: "Private Intensives",
     format: "Application only · Virtual",
     copy: "Short, hard-working engagements built around a defined operating problem, live evidence, and the decisions the company has been avoiding.",
@@ -30,7 +39,7 @@ const supportingPrograms = [
     external: false,
   },
   {
-    number: "02",
+    number: "03",
     title: "ALP Handbook",
     format: "Self-directed · Field doctrine",
     copy: "The written operating doctrine for construction owners—structure, accountability, cash discipline, and command of the work.",
@@ -39,6 +48,7 @@ const supportingPrograms = [
     external: true,
   },
 ];
+
 
 
 const SilentLoopVideo = ({ src, poster, className, label }: { src: string; poster?: string; className?: string; label: string }) => {
