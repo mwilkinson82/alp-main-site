@@ -1,4 +1,4 @@
-import { Instagram, Youtube } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import alpLogo from "@/assets/alp-logo.png";
 
@@ -25,6 +25,8 @@ const Footer = () => {
               <Link to="/programs" className="hover:text-background/60">Live training</Link>
               <Link to="/coaching" className="hover:text-background/60">Private intensives</Link>
               <Link to="/partnerships" className="hover:text-background/60">Partnerships</Link>
+              <a href="https://marshallinbio.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">Connect with Marshall</a>
+
             </div>
           </div>
           <div>
@@ -45,9 +47,9 @@ const Footer = () => {
               <Link to="/insights" className="hover:text-background/60">Insights</Link>
             </div>
             <div className="mt-7 flex gap-4">
-              <a href="https://instagram.com/realmarshallwilkinson" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
-              <a href="https://youtube.com/marshallwilkinson" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><Youtube size={18} /></a>
+              <a href="https://www.instagram.com/realmarshallwilkinson" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={18} /></a>
             </div>
+
           </div>
         </div>
         <div className="flex flex-col gap-4 pt-7 text-xs text-background/45 md:flex-row md:items-center md:justify-between">
