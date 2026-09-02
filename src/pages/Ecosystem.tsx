@@ -16,53 +16,38 @@ const entities = [
     eyebrow: "The doctrine in print",
     name: "The ALP Handbook",
     description: "Marshall Wilkinson's written operating doctrine for owners who want to build a construction company that can carry the work without depending on constant rescue.",
-    href: "https://alphandbook.com/preview",
-  },
-  {
-    eyebrow: "Company-level operating system",
-    name: "AOS by ALP",
-    description: "The company operating system for leadership accountability, priorities, scorecards, operating cadence, and the evidence required to move execution forward.",
-    href: "https://alpos.alpcontractorcircle.com/",
-  },
-  {
-    eyebrow: "Project-level control",
-    name: "OverWatch by ALP",
-    description: "The project-control platform for construction risk, commitments, work in progress, commercial control, and daily evidence from the field to the office.",
-    href: "https://overwatch.alpcontractorcircle.com/",
+    href: "https://alphandbook.com",
   },
 ];
 
 const questions = [
   {
     question: "Who is Marshall Wilkinson?",
-    answer: "Marshall Wilkinson is the founder of Altitude Logic Pressure and the operator, author, and strategic advisor behind ALP Contractor Circle, the ALP Handbook, AOS by ALP, and OverWatch by ALP.",
+    answer: "Marshall Wilkinson is the founder of Altitude Logic Pressure and the operator, author, and strategic advisor behind ALP Contractor Circle and the ALP Handbook.",
   },
   {
     question: "What is Altitude Logic Pressure?",
-    answer: "Altitude Logic Pressure, commonly called ALP, is the parent construction-business doctrine and education brand. It develops the operating systems, training, advisory, and tools that connect the ALP ecosystem.",
+    answer: "Altitude Logic Pressure, commonly called ALP, is the parent construction-business doctrine and education brand. It develops the operating doctrine, training, advisory, and tools used by construction owners.",
   },
   {
     question: "What is ALP Contractor Circle?",
-    answer: "ALP Contractor Circle is the flagship owner environment in the ALP ecosystem. It is built for construction company owners working on the entrepreneurial and operating side of the business, not just the mechanics of an individual project.",
+    answer: "ALP Contractor Circle is the flagship owner environment for construction company owners. It is built for construction company owners working on the entrepreneurial and operating side of the business, not just the mechanics of an individual project.",
   },
-  {
-    question: "How do AOS and OverWatch work together?",
-    answer: "AOS by ALP works at the company level: accountability, leadership cadence, priorities, and execution. OverWatch by ALP works at the project level: risk, commitments, work in progress, commercial control, and project evidence.",
-  },
+
   {
     question: "What is the ALP Handbook?",
-    answer: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives the ideas behind the ALP ecosystem a durable reference owners and leadership teams can use in the real work.",
+    answer: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
   },
 ];
 
 const Ecosystem = () => (
   <>
     <SEO
-      title="Marshall Wilkinson and the ALP Ecosystem"
-      description="See how Marshall Wilkinson, Altitude Logic Pressure, ALP Contractor Circle, the ALP Handbook, AOS by ALP, and OverWatch by ALP fit together."
-      keywords="Marshall Wilkinson, Altitude Logic Pressure, ALP, ALP Contractor Circle, Contractor Circle, ALP Handbook, AOS by ALP, OverWatch by ALP"
+      title="Marshall Wilkinson and ALP"
+      description="See how Marshall Wilkinson, Altitude Logic Pressure, ALP Contractor Circle, and the ALP Handbook fit together."
+      keywords="Marshall Wilkinson, Altitude Logic Pressure, ALP, ALP Contractor Circle, Contractor Circle, ALP Handbook"
       canonical="/ecosystem"
-      imageAlt="Marshall Wilkinson and the Altitude Logic Pressure ecosystem"
+      imageAlt="Marshall Wilkinson and Altitude Logic Pressure"
     />
     <StructuredData type="ecosystem" />
     <main className="min-h-screen overflow-hidden">
@@ -71,8 +56,8 @@ const Ecosystem = () => (
       <section className="border-b border-border pt-[72px]">
         <div className="alp-shell grid gap-14 py-20 md:py-28 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
           <div>
-            <p className="alp-eyebrow">One doctrine · connected operating systems</p>
-            <h1 className="alp-display mt-6 text-[clamp(4rem,8vw,8rem)]">The ALP ecosystem.</h1>
+            <p className="alp-eyebrow">One doctrine · direct owner work</p>
+            <h1 className="alp-display mt-6 text-[clamp(4rem,8vw,8rem)]">The ALP doctrine.</h1>
           </div>
           <div className="lg:pb-3">
             <p className="max-w-3xl text-2xl leading-tight tracking-[-0.03em] md:text-4xl">

@@ -23,7 +23,7 @@ const supportingPrograms = [
   {
     number: "01",
     title: "Private Intensives",
-    cadence: "Application only · Virtual",
+    format: "Application only · Virtual",
     copy: "Short, hard-working engagements built around a defined operating problem, live evidence, and the decisions the company has been avoiding.",
     price: "From $5,000",
     to: "/coaching",
@@ -32,7 +32,7 @@ const supportingPrograms = [
   {
     number: "02",
     title: "ALP Handbook",
-    cadence: "Self-directed · Field doctrine",
+    format: "Self-directed · Field doctrine",
     copy: "The written operating doctrine for construction owners—structure, accountability, cash discipline, and command of the work.",
     price: "$47",
     to: "https://alphandbook.com",
@@ -230,7 +230,7 @@ const Index = () => (
                   <>
                     <span className="alp-number">{program.number}</span>
                     <div>
-                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.cadence}</span></div>
+                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.format}</span></div>
                       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{program.copy}</p>
                     </div>
                     <div className="flex items-center gap-3 text-sm font-semibold sm:justify-end"><span>{program.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
