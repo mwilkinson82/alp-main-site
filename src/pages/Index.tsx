@@ -118,13 +118,13 @@ const Index = () => (
 
           <div className="py-8 lg:py-16 lg:pl-12">
             <div className="relative aspect-video overflow-hidden bg-foreground">
-              <SilentLoopVideo
-                src={advisoryTransition}
-                poster={advisoryPoster}
-                className="h-full w-full object-cover saturate-[0.82]"
-                label="Marshall Wilkinson transitioning from a portrait into a live private advisory session"
+              <img
+                src={marshallHeroProfile}
+                alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
+                className="h-full w-full object-cover object-top saturate-[0.9]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10" />
+
               <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
                 <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
