@@ -256,8 +256,9 @@ const Index = () => (
       </section>
 
       <section className="border-b border-border bg-secondary/50">
-        <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-2 lg:items-center">
-          <div className="relative mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
+        <div className="alp-shell grid gap-12 py-20 md:py-28 min-[616px]:grid-cols-2 min-[616px]:items-center">
+          <div className="relative mx-auto aspect-square w-full max-w-[300px] overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[280px] lg:max-w-[420px]"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
+
           <div className="lg:pl-10">
             <p className="alp-eyebrow">Application-only private work</p>
             <h2 className="alp-display mt-5 text-5xl sm:text-6xl">When the issue is too expensive for general advice.</h2>
