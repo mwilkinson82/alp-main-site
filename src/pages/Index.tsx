@@ -198,7 +198,7 @@ const Index = () => (
               Most construction companies are carrying the right answers in one person’s head. ALP helps expose the work, assign ownership, install the operating cadence, and create evidence the team can act on without waiting for the owner to rescue the day.
             </p>
             <p className="mt-5 max-w-2xl text-sm leading-relaxed text-background/55">
-              That doctrine runs through <Link to="/contractor-circle" className="text-background underline decoration-background/35 underline-offset-4">ALP Contractor Circle</Link>, the <a href="https://alphandbook.com/preview" className="text-background underline decoration-background/35 underline-offset-4">ALP Handbook</a>, <a href="https://alpos.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">AOS by ALP</a>, and <a href="https://overwatch.alpcontractorcircle.com/" className="text-background underline decoration-background/35 underline-offset-4">OverWatch by ALP</a>. <Link to="/ecosystem" className="text-background underline decoration-background/35 underline-offset-4">See how the ALP ecosystem fits together.</Link>
+              That doctrine runs through <a href="https://alpcontractorcircle.com" className="text-background underline decoration-background/35 underline-offset-4">ALP Contractor Circle</a> and the <a href="https://alphandbook.com" className="text-background underline decoration-background/35 underline-offset-4">ALP Handbook</a>.
             </p>
           </div>
           <div className="grid gap-8 border-t border-background/20 pt-8 sm:grid-cols-2 lg:grid-cols-1">
@@ -225,16 +225,19 @@ const Index = () => (
               <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">These programs remain available, but they are supporting offers—not the center of the ALP story.</p>
             </div>
             <div className="border-t border-foreground">
-              {supportingPrograms.map((program) => (
-                <Link key={program.to} to={program.to} className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">
-                  <span className="alp-number">{program.number}</span>
-                  <div>
-                    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.cadence}</span></div>
-                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{program.copy}</p>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm font-semibold sm:justify-end"><span>{program.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
-                </Link>
-              ))}
+              {supportingPrograms.map((program) => {
+                const content = (
+                  <>
+                    <span className="alp-number">{program.number}</span>
+                    <div>
+                      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1"><h3 className="text-2xl group-hover:text-accent">{program.title}</h3><span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{program.cadence}</span></div>
+                      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{program.copy}</p>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm font-semibold sm:justify-end"><span>{program.price}</span><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
+                  </>
+                );
+                return program.external ? <a key={program.to} href={program.to} target="_blank" rel="noopener noreferrer" className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">{content}</a> : <Link key={program.to} to={program.to} className="group grid gap-4 border-b border-border py-7 sm:grid-cols-[55px_1fr_auto] sm:items-start">{content}</Link>;
+              })}
             </div>
           </div>
         </div>

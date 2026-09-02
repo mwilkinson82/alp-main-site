@@ -32,7 +32,7 @@ const Footer = () => {
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-background/45">ALP resources</p>
             <div className="mt-5 grid gap-3 text-sm">
-              <Link to="/ecosystem" className="hover:text-background/60">Ecosystem overview</Link>
+              <Link to="/programs" className="hover:text-background/60">Programs overview</Link>
               <a href="https://alphandbook.com" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">ALP Handbook</a>
               <a href="https://marshallwilkinson.com/" target="_blank" rel="noopener noreferrer" className="hover:text-background/60">MarshallWilkinson.com</a>
             </div>

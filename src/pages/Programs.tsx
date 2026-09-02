@@ -74,7 +74,7 @@ const Programs = () => (
       </section>
 
       <section className="bg-secondary/55">
-        <div className="alp-shell grid gap-8 py-16 md:grid-cols-[1fr_auto] md:items-center md:py-20"><div><p className="alp-eyebrow">Already a client?</p><h2 className="mt-4 text-4xl">Your class archive is still here.</h2><p className="mt-3 text-muted-foreground">Access Power Hour, Contractor School, and Sales & Marketing School replays.</p></div><Link to="/client-login" className="alp-button">Open the replay libraries <ArrowRight className="h-4 w-4" /></Link></div>
+        <div className="alp-shell grid gap-8 py-16 md:grid-cols-[1fr_auto] md:items-center md:py-20"><div><p className="alp-eyebrow">Already a client?</p><h2 className="mt-4 text-4xl">Your class archive is still here.</h2><p className="mt-3 text-muted-foreground">Access your existing class replay libraries.</p></div><Link to="/client-login" className="alp-button">Open the replay libraries <ArrowRight className="h-4 w-4" /></Link></div>
       </section>
       <Footer />
     </main>
