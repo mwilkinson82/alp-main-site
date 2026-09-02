@@ -119,7 +119,7 @@ const Index = () => (
           <div className="lg:pl-12">
             <div className="relative aspect-[4/5] max-h-[calc(100vh-160px)] overflow-hidden bg-foreground">
               <img
-                src={marshallHeroProfile}
+                src={marshallHeroProfile.url}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
                 className="h-full w-full object-cover object-[50%_35%] saturate-[0.9]"
               />
