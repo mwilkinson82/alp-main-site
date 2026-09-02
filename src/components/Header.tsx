@@ -29,7 +29,7 @@ const Header = () => {
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
-          <Link to="/contractor-circle" className="text-sm font-semibold hover:text-accent">Contractor Circle</Link>
+          <a href="https://alpcontractorcircle.com" className="text-sm font-semibold hover:text-accent">Contractor Circle</a>
           <div className="relative">
             <button
               type="button"
@@ -77,7 +77,7 @@ const Header = () => {
       {mobileOpen && (
         <nav className="border-t border-border bg-background px-5 py-5 lg:hidden" aria-label="Mobile navigation">
           <div className="mx-auto grid max-w-2xl gap-1">
-            <Link to="/contractor-circle" className="border-b border-border py-3 text-base font-semibold">Contractor Circle</Link>
+            <a href="https://alpcontractorcircle.com" className="border-b border-border py-3 text-base font-semibold">Contractor Circle</a>
             <p className="pt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Training</p>
             {schools.map((school) => school.external ? (
               <a key={school.to} href={school.to} target="_blank" rel="noopener noreferrer" className="border-b border-border py-3 text-sm">{school.label}</a>

@@ -105,9 +105,9 @@ const Index = () => (
                 ALP gives serious construction owners the operating doctrine, working environment, and direct pressure required to build a company that can perform without routing every decision back through the owner.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link to="/contractor-circle" className="alp-button">
-                  Explore Contractor Circle <ArrowRight className="h-4 w-4" />
-                </Link>
+                <a href={CIRCLE_CHECKOUT} className="alp-button">
+                  Learn more about Contractor Circle <ArrowRight className="h-4 w-4" />
+                </a>
                 <Link to="/client-login" className="alp-button-outline">Access class replays</Link>
               </div>
             </div>
@@ -183,7 +183,7 @@ const Index = () => (
               </div>
               <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                 <a href={CIRCLE_CHECKOUT} className="alp-button">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a>
-                <Link to="/contractor-circle" className="alp-link">See everything inside</Link>
+                <a href={CIRCLE_CHECKOUT} className="alp-link">See everything inside</a>
               </div>
             </div>
           </div>
