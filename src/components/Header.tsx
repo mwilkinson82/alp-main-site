@@ -4,7 +4,6 @@ import { ChevronDown, LogIn, Menu, X } from "lucide-react";
 import alpLogo from "@/assets/alp-logo.png";
 
 const schools = [
-  { label: "Private Intensives", detail: "Application-only advisory", to: "/coaching", external: false },
   { label: "ALP Handbook", detail: "Field-tested contractor doctrine", to: "https://alphandbook.com", external: true },
 ];
 
@@ -52,7 +51,7 @@ const Header = () => {
                     <span className="mt-0.5 block text-xs text-muted-foreground">{school.detail}</span>
                   </Link>
                 ))}
-                <Link to="/programs" className="block px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all training →</Link>
+                <Link to="/programs" className="block px-4 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all programs</Link>
               </div>
             )}
           </div>
@@ -84,7 +83,9 @@ const Header = () => {
             ) : (
               <Link key={school.to} to={school.to} className="border-b border-border py-3 text-sm">{school.label}</Link>
             ))}
+            <Link to="/programs" className="border-b border-border py-3 text-xs font-semibold uppercase tracking-[0.16em] text-accent">View all programs</Link>
             <Link to="/coaching" className="border-b border-border py-3 text-sm">Private Intensives</Link>
+
             <Link to="/insights" className="border-b border-border py-3 text-sm">Insights</Link>
             <Link to="/client-login" className="alp-button mt-4"><LogIn className="h-4 w-4" /> Replay login</Link>
           </div>
