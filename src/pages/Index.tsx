@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import marshallProfile from "@/assets/marshall-profile.jpg";
+import marshallHeroProfile from "@/assets/marshall-hero-portrait.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
@@ -256,7 +256,7 @@ const Index = () => (
 
       <section className="border-b border-border bg-secondary/50">
         <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-2 lg:items-center">
-          <div className="mx-auto w-full max-w-sm"><div className="relative aspect-square w-full overflow-hidden rounded-full bg-foreground"><img src={marshallProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="absolute inset-0 h-full w-full rounded-full object-cover grayscale-[0.25]" /></div></div>
+          <div className="mx-auto w-full max-w-sm"><div className="relative aspect-square w-full overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="absolute inset-0 h-full w-full rounded-full object-cover grayscale-[0.25]" /></div></div>
           <div className="lg:pl-10">
             <p className="alp-eyebrow">Application-only private work</p>
             <h2 className="alp-display mt-5 text-5xl sm:text-6xl">When the issue is too expensive for general advice.</h2>
