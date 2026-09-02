@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
-import marshallHeroProfile from "@/assets/marshall-hero-portrait.jpg";
+import marshallHeroProfile from "@/assets/marshall-profile.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
@@ -126,19 +126,19 @@ const Index = () => (
           </div>
 
           <div className="lg:pl-12">
-            <div className="relative aspect-[4/5] max-h-[calc(100vh-160px)] overflow-hidden bg-foreground">
+            <div className="relative mx-auto aspect-square w-full max-w-[520px] overflow-hidden rounded-full bg-foreground">
               <img
                 src={marshallHeroProfile}
                 alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
-                className="h-full w-full object-cover object-[50%_35%] saturate-[0.9]"
+                className="h-full w-full object-cover object-center saturate-[0.9]"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-              <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
-                <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
-              </div>
             </div>
+
+            <div className="mx-auto mt-6 max-w-[520px] border-t border-border pt-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Marshall Wilkinson · Founder, ALP</p>
+              <p className="mt-2 text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
+            </div>
+
 
             <div className="grid gap-3 border-x border-b border-border px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:grid-cols-3 sm:px-7">
               <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
@@ -256,7 +256,7 @@ const Index = () => (
 
       <section className="border-b border-border bg-secondary/50">
         <div className="alp-shell grid gap-12 py-20 md:py-28 lg:grid-cols-2 lg:items-center">
-          <div className="relative aspect-[4/3] overflow-hidden bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
+          <div className="relative mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson in a private working session" className="h-full w-full object-cover grayscale-[0.25]" /></div>
           <div className="lg:pl-10">
             <p className="alp-eyebrow">Application-only private work</p>
             <h2 className="alp-display mt-5 text-5xl sm:text-6xl">When the issue is too expensive for general advice.</h2>
