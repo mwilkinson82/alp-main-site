@@ -51,16 +51,22 @@ const Coaching = () => {
       <main className="min-h-screen">
         <Header />
         <section className="border-b border-border pt-[72px]">
-          <div className="alp-shell grid lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="flex flex-col justify-center py-20 pr-0 md:py-28 lg:border-r lg:border-border lg:pr-14">
+          <div className="alp-shell grid min-[616px]:grid-cols-[1.08fr_0.92fr] min-[616px]:items-center">
+            <div className="pt-16 pr-0 md:pt-24 min-[616px]:col-start-1 min-[616px]:row-start-1 lg:border-r lg:border-border lg:pr-14">
               <p className="alp-eyebrow">Application-only private work</p>
-              <h1 className="alp-display mt-7 text-[clamp(4rem,7vw,7.5rem)]">Come in with the real problem.</h1>
-              <p className="alp-italic mt-5 text-3xl text-accent">Leave with the company able to carry the answer.</p>
-              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">These are tightly scoped working engagements for owners facing a decision, operating constraint, leadership failure, or commercial problem expensive enough to require direct attention.</p>
+              <h1 className="alp-display mt-7 text-[clamp(2.75rem,7vw,7.5rem)]">Come in with the real problem.</h1>
+              <p className="alp-italic mt-5 text-2xl text-accent sm:text-3xl">Leave with the company able to carry the answer.</p>
             </div>
-            <div className="flex flex-col items-center justify-center gap-6 py-14 lg:py-20"><div className="relative aspect-square w-full max-w-[440px] overflow-hidden rounded-full bg-foreground"><img src={marshallHeroProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="h-full w-full object-cover object-center" /></div><p className="max-w-[440px] border-t border-border pt-4 text-sm text-muted-foreground">Private. Direct. Built around live evidence and required decisions.</p></div>
+            <div className="flex flex-col items-center justify-center gap-6 py-10 min-[616px]:col-start-2 min-[616px]:row-start-1 min-[616px]:row-span-2 min-[616px]:py-14 lg:py-20">
+              <div className="relative aspect-square w-full max-w-[300px] overflow-hidden rounded-full bg-foreground min-[616px]:max-w-[280px] lg:max-w-[440px]"><img src={marshallHeroProfile} alt="Marshall Wilkinson, founder of Altitude Logic Pressure" className="h-full w-full object-cover object-center" /></div>
+              <p className="max-w-[440px] border-t border-border pt-4 text-sm text-muted-foreground">Private. Direct. Built around live evidence and required decisions.</p>
+            </div>
+            <div className="pb-20 pr-0 md:pb-28 min-[616px]:col-start-1 min-[616px]:row-start-2 lg:border-r lg:border-border lg:pr-14">
+              <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">These are tightly scoped working engagements for owners facing a decision, operating constraint, leadership failure, or commercial problem expensive enough to require direct attention.</p>
+            </div>
           </div>
         </section>
+
 
         <section className="border-b border-border bg-secondary/55">
           <div className="alp-shell py-16 md:py-20"><p className="alp-eyebrow">The rule</p><p className="mt-5 max-w-5xl text-3xl leading-tight tracking-[-0.035em] md:text-5xl">No vague “business coaching.” The engagement starts with a defined problem, a hard time box, and a result that can be verified.</p></div>
