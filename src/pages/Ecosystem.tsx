@@ -105,15 +105,9 @@ const Ecosystem = () => (
             <p className="alp-eyebrow">The relationship</p>
             <h2 className="alp-display mt-5 text-5xl md:text-6xl">Company command. Project control.</h2>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="border-t border-foreground pt-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">AOS by ALP</p>
-              <p className="mt-4 text-xl leading-relaxed">Runs the company-level rhythm: people, priorities, scorecards, accountability, decisions, and execution.</p>
-            </div>
-            <div className="border-t border-foreground pt-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">OverWatch by ALP</p>
-              <p className="mt-4 text-xl leading-relaxed">Runs the project-level evidence: risk, commitments, work in progress, commercial position, and daily control.</p>
-            </div>
+          <div className="border-t border-foreground pt-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">The public ALP stack</p>
+            <p className="mt-4 max-w-2xl text-xl leading-relaxed">Start with the owner environment or the written doctrine. Both are built for construction owners doing the work.</p>
           </div>
         </div>
       </section>
