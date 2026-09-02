@@ -9,6 +9,16 @@ const CIRCLE_CHECKOUT = "https://alpcontractorcircle.com";
 const schools = [
   {
     number: "01",
+    title: "Contractor Circle",
+    schedule: "Flagship · Standing operating environment",
+    price: "Learn more",
+    thesis: "The center of the ALP work: live owner sessions, bootcamps, AOS, tools, templates, replays, and a private operator community.",
+    details: "Details and enrollment live on alpcontractorcircle.com.",
+    to: CIRCLE_CHECKOUT,
+    external: true,
+  },
+  {
+    number: "02",
     title: "Private Intensives",
     schedule: "Application only · Virtual",
     price: "Application only",
@@ -18,7 +28,7 @@ const schools = [
     external: false,
   },
   {
-    number: "02",
+    number: "03",
     title: "ALP Handbook",
     schedule: "Self-directed · Field doctrine",
     price: "$47",
@@ -28,6 +38,7 @@ const schools = [
     external: true,
   },
 ];
+
 
 const Programs = () => (
   <>
