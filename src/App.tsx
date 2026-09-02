@@ -11,10 +11,8 @@ const Index = lazy(() => import("./pages/Index"));
 const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
 const Partnerships = lazy(() => import("./pages/Partnerships"));
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
-const ALPUniversity = lazy(() => import("./pages/ALPUniversity"));
 const Coaching = lazy(() => import("./pages/Coaching"));
 const Programs = lazy(() => import("./pages/Programs"));
-const HandbookSpecial = lazy(() => import("./pages/HandbookSpecial"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -59,8 +57,8 @@ const App = () => (
           
           <Route path="/contractor-school" element={<Navigate to="/programs" replace />} />
           <Route path="/sales-marketing-school" element={<Navigate to="/programs" replace />} />
-          <Route path="/handbook-special" element={<HandbookSpecial />} />
-          <Route path="/alp-university" element={<ALPUniversity />} />
+          <Route path="/handbook-special" element={<Navigate to="/programs" replace />} />
+          <Route path="/alp-university" element={<Navigate to="/programs" replace />} />
           <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
