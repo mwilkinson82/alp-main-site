@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
 import marshallOffice from "@/assets/marshall-office.jpg";
-import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg";
+import marshallHeroProfile from "@/assets/marshall-hero-profile.jpg.asset.json";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
 
