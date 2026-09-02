@@ -12,11 +12,8 @@ const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
 const Partnerships = lazy(() => import("./pages/Partnerships"));
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const ALPUniversity = lazy(() => import("./pages/ALPUniversity"));
-const PowerHour = lazy(() => import("./pages/PowerHour"));
 const Coaching = lazy(() => import("./pages/Coaching"));
 const Programs = lazy(() => import("./pages/Programs"));
-const ContractorSchool = lazy(() => import("./pages/ContractorSchool"));
-const SalesMarketingSchool = lazy(() => import("./pages/SalesMarketingSchool"));
 const HandbookSpecial = lazy(() => import("./pages/HandbookSpecial"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
@@ -53,15 +50,15 @@ const App = () => (
           <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/programs" element={<Programs />} />
-          <Route path="/power-hour" element={<PowerHour />} />
+          <Route path="/power-hour" element={<Navigate to="/programs" replace />} />
           <Route path="/coaching" element={<Coaching />} />
           <Route path="/contractor-circle" element={<ContractorCircle />} />
           <Route path="/circle" element={<Navigate to="/contractor-circle" replace />} />
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/ecosystem" element={<Ecosystem />} />
           
-          <Route path="/contractor-school" element={<ContractorSchool />} />
-          <Route path="/sales-marketing-school" element={<SalesMarketingSchool />} />
+          <Route path="/contractor-school" element={<Navigate to="/programs" replace />} />
+          <Route path="/sales-marketing-school" element={<Navigate to="/programs" replace />} />
           <Route path="/handbook-special" element={<HandbookSpecial />} />
           <Route path="/alp-university" element={<ALPUniversity />} />
           <Route path="/ask-marshall" element={<AskMarshall />} />
