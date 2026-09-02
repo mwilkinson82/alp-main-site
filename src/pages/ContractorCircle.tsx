@@ -62,7 +62,7 @@ const ContractorCircle = () => (
       <section className="bg-foreground text-background">
         <div className="alp-shell grid gap-10 py-20 md:grid-cols-[1fr_auto] md:items-end md:py-28">
           <div><p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-background/45">Circle membership</p><h2 className="alp-display mt-5 max-w-4xl text-5xl sm:text-7xl">Stop being the operating system.</h2><p className="mt-6 max-w-2xl text-lg text-background/60">Live calls, bootcamps, replays, templates, tools, community, and full AOS access with unlimited workspaces and seats.</p></div>
-          <div className="md:text-right"><p className="text-5xl tracking-[-0.05em]">$497<span className="text-lg text-background/50">/month</span></p><a href={CHECKOUT_URL} className="mt-6 inline-flex min-h-12 items-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a></div>
+          <div className="md:text-right"><a href={CHECKOUT_URL} className="inline-flex min-h-12 items-center gap-2 bg-background px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary">Learn more about Contractor Circle <ArrowRight className="h-4 w-4" /></a></div>
         </div>
       </section>
       <Footer />
