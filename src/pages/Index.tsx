@@ -126,19 +126,20 @@ const Index = () => (
           </div>
 
           <div className="lg:pl-12">
-            <div className="mx-auto w-full max-w-md">
-              <div className="relative aspect-square w-full overflow-hidden rounded-full bg-foreground">
-                <img
-                  src={marshallProfile}
-                  alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
-                  className="absolute inset-0 h-full w-full rounded-full object-cover saturate-[0.9]"
-                />
-              </div>
-              <div className="mt-6 border-t border-foreground pt-4">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Marshall Wilkinson · Founder, ALP</p>
+            <div className="relative aspect-[4/5] max-h-[calc(100vh-160px)] overflow-hidden bg-foreground">
+              <img
+                src={marshallHeroProfile}
+                alt="Marshall Wilkinson, founder of Altitude Logic Pressure"
+                className="h-full w-full object-cover object-[50%_35%] saturate-[0.9]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+              <div className="absolute inset-x-6 bottom-6 border-t border-white/35 pt-4 text-white sm:inset-x-8 sm:bottom-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60">Marshall Wilkinson · Founder, ALP</p>
                 <p className="mt-2 max-w-lg text-lg leading-snug sm:text-xl">The operating problem becomes the work—in the room, with the evidence visible.</p>
               </div>
             </div>
+
             <div className="grid gap-3 border-x border-b border-border px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:grid-cols-3 sm:px-7">
               <span>Diagnose clearly</span><span>Decide directly</span><span>Install the mechanism</span>
             </div>
