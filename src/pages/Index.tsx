@@ -48,6 +48,41 @@ const supportingPrograms = [
   },
 ];
 
+const DELAY_INTENSIVE_URL = "https://alpcontractorcircle.com/delay-intensive";
+
+const fieldNotes = [
+  {
+    quote:
+      "This weekend taught me the importance of communication and keeping track of the causes of the delays on site… Moving forward I plan on continuing to take pictures and being more detailed on my daily reports.",
+    name: "Elijah Fuentes",
+    role: "Project Engineer, McKenzie Construction",
+  },
+  {
+    quote:
+      "Your class was engaging from start to finish, and your level of knowledge is incredible. You completely opened my mind to taking detailed notes with critical information I never would have thought to include, which will fundamentally change how I approach my work on future jobs.",
+    name: "Jesus Sanchez",
+    role: "Superintendent, McKenzie Construction",
+  },
+  {
+    quote:
+      "The course taught me to have a greater level of day-to-day awareness on a project, allowing me to recognize the situations and events that could potentially lead to a claim. More importantly, it helped me understand when a claim should be identified, documented, and introduced, rather than waiting until the impact has already occurred.",
+    name: "Simon Lopez",
+    role: "Site Superintendent, McKenzie Construction",
+  },
+  {
+    quote:
+      "I really can't put into words how much this intensive helped me. Every point Marshall touched on feels like he's talking directly to me. Things that I've been dealing with and fighting with agencies on, and not really knowing if I am operating correctly, he laid out a perfect framework for how to operate in the public contracting space. It's changed how I'm doing things in the day-to-day of my business immediately.",
+    name: "Michael Eargle",
+    role: "M.E. Contracting",
+  },
+  {
+    quote:
+      "The intensive exceeded all expectations and completely changed how I view our construction projects. I used to look at every job as a team effort between the contractor, CM, design team, and owner. But the reality is that we are not on a team at all, and we must protect ourselves at every turn. Marshall taught us what to look for in the contract, exactly what to say, and when to say it so that we can advocate for ourselves.",
+    name: "Sean McDevitt",
+    role: "Traditional Air Conditioning",
+  },
+];
+
 
 
 const SilentLoopVideo = ({ src, poster, className, label }: { src: string; poster?: string; className?: string; label: string }) => {
@@ -264,6 +299,68 @@ const Index = () => (
           </div>
         </div>
       </section>
+
+      <section className="border-b border-border" id="from-the-field">
+        <div className="alp-shell py-20 md:py-28">
+          <div className="grid gap-10 lg:grid-cols-[0.65fr_1.35fr]">
+            <div>
+              <p className="alp-eyebrow">From the field</p>
+              <h2 className="mt-5 text-4xl leading-tight md:text-5xl">What attendees have to say.</h2>
+              <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">
+                Delay Damage Intensive · Sept 4–6 cohort — notes from the room, not marketing copy.
+              </p>
+              <a
+                href={DELAY_INTENSIVE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="alp-link mt-6 inline-flex items-center gap-2 text-sm"
+              >
+                Delay Intensive <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div className="grid gap-12">
+              <figure className="grid gap-6 border-t border-foreground pt-8 sm:grid-cols-[220px_1fr] sm:items-start">
+                <div className="mx-auto w-full max-w-[220px] overflow-hidden border border-border bg-black">
+                  <video
+                    className="aspect-[9/16] h-full w-full object-cover"
+                    src="https://alpcontractorcircle.com/__l5e/assets-v1/4ae0a49a-d0f7-4fb7-acea-752774228a96/oliver-fernandez-testimonial.mp4"
+                    poster="https://alpcontractorcircle.com/assets/delay-intensive/oliver-fernandez-poster.jpg"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label="Oliver Fernandez of McKenzie Construction on the Delay Damage Intensive"
+                  />
+                </div>
+                <figcaption className="sm:pt-2">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">On camera</p>
+                  <p className="alp-italic mt-3 text-2xl leading-snug md:text-3xl">
+                    Oliver Fernandez on what changed after three days in the room.
+                  </p>
+                  <p className="mt-4 text-sm font-semibold">Oliver Fernandez</p>
+                  <p className="text-sm text-muted-foreground">McKenzie Construction</p>
+                </figcaption>
+              </figure>
+
+              <div className="grid gap-10 sm:grid-cols-2">
+                {fieldNotes.map((note) => (
+                  <figure key={note.name} className="border-t border-border pt-7">
+                    <blockquote className="alp-italic border-l-2 border-accent pl-6 text-lg leading-snug md:text-xl">
+                      {note.quote}
+                    </blockquote>
+                    <figcaption className="mt-5 pl-6">
+                      <p className="text-sm font-semibold">{note.name}</p>
+                      <p className="text-sm text-muted-foreground">{note.role}</p>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
 
       <section className="border-b border-border bg-secondary/50">
         <div className="alp-shell grid gap-12 py-20 md:py-28 min-[616px]:grid-cols-2 min-[616px]:items-center">
