@@ -51,52 +51,44 @@ const supportingPrograms = [
 const DELAY_INTENSIVE_URL = "https://alpcontractorcircle.com/delay-intensive";
 
 // Add new Instagram screenshots here — the grid scales automatically.
-const allFeedShots = [
+const feedShots = [
   {
     src: "/assets/social-proof/adrian-online1-boss-school-district.jpg",
     handle: "@adrian.online1",
     alt: "Instagram comment from @adrian.online1 describing his boss repeating Marshall's language to a school district client",
-    available: true,
   },
   {
     src: "/assets/social-proof/saxumfundingllc-genius.jpg",
     handle: "@saxumfundingllc",
     alt: "Instagram comment from @saxumfundingllc quoting: If you want me to take on your risk, then give me your reward",
-    available: true,
   },
   {
     src: "/assets/social-proof/believing_since_85-genius.jpg",
     handle: "@believing_since_85",
     alt: "Instagram comment from @believing_since_85 calling Marshall's contracting advice genius",
-    available: false,
   },
   {
     src: "/assets/social-proof/contractorlord-never-misses.jpg",
     handle: "@contractorlord",
     alt: "Instagram comment from @contractorlord saying Marshall never misses",
-    available: false,
   },
   {
     src: "/assets/social-proof/joeybrown-positive.jpg",
     handle: "@__joeybrown__",
     alt: "Instagram comment from @__joeybrown__ praising Marshall's contracting guidance",
-    available: false,
   },
   {
     src: "/assets/social-proof/josh-c-lyle-positive.jpg",
     handle: "@josh.c.lyle",
     alt: "Instagram comment from @josh.c.lyle praising Marshall's contracting guidance",
-    available: false,
   },
   {
     src: "/assets/social-proof/mr-robato-real-deal.jpg",
     handle: "@mr.robato",
     alt: "Instagram comment from @mr.robato calling Marshall the real deal",
-    available: false,
   },
 ];
 
-const feedShots = allFeedShots.filter((shot) => shot.available);
 
 
 const fieldNotes = [
@@ -394,22 +386,34 @@ const Index = () => (
               </div>
 
               <div className="border-t border-border pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Straight off the feed</p>
-                <div className="mt-5 grid gap-8 sm:grid-cols-2">
+                <div className="flex items-baseline gap-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Straight off the feed</p>
+                  <span className="h-px flex-1 bg-border" />
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent">Unedited</p>
+                </div>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
                   {feedShots.map((shot) => (
-                    <figure key={shot.src}>
-                      <div className="flex items-center justify-center overflow-hidden border border-border bg-black">
+                    <figure
+                      key={shot.src}
+                      className="flex flex-col rounded-lg border border-border bg-secondary/40 p-4 md:p-5"
+                    >
+                      <div className="flex flex-1 items-center justify-center overflow-hidden rounded-md border border-border/70 bg-background p-3">
                         <img
                           src={shot.src}
                           alt={shot.alt}
-                          className="h-auto max-h-[560px] w-full object-contain"
+                          className="h-auto max-h-[320px] w-full object-contain"
                           loading="lazy"
                         />
                       </div>
-                      <figcaption className="mt-4 text-sm text-muted-foreground">{shot.handle} · Instagram</figcaption>
+                      <figcaption className="mt-4 flex items-center gap-3 border-t border-border/70 pt-3">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        <span className="alp-italic text-base leading-snug">{shot.handle}</span>
+                        <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Instagram</span>
+                      </figcaption>
                     </figure>
                   ))}
                 </div>
+
               </div>
             </div>
           </div>
