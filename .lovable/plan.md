@@ -1,26 +1,46 @@
-## AI-generated titles from the Gemini transcript
+# Domain report and fix for www.altitudelogicpressure.com
 
-Right now the sync inserts a generic title like *"Power Hour — June 22, 2026"*. I'll upgrade the sync to read the paired Gemini Doc and ask Lovable AI to write a short, specific title based on what was actually covered.
+## What the Domains panel shows
 
-### How it will work
+Project is published.
 
-1. In `supabase/functions/sync-recordings/index.ts`, after pairing a video with its transcript Doc:
-   - Fetch the Doc's text via the Google Docs gateway (`/google_docs/v1/documents/{id}`) and flatten the body to plain text.
-   - Call Lovable AI (`google/gemini-3-flash-preview`) with a tight prompt:
-     > *"Write a short, specific title (max 8 words, no quotes, no date, no class name) summarizing the main topic of this {Power Hour | Contractor School | Sales & Marketing School} session. Transcript: …"*
-   - Final title format: **`Power Hour — June 22, 2026: Pricing Objections & Follow-Up Cadence`** (class + date + AI topic). Part numbering preserved when a day has 2 videos.
+| Domain | Status |
+| --- | --- |
+| altitudelogicpressure.com | Active / Live — serving this project |
+| www.altitudelogicpressure.com | Drifted ("Offline" in the panel) for the last ~44 minutes — DNS no longer points here |
 
-2. **Graceful fallback** — if the Doc isn't ready yet, AI call fails, rate-limits (429), or runs out of credits (402), insert with the existing date-only title. Sync never blocks on AI.
+## Exact records Lovable expects
 
-3. **Backfill today's row** — after deploying, I'll run the function once to rewrite the June 22 title in place (update where `title` still matches the generic pattern, so we don't clobber any titles you've hand-edited).
+Apex (altitudelogicpressure.com) — already correct, nothing to change:
 
-4. **Admin retitle button (small add)** — in `RecordingsPanel.tsx`, add a "Regenerate title" action on each row that re-runs the AI step for that single recording. Useful if you ever want a different title than what AI picked.
+```text
+A    @    185.158.133.1
+```
 
-### Files
-- `supabase/functions/sync-recordings/index.ts` (add Docs fetch + AI title step)
-- `src/components/admin/RecordingsPanel.tsx` (per-row "Regenerate title" button)
-- One `supabase--insert` call to update the existing June 22 row's title after deploy
+www (currently wrong):
 
-### Out of scope
-- Generating descriptions/summaries (titles only for now — say the word and I'll add a one-line description too)
-- Re-titling old already-edited recordings
+```text
+A    www                185.158.133.1
+TXT  _lovable.www       lovable_verify=b5c1cab77ada1ce272b17c3eed76fcba8798f7cbc126cba5a34b5c186fb3e9c9
+```
+
+Verification TXT for www is present and correct. Only the A record is off.
+
+## Warnings found
+
+- The www A record currently answers with four addresses: 198.185.159.144, 198.185.159.145, 198.49.23.144, 198.49.23.145. Those are Squarespace hosting addresses, so www is still being served by an old Squarespace setup.
+- No AAAA record conflict and no Cloudflare proxy issue was detected.
+- Nothing else about the apex is conflicting.
+
+## Recommended fix
+
+1. At the DNS provider for altitudelogicpressure.com, delete all four Squarespace A records on the `www` host.
+2. Add one A record: host `www`, value `185.158.133.1`.
+3. Leave the `_lovable.www` TXT record exactly as it is.
+4. Wait for propagation (usually minutes, up to 72 hours) — the status moves from Offline to Active on its own.
+
+If you would rather have www redirect instead of serve, keeping the apex as the primary domain does that automatically once www is connected.
+
+## Notes
+
+No code or DNS was changed for this report. If you approve, the next step is opening the domain connect card so the www records can be fixed from chat, either automatically through the registrar or with the exact values to copy.
