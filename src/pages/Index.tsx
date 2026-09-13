@@ -50,6 +50,15 @@ const supportingPrograms = [
 
 const DELAY_INTENSIVE_URL = "https://alpcontractorcircle.com/delay-intensive";
 
+// Add new Instagram screenshots here — the grid scales automatically.
+const feedShots = [
+  {
+    src: "/assets/social-proof/adrian-online1-boss-school-district.jpg",
+    handle: "@adrian.online1",
+    alt: "Instagram comment from @adrian.online1 describing his boss repeating Marshall's language to a school district client",
+  },
+];
+
 const fieldNotes = [
   {
     quote:
