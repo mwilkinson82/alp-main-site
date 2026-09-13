@@ -38,6 +38,12 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
       url: `${baseUrl}/alp-logo.png`,
     },
     description: "Field-tested operating doctrine, education, software, and advisory for construction company owners and leadership teams.",
+    sameAs: [
+      "https://www.instagram.com/realmarshallwilkinson",
+      "https://marshallwilkinson.com/",
+      "https://alpcontractorcircle.com/",
+      "https://marshallinbio.com/",
+    ],
     founder: { "@id": marshallId },
     brand: { "@id": brandId },
     areaServed: "US",

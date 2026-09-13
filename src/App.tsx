@@ -8,7 +8,7 @@ import HashScroller from "@/components/HashScroller";
 import RouteIndexing from "@/components/RouteIndexing";
 
 const Index = lazy(() => import("./pages/Index"));
-const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
+
 const Partnerships = lazy(() => import("./pages/Partnerships"));
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const Coaching = lazy(() => import("./pages/Coaching"));
