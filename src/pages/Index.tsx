@@ -386,22 +386,34 @@ const Index = () => (
               </div>
 
               <div className="border-t border-border pt-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Straight off the feed</p>
-                <div className="mt-5 grid gap-8 sm:grid-cols-2">
+                <div className="flex items-baseline gap-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Straight off the feed</p>
+                  <span className="h-px flex-1 bg-border" />
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent">Unedited</p>
+                </div>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
                   {feedShots.map((shot) => (
-                    <figure key={shot.src}>
-                      <div className="flex items-center justify-center overflow-hidden border border-border bg-black">
+                    <figure
+                      key={shot.src}
+                      className="flex flex-col rounded-lg border border-border bg-secondary/40 p-4 md:p-5"
+                    >
+                      <div className="flex flex-1 items-center justify-center overflow-hidden rounded-md border border-border/70 bg-background p-3">
                         <img
                           src={shot.src}
                           alt={shot.alt}
-                          className="h-auto max-h-[560px] w-full object-contain"
+                          className="h-auto max-h-[320px] w-full object-contain"
                           loading="lazy"
                         />
                       </div>
-                      <figcaption className="mt-4 text-sm text-muted-foreground">{shot.handle} · Instagram</figcaption>
+                      <figcaption className="mt-4 flex items-center gap-3 border-t border-border/70 pt-3">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                        <span className="alp-italic text-base leading-snug">{shot.handle}</span>
+                        <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Instagram</span>
+                      </figcaption>
                     </figure>
                   ))}
                 </div>
+
               </div>
             </div>
           </div>
