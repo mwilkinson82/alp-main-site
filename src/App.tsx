@@ -8,7 +8,7 @@ import HashScroller from "@/components/HashScroller";
 import RouteIndexing from "@/components/RouteIndexing";
 
 const Index = lazy(() => import("./pages/Index"));
-const ContractorCircle = lazy(() => import("./pages/ContractorCircle"));
+
 const Partnerships = lazy(() => import("./pages/Partnerships"));
 const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 const Coaching = lazy(() => import("./pages/Coaching"));
@@ -57,8 +57,10 @@ const App = () => (
           <Route path="/programs" element={<Programs />} />
           <Route path="/power-hour" element={<Navigate to="/programs" replace />} />
           <Route path="/coaching" element={<Coaching />} />
-          <Route path="/contractor-circle" element={<ContractorCircle />} />
-          <Route path="/circle" element={<Navigate to="/contractor-circle" replace />} />
+          <Route path="/contractor-circle" element={<ExternalRedirect to="https://alpcontractorcircle.com/" />} />
+          <Route path="/circle" element={<ExternalRedirect to="https://alpcontractorcircle.com/" />} />
+          <Route path="/marshall" element={<ExternalRedirect to="https://marshallwilkinson.com/" />} />
+
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/ecosystem" element={<Ecosystem />} />
           

@@ -1,0 +1,30 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.altitudelogicpressure.com" }],
+      "destination": "https://altitudelogicpressure.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/marshall",
+      "destination": "https://marshallwilkinson.com/",
+      "permanent": true
+    },
+    {
+      "source": "/marshall/:path*",
+      "destination": "https://marshallwilkinson.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/contractor-circle",
+      "destination": "https://alpcontractorcircle.com/",
+      "permanent": true
+    },
+    {
+      "source": "/contractor-circle/:path*",
+      "destination": "https://alpcontractorcircle.com/:path*",
+      "permanent": true
+    }
+  ]
+}
