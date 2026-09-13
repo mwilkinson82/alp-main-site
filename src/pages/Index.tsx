@@ -57,6 +57,11 @@ const feedShots = [
     handle: "@adrian.online1",
     alt: "Instagram comment from @adrian.online1 describing his boss repeating Marshall's language to a school district client",
   },
+  {
+    src: "/assets/social-proof/saxumfundingllc-genius.jpg",
+    handle: "@saxumfundingllc",
+    alt: "Instagram comment from @saxumfundingllc quoting: If you want me to take on your risk, then give me your reward",
+  },
 ];
 
 const fieldNotes = [
