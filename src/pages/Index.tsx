@@ -344,18 +344,24 @@ const Index = () => (
                 ))}
               </div>
 
-              <figure className="border-t border-border pt-8">
+              <div className="border-t border-border pt-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Straight off the feed</p>
-                <div className="mt-5 max-w-2xl overflow-hidden border border-border bg-black">
-                  <img
-                    src="/assets/social-proof/adrian-online1-boss-school-district.jpg"
-                    alt="Instagram comment from @adrian.online1 describing his boss repeating Marshall's language to a school district client"
-                    className="h-auto w-full"
-                    loading="lazy"
-                  />
+                <div className="mt-5 grid gap-8 sm:grid-cols-2">
+                  {feedShots.map((shot) => (
+                    <figure key={shot.src}>
+                      <div className="flex items-center justify-center overflow-hidden border border-border bg-black">
+                        <img
+                          src={shot.src}
+                          alt={shot.alt}
+                          className="h-auto max-h-[560px] w-full object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption className="mt-4 text-sm text-muted-foreground">{shot.handle} · Instagram</figcaption>
+                    </figure>
+                  ))}
                 </div>
-                <figcaption className="mt-4 text-sm text-muted-foreground">@adrian.online1 · Instagram</figcaption>
-              </figure>
+              </div>
             </div>
           </div>
         </div>
