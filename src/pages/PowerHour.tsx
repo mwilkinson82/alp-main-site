@@ -9,7 +9,7 @@ import powerHourHero from "@/assets/power-hour-hero.jpg";
 
 const PowerHour = () => {
   return <>
-      <SEO title="Marshall Wilkinson's Power Hour - Daily Morning Accountability" description="Join Marshall Wilkinson's daily Power Hour at 8:00 AM EST. Start every morning with focus, strategy, and accountability through live calls and practical guidance." keywords="Marshall Wilkinson Power Hour, power hour, daily accountability, morning routine, live calls, entrepreneur community, Altitude Logic Pressure" canonical="/power-hour" />
+      <SEO title="Power Hour with Marshall Wilkinson - Daily Morning Accountability" description="Join the daily Power Hour with Marshall Wilkinson at 8:00 AM EST. Start every morning with focus, strategy, and accountability through live calls and practical guidance." keywords="Marshall Wilkinson Power Hour, power hour, daily accountability, morning routine, live calls, entrepreneur community, Altitude Logic Pressure" canonical="/power-hour" />
       <StructuredData type="service" data={{
       serviceType: "Daily Accountability and Strategic Guidance",
       description: "Daily morning accountability and strategic guidance calls at 8:00 AM EST",

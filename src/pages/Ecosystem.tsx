@@ -15,7 +15,7 @@ const entities = [
   {
     eyebrow: "The doctrine in print",
     name: "The ALP Handbook",
-    description: "Marshall Wilkinson's written operating doctrine for owners who want to build a construction company that can carry the work without depending on constant rescue.",
+    description: "The written operating doctrine from Marshall Wilkinson, for owners who want to build a construction company that can carry the work without depending on constant rescue.",
     href: "https://alphandbook.com",
   },
 ];
@@ -36,7 +36,7 @@ const questions = [
 
   {
     question: "What is the ALP Handbook?",
-    answer: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
+    answer: "The ALP Handbook is the written operating doctrine from Marshall Wilkinson for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
   },
 ];
 

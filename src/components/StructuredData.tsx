@@ -75,7 +75,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
       name: "The ALP Handbook",
       alternateName: "ALP Handbook",
       url: "https://alphandbook.com",
-      description: "Marshall Wilkinson's operating handbook for building stronger construction companies.",
+      description: "The operating handbook from Marshall Wilkinson for building stronger construction companies.",
       author: { "@id": marshallId },
       publisher: { "@id": organizationId },
     },
@@ -147,7 +147,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
               name: "What is the ALP Handbook?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "The ALP Handbook is Marshall Wilkinson's written operating doctrine for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
+                text: "The ALP Handbook is the written operating doctrine from Marshall Wilkinson for construction owners. It gives construction owners and leadership teams a durable reference for the real work.",
               },
             },
           ],
@@ -175,7 +175,7 @@ const StructuredData = ({ type, data }: StructuredDataProps) => {
     course: {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": data?.name || "Marshall Wilkinson's ALP University",
+      "name": data?.name || "ALP University by Marshall Wilkinson",
       "description": data?.description || "Comprehensive business, mindset, and sales training by Marshall Wilkinson",
       "provider": {
         "@id": organizationId,
