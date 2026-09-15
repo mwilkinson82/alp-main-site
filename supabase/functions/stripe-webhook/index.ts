@@ -36,6 +36,48 @@ function isDedicatedIntensivePurchase(session: any): boolean {
   return DEDICATED_INTENSIVE_PAYMENT_LINKS.has(paymentLinkId(session));
 }
 
+// Contractor Circle checkouts are fulfilled entirely by the Circle portal app
+// (notify.mail.alpcontractorcircle.com / circle-welcome). This webhook must
+// never send a Resend customer welcome or the Custom/Ad-Hoc internal alert.
+const PORTAL_HANDLED_CIRCLE_PAYMENT_LINKS = new Set([
+  "plink_1ThaqAJdDAUSVXbN66bTiP9o",
+]);
+const PORTAL_HANDLED_CIRCLE_PRICE_IDS = new Set([
+  "price_1TVh3TJdDAUSVXbNJRsYFTbp",
+  "price_1TDR3aJdDAUSVXbNWVzFLblo",
+  "price_1TDR3aJdDAUSVXbNZOY6EXF3",
+  "price_1TiUlGJdDAUSVXbNQRjv1ntA",
+]);
+const PORTAL_HANDLED_CIRCLE_PRODUCT_IDS = new Set([
+  "prod_UUgQlHRk9H1ZUS",
+  "prod_UhuaYXyzDSknXg",
+]);
+
+function idOf(v: any): string {
+  return typeof v === "string" ? v : String(v?.id || "");
+}
+
+function sessionIsPortalHandledCircle(session: any): boolean {
+  const kind = session.metadata?.kind || session.metadata?.product;
+  if (kind === "circle") return true;
+
+  if (PORTAL_HANDLED_CIRCLE_PAYMENT_LINKS.has(paymentLinkId(session))) return true;
+
+  const items: any[] = [
+    ...(session.line_items?.data || []),
+    ...(session.display_items || []),
+  ];
+  for (const item of items) {
+    const priceId = idOf(item.price) || idOf(item.plan);
+    if (priceId && PORTAL_HANDLED_CIRCLE_PRICE_IDS.has(priceId)) return true;
+    const productId =
+      idOf(item.price?.product) || idOf(item.plan?.product) || idOf(item.product);
+    if (productId && PORTAL_HANDLED_CIRCLE_PRODUCT_IDS.has(productId)) return true;
+  }
+
+  return false;
+}
+
 // Map Stripe checkout links (last segment) to product info and Kajabi offer IDs
 const PRODUCT_MAP: Record<string, { name: string; kajabiOfferIds: string[]; welcomeSubject: string }> = {
   // === LEGACY PRODUCTS (keep for existing payment links) ===
