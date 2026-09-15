@@ -506,6 +506,27 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
+    if (isCpmIntensivePurchase(session)) {
+      console.log("CPM Schedule Intensive purchase — attendee onboarding is handled by the marketing-site CPM webhook; no mail sent from here");
+      await supabase.from("purchase_log").insert({
+        customer_name: customerName,
+        customer_email: customerEmail,
+        product_name: "ALP CPM Schedule Intensive (2-Day) (dedicated fulfillment)",
+        stripe_session_id: session.id,
+        amount_cents: session.amount_total,
+        welcome_email_sent: true,
+        kajabi_provisioned: false,
+      });
+
+      return new Response(JSON.stringify({
+        received: true,
+        fulfillment: "dedicated_cpm_intensive_webhook",
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     if (sessionIsPortalHandledCircle(session)) {
       console.log("Contractor Circle purchase — fulfillment and welcome handled by the Circle portal app; no Resend email sent from here");
       await supabase.from("purchase_log").insert({
