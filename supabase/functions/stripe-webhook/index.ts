@@ -36,6 +36,47 @@ function isDedicatedIntensivePurchase(session: any): boolean {
   return DEDICATED_INTENSIVE_PAYMENT_LINKS.has(paymentLinkId(session));
 }
 
+// ALP CPM Schedule Intensive (2-Day) is fulfilled by the Contractor Circle
+// marketing-site function (delay-intensive-webhook → handleCpmEvent), which owns
+// the attendee portal. This webhook must never send customer mail or the
+// Custom / Ad-Hoc alert for it.
+const CPM_INTENSIVE_PAYMENT_LINKS = new Set([
+  "plink_1UFijSJdDAUSVXbNu3vdGChq",
+]);
+const CPM_INTENSIVE_LINK_SLUGS = ["5kQ14oe0h5uSgMo7zkeQM1p"];
+const CPM_INTENSIVE_PRICE_IDS = new Set(["price_1UFibpJdDAUSVXbNO9Fwg6lf"]);
+const CPM_INTENSIVE_PRODUCT_IDS = new Set(["prod_VGF6PF6ysZKKtV"]);
+
+function isCpmIntensivePurchase(session: any): boolean {
+  const meta = session.metadata || {};
+  if (meta.offer === "cpm-intensive" || meta.sku === "cpm-schedule-intensive-2day") return true;
+
+  const linkId = paymentLinkId(session);
+  if (CPM_INTENSIVE_PAYMENT_LINKS.has(linkId)) return true;
+
+  const urls = [
+    linkId,
+    session.url || "",
+    session.payment_link?.url || "",
+    session.success_url || "",
+  ].join(" ");
+  if (CPM_INTENSIVE_LINK_SLUGS.some((slug) => urls.includes(slug))) return true;
+
+  const items: any[] = [
+    ...(session.line_items?.data || []),
+    ...(session.display_items || []),
+  ];
+  for (const item of items) {
+    const priceId = idOf(item.price) || idOf(item.plan);
+    if (priceId && CPM_INTENSIVE_PRICE_IDS.has(priceId)) return true;
+    const productId =
+      idOf(item.price?.product) || idOf(item.plan?.product) || idOf(item.product);
+    if (productId && CPM_INTENSIVE_PRODUCT_IDS.has(productId)) return true;
+  }
+
+  return false;
+}
+
 // Contractor Circle checkouts are fulfilled entirely by the Circle portal app
 // (notify.mail.alpcontractorcircle.com / circle-welcome). This webhook must
 // never send a Resend customer welcome or the Custom/Ad-Hoc internal alert.
