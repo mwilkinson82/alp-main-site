@@ -465,6 +465,24 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
+    if (sessionIsPortalHandledCircle(session)) {
+      console.log("Contractor Circle purchase — fulfillment and welcome handled by the Circle portal app; no Resend email sent from here");
+      await supabase.from("purchase_log").insert({
+        customer_name: customerName,
+        customer_email: customerEmail,
+        product_name: "Contractor Circle (handled by portal)",
+        stripe_session_id: session.id,
+        amount_cents: session.amount_total,
+        welcome_email_sent: true,
+        kajabi_provisioned: false,
+      });
+
+      return new Response(JSON.stringify({ received: true, handled_by: "portal" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     // Identify the product
     const result = getProductFromSession(session);
     
