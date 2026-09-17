@@ -67,7 +67,16 @@ const App = () => (
           <Route path="/contractor-school" element={<Navigate to="/programs" replace />} />
           <Route path="/sales-marketing-school" element={<Navigate to="/programs" replace />} />
           <Route path="/handbook-special" element={<ExternalRedirect to="https://alphandbook.com" />} />
-          <Route path="/alp-university" element={<Navigate to="/programs" replace />} />
+          {/* Legacy / soft-404 cleanup — permanent redirects to home */}
+          <Route path="/alp-university" element={<Navigate to="/" replace />} />
+          <Route path="/alp-university/*" element={<Navigate to="/" replace />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/homepage-redesign-april-2025" element={<Navigate to="/" replace />} />
+          <Route path="/homepage-redesign-april-2025/*" element={<Navigate to="/" replace />} />
+          <Route path="/affiliate_users/sign_up" element={<Navigate to="/" replace />} />
+          <Route path="/affiliate_users/*" element={<Navigate to="/" replace />} />
+          <Route path="/thestartingline" element={<Navigate to="/" replace />} />
+          <Route path="/thestartingline/*" element={<Navigate to="/" replace />} />
           <Route path="/ask-marshall" element={<AskMarshall />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
