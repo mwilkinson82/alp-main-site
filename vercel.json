@@ -25,6 +25,15 @@
       "source": "/contractor-circle/:path*",
       "destination": "https://alpcontractorcircle.com/:path*",
       "permanent": true
-    }
+    },
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/homepage-redesign-april-2025", "destination": "/", "permanent": true },
+    { "source": "/homepage-redesign-april-2025/:path*", "destination": "/", "permanent": true },
+    { "source": "/alp-university", "destination": "/", "permanent": true },
+    { "source": "/alp-university/:path*", "destination": "/", "permanent": true },
+    { "source": "/affiliate_users/sign_up", "destination": "/", "permanent": true },
+    { "source": "/affiliate_users/:path*", "destination": "/", "permanent": true },
+    { "source": "/thestartingline", "destination": "/", "permanent": true },
+    { "source": "/thestartingline/:path*", "destination": "/", "permanent": true }
   ]
 }
