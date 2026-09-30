@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local replay audit contains private Drive identifiers
+/private-artifacts/
+/build-private-manifest.mjs
