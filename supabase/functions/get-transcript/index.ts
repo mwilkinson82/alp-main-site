@@ -15,67 +15,7 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 
-function stripTags(s: string): string {
-  return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
-}
-
-function cleanHtml(raw: string): string {
-  const bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-  let body = bodyMatch ? bodyMatch[1] : raw;
-
-  // Strip Google's class/id/style noise but keep structural tags.
-  body = body.replace(/\sclass="[^"]*"/g, "");
-  body = body.replace(/\sid="[^"]*"/g, "");
-  body = body.replace(/\sstyle="[^"]*"/g, "");
-  body = body.replace(/<span>([\s\S]*?)<\/span>/g, "$1");
-
-  // Drop everything before the first "Summary" heading. The preamble (title,
-  // "Invited ..." attendee list with emails, Attachments, Meeting records) all
-  // lives above Summary and varies in structure (sometimes tables, sometimes
-  // plain paragraphs), so anchoring on Summary is the most reliable cut.
-  const summaryRe = /<h[1-6][^>]*>\s*Summary\s*<\/h[1-6]>/i;
-  const summaryMatch = body.match(summaryRe);
-  if (summaryMatch && summaryMatch.index !== undefined) {
-    body = body.slice(summaryMatch.index);
-  } else {
-    // Fallback: at least strip any tables (older docs sometimes wrap the
-    // attendee block in a table).
-    body = body.replace(/<table[\s\S]*?<\/table>/gi, "");
-  }
-
-  // Cut everything from the verbatim transcript section onward. The transcript
-  // section starts at an <h2> whose own text ends with "Transcript" (e.g.
-  // "ALP Hardcore Power Hour - Transcript"). We iterate every <h2> and slice at
-  // the first one whose text matches — this avoids greedy regex pulling in the
-  // word "Transcript" from elsewhere.
-  const h2Re = /<h2[^>]*>([\s\S]*?)<\/h2>/gi;
-  let m: RegExpExecArray | null;
-  let cutIdx = -1;
-  while ((m = h2Re.exec(body)) !== null) {
-    const text = stripTags(m[1]);
-    if (/transcript/i.test(text)) {
-      cutIdx = m.index;
-      break;
-    }
-  }
-  if (cutIdx >= 0) {
-    body = body.slice(0, cutIdx);
-  } else {
-    // Fallback: cut from the first timestamp-style heading (00:00:12).
-    const tsHeading = body.match(/<h3[^>]*>\s*\d{1,2}:\d{2}:\d{2}\s*<\/h3>/);
-    if (tsHeading && tsHeading.index !== undefined) {
-      body = body.slice(0, tsHeading.index);
-    }
-  }
-
-  // Drop the leading "📝 Notes" stub line.
-  body = body.replace(/<p>\s*(?:&#128221;|📝)\s*Notes\s*<\/p>/i, "");
-
-  // Collapse empty paragraphs.
-  body = body.replace(/<p>\s*(?:&nbsp;|\s)*\s*<\/p>/g, "");
-
-  return body.trim();
-}
+import { cleanReplayHtml as cleanHtml } from "../_shared/replay-privacy.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
