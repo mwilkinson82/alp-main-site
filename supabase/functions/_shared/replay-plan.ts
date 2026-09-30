@@ -7,8 +7,8 @@ export function approvedFolders(raw: string | undefined): string[] {
   if (ids.some(id => typeof id !== 'string' || !/^[a-zA-Z0-9_-]{10,}$/.test(id)) || new Set(ids).size !== 4) throw new Error('invalid_folder_configuration');
   return ids;
 }
-export type File = { id: string; name: string; mimeType: string; size?: string; parents: string[] };
-export type Recording = { id: string; video_ref: string; transcript_doc_id: string | null };
+export type File = { id: string; name: string; mimeType: string; size?: string; modifiedTime?: string; parents: string[] };
+export type Recording = { id: string; video_ref: string; transcript_doc_id: string | null; is_published?: boolean; part_number?: number | null; part_total?: number | null };
 export function driveId(ref: string): string | null {
   if (/^[\w-]{10,}$/.test(ref)) return ref;
   try {
@@ -37,18 +37,28 @@ export function plan(files: File[], existing: Recording[], start: string, end: s
     const matches = s ? docs.filter(d => { const ds = session(d.name); return ds?.key === s.key && ds.kind === 'notes by gemini'; }) : [];
     const rows = existing.filter(r => driveId(r.video_ref) === v.id);
     const reasons: string[] = [];
+    const flags: string[] = [];
+    const parts = s ? videos.filter(f => { const fs = session(f.name); return fs?.program === s.program && fs.date === s.date; }).sort((a,b) => Date.parse(session(a.name)!.key.split('|')[1]) - Date.parse(session(b.name)!.key.split('|')[1]) || a.id.localeCompare(b.id)) : [];
+    const part_number = parts.length > 1 ? parts.findIndex(f => f.id === v.id) + 1 : null;
+    const part_total = parts.length > 1 ? parts.length : null;
     if (!s) reasons.push('unrecognized_session_title');
-    if (v.size === undefined || !Number.isFinite(Number(v.size))) reasons.push('unknown_size');
-    else if (Number(v.size) < 1_000_000) reasons.push('tiny_clip');
+    if (v.size === undefined || !Number.isFinite(Number(v.size))) flags.push('unknown_size');
+    else if (Number(v.size) < 1_000_000) flags.push('tiny_clip');
     if (matches.length !== 1) reasons.push(matches.length ? 'multiple_exact_notes' : 'no_exact_notes');
     if (rows.length > 1) reasons.push('duplicate_existing_drive_id');
-    if (s && videos.filter(f => { const fs = session(f.name); return fs?.program === s.program && fs.date === s.date; }).length > 1) reasons.push('multiple_files_same_class_day');
+    if (s && videos.filter(f => session(f.name)?.key === s.key).length > 1) reasons.push('duplicate_session_start');
+    for (const part of parts) {
+      const oldPart = existing.find(r => driveId(r.video_ref) === part.id);
+      if (oldPart && oldPart.part_number !== undefined && oldPart.part_number !== (parts.length > 1 ? parts.findIndex(f => f.id === part.id) + 1 : null)) reasons.push('existing_part_number_conflict');
+      if (oldPart && oldPart.part_total !== undefined && oldPart.part_total !== (parts.length > 1 ? parts.length : null)) reasons.push('existing_part_total_conflict');
+    }
     const old = rows[0];
     if (old?.transcript_doc_id && matches.length === 1 && old.transcript_doc_id !== matches[0].id) reasons.push('existing_artifact_conflict');
     return [{ video_file_id: v.id, session: s, recording_id: old?.id ?? null,
       note_id: matches.length === 1 ? matches[0].id : null,
+      source_version: [v.name, v.size ?? null, v.modifiedTime ?? null, matches.length === 1 ? matches[0].modifiedTime ?? null : null],
       proposed_action: reasons.length ? 'review' : old ? old.transcript_doc_id ? 'unchanged' : 'refresh_artifact' : 'stage_unpublished',
-      reasons, is_published: false, permissions_change: false }];
+      reasons, flags, part_number, part_total, is_published: false, permissions_change: false }];
   });
 }
 
@@ -61,7 +71,7 @@ export async function scan(read: (url: string) => Promise<{ files?: File[]; next
     const seen = new Set<string>();
     do {
       if (Date.now() >= deadline || ++pages > 100) throw new Error('scan_budget_exceeded');
-      const q = new URLSearchParams({ q: `'${folder}' in parents and trashed=false`, pageSize: '200', fields: 'nextPageToken,incompleteSearch,files(id,name,mimeType,size,parents)', ...(token ? { pageToken: token } : {}) });
+      const q = new URLSearchParams({ q: `'${folder}' in parents and trashed=false`, pageSize: '200', fields: 'nextPageToken,incompleteSearch,files(id,name,mimeType,size,modifiedTime,parents)', ...(token ? { pageToken: token } : {}) });
       const page = await read(`https://connector-gateway.lovable.dev/google_drive/drive/v3/files?${q}`);
       if (page.incompleteSearch) throw new Error('incomplete_drive_search');
       files.push(...(page.files ?? []));

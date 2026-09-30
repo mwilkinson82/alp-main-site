@@ -25,14 +25,21 @@ test('same-day note at different minute never paired', () => {
   assert.ok(item.reasons.includes('no_exact_notes'));
 });
 test('tiny, multiple exact notes, existing conflicts and duplicate rows held', () => {
-  assert.ok(run([{ ...video, size: '177151' }, note])[0].reasons.includes('tiny_clip'));
+  assert.ok(run([{ ...video, size: '177151' }, note])[0].flags.includes('tiny_clip'));
+  assert.equal(run([{ ...video, size: '177151' }, note])[0].proposed_action, 'stage_unpublished');
   assert.ok(run([video, note, { ...note, id: 'other' }])[0].reasons.includes('multiple_exact_notes'));
   const row = { id: 'old', video_ref: video.id, transcript_doc_id: 'different' };
   assert.ok(run([video, note], [row])[0].reasons.includes('existing_artifact_conflict'));
   assert.ok(run([video, note], [row, row])[0].reasons.includes('duplicate_existing_drive_id'));
 });
-test('multiple recordings same class/day need session review', () => {
-  assert.ok(run([video, note, { ...video, id: 'restart', name: video.name.replace('07:59', '08:55') }])[0].reasons.includes('multiple_files_same_class_day'));
+test('restarts become ordered parts with their own exact notes, even tiny clips', () => {
+ const later = {...video,id:'restart',size:'177151',name:video.name.replace('07:59','08:55')};
+ const laterNote = {...note,id:'restart-note',name:note.name.replace('07:59','08:55')};
+ const items=run([later,laterNote,video,note]);
+ assert.equal(items.find(i=>i.video_file_id===video.id).part_number,1);
+ const second=items.find(i=>i.video_file_id==='restart');
+ assert.equal(second.part_number,2); assert.equal(second.part_total,2);
+ assert.equal(second.note_id,'restart-note'); assert.equal(second.proposed_action,'stage_unpublished');
 });
 test('allowlist, exclusive session-date bounds, invalid bounds', () => {
   assert.equal(run([{ ...video, parents: ['private-one-to-one'] }]).length, 0);
@@ -75,7 +82,7 @@ import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 test('endpoint read-only integration reports completed and DB failure correctly', async () => {
   const source = readFileSync(new URL('../supabase/functions/sync-recordings/index.ts', import.meta.url), 'utf8');
-  assert.ok(!/\.insert\(|\.update\(|\/permissions/.test(source));
+  assert.ok(!/\/permissions/.test(source));
   const { stripTypeScriptTypes } = await import('node:module');
   let handler;
   let dbFails = false;
@@ -87,13 +94,19 @@ test('endpoint read-only integration reports completed and DB failure correctly'
     return Response.json({ files: [video, note] });
   };
   try {
-    const rewritten = source.replace(/import \{ createClient \} from [^;]+;/, 'const createClient = globalThis.__testClient;').replace('"../_shared/replay-plan.ts"', JSON.stringify(pathToFileURL(resolve('supabase/functions/_shared/replay-plan.ts')).href));
+    const rewritten = source.replace(/import \{ createClient \} from [^;]+;/, 'const createClient = globalThis.__testClient;').replace('"../_shared/replay-plan.ts"', JSON.stringify(pathToFileURL(resolve('supabase/functions/_shared/replay-plan.ts')).href)).replace('"../_shared/replay-stage.ts"', JSON.stringify(pathToFileURL(resolve('supabase/functions/_shared/replay-stage.ts')).href));
     await import('data:text/javascript;base64,' + Buffer.from(stripTypeScriptTypes(rewritten)).toString('base64'));
     const req = () => new Request('https://test.local', { method: 'POST', headers: { Authorization: 'Bearer synthetic-key' }, body: JSON.stringify({ mode: 'dry_run', start: '2026-08-21', end: '2026-10-01' }) });
     const success = await (await handler(req())).json();
     assert.equal(success.outcome, 'completed');
     assert.equal(success.writes, 0);
     assert.equal(success.counts.stage_unpublished, 1);
+    for (const payload of ['', '{}']) {
+      const cron = await (await handler(new Request('https://test.local', {method:'POST',headers:{Authorization:'Bearer synthetic-key'},body:payload}))).json();
+      assert.equal(cron.outcome,'completed'); assert.equal(cron.mode,'dry_run'); assert.equal(cron.writes,0);
+    }
+    const disabled = await handler(new Request('https://test.local', {method:'POST',headers:{Authorization:'Bearer synthetic-key'},body:JSON.stringify({mode:'stage',apply:true,start:'2026-08-21',end:'2026-10-01',approvals:[]})}));
+    assert.equal(disabled.status,403);
     dbFails = true;
     const failed = await (await handler(req())).json();
     assert.equal(failed.outcome, 'failed');
@@ -116,4 +129,42 @@ test('allowlist config requires exactly four named unique server-side IDs', () =
  assert.throws(() => approvedFolders(undefined));
  assert.throws(() => approvedFolders(JSON.stringify({legacy:'fixture_only_123'})));
  assert.deepEqual(approvedFolders(JSON.stringify(Object.fromEntries(['legacy','power','school','sales'].map((key,i)=>[key,FOLDERS[i]])))), FOLDERS);
+});
+test('duplicate start time stays ambiguous and existing parts are never renumbered silently', () => {
+ const duplicate={...video,id:'same-time-second-file'};
+ assert.ok(run([video,duplicate,note])[0].reasons.includes('duplicate_session_start'));
+ const restart={...video,id:'later-part',name:video.name.replace('07:59','08:55')};
+ const restartNote={...note,id:'later-note',name:note.name.replace('07:59','08:55')};
+ const old={id:'old',video_ref:video.id,transcript_doc_id:note.id,part_number:null,part_total:null};
+ assert.ok(run([video,note,restart,restartNote],[old]).every(i=>i.reasons.includes('existing_part_number_conflict')));
+});
+test('endpoint staging adapter inserts unpublished rows and conditionally fills only missing notes', async () => {
+ const source=readFileSync(new URL('../supabase/functions/sync-recordings/index.ts',import.meta.url),'utf8');
+ const {stripTypeScriptTypes}=await import('node:module');
+ const oldFetch=globalThis.fetch;
+ let handler;
+ let existing=[];
+ const writes=[];
+ globalThis.Deno={env:{get:name=> name==='REPLAY_APPROVED_FOLDERS'?JSON.stringify(Object.fromEntries(['legacy','power','school','sales'].map((k,i)=>[k,FOLDERS[i]]))):name==='REPLAY_STAGING_ENABLED'?'true':name==='SUPABASE_SERVICE_ROLE_KEY'?'synthetic-key':'synthetic'},serve:fn=>{handler=fn;}};
+ globalThis.fetch=async()=>Response.json({files:[video,note]});
+ globalThis.__testClient=()=>({from:()=>({
+  select:()=>({eq:()=>({order:()=>({range:async()=>({data:existing})})})}),
+  insert:async row=>{writes.push({insert:row});return {};},
+  update:patch=>{const filters=[]; const q={eq:(k,v)=>{filters.push([k,v]);return q;},is:(k,v)=>{filters.push([k,v]);return q;},select:async()=>{writes.push({patch,filters});return {data:[{id:'old'}]};}};return q;}
+ })});
+ try {
+  const rewritten=source.replace(/import \{ createClient \} from [^;]+;/,'const createClient=globalThis.__testClient;').replace('"../_shared/replay-plan.ts"',JSON.stringify(pathToFileURL(resolve('supabase/functions/_shared/replay-plan.ts')).href)).replace('"../_shared/replay-stage.ts"',JSON.stringify(pathToFileURL(resolve('supabase/functions/_shared/replay-stage.ts')).href));
+  await import('data:text/javascript;base64,'+Buffer.from(stripTypeScriptTypes(rewritten)+'\n// staging adapter test').toString('base64'));
+  const request=body=>new Request('https://test.local',{method:'POST',headers:{Authorization:'Bearer synthetic-key'},body:JSON.stringify(body)});
+  const dry=await (await handler(request({start:'2026-08-21',end:'2026-10-01'}))).json();
+  assert.equal(writes.length,0);
+  const body={mode:'stage',apply:true,start:'2026-08-21',end:'2026-10-01',approvals:dry.items.map(i=>({video_file_id:i.video_file_id,source_digest:i.source_digest}))};
+  const staged=await (await handler(request(body))).json();
+  assert.equal(staged.outcome,'completed');assert.equal(staged.writes,1);assert.equal(writes[0].insert.is_published,false);
+  existing=[{id:'old',video_ref:video.id,transcript_doc_id:null,is_published:false}];
+  const refreshed=await (await handler(request(body))).json();
+  assert.equal(refreshed.results[0].status,'artifact_refreshed');
+  assert.deepEqual(writes[1].patch,{transcript_doc_id:note.id});
+  assert.deepEqual(writes[1].filters,[['id','old'],['video_source','google_drive'],['video_ref',video.id],['is_published',false],['transcript_doc_id',null]]);
+ } finally {globalThis.fetch=oldFetch;delete globalThis.Deno;delete globalThis.__testClient;}
 });
