@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { Budget, BudgetExceeded, fetchWithRetry, makeDrive, type FetchLike } from "./drive.ts";
 import { buildPlan, cronAuthorized, FOLDER_MAP, type DriveFile } from "./logic.ts";
-import { PersistenceError, runSync, selectBatch, type NewRow, type Store } from "./sync.ts";
+import { PersistenceError, runSync, selectBatch, shareApproved, type NewRow, type Store } from "./sync.ts";
 
 const PH = "1w3T_y09cILdUORwtXi9114CVp7liXymo";
 const CS = "1mDB9Q94Bod2AyiOtqCPWHI4Q4uR_zyoH";
@@ -235,4 +235,30 @@ Deno.test("cron auth: missing secret, public key, wrong or absent header all fai
   assertEquals(cronAuthorized(null, S, [ANON]), false);
   assertEquals(cronAuthorized(S + "x", S, [ANON]), false);
   assertEquals(cronAuthorized(S, S, [ANON]), true);
+});
+
+Deno.test("backfill allowlist imports only exact approved IDs; others stay unimported", async () => {
+  const files = [1, 2, 3].map((d) => vid(`p${d}`, `ALP Power Hour - 2026/09/0${d} 12:00 GMT-04:00 - Recording`));
+  const { drive } = fakeDrive({ [PH]: files }, new Set(files.map((f) => f.id)));
+  const m = memStore();
+  const r: any = await runSync(drive, m.store, { ...base, mode: "backfill", allowIds: new Set(["p2"]) });
+  assertEquals(m.rows.map((x) => x.cloudflare_video_id), ["p2"]);
+  assertEquals([r.planned, r.inserted, r.status], [1, 1, "completed"]);
+});
+
+Deno.test("shareApproved adds anyone-reader only to approved held_not_shared videos; refuses short/unmapped/imported", async () => {
+  const files = [
+    vid("a", "ALP Power Hour - 2026/09/01 12:00 GMT-04:00 - Recording"),
+    vid("b", "ALP Power Hour - 2026/09/02 12:00 GMT-04:00 - Recording", String(60_000)),
+    vid("c", "ALP Power Hour - 2026/09/03 12:00 GMT-04:00 - Recording"),
+    vid("d", "ALP Power Hour - 2026/09/04 12:00 GMT-04:00 - Recording"),
+  ];
+  const { drive, calls } = fakeDrive({ [PH]: files }, new Set());
+  const m = memStore([{ id: "c", cls: "power_hour", date: "2026-09-03" }]);
+  const res = await shareApproved(drive, m.store, ["a", "b", "c", "zzz"], "2026-01-01", "2026-12-31");
+  assertEquals(res.map((x) => x.result), ["shared", "refused_held_short_clip", "refused_already_imported", "refused_not_in_mapped_folders"]);
+  const posts = calls.filter((c) => c.startsWith("POST"));
+  assertEquals(posts.length, 1);
+  assert(posts[0].includes("/files/a/permissions"));
+  assertEquals(m.writes(), 0);
 });
