@@ -9,13 +9,30 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { Budget, makeDrive } from "./drive.ts";
 import { ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
-import { runSync, type Store } from "./sync.ts";
+import { PersistenceError, runSync, type Store } from "./sync.ts";
 
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+// Private shared secret for the cron caller. Not configured yet => scheduled calls from cron fail closed.
+const CRON_SECRET = Deno.env.get("SYNC_RECORDINGS_CRON_SECRET") ?? "";
+const CRON_HEADER = "x-sync-cron-secret";
+
+function timingSafeEqual(a: string, b: string) {
+  const ea = new TextEncoder().encode(a), eb = new TextEncoder().encode(b);
+  let diff = ea.length ^ eb.length;
+  for (let i = 0; i < Math.max(ea.length, eb.length); i++) diff |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
+  return diff === 0;
+}
+
+/** True only when the dedicated cron secret is configured, is not a public key, and matches exactly. */
+export function cronAuthorized(header: string | null, secret: string, publicKeys: string[]): boolean {
+  if (!secret || secret.length < 32 || publicKeys.includes(secret)) return false;
+  if (!header) return false;
+  return timingSafeEqual(header, secret);
+}
 
 const TOTAL_BUDGET_MS = 110_000;
 const STALE_RUN_MS = 10 * 60_000;
@@ -71,7 +88,7 @@ function supabaseStore(sb: any): Store {
       const out: any[] = [];
       for (let from = 0; ; from += 1000) {
         const { data, error } = await sb.from("recordings")
-          .select("cloudflare_video_id,video_ref,class_type,recording_date").range(from, from + 999);
+          .select("cloudflare_video_id,video_ref,class_type,recording_date,part_number,part_total").range(from, from + 999);
         if (error) throw new Error(`Dedupe lookup failed: ${error.message}`);
         out.push(...(data ?? []));
         if (!data || data.length < 1000) return out;
@@ -79,8 +96,9 @@ function supabaseStore(sb: any): Store {
     },
     async acquireRun(meta) {
       // Expire abandoned runs (crash/timeout) so the lock can't wedge forever.
-      await sb.from("recording_sync_runs").update({ status: "abandoned", finished_at: new Date().toISOString() })
+      const { error: staleErr } = await sb.from("recording_sync_runs").update({ status: "abandoned", finished_at: new Date().toISOString() })
         .eq("status", "running").lt("heartbeat_at", new Date(Date.now() - STALE_RUN_MS).toISOString());
+      if (staleErr) throw new Error(`Could not check stale runs: ${staleErr.message}`);
       const { data, error } = await sb.from("recording_sync_runs").insert({ ...meta, status: "running" }).select("id").single();
       if (error) {
         if (error.code === "23505") return null;
@@ -89,11 +107,12 @@ function supabaseStore(sb: any): Store {
       return data.id as string;
     },
     async heartbeat(id, patch) {
-      await sb.from("recording_sync_runs").update({ ...patch, heartbeat_at: new Date().toISOString() }).eq("id", id);
+      const { error } = await sb.from("recording_sync_runs").update({ ...patch, heartbeat_at: new Date().toISOString() }).eq("id", id);
+      if (error) throw new Error(`Run heartbeat failed: ${error.message}`);
     },
     async finishRun(id, patch) {
       const { error } = await sb.from("recording_sync_runs").update(patch).eq("id", id);
-      if (error) console.error("finishRun failed", error.message);
+      if (error) throw new Error(`Run finish failed: ${error.message}`);
     },
     async insert(row) {
       const { error } = await sb.from("recordings").insert(row);
@@ -135,8 +154,15 @@ Deno.serve(async (req) => {
   const caller = await isAdminCaller(req, sb);
 
   if (mode !== "scheduled" && !caller.admin) return json({ error: "Admin authentication required" }, 401);
-  if (mode === "scheduled" && Object.keys(body).length > 0 && !caller.admin) {
-    return json({ error: "Parameters not allowed for scheduled runs" }, 400);
+  if (mode === "scheduled" && !caller.admin) {
+    if (!CRON_SECRET) {
+      console.warn("scheduled call rejected: SYNC_RECORDINGS_CRON_SECRET not configured");
+      return json({ ok: false, status: "blocked_configuration", error: "Scheduled sync is not configured (cron secret missing)" }, 503);
+    }
+    if (!cronAuthorized(req.headers.get(CRON_HEADER), CRON_SECRET, [SUPABASE_ANON_KEY])) {
+      return json({ error: "Unauthorized" }, 401);
+    }
+    if (Object.keys(body).length > 0) return json({ error: "Parameters not allowed for scheduled runs" }, 400);
   }
 
   const budget = new Budget(Date.now() + TOTAL_BUDGET_MS);
@@ -186,8 +212,12 @@ Deno.serve(async (req) => {
     const { data: settings, error: sErr } = await sb.from("recording_sync_settings").select("scheduled_import_enabled").eq("id", true).maybeSingle();
     if (sErr) return json({ error: sErr.message }, 500);
     if (!settings?.scheduled_import_enabled) {
-      await sb.from("recording_sync_runs").insert({ mode: "scheduled", status: "skipped_disabled", triggered_by: caller.admin ? `admin:${caller.userId}` : "cron", finished_at: new Date().toISOString() });
-      return json({ ok: true, status: "skipped_disabled" });
+      const { error: logErr } = await sb.from("recording_sync_runs").insert({ mode: "scheduled", status: "skipped_disabled", triggered_by: caller.admin ? `admin:${caller.userId}` : "cron", finished_at: new Date().toISOString() });
+      return json({
+        ok: false, status: "paused", inserted_count: 0,
+        error: "Automatic recording imports are paused pending review. Nothing was imported." +
+          (logErr ? ` (Also failed to record this run: ${logErr.message})` : ""),
+      }, 409);
     }
     const work = runSync(drive, supabaseStore(sb), {
       mode: "scheduled", dateFrom: isoDaysAgo(30), dateTo: isoDaysAgo(-1), maxInserts: DEFAULT_MAX_INSERTS,
@@ -198,6 +228,6 @@ Deno.serve(async (req) => {
     return json(await work);
   } catch (e) {
     console.error("sync-recordings error", e);
-    return json({ error: String((e as Error).message ?? e) }, 500);
+    return json({ ok: false, status: e instanceof PersistenceError ? "persistence_failed" : "failed", error: String((e as Error).message ?? e) }, 500);
   }
 });
