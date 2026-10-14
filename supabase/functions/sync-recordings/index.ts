@@ -65,7 +65,7 @@ async function generateTopic(cls: ClassType, transcript: string, budget: Budget)
   }
 }
 
-function supabaseStore(sb: ReturnType<typeof createClient>): Store {
+function supabaseStore(sb: any): Store {
   return {
     async loadExisting() {
       const out: any[] = [];
@@ -109,7 +109,7 @@ function supabaseStore(sb: ReturnType<typeof createClient>): Store {
   };
 }
 
-async function isAdminCaller(req: Request, admin: ReturnType<typeof createClient>): Promise<{ admin: boolean; userId?: string }> {
+async function isAdminCaller(req: Request, admin: any): Promise<{ admin: boolean; userId?: string }> {
   const auth = req.headers.get("Authorization") ?? "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
   if (!token || token === SUPABASE_ANON_KEY) return { admin: false };
