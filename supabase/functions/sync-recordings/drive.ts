@@ -101,6 +101,17 @@ export function makeDrive(headers: Record<string, string>, o: RetryOpts) {
       }
     },
 
+    /** Adds ONLY an "anyone with link: reader" permission. Never removes or changes existing permissions. */
+    async addAnyoneReader(fileId: string): Promise<void> {
+      const p = new URLSearchParams({ supportsAllDrives: "true", fields: "id,type,role" });
+      const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}/permissions?${p}`, {
+        method: "POST", headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "anyone", role: "reader", allowFileDiscovery: false }),
+      }, o);
+      if (!res.ok) throw new Error(`Share ${fileId} failed ${res.status}: ${(await res.text()).slice(0, 300)}`);
+      await res.text();
+    },
+
     async exportText(docId: string): Promise<string | null> {
       try {
         const res = await fetchWithRetry(`${GATEWAY}/files/${docId}/export?mimeType=text/plain`, { headers }, o);
