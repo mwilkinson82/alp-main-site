@@ -25,7 +25,7 @@ export type SyncOpts = {
   dateTo: string;
   maxInserts: number;
   triggeredBy: string;
-  titleFor: (item: PlanItem, transcript: string | null) => Promise<string>;
+  titleFor: (item: PlanItem) => Promise<string>;
 };
 
 export async function runSync(drive: DriveClient, store: Store | null, o: SyncOpts) {
@@ -86,9 +86,8 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
     const insertedIds: string[] = [];
     let skippedDup = 0;
     for (const it of batch) {
-      let transcript: string | null = null;
       try {
-        const title = await o.titleFor(it, transcript);
+        const title = await o.titleFor(it);
         const r = await store!.insert({
           title, class_type: it.class_type, recording_date: it.date, video_source: "google_drive",
           video_ref: `https://drive.google.com/file/d/${it.drive_id}/view?usp=sharing`,
@@ -102,7 +101,6 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
         if (e instanceof BudgetExceeded) { errors.push(`budget: ${e.message}`); break; }
         errors.push(`${it.drive_id}: ${(e as Error).message}`);
       }
-      transcript = null;
       await store!.heartbeat(runId!, { inserted: insertedIds.length });
     }
     const verified = insertedIds.length ? await store!.countByDriveIds(insertedIds) : 0;
