@@ -168,7 +168,7 @@ Deno.test("multipart day pairs each part with its own session notes; short/no-du
   const by = Object.fromEntries(items.map((i) => [i.drive_id, i]));
   assertEquals(by.s1.disposition, "held_short_clip");
   assertEquals(by.s1.transcript_match, "ambiguous");
-  assertEquals([by.s2.disposition, by.s2.transcript_doc_id, by.s2.part_number, by.s2.part_total], ["import", "n2", 2, 3]);
+  assertEquals([by.s2.disposition, by.s2.transcript_doc_id, by.s2.part_number, by.s2.part_total], ["import", "n2", 1, 2]);
   assertEquals([by.s3.disposition, by.s3.transcript_doc_id], ["held_no_duration", "n3"]);
 });
 

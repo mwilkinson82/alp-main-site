@@ -123,11 +123,17 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
       (a.time ?? "").localeCompare(b.time ?? "") || a.f.createdTime.localeCompare(b.f.createdTime)
     );
     const dayDocs = docs.filter((d) => `${d.cls}|${d.date}` === key);
-    const total = list.length;
+    // Aborted/short starts don't count toward "Part N of M".
+    const isShort = (v: Entry) => {
+      const d = Number(v.f.videoMediaMetadata?.durationMillis);
+      return Number.isFinite(d) && d < MIN_DURATION_MS;
+    };
+    const real = list.filter((v) => !isShort(v));
+    const total = real.length;
     const dayHasExisting = input.existingDays.has(key);
     const anyExistingInDay = list.some((v) => input.existingDriveIds.has(v.f.id));
 
-    list.forEach((v, i) => {
+    list.forEach((v) => {
       // Transcript pairing: exact session start time first; else the single doc for the day.
       let doc: Entry | undefined;
       let match: PlanItem["transcript_match"] = "none";
@@ -167,8 +173,8 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
         disposition,
         transcript_doc_id: doc?.f.id ?? null,
         transcript_match: match,
-        part_number: total > 1 ? i + 1 : null,
-        part_total: total > 1 ? total : null,
+        part_number: total > 1 && !isShort(v) ? real.indexOf(v) + 1 : null,
+        part_total: total > 1 && !isShort(v) ? total : null,
       });
     });
   }
