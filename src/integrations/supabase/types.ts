@@ -224,6 +224,87 @@ export type Database = {
         }
         Relationships: []
       }
+      recording_sync_runs: {
+        Row: {
+          date_from: string | null
+          date_to: string | null
+          details: Json
+          error_count: number
+          finished_at: string | null
+          heartbeat_at: string
+          held: number
+          id: string
+          inserted: number
+          mode: string
+          planned: number
+          remaining: number
+          scanned: number
+          skipped: number
+          started_at: string
+          status: string
+          triggered_by: string
+          verified: number
+        }
+        Insert: {
+          date_from?: string | null
+          date_to?: string | null
+          details?: Json
+          error_count?: number
+          finished_at?: string | null
+          heartbeat_at?: string
+          held?: number
+          id?: string
+          inserted?: number
+          mode: string
+          planned?: number
+          remaining?: number
+          scanned?: number
+          skipped?: number
+          started_at?: string
+          status?: string
+          triggered_by: string
+          verified?: number
+        }
+        Update: {
+          date_from?: string | null
+          date_to?: string | null
+          details?: Json
+          error_count?: number
+          finished_at?: string | null
+          heartbeat_at?: string
+          held?: number
+          id?: string
+          inserted?: number
+          mode?: string
+          planned?: number
+          remaining?: number
+          scanned?: number
+          skipped?: number
+          started_at?: string
+          status?: string
+          triggered_by?: string
+          verified?: number
+        }
+        Relationships: []
+      }
+      recording_sync_settings: {
+        Row: {
+          id: boolean
+          scheduled_import_enabled: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          scheduled_import_enabled?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          scheduled_import_enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recordings: {
         Row: {
           class_type: Database["public"]["Enums"]["class_type"]
