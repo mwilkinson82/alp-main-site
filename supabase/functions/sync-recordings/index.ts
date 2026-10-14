@@ -1,53 +1,25 @@
-// Pulls new recordings + Gemini transcripts from the shared Drive folder
-// and inserts them into public.recordings. Idempotent: dedupes on video_ref.
-// Also supports { mode: "retitle", recording_id } to regenerate a single title.
+// sync-recordings: imports class recordings from the three mapped Drive folders.
+// Modes (POST JSON body):
+//   {}                                   scheduled (cron). Imports only if recording_sync_settings.scheduled_import_enabled.
+//   { mode:"dry_run", date_from, date_to }   admin only. Read-only: no DB writes, no permission changes.
+//   { mode:"backfill", date_from, date_to, max_inserts? }  admin only. Bounded batch import.
+//   { mode:"retitle", recording_id }     admin only.
+// Never creates or modifies Drive sharing; files not already link-shared are held.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { Budget, makeDrive } from "./drive.ts";
+import { ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
+import { runSync, type Store } from "./sync.ts";
 
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-const DRIVE_FOLDER_ID = "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E";
-
-type ClassType = "power_hour" | "contractor_school" | "sales_marketing_school";
-
-type DriveFile = {
-  id: string;
-  name: string;
-  mimeType: string;
-  createdTime: string;
-};
-
-function classify(name: string): ClassType | null {
-  const n = name.toLowerCase();
-  if (n.startsWith("alp hardcore power hour") || n.startsWith("alp power hour")) {
-    return "power_hour";
-  }
-  if (n.startsWith("alp contractor school")) return "contractor_school";
-  if (
-    n.startsWith("alp sales and marketing") ||
-    n.startsWith("alp sales & marketing") ||
-    n.startsWith("alp sales marketing")
-  ) {
-    return "sales_marketing_school";
-  }
-  return null;
-}
-
-function extractDate(name: string): string | null {
-  const m = name.match(/(\d{4})[\/\-](\d{2})[\/\-](\d{2})/);
-  if (!m) return null;
-  return `${m[1]}-${m[2]}-${m[3]}`;
-}
-
-function isVideo(f: DriveFile): boolean {
-  return f.mimeType.startsWith("video/");
-}
-function isDoc(f: DriveFile): boolean {
-  return f.mimeType === "application/vnd.google-apps.document";
-}
+const TOTAL_BUDGET_MS = 110_000;
+const STALE_RUN_MS = 10 * 60_000;
+const DEFAULT_MAX_INSERTS = 15;
 
 const CLASS_LABEL: Record<ClassType, string> = {
   power_hour: "Power Hour",
@@ -55,303 +27,177 @@ const CLASS_LABEL: Record<ClassType, string> = {
   sales_marketing_school: "Sales & Marketing School",
 };
 
-function formatHumanDate(isoDate: string) {
-  return new Date(isoDate + "T00:00:00").toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+
+function humanDate(iso: string) {
+  return new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+}
+function fullTitle(cls: ClassType, date: string, topic: string | null, part?: number | null) {
+  const base = `${CLASS_LABEL[cls]} — ${humanDate(date)}${part ? ` (Part ${part})` : ""}`;
+  return topic ? `${base}: ${topic}` : base;
 }
 
-function baseTitle(classType: ClassType, isoDate: string, part?: number | null) {
-  const base = `${CLASS_LABEL[classType]} — ${formatHumanDate(isoDate)}`;
-  return part ? `${base} (Part ${part})` : base;
-}
-
-function fullTitle(
-  classType: ClassType,
-  isoDate: string,
-  topic: string | null,
-  part?: number | null,
-) {
-  const base = baseTitle(classType, isoDate, part);
-  if (!topic) return base;
-  return `${base}: ${topic}`;
-}
-
-async function listFolder(folderId: string): Promise<DriveFile[]> {
-  const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
-  const q = encodeURIComponent(
-    `'${folderId}' in parents and trashed=false and modifiedTime > '${since}'`,
-  );
-  const url =
-    `https://connector-gateway.lovable.dev/google_drive/drive/v3/files` +
-    `?q=${q}&pageSize=200&fields=files(id,name,mimeType,createdTime)&orderBy=createdTime`;
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${LOVABLE_API_KEY}`,
-      "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY!,
-    },
-  });
-  if (!res.ok) {
-    throw new Error(`Drive list failed ${res.status}: ${await res.text()}`);
-  }
-  const json = await res.json();
-  return (json.files ?? []) as DriveFile[];
-}
-
-// Export a Google Doc as plain text via the Drive API (uses the Drive connector).
-async function fetchDocText(docId: string): Promise<string | null> {
+async function generateTopic(cls: ClassType, transcript: string, budget: Budget): Promise<string | null> {
+  if (budget.remaining() < 20_000) return null;
   try {
-    const url =
-      `https://connector-gateway.lovable.dev/google_drive/drive/v3/files/${docId}/export` +
-      `?mimeType=text/plain`;
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY!,
-      },
-    });
-    if (!res.ok) {
-      console.warn("docs export failed", docId, res.status, await res.text());
-      return null;
-    }
-    const text = (await res.text()).replace(/\r\n/g, "\n").trim();
-    return text || null;
-  } catch (e) {
-    console.warn("fetchDocText error", e);
-    return null;
-  }
-}
-
-// Set a Drive file to "Anyone with the link can view" so portal clients can stream it.
-async function makeAnyoneViewer(fileId: string): Promise<boolean> {
-  try {
-    const res = await fetch(
-      `https://connector-gateway.lovable.dev/google_drive/drive/v3/files/${fileId}/permissions?supportsAllDrives=true`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY!,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ role: "reader", type: "anyone" }),
-      },
-    );
-    if (!res.ok) {
-      console.warn("share failed", fileId, res.status, await res.text());
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.warn("makeAnyoneViewer error", e);
-    return false;
-  }
-}
-
-
-
-// Ask Lovable AI for a short topical title. Returns null on any failure.
-async function generateTopicTitle(
-  classType: ClassType,
-  transcript: string,
-): Promise<string | null> {
-  try {
-    const excerpt = transcript.slice(0, 12_000);
-    const className = CLASS_LABEL[classType];
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 15_000);
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Lovable-API-Key": LOVABLE_API_KEY!,
-        "X-Lovable-AIG-SDK": "vercel-ai-sdk",
-      },
+      signal: ctrl.signal,
+      headers: { "Content-Type": "application/json", "Lovable-API-Key": LOVABLE_API_KEY!, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          {
-            role: "system",
-            content:
-              "You write very short, specific session titles. Reply with ONLY the title text — no quotes, no punctuation at the end, no labels, no markdown. Max 8 words. Do NOT include the date or the class name.",
-          },
-          {
-            role: "user",
-            content:
-              `This is a transcript / Gemini notes from a "${className}" session. ` +
-              `Write a short, specific title (max 8 words) capturing the main topic discussed.\n\n` +
-              `Transcript / notes:\n${excerpt}`,
-          },
+          { role: "system", content: "You write very short, specific session titles. Reply with ONLY the title text — no quotes, no trailing punctuation, no labels, no markdown. Max 8 words. Do NOT include the date or the class name." },
+          { role: "user", content: `Transcript / Gemini notes from a "${CLASS_LABEL[cls]}" session. Write a short specific title (max 8 words).\n\n${transcript.slice(0, 12_000)}` },
         ],
       }),
-    });
-    if (!res.ok) {
-      console.warn("ai title failed", res.status, await res.text());
-      return null;
-    }
-    const json = await res.json();
-    let text: string | undefined = json?.choices?.[0]?.message?.content;
-    if (!text || typeof text !== "string") return null;
+    }).finally(() => clearTimeout(t));
+    if (!res.ok) { await res.text(); return null; }
+    let text: string | undefined = (await res.json())?.choices?.[0]?.message?.content;
+    if (typeof text !== "string") return null;
     text = text.trim().replace(/^["'`]+|["'`]+$/g, "").replace(/[.!?]+$/, "").trim();
-    // Sanity: drop if absurdly long or empty
-    if (!text || text.length > 120) return null;
-    return text;
-  } catch (e) {
-    console.warn("generateTopicTitle error", e);
+    return text && text.length <= 120 ? text : null;
+  } catch {
     return null;
   }
 }
 
-async function retitleOne(
-  supabase: ReturnType<typeof createClient>,
-  recordingId: string,
-) {
-  const { data: rec, error } = await supabase
-    .from("recordings")
-    .select("id,class_type,recording_date,part_number,transcript_doc_id")
-    .eq("id", recordingId)
-    .single();
-  if (error || !rec) throw new Error(error?.message ?? "Recording not found");
-  if (!rec.transcript_doc_id) {
-    throw new Error("No transcript on this recording yet — try again later.");
-  }
-  const text = await fetchDocText(rec.transcript_doc_id);
-  if (!text) throw new Error("Could not read transcript from Drive.");
-  const topic = await generateTopicTitle(rec.class_type as ClassType, text);
-  if (!topic) throw new Error("AI did not return a usable title.");
-  const newTitle = fullTitle(
-    rec.class_type as ClassType,
-    rec.recording_date as string,
-    topic,
-    (rec.part_number as number | null) ?? undefined,
-  );
-  const { error: upErr } = await supabase
-    .from("recordings")
-    .update({ title: newTitle })
-    .eq("id", recordingId);
-  if (upErr) throw new Error(upErr.message);
-  return newTitle;
+function supabaseStore(sb: any): Store {
+  return {
+    async loadExisting() {
+      const out: any[] = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await sb.from("recordings")
+          .select("cloudflare_video_id,video_ref,class_type,recording_date").range(from, from + 999);
+        if (error) throw new Error(`Dedupe lookup failed: ${error.message}`);
+        out.push(...(data ?? []));
+        if (!data || data.length < 1000) return out;
+      }
+    },
+    async acquireRun(meta) {
+      // Expire abandoned runs (crash/timeout) so the lock can't wedge forever.
+      await sb.from("recording_sync_runs").update({ status: "abandoned", finished_at: new Date().toISOString() })
+        .eq("status", "running").lt("heartbeat_at", new Date(Date.now() - STALE_RUN_MS).toISOString());
+      const { data, error } = await sb.from("recording_sync_runs").insert({ ...meta, status: "running" }).select("id").single();
+      if (error) {
+        if (error.code === "23505") return null;
+        throw new Error(`Could not start run: ${error.message}`);
+      }
+      return data.id as string;
+    },
+    async heartbeat(id, patch) {
+      await sb.from("recording_sync_runs").update({ ...patch, heartbeat_at: new Date().toISOString() }).eq("id", id);
+    },
+    async finishRun(id, patch) {
+      const { error } = await sb.from("recording_sync_runs").update(patch).eq("id", id);
+      if (error) console.error("finishRun failed", error.message);
+    },
+    async insert(row) {
+      const { error } = await sb.from("recordings").insert(row);
+      if (!error) return { ok: true };
+      return { ok: false, duplicate: error.code === "23505", error: error.message };
+    },
+    async countByDriveIds(ids) {
+      const { count, error } = await sb.from("recordings").select("id", { count: "exact", head: true })
+        .eq("video_source", "google_drive").in("cloudflare_video_id", ids);
+      if (error) throw new Error(`Verification failed: ${error.message}`);
+      return count ?? 0;
+    },
+  };
 }
+
+async function isAdminCaller(req: Request, admin: any): Promise<{ admin: boolean; userId?: string }> {
+  const auth = req.headers.get("Authorization") ?? "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!token || token === SUPABASE_ANON_KEY) return { admin: false };
+  const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: auth } } });
+  const { data, error } = await userClient.auth.getUser(token);
+  if (error || !data?.user) return { admin: false };
+  const { data: ok } = await admin.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
+  return { admin: ok === true, userId: data.user.id };
+}
+
+const isoDaysAgo = (d: number) => new Date(Date.now() - d * 86_400_000).toISOString().slice(0, 10);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method !== "POST") return json({ error: "POST only" }, 405);
+  if (!LOVABLE_API_KEY || !GOOGLE_DRIVE_API_KEY) return json({ error: "Missing Drive credentials" }, 500);
+
+  let body: Record<string, unknown> = {};
+  try { body = await req.json(); } catch { /* empty body = scheduled */ }
+  const mode = (body.mode as string | undefined) ?? "scheduled";
+
+  const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const caller = await isAdminCaller(req, sb);
+
+  if (mode !== "scheduled" && !caller.admin) return json({ error: "Admin authentication required" }, 401);
+  if (mode === "scheduled" && Object.keys(body).length > 0 && !caller.admin) {
+    return json({ error: "Parameters not allowed for scheduled runs" }, 400);
+  }
+
+  const budget = new Budget(Date.now() + TOTAL_BUDGET_MS);
+  const drive = makeDrive(
+    { Authorization: `Bearer ${LOVABLE_API_KEY}`, "X-Connection-Api-Key": GOOGLE_DRIVE_API_KEY },
+    { fetch, budget, timeoutMs: 20_000, retries: 3, baseDelayMs: 750 },
+  );
+  const titleFor = async (it: PlanItem) => {
+    const text = it.transcript_doc_id ? await drive.exportText(it.transcript_doc_id) : null;
+    const topic = text ? await generateTopic(it.class_type, text, budget) : null;
+    return fullTitle(it.class_type, it.date, topic, it.part_number);
+  };
 
   try {
-    if (!LOVABLE_API_KEY || !GOOGLE_DRIVE_API_KEY) {
-      return new Response(
-        JSON.stringify({ error: "Missing Drive credentials" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+    if (mode === "retitle") {
+      const id = body.recording_id;
+      if (typeof id !== "string" || !/^[0-9a-f-]{36}$/i.test(id)) return json({ error: "recording_id required" }, 400);
+      const { data: rec, error } = await sb.from("recordings")
+        .select("id,class_type,recording_date,part_number,transcript_doc_id").eq("id", id).single();
+      if (error || !rec) return json({ error: error?.message ?? "Recording not found" }, 404);
+      if (!rec.transcript_doc_id) return json({ error: "No transcript on this recording yet." }, 400);
+      const text = await drive.exportText(rec.transcript_doc_id);
+      if (!text) return json({ error: "Could not read transcript from Drive." }, 502);
+      const topic = await generateTopic(rec.class_type, text, budget);
+      if (!topic) return json({ error: "AI did not return a usable title." }, 502);
+      const title = fullTitle(rec.class_type, rec.recording_date, topic, rec.part_number);
+      const { error: upErr } = await sb.from("recordings").update({ title }).eq("id", id);
+      if (upErr) return json({ error: upErr.message }, 500);
+      return json({ ok: true, title });
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-    // Optional body for single-recording retitle
-    let body: { mode?: string; recording_id?: string } = {};
-    if (req.method === "POST") {
-      try { body = await req.json(); } catch { /* empty body ok */ }
-    }
-
-    if (body.mode === "retitle" && body.recording_id) {
-      const title = await retitleOne(supabase, body.recording_id);
-      return new Response(
-        JSON.stringify({ ok: true, title }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-
-    const files = await listFolder(DRIVE_FOLDER_ID);
-
-    type Bucket = { videos: DriveFile[]; docs: DriveFile[] };
-    const buckets = new Map<string, Bucket>();
-    for (const f of files) {
-      const cls = classify(f.name);
-      if (!cls) continue;
-      const date = extractDate(f.name);
-      if (!date) continue;
-      const key = `${cls}|${date}`;
-      const b = buckets.get(key) ?? { videos: [], docs: [] };
-      if (isVideo(f)) b.videos.push(f);
-      else if (isDoc(f) && /notes by gemini/i.test(f.name)) b.docs.push(f);
-      buckets.set(key, b);
-    }
-
-    const { data: existing } = await supabase
-      .from("recordings")
-      .select("video_ref")
-      .eq("video_source", "google_drive");
-    const existingIds = new Set<string>();
-    for (const r of existing ?? []) {
-      const m = (r as { video_ref: string }).video_ref?.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (m) existingIds.add(m[1]);
-    }
-
-    const inserted: Array<{ class_type: ClassType; date: string; part?: number; ai_title?: boolean }> = [];
-    const skipped: Array<{ reason: string; name: string }> = [];
-
-    for (const [key, b] of buckets) {
-      const [cls, date] = key.split("|") as [ClassType, string];
-      if (b.videos.length === 0) {
-        skipped.push({ reason: "no_video", name: key });
-        continue;
+    if (mode === "dry_run" || mode === "backfill") {
+      const from = body.date_from, to = body.date_to;
+      if (typeof from !== "string" || typeof to !== "string" || !ISO_DATE.test(from) || !ISO_DATE.test(to) || from > to) {
+        return json({ error: "date_from and date_to (YYYY-MM-DD, from <= to) are required" }, 400);
       }
-      b.videos.sort((a, c) => a.createdTime.localeCompare(c.createdTime));
-      const total = b.videos.length;
-      const transcript = b.docs.sort((a, c) =>
-        c.createdTime.localeCompare(a.createdTime)
-      )[0];
-      const transcriptDocId = transcript?.id ?? null;
-
-      // Generate one AI topic per (class, date) — shared across parts.
-      let aiTopic: string | null = null;
-      const hasNewVideo = b.videos.some((v) => !existingIds.has(v.id));
-      if (hasNewVideo && transcriptDocId) {
-        const text = await fetchDocText(transcriptDocId);
-        if (text) aiTopic = await generateTopicTitle(cls, text);
-      }
-
-      for (let i = 0; i < b.videos.length; i++) {
-        const v = b.videos[i];
-        if (existingIds.has(v.id)) continue;
-        const part = total > 1 ? i + 1 : null;
-        const row = {
-          title: fullTitle(cls, date, aiTopic, part),
-          class_type: cls,
-          recording_date: date,
-          video_source: "google_drive" as const,
-          video_ref: `https://drive.google.com/file/d/${v.id}/view?usp=sharing`,
-          cloudflare_video_id: v.id,
-          transcript_doc_id: transcriptDocId,
-          part_number: part,
-          part_total: total > 1 ? total : null,
-          is_published: true,
-        };
-        const { error } = await supabase.from("recordings").insert(row);
-        if (error) {
-          skipped.push({ reason: `insert_error:${error.message}`, name: v.name });
-        } else {
-          // Make the video publicly viewable so portal clients can stream it.
-          await makeAnyoneViewer(v.id);
-          inserted.push({ class_type: cls, date, part: part ?? undefined, ai_title: !!aiTopic });
-        }
-      }
+      const maxInserts = Math.min(Math.max(Number(body.max_inserts ?? DEFAULT_MAX_INSERTS) || DEFAULT_MAX_INSERTS, 1), 25);
+      const result = await runSync(drive, supabaseStore(sb), {
+        mode, dateFrom: from, dateTo: to, maxInserts, triggeredBy: `admin:${caller.userId}`, titleFor,
+      });
+      return json(result, result.ok === false && (result as any).status === "locked" ? 409 : 200);
     }
 
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        scanned: files.length,
-        inserted_count: inserted.length,
-        inserted,
-        skipped,
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    if (mode !== "scheduled") return json({ error: `Unknown mode ${mode}` }, 400);
+
+    // Scheduled: answer the cron immediately (pg_net times out at 5s) and finish in the background.
+    const { data: settings, error: sErr } = await sb.from("recording_sync_settings").select("scheduled_import_enabled").eq("id", true).maybeSingle();
+    if (sErr) return json({ error: sErr.message }, 500);
+    if (!settings?.scheduled_import_enabled) {
+      await sb.from("recording_sync_runs").insert({ mode: "scheduled", status: "skipped_disabled", triggered_by: caller.admin ? `admin:${caller.userId}` : "cron", finished_at: new Date().toISOString() });
+      return json({ ok: true, status: "skipped_disabled" });
+    }
+    const work = runSync(drive, supabaseStore(sb), {
+      mode: "scheduled", dateFrom: isoDaysAgo(30), dateTo: isoDaysAgo(-1), maxInserts: DEFAULT_MAX_INSERTS,
+      triggeredBy: caller.admin ? `admin:${caller.userId}` : "cron", titleFor,
+    }).catch((e) => console.error("scheduled sync failed", e));
+    // @ts-ignore EdgeRuntime is provided by the Supabase runtime
+    if (typeof EdgeRuntime !== "undefined") { EdgeRuntime.waitUntil(work); return json({ ok: true, status: "accepted" }, 202); }
+    return json(await work);
   } catch (e) {
     console.error("sync-recordings error", e);
-    return new Response(
-      JSON.stringify({ error: String((e as Error).message ?? e) }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-    );
+    return json({ error: String((e as Error).message ?? e) }, 500);
   }
 });
