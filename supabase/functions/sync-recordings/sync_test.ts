@@ -8,9 +8,9 @@ const CS = "1mDB9Q94Bod2AyiOtqCPWHI4Q4uR_zyoH";
 const SM = "19mjrFh3F5psK0c1AWlYygQN8A3EE2Szo";
 const LONG = String(60 * 60_000);
 
-const vid = (id: string, name: string, dur: string | undefined = LONG, created = "2026-09-01T00:00:00Z"): DriveFile => ({
+const vid = (id: string, name: string, dur: string | null = LONG, created = "2026-09-01T00:00:00Z"): DriveFile => ({
   id, name, mimeType: "video/mp4", createdTime: created, size: "900000000",
-  videoMediaMetadata: dur === undefined ? undefined : { durationMillis: dur },
+  videoMediaMetadata: dur === null ? undefined : { durationMillis: dur },
 });
 const doc = (id: string, name: string): DriveFile => ({ id, name, mimeType: "application/vnd.google-apps.document", createdTime: "2026-09-01T00:00:00Z" });
 
@@ -155,7 +155,7 @@ Deno.test("multipart day pairs each part with its own session notes; short/no-du
       [CS]: [
         vid("s1", "ALP Contractor School - 2026/09/10 18:00 GMT-04:00 - Recording", String(90_000), "2026-09-10T23:00:00Z"),
         vid("s2", "ALP Contractor School - 2026/09/10 18:05 GMT-04:00 - Recording", LONG, "2026-09-10T23:10:00Z"),
-        vid("s3", "ALP Contractor School - 2026/09/10 19:30 GMT-04:00 - Recording", undefined, "2026-09-11T00:40:00Z"),
+        vid("s3", "ALP Contractor School - 2026/09/10 19:30 GMT-04:00 - Recording", null, "2026-09-11T00:40:00Z"),
         doc("n2", "ALP Contractor School - 2026/09/10 18:05 GMT-04:00 - Notes by Gemini"),
         doc("n3", "ALP Contractor School - 2026/09/10 19:30 GMT-04:00 - Notes by Gemini"),
       ],
