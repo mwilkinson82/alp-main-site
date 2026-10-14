@@ -78,10 +78,13 @@ export const isNotesDoc = (f: DriveFile) =>
   f.mimeType === "application/vnd.google-apps.document" && /notes by gemini/i.test(f.name);
 export const isShortcut = (f: DriveFile) => f.mimeType === "application/vnd.google-apps.shortcut";
 
+export type ExistingPart = { drive_id: string | null; part_number: number | null; part_total: number | null };
+
 export type PlanInput = {
   folders: Record<string, DriveFile[]>; // folderId -> files
   existingDriveIds: Set<string>;
-  existingDays: Set<string>; // `${class}|${date}` already having rows
+  // `${class}|${date}` -> rows already stored for that day
+  existingDays: Map<string, ExistingPart[]>;
   access: Map<string, Access>; // drive id -> access (videos only)
   dateFrom: string;
   dateTo: string;
@@ -130,8 +133,17 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
     };
     const real = list.filter((v) => !isShort(v));
     const total = real.length;
-    const dayHasExisting = input.existingDays.has(key);
-    const anyExistingInDay = list.some((v) => input.existingDriveIds.has(v.f.id));
+    // A day with stored rows may only receive more parts when it is a safe resume:
+    // every stored row is one of this day's planned parts with identical numbering.
+    const stored = input.existingDays.get(key) ?? [];
+    const resumable = stored.every((r) => {
+      const v = real.find((x) => x.f.id === r.drive_id);
+      if (!v) return false;
+      const pn = total > 1 ? real.indexOf(v) + 1 : null;
+      const pt = total > 1 ? total : null;
+      return (r.part_number ?? null) === pn && (r.part_total ?? null) === pt;
+    });
+    const dayBlocked = stored.length > 0 && !resumable;
 
     list.forEach((v) => {
       // Transcript pairing: exact session start time first; else the single doc for the day.
@@ -158,7 +170,7 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
       else if (durationMs < MIN_DURATION_MS) disposition = "held_short_clip";
       else if (access === "unknown") disposition = "held_access_unknown";
       else if (access !== "public_reader") disposition = "held_not_shared";
-      else if (dayHasExisting || anyExistingInDay) disposition = "held_day_partially_imported";
+      else if (dayBlocked) disposition = "held_day_partially_imported";
       else disposition = "import";
 
       items.push({
@@ -194,3 +206,17 @@ export function extractDriveId(ref: string | null | undefined): string | null {
 }
 
 export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export function timingSafeEqual(a: string, b: string) {
+  const ea = new TextEncoder().encode(a), eb = new TextEncoder().encode(b);
+  let diff = ea.length ^ eb.length;
+  for (let i = 0; i < Math.max(ea.length, eb.length); i++) diff |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
+  return diff === 0;
+}
+
+/** True only when the dedicated cron secret is configured, is not a public key, and matches exactly. */
+export function cronAuthorized(header: string | null, secret: string, publicKeys: string[]): boolean {
+  if (!secret || secret.length < 32 || publicKeys.includes(secret)) return false;
+  if (!header) return false;
+  return timingSafeEqual(header, secret);
+}
