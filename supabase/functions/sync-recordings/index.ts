@@ -9,7 +9,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { Budget, makeDrive } from "./drive.ts";
 import { cronAuthorized, ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
-import { PersistenceError, runSync, type Store } from "./sync.ts";
+import { PersistenceError, runSync, shareApproved, type Store } from "./sync.ts";
 
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
@@ -143,13 +143,19 @@ Deno.serve(async (req) => {
 
   if (mode !== "scheduled" && !caller.admin) return json({ error: "Admin authentication required" }, 401);
   if (mode === "scheduled" && !caller.admin) {
-    if (!CRON_SECRET) {
-      console.warn("scheduled call rejected: SYNC_RECORDINGS_CRON_SECRET not configured");
-      return json({ ok: false, status: "blocked_configuration", error: "Scheduled sync is not configured (cron secret missing)" }, 503);
+    const hdr = req.headers.get(CRON_HEADER);
+    let ok = false;
+    if (CRON_SECRET) ok = cronAuthorized(hdr, CRON_SECRET, [SUPABASE_ANON_KEY]);
+    else if (hdr && hdr.length >= 32 && hdr !== SUPABASE_ANON_KEY) {
+      // Secret lives only in the database vault; compared server-side, never read into this function.
+      const { data, error } = await sb.rpc("sync_cron_secret_matches", { _candidate: hdr });
+      if (error) {
+        console.warn("scheduled call rejected: cron secret check unavailable", error.message);
+        return json({ ok: false, status: "blocked_configuration", error: "Scheduled sync is not configured" }, 503);
+      }
+      ok = data === true;
     }
-    if (!cronAuthorized(req.headers.get(CRON_HEADER), CRON_SECRET, [SUPABASE_ANON_KEY])) {
-      return json({ error: "Unauthorized" }, 401);
-    }
+    if (!ok) return json({ error: "Unauthorized" }, 401);
     if (Object.keys(body).length > 0) return json({ error: "Parameters not allowed for scheduled runs" }, 400);
   }
 
@@ -182,14 +188,31 @@ Deno.serve(async (req) => {
       return json({ ok: true, title });
     }
 
+    const parseIds = (v: unknown) =>
+      Array.isArray(v) && v.length > 0 && v.length <= 100 && v.every((x) => typeof x === "string" && /^[A-Za-z0-9_-]{10,80}$/.test(x))
+        ? [...new Set(v as string[])] : null;
+
+    if (mode === "share_approved") {
+      const ids = parseIds(body.drive_ids);
+      const from = body.date_from, to = body.date_to;
+      if (!ids || typeof from !== "string" || typeof to !== "string" || !ISO_DATE.test(from) || !ISO_DATE.test(to)) {
+        return json({ error: "drive_ids (exact list), date_from, date_to required" }, 400);
+      }
+      const results = await shareApproved(drive, supabaseStore(sb), ids, from, to);
+      console.log("share_approved", JSON.stringify({ by: caller.userId, results }));
+      return json({ ok: results.every((r) => r.result === "shared" || r.result === "already_shared"), results });
+    }
+
     if (mode === "dry_run" || mode === "backfill") {
       const from = body.date_from, to = body.date_to;
       if (typeof from !== "string" || typeof to !== "string" || !ISO_DATE.test(from) || !ISO_DATE.test(to) || from > to) {
         return json({ error: "date_from and date_to (YYYY-MM-DD, from <= to) are required" }, 400);
       }
+      if (body.allow_ids !== undefined && !parseIds(body.allow_ids)) return json({ error: "allow_ids must be a non-empty list of Drive IDs" }, 400);
       const maxInserts = Math.min(Math.max(Number(body.max_inserts ?? DEFAULT_MAX_INSERTS) || DEFAULT_MAX_INSERTS, 1), 25);
       const result = await runSync(drive, supabaseStore(sb), {
         mode, dateFrom: from, dateTo: to, maxInserts, triggeredBy: `admin:${caller.userId}`, titleFor,
+        allowIds: body.allow_ids !== undefined ? (parseIds(body.allow_ids) ? new Set(parseIds(body.allow_ids)!) : undefined) : undefined,
       });
       return json(result, result.ok === false && (result as any).status === "locked" ? 409 : 200);
     }

@@ -30,6 +30,8 @@ export type SyncOpts = {
   maxInserts: number;
   triggeredBy: string;
   titleFor: (item: PlanItem) => Promise<string>;
+  /** Admin backfill only: import nothing outside this exact Drive-ID allowlist. */
+  allowIds?: Set<string>;
 };
 
 export class PersistenceError extends Error {}
@@ -108,7 +110,7 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
   try {
     const existing = await store.loadExisting(); // throws => run persisted as failed below
     const { items, report, scanned } = await plan(drive, existing, o);
-    const toImport = items.filter((i) => i.disposition === "import");
+    const toImport = items.filter((i) => i.disposition === "import" && (!o.allowIds || o.allowIds.has(i.drive_id)));
     const batch = selectBatch(toImport, o.maxInserts);
 
     let skippedDup = 0;
@@ -159,4 +161,26 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
     }
     throw e;
   }
+}
+
+/**
+ * Admin-only: adds an anyone-reader link permission to an exact approved ID list.
+ * Each ID is revalidated against the folder map/class/date plan and must be a full-length,
+ * not-yet-imported video currently held only because it is not shared. Anything else is refused.
+ */
+export async function shareApproved(drive: DriveClient, store: Store, ids: string[], dateFrom: string, dateTo: string) {
+  const existing = await store.loadExisting();
+  const { items } = await plan(drive, existing, { mode: "dry_run", dateFrom, dateTo, maxInserts: 0, triggeredBy: "", titleFor: async () => "" });
+  const byId = new Map(items.map((i) => [i.drive_id, i]));
+  const results: Array<{ drive_id: string; class_type?: string; date?: string; result: string }> = [];
+  for (const id of ids) {
+    const it = byId.get(id);
+    if (!it) { results.push({ drive_id: id, result: "refused_not_in_mapped_folders" }); continue; }
+    const base = { drive_id: id, class_type: it.class_type, date: it.date };
+    if (it.disposition === "import") { results.push({ ...base, result: "already_shared" }); continue; }
+    if (it.disposition !== "held_not_shared") { results.push({ ...base, result: `refused_${it.disposition}` }); continue; }
+    try { await drive.addAnyoneReader(id); results.push({ ...base, result: "shared" }); }
+    catch (e) { results.push({ ...base, result: `error: ${(e as Error).message}` }); }
+  }
+  return results;
 }
