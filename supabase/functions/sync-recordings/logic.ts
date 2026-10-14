@@ -206,3 +206,17 @@ export function extractDriveId(ref: string | null | undefined): string | null {
 }
 
 export const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export function timingSafeEqual(a: string, b: string) {
+  const ea = new TextEncoder().encode(a), eb = new TextEncoder().encode(b);
+  let diff = ea.length ^ eb.length;
+  for (let i = 0; i < Math.max(ea.length, eb.length); i++) diff |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
+  return diff === 0;
+}
+
+/** True only when the dedicated cron secret is configured, is not a public key, and matches exactly. */
+export function cronAuthorized(header: string | null, secret: string, publicKeys: string[]): boolean {
+  if (!secret || secret.length < 32 || publicKeys.includes(secret)) return false;
+  if (!header) return false;
+  return timingSafeEqual(header, secret);
+}

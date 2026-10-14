@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { Budget, BudgetExceeded, fetchWithRetry, makeDrive, type FetchLike } from "./drive.ts";
-import { buildPlan, FOLDER_MAP, type DriveFile } from "./logic.ts";
-import { runSync, type NewRow, type Store } from "./sync.ts";
+import { buildPlan, cronAuthorized, FOLDER_MAP, type DriveFile } from "./logic.ts";
+import { PersistenceError, runSync, selectBatch, type NewRow, type Store } from "./sync.ts";
 
 const PH = "1w3T_y09cILdUORwtXi9114CVp7liXymo";
 const CS = "1mDB9Q94Bod2AyiOtqCPWHI4Q4uR_zyoH";
@@ -103,12 +103,18 @@ Deno.test("dry run performs zero writes and zero permission mutations", async ()
   assertEquals(r.items[0].disposition, "held_not_shared");
 });
 
-Deno.test("failed dedupe lookup fails closed before any Drive or DB write", async () => {
+Deno.test("lock is acquired before dedupe lookup; failed lookup persists a failed run and touches no Drive/rows", async () => {
   const { drive, calls } = fakeDrive({ [PH]: [] }, new Set());
+  const order: string[] = [];
   const m = memStore([], { failLookup: true });
+  const acq = m.store.acquireRun, load = m.store.loadExisting;
+  m.store.acquireRun = (x) => { order.push("lock"); return acq(x); };
+  m.store.loadExisting = () => { order.push("load"); return load(); };
   await assertRejects(() => runSync(drive, m.store, { ...base, mode: "backfill" }), Error, "db down");
+  assertEquals(order, ["lock", "load"]);
   assertEquals(calls.length, 0);
-  assertEquals(m.writes(), 0);
+  assertEquals(m.rows.length, 0);
+  assertEquals(m.runs[0].status, "failed");
 });
 
 Deno.test("existing Drive IDs are never re-inserted", async () => {
@@ -179,4 +185,54 @@ Deno.test("new day on an already-imported day is held, not appended", () => {
     access: new Map([["z", "public_reader"]]), dateFrom: "2026-01-01", dateTo: "2026-12-31",
   });
   assertEquals(items[0].disposition, "held_day_partially_imported");
+});
+
+Deno.test("batch never splits a multi-part day", async () => {
+  const files = [
+    vid("a1", "ALP Power Hour - 2026/09/01 08:00 GMT-04:00 - Recording"),
+    vid("b1", "ALP Power Hour - 2026/09/02 08:00 GMT-04:00 - Recording"),
+    vid("b2", "ALP Power Hour - 2026/09/02 09:00 GMT-04:00 - Recording"),
+  ];
+  const { drive } = fakeDrive({ [PH]: files }, new Set(files.map((f) => f.id)));
+  const m = memStore();
+  const r: any = await runSync(drive, m.store, { ...base, mode: "backfill", maxInserts: 2 });
+  assertEquals(m.rows.map((x) => x.cloudflare_video_id), ["a1"]); // b1+b2 deferred together
+  assertEquals([r.status, r.remaining], ["partial", 2]);
+  // first group larger than max still goes whole
+  const big = selectBatch([{ class_type: "power_hour", date: "d" }, { class_type: "power_hour", date: "d" }, { class_type: "power_hour", date: "d" }] as any, 2);
+  assertEquals(big.length, 3);
+});
+
+Deno.test("interrupted multi-part day resumes only when stored parts match plan; mismatched old rows stay held", () => {
+  const f = [vid("p1", "ALP Power Hour - 2026/09/03 08:00 GMT-04:00 - Recording"), vid("p2", "ALP Power Hour - 2026/09/03 09:00 GMT-04:00 - Recording")];
+  const mk = (part: number | null, total: number | null) => buildPlan({
+    folders: { [PH]: f }, existingDriveIds: new Set(["p1"]),
+    existingDays: new Map([["power_hour|2026-09-03", [{ drive_id: "p1", part_number: part, part_total: total }]]]),
+    access: new Map([["p2", "public_reader"]]), dateFrom: "2026-01-01", dateTo: "2026-12-31",
+  }).items.find((i) => i.drive_id === "p2")!;
+  const ok = mk(1, 2);
+  assertEquals([ok.disposition, ok.part_number, ok.part_total], ["import", 2, 2]);
+  assertEquals(mk(null, null).disposition, "held_day_partially_imported");
+});
+
+Deno.test("heartbeat failure aborts and is surfaced; finish failure throws PersistenceError", async () => {
+  const files = [vid("h1", "ALP Power Hour - 2026/09/04 08:00 GMT-04:00 - Recording")];
+  const { drive } = fakeDrive({ [PH]: files }, new Set(["h1"]));
+  const m = memStore();
+  m.store.heartbeat = () => Promise.reject(new Error("hb down"));
+  await assertRejects(() => runSync(drive, m.store, { ...base, mode: "backfill" }), Error, "hb down");
+  assertEquals(m.runs[0].status, "partial");
+  const m2 = memStore();
+  m2.store.finishRun = () => Promise.reject(new Error("finish down"));
+  await assertRejects(() => runSync(fakeDrive({ [PH]: files }, new Set(["h1"])).drive, m2.store, { ...base, mode: "backfill" }), PersistenceError, "finish down");
+});
+
+Deno.test("cron auth: missing secret, public key, wrong or absent header all fail closed", () => {
+  const S = "s".repeat(40), ANON = "anon-public-key-".repeat(4);
+  assertEquals(cronAuthorized(S, "", [ANON]), false);
+  assertEquals(cronAuthorized(ANON, ANON, [ANON]), false);
+  assertEquals(cronAuthorized("short", "short", [ANON]), false);
+  assertEquals(cronAuthorized(null, S, [ANON]), false);
+  assertEquals(cronAuthorized(S + "x", S, [ANON]), false);
+  assertEquals(cronAuthorized(S, S, [ANON]), true);
 });

@@ -8,7 +8,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { Budget, makeDrive } from "./drive.ts";
-import { ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
+import { cronAuthorized, ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
 import { PersistenceError, runSync, type Store } from "./sync.ts";
 
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
@@ -20,19 +20,7 @@ const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const CRON_SECRET = Deno.env.get("SYNC_RECORDINGS_CRON_SECRET") ?? "";
 const CRON_HEADER = "x-sync-cron-secret";
 
-function timingSafeEqual(a: string, b: string) {
-  const ea = new TextEncoder().encode(a), eb = new TextEncoder().encode(b);
-  let diff = ea.length ^ eb.length;
-  for (let i = 0; i < Math.max(ea.length, eb.length); i++) diff |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
-  return diff === 0;
-}
 
-/** True only when the dedicated cron secret is configured, is not a public key, and matches exactly. */
-export function cronAuthorized(header: string | null, secret: string, publicKeys: string[]): boolean {
-  if (!secret || secret.length < 32 || publicKeys.includes(secret)) return false;
-  if (!header) return false;
-  return timingSafeEqual(header, secret);
-}
 
 const TOTAL_BUDGET_MS = 110_000;
 const STALE_RUN_MS = 10 * 60_000;
