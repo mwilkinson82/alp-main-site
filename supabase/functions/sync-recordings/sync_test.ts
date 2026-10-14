@@ -76,12 +76,12 @@ Deno.test("folder mismatch, unknown prefix and shortcuts are ignored; forbidden 
         vid("d", "ALP Power Hour - 2026/09/01 12:00 GMT-04:00 - Recording"),
       ],
     },
-    existingDriveIds: new Set(), existingDays: new Set(), access: new Map([["d", "public_reader"]]), dateFrom: "2026-01-01", dateTo: "2026-12-31",
+    existingDriveIds: new Set(), existingDays: new Map(), access: new Map([["d", "public_reader"]]), dateFrom: "2026-01-01", dateTo: "2026-12-31",
   });
   assertEquals(items.map((i) => i.drive_id), ["d"]);
   assertEquals(ignored.map((i) => i.reason).sort(), ["class_folder_mismatch", "shortcut", "unknown_prefix"]);
   let threw = false;
-  try { buildPlan({ folders: { "1ljdJTWo6CBRn2mQOe7Xuxb9CE_EBgx6Q": [] }, existingDriveIds: new Set(), existingDays: new Set(), access: new Map(), dateFrom: "a", dateTo: "z" }); } catch { threw = true; }
+  try { buildPlan({ folders: { "1ljdJTWo6CBRn2mQOe7Xuxb9CE_EBgx6Q": [] }, existingDriveIds: new Set(), existingDays: new Map(), access: new Map(), dateFrom: "a", dateTo: "z" }); } catch { threw = true; }
   assert(threw);
   assertEquals(Object.keys(FOLDER_MAP).length, 3);
 });
@@ -161,7 +161,7 @@ Deno.test("multipart day pairs each part with its own session notes; short/no-du
       ],
       [SM]: [],
     },
-    existingDriveIds: new Set(), existingDays: new Set(),
+    existingDriveIds: new Set(), existingDays: new Map(),
     access: new Map([["s1", "public_reader"], ["s2", "public_reader"], ["s3", "public_reader"]]),
     dateFrom: "2026-01-01", dateTo: "2026-12-31",
   });
@@ -175,7 +175,7 @@ Deno.test("multipart day pairs each part with its own session notes; short/no-du
 Deno.test("new day on an already-imported day is held, not appended", () => {
   const { items } = buildPlan({
     folders: { [PH]: [vid("z", "ALP Power Hour - 2026/08/20 15:00 GMT-04:00 - Recording")] },
-    existingDriveIds: new Set(), existingDays: new Set(["power_hour|2026-08-20"]),
+    existingDriveIds: new Set(), existingDays: new Map([["power_hour|2026-08-20", [{ drive_id: "other", part_number: null, part_total: null }]]]),
     access: new Map([["z", "public_reader"]]), dateFrom: "2026-01-01", dateTo: "2026-12-31",
   });
   assertEquals(items[0].disposition, "held_day_partially_imported");
