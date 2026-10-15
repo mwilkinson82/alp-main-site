@@ -266,7 +266,7 @@ Deno.test("backfill allowlist imports only exact approved IDs; others stay unimp
   assertEquals([r.planned, r.inserted, r.status], [1, 1, "completed"]);
 });
 
-Deno.test("shareApproved adds anyone-reader only to approved held_not_shared videos; refuses short/unmapped/imported", async () => {
+Deno.test("shareApproved adds anyone-reader only to approved unshared qualified videos; refuses short/unmapped/imported", async () => {
   const files = [
     vid("a", "ALP Power Hour - 2026/09/01 12:00 GMT-04:00 - Recording"),
     vid("b", "ALP Power Hour - 2026/09/02 12:00 GMT-04:00 - Recording", String(60_000)),
