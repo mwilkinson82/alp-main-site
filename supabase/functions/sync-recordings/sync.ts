@@ -1,5 +1,5 @@
 // Orchestration with injectable store + drive so it can be tested without network/DB.
-import { buildPlan, classify, extractDriveId, FOLDER_MAP, isVideo, LEGACY_AUDIT_FOLDERS, MIN_DURATION_MS, parseSession, summarize, type Access, type ClassType, type DriveFile, type ExistingPart, type PlanItem } from "./logic.ts";
+import { buildPlan, classify, extractDriveId, FOLDER_MAP, isVideo, LEGACY_AUDIT_FOLDERS, parseSession, summarize, type Access, type ClassType, type DriveFile, type ExistingPart, type PlanItem } from "./logic.ts";
 import { BudgetExceeded, sanitize, ShareError, type DriveClient } from "./drive.ts";
 
 export type ExistingRow = {
@@ -144,7 +144,7 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
         else errors.push(`${it.drive_id}: ${r.error}`);
       } catch (e) {
         if (e instanceof BudgetExceeded) { errors.push(`budget: ${e.message}`); break; }
-        errors.push(`${it.drive_id}: ${(e as Error).message}`);
+        errors.push(`${it.drive_id}: ${sanitize((e as Error).message)}`);
       }
       await store.heartbeat(runId, { inserted: insertedIds.length }); // throws => aborts run
     }
@@ -167,7 +167,7 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
     return { ok: errors.length === 0, run_id: runId, mode: o.mode, ...summary };
   } catch (e) {
     if (e instanceof PersistenceError) throw e;
-    const msg = (e as Error).message ?? String(e);
+    const msg = sanitize((e as Error).message ?? String(e));
     try {
       await store.finishRun(runId, {
         status: insertedIds.length ? "partial" : "failed", inserted: insertedIds.length, error_count: errors.length + 1,
@@ -229,10 +229,11 @@ export async function auditSharing(drive: DriveClient, store: Store, apply: bool
     if (!isVideo(f)) { results.push({ ...base, result: "skipped_not_video" }); continue; }
     if (classify(f.name) !== r.class_type || (folderCls && folderCls !== r.class_type)) { results.push({ ...base, result: "skipped_class_mismatch" }); continue; }
     if (parseSession(f.name)?.date !== r.recording_date) { results.push({ ...base, result: "skipped_date_mismatch" }); continue; }
-    const d = Number(f.videoMediaMetadata?.durationMillis);
-    if (!Number.isFinite(d) || d < MIN_DURATION_MS) { results.push({ ...base, result: "skipped_short_or_no_duration" }); continue; }
+    // Already-published scope: exact ID + program + date + folder validates it even if short.
+    // (The duration threshold applies to new imports only.)
     const access = await drive.readAccess(id);
     if (access === "public_reader") { results.push({ ...base, result: "ok_already_shared" }); continue; }
+    if (access === "broader_public") { results.push({ ...base, result: "reported_broader_sharing" }); continue; }
     if (access === "unknown") { results.push({ ...base, result: "error_access_unreadable" }); continue; }
     if (!apply) { results.push({ ...base, result: "needs_repair" }); continue; }
     try {

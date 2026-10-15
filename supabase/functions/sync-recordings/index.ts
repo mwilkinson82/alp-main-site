@@ -9,7 +9,7 @@
 // existing permissions are never removed or changed.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
-import { Budget, makeDrive } from "./drive.ts";
+import { Budget, makeDrive, sanitize } from "./drive.ts";
 import { cronAuthorized, ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
 import { auditSharing, PersistenceError, runSync, shareApproved, type Store } from "./sync.ts";
 
@@ -242,12 +242,13 @@ Deno.serve(async (req) => {
     const work = runSync(drive, supabaseStore(sb), {
       mode: "scheduled", dateFrom: isoDaysAgo(30), dateTo: isoDaysAgo(-1), maxInserts: DEFAULT_MAX_INSERTS,
       triggeredBy: caller.admin ? `admin:${caller.userId}` : "cron", titleFor,
-    }).catch((e) => console.error("scheduled sync failed", e));
+    }).catch((e) => console.error("scheduled sync failed", sanitize(String((e as Error)?.message ?? e))));
     // @ts-ignore EdgeRuntime is provided by the Supabase runtime
     if (typeof EdgeRuntime !== "undefined") { EdgeRuntime.waitUntil(work); return json({ ok: true, status: "accepted" }, 202); }
     return json(await work);
   } catch (e) {
-    console.error("sync-recordings error", e);
-    return json({ ok: false, status: e instanceof PersistenceError ? "persistence_failed" : "failed", error: String((e as Error).message ?? e) }, 500);
+    const msg = sanitize(String((e as Error)?.message ?? e));
+    console.error("sync-recordings error", msg);
+    return json({ ok: false, status: e instanceof PersistenceError ? "persistence_failed" : "failed", error: msg }, 500);
   }
 });
