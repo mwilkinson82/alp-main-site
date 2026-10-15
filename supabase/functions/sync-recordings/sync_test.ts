@@ -340,7 +340,7 @@ Deno.test("publish: short clips, unreadable access and other folders' files are 
 Deno.test("audit: repairs only validated published rows; held/unrelated/short untouched; dry audit writes nothing", async () => {
   const LEG = "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E";
   const folders = {
-    [PH]: [vid("p_ok", day(10)), vid("p_shared", day(11)), vid("p_short", day(12), String(9_000)), vid("held", day(13), String(9_000))],
+    [PH]: [vid("p_url", day(17)), vid("p_ok", day(10)), vid("p_shared", day(11)), vid("p_short", day(12), String(9_000)), vid("held", day(13), String(9_000))],
     [CS]: [], [SM]: [],
     [LEG]: [vid("leg", "ALP Sales and Marketing School - 2026/07/08 19:00 GMT-04:00 - Recording"), vid("priv", "1 on 1 with Marshall - 2026/08/19 13:00 GMT-04:00 - Recording")],
   };
@@ -349,15 +349,16 @@ Deno.test("audit: repairs only validated published rows; held/unrelated/short un
     { id: "p_short", cls: "power_hour", date: "2026-09-12" }, { id: "leg", cls: "sales_marketing_school", date: "2026-07-08" },
     { id: "priv", cls: "power_hour", date: "2026-08-19" }, { id: "gone", cls: "power_hour", date: "2026-09-01" },
     { id: "unpub", cls: "power_hour", date: "2026-09-14", pub: false },
+    { id: "https://drive.google.com/file/d/p_url/view?usp=sharing", cls: "power_hour", date: "2026-09-17" },
   ];
   const dry = fakeDrive(folders, new Set(["p_shared"]));
   const a: any = await auditSharing(dry.drive, memStore(rows).store, false);
   assertEquals(posts(dry.calls).length, 0);
-  assertEquals(a.counts, { needs_repair: 2, ok_already_shared: 1, skipped_short_or_no_duration: 1, skipped_class_mismatch: 1, skipped_not_in_source_folders: 1 });
+  assertEquals(a.counts, { needs_repair: 3, ok_already_shared: 1, skipped_short_or_no_duration: 1, skipped_class_mismatch: 1, skipped_not_in_source_folders: 1 });
   const live = fakeDrive(folders, new Set(["p_shared"]));
   const b: any = await auditSharing(live.drive, memStore(rows).store, true);
-  assertEquals(b.counts.repaired, 2);
-  assertEquals(posts(live.calls).map((c) => c.split("/files/")[1].split("/")[0]).sort(), ["leg", "p_ok"]);
+  assertEquals(b.counts.repaired, 3);
+  assertEquals(posts(live.calls).map((c) => c.split("/files/")[1].split("/")[0]).sort(), ["leg", "p_ok", "p_url"]);
   for (const id of ["held", "p_short", "priv", "unpub"]) assert(!live.publicIds.has(id));
 });
 

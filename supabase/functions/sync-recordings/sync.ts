@@ -219,7 +219,7 @@ export async function auditSharing(drive: DriveClient, store: Store, apply: bool
   const results: AuditResult[] = [];
   let stopped = false;
   for (const r of existing) {
-    const id = r.cloudflare_video_id ?? extractDriveId(r.video_ref);
+    const id = extractDriveId(r.cloudflare_video_id) ?? (r.cloudflare_video_id || null) ?? extractDriveId(r.video_ref);
     const base = { drive_id: id ?? "", class_type: r.class_type, date: r.recording_date };
     if (stopped) { results.push({ ...base, result: "not_attempted_after_denial" }); continue; }
     const hit = id ? files.get(id) : undefined;
