@@ -1,46 +1,14 @@
-# Domain report and fix for www.altitudelogicpressure.com
+# Recording source vs portal check (read-only) — 2026-10-15 00:41 UTC
 
-## What the Domains panel shows
+## Findings
+- Drive (Marshall's Google Drive, read-only listing, single page each, no further pages):
+  - Power Hour folder: 32 videos, latest 2026-10-14 07:59 ET
+  - Contractor School folder: 8 videos, latest 2026-10-13 19:00 ET
+  - Sales & Marketing folder: 7 videos, latest 2026-09-30 18:53 ET (newest file of any kind: Oct 1 02:11 UTC)
+  - Old Meet Recordings folder: newest class video 2026-08-20 Power Hour; only later file is a non-class consulting replay (not imported)
+- Portal: 158 rows (PH 110 / Oct 14, CS 24 / Oct 13, SM 24 / Sep 30) — matches.
+- Every class video in the 4 folders is already in the portal except the same 10 short clips held before (PH 4, CS 3, SM 3). Nothing new is waiting.
+- Oct 14 Sales & Marketing: no video, notes or chat file exists in Drive yet. Past sessions showed up about 1–2.5 hours after the class ended, so it is most likely still being processed by Google Meet.
 
-Project is published.
-
-| Domain | Status |
-| --- | --- |
-| altitudelogicpressure.com | Active / Live — serving this project |
-| www.altitudelogicpressure.com | Drifted ("Offline" in the panel) for the last ~44 minutes — DNS no longer points here |
-
-## Exact records Lovable expects
-
-Apex (altitudelogicpressure.com) — already correct, nothing to change:
-
-```text
-A    @    185.158.133.1
-```
-
-www (currently wrong):
-
-```text
-A    www                185.158.133.1
-TXT  _lovable.www       lovable_verify=b5c1cab77ada1ce272b17c3eed76fcba8798f7cbc126cba5a34b5c186fb3e9c9
-```
-
-Verification TXT for www is present and correct. Only the A record is off.
-
-## Warnings found
-
-- The www A record currently answers with four addresses: 198.185.159.144, 198.185.159.145, 198.49.23.144, 198.49.23.145. Those are Squarespace hosting addresses, so www is still being served by an old Squarespace setup.
-- No AAAA record conflict and no Cloudflare proxy issue was detected.
-- Nothing else about the apex is conflicting.
-
-## Recommended fix
-
-1. At the DNS provider for altitudelogicpressure.com, delete all four Squarespace A records on the `www` host.
-2. Add one A record: host `www`, value `185.158.133.1`.
-3. Leave the `_lovable.www` TXT record exactly as it is.
-4. Wait for propagation (usually minutes, up to 72 hours) — the status moves from Offline to Active on its own.
-
-If you would rather have www redirect instead of serve, keeping the apex as the primary domain does that automatically once www is connected.
-
-## Notes
-
-No code or DNS was changed for this report. If you approve, the next step is opening the domain connect card so the www records can be fixed from chat, either automatically through the registrar or with the exact values to copy.
+## Next step (no action taken)
+Re-run this same read-only check after about 03:00 UTC. When the file appears it will need: duration check, sharing approval (it will not be auto-shared), then an approved single-ID import.
