@@ -9,6 +9,9 @@ export const FOLDER_MAP: Record<string, ClassType> = {
   "1mDB9Q94Bod2AyiOtqCPWHI4Q4uR_zyoH": "contractor_school",
   "19mjrFh3F5psK0c1AWlYygQN8A3EE2Szo": "sales_marketing_school",
 };
+// Audit-only: the legacy sync folder holds older published replays mixed with private meetings.
+// It is listed only to validate rows already published from it; it is never an import source.
+export const LEGACY_AUDIT_FOLDERS: Record<string, true> = { "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E": true };
 export const FORBIDDEN_FOLDERS = new Set(["1ljdJTWo6CBRn2mQOe7Xuxb9CE_EBgx6Q"]);
 
 // Clips shorter than this are held for manual review (aborted starts).
@@ -28,6 +31,7 @@ export type Access = "public_reader" | "not_public" | "unknown";
 
 export type Disposition =
   | "import"
+  | "import_needs_share" // qualified; link-reader must be added and read back before publishing
   | "already_imported"
   | "held_not_shared"
   | "held_access_unknown"
@@ -169,8 +173,8 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
       else if (durationMs == null || !Number.isFinite(durationMs)) disposition = "held_no_duration";
       else if (durationMs < MIN_DURATION_MS) disposition = "held_short_clip";
       else if (access === "unknown") disposition = "held_access_unknown";
-      else if (access !== "public_reader") disposition = "held_not_shared";
       else if (dayBlocked) disposition = "held_day_partially_imported";
+      else if (access !== "public_reader") disposition = "import_needs_share";
       else disposition = "import";
 
       items.push({

@@ -51,6 +51,16 @@ export async function fetchWithRetry(url: string, init: RequestInit, o: RetryOpt
   throw new Error(`Request failed after ${retries + 1} attempts: ${lastErr}`);
 }
 
+/** Drive refused or could not confirm a sharing change. status 403 = permission denied. */
+export class ShareError extends Error {
+  constructor(public status: number, msg: string) { super(msg); }
+}
+
+/** Keeps provider errors short and free of tokens/emails before logging or persisting. */
+export function sanitize(t: string): string {
+  return t.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "<email>").replace(/(Bearer|key|token)[^\s"]*/gi, "$1<redacted>").replace(/\s+/g, " ").slice(0, 300);
+}
+
 export type DriveClient = ReturnType<typeof makeDrive>;
 
 export function makeDrive(headers: Record<string, string>, o: RetryOpts) {
@@ -60,58 +70,71 @@ export function makeDrive(headers: Record<string, string>, o: RetryOpts) {
     return res;
   };
 
+  const listFolder = async (folderId: string, maxPages = 50): Promise<DriveFile[]> => {
+    const out: DriveFile[] = [];
+    let token: string | undefined;
+    for (let page = 0; page < maxPages; page++) {
+      const p = new URLSearchParams({
+        q: `'${folderId}' in parents and trashed=false`,
+        pageSize: "200",
+        fields: "nextPageToken,files(id,name,mimeType,createdTime,size,videoMediaMetadata(durationMillis),parents)",
+        orderBy: "createdTime",
+        supportsAllDrives: "true",
+        includeItemsFromAllDrives: "true",
+      });
+      if (token) p.set("pageToken", token);
+      const json = await (await get(`${GATEWAY}/files?${p}`)).json();
+      out.push(...((json.files ?? []) as DriveFile[]));
+      token = json.nextPageToken;
+      if (!token) return out;
+    }
+    throw new Error(`Folder ${folderId} exceeded ${maxPages} pages`);
+  };
+
+  const readAccess = async (fileId: string): Promise<Access> => {
+    try {
+      const p = new URLSearchParams({ fields: "permissions(type,role)", supportsAllDrives: "true" });
+      const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}?${p}`, { headers }, o);
+      if (!res.ok) { await res.text(); return "unknown"; }
+      const json = await res.json();
+      if (!Array.isArray(json.permissions)) return "unknown";
+      const perms = json.permissions as Array<{ type: string; role: string }>;
+      return perms.some((x) => x.type === "anyone" && ["reader", "commenter", "writer"].includes(x.role))
+        ? "public_reader"
+        : "not_public";
+    } catch (e) {
+      if (e instanceof BudgetExceeded) throw e;
+      return "unknown";
+    }
+  };
+
+  /** Adds ONLY an "anyone with link: reader" permission. Never removes or changes existing permissions. */
+  const addAnyoneReader = async (fileId: string): Promise<void> => {
+    const p = new URLSearchParams({ supportsAllDrives: "true", fields: "id,type,role" });
+    const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}/permissions?${p}`, {
+      method: "POST", headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "anyone", role: "reader", allowFileDiscovery: false }),
+    }, o);
+    if (!res.ok) throw new ShareError(res.status, `Share ${fileId} failed ${res.status}: ${sanitize(await res.text())}`);
+    await res.text();
+  };
+
+  /**
+   * Idempotent: if anyone-reader already exists, does nothing. Otherwise adds it and reads it back.
+   * Throws (fail closed) unless the read-back confirms link access.
+   */
+  const ensureAnyoneReader = async (fileId: string): Promise<"already_present" | "added"> => {
+    const before = await readAccess(fileId);
+    if (before === "public_reader") return "already_present";
+    if (before === "unknown") throw new ShareError(0, `Could not read sharing for ${fileId}; not changed`);
+    await addAnyoneReader(fileId);
+    const after = await readAccess(fileId);
+    if (after !== "public_reader") throw new ShareError(0, `Sharing for ${fileId} not confirmed after add (read-back: ${after})`);
+    return "added";
+  };
+
   return {
-    /** Lists every direct child of a folder, following nextPageToken to the end. */
-    async listFolder(folderId: string, maxPages = 50): Promise<DriveFile[]> {
-      const out: DriveFile[] = [];
-      let token: string | undefined;
-      for (let page = 0; page < maxPages; page++) {
-        const p = new URLSearchParams({
-          q: `'${folderId}' in parents and trashed=false`,
-          pageSize: "200",
-          fields: "nextPageToken,files(id,name,mimeType,createdTime,size,videoMediaMetadata(durationMillis),parents)",
-          orderBy: "createdTime",
-          supportsAllDrives: "true",
-          includeItemsFromAllDrives: "true",
-        });
-        if (token) p.set("pageToken", token);
-        const json = await (await get(`${GATEWAY}/files?${p}`)).json();
-        out.push(...((json.files ?? []) as DriveFile[]));
-        token = json.nextPageToken;
-        if (!token) return out;
-      }
-      throw new Error(`Folder ${folderId} exceeded ${maxPages} pages`);
-    },
-
-    /** Read-only: does the file already have an "anyone with link" reader permission? */
-    async readAccess(fileId: string): Promise<Access> {
-      try {
-        const p = new URLSearchParams({ fields: "permissions(type,role)", supportsAllDrives: "true" });
-        const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}?${p}`, { headers }, o);
-        if (!res.ok) { await res.text(); return "unknown"; }
-        const json = await res.json();
-        const perms = (json.permissions ?? []) as Array<{ type: string; role: string }>;
-        if (!Array.isArray(json.permissions)) return "unknown";
-        return perms.some((x) => x.type === "anyone" && ["reader", "commenter", "writer"].includes(x.role))
-          ? "public_reader"
-          : "not_public";
-      } catch (e) {
-        if (e instanceof BudgetExceeded) throw e;
-        return "unknown";
-      }
-    },
-
-    /** Adds ONLY an "anyone with link: reader" permission. Never removes or changes existing permissions. */
-    async addAnyoneReader(fileId: string): Promise<void> {
-      const p = new URLSearchParams({ supportsAllDrives: "true", fields: "id,type,role" });
-      const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}/permissions?${p}`, {
-        method: "POST", headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "anyone", role: "reader", allowFileDiscovery: false }),
-      }, o);
-      if (!res.ok) throw new Error(`Share ${fileId} failed ${res.status}: ${(await res.text()).slice(0, 300)}`);
-      await res.text();
-    },
-
+    listFolder, readAccess, addAnyoneReader, ensureAnyoneReader,
     async exportText(docId: string): Promise<string | null> {
       try {
         const res = await fetchWithRetry(`${GATEWAY}/files/${docId}/export?mimeType=text/plain`, { headers }, o);

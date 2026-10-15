@@ -4,12 +4,14 @@
 //   { mode:"dry_run", date_from, date_to }   admin only. Read-only: no DB writes, no permission changes.
 //   { mode:"backfill", date_from, date_to, max_inserts? }  admin only. Bounded batch import.
 //   { mode:"retitle", recording_id }     admin only.
-// Never creates or modifies Drive sharing; files not already link-shared are held.
+//   { mode:"audit_sharing", apply?:boolean }  admin only. Checks published replays' link access; apply adds missing anyone-reader.
+// Qualified class recordings get an anyone-with-link reader added (read back before publishing);
+// existing permissions are never removed or changed.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { Budget, makeDrive } from "./drive.ts";
 import { cronAuthorized, ISO_DATE, type ClassType, type PlanItem } from "./logic.ts";
-import { PersistenceError, runSync, shareApproved, type Store } from "./sync.ts";
+import { auditSharing, PersistenceError, runSync, shareApproved, type Store } from "./sync.ts";
 
 const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 const GOOGLE_DRIVE_API_KEY = Deno.env.get("GOOGLE_DRIVE_API_KEY");
@@ -76,7 +78,7 @@ function supabaseStore(sb: any): Store {
       const out: any[] = [];
       for (let from = 0; ; from += 1000) {
         const { data, error } = await sb.from("recordings")
-          .select("cloudflare_video_id,video_ref,class_type,recording_date,part_number,part_total").range(from, from + 999);
+          .select("cloudflare_video_id,video_ref,class_type,recording_date,part_number,part_total,is_published,video_source").range(from, from + 999);
         if (error) throw new Error(`Dedupe lookup failed: ${error.message}`);
         out.push(...(data ?? []));
         if (!data || data.length < 1000) return out;
@@ -201,6 +203,13 @@ Deno.serve(async (req) => {
       const results = await shareApproved(drive, supabaseStore(sb), ids, from, to);
       console.log("share_approved", JSON.stringify({ by: caller.userId, results }));
       return json({ ok: results.every((r) => r.result === "shared" || r.result === "already_shared"), results });
+    }
+
+    if (mode === "audit_sharing") {
+      if (body.apply !== undefined && typeof body.apply !== "boolean") return json({ error: "apply must be boolean" }, 400);
+      const out = await auditSharing(drive, supabaseStore(sb), body.apply === true);
+      console.log("audit_sharing", JSON.stringify({ by: caller.userId, apply: out.apply, counts: out.counts, denied: out.denied }));
+      return json(out);
     }
 
     if (mode === "dry_run" || mode === "backfill") {
