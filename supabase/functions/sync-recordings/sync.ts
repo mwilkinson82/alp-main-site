@@ -121,7 +121,7 @@ export async function runSync(drive: DriveClient, store: Store | null, o: SyncOp
     for (const it of batch) {
       try {
         // Publish only after link access is confirmed by read-back (fail closed).
-        if (it.disposition === "import_needs_share" || it.access !== "public_reader") {
+        { // always: confirm link access immediately before inserting a published row
           try {
             if ((await drive.ensureAnyoneReader(it.drive_id)) === "added") sharedIds.push(it.drive_id);
           } catch (e) {

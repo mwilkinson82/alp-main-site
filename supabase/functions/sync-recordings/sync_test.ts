@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
 import { Budget, BudgetExceeded, fetchWithRetry, makeDrive, type FetchLike } from "./drive.ts";
 import { buildPlan, cronAuthorized, FOLDER_MAP, type DriveFile } from "./logic.ts";
-import { PersistenceError, runSync, selectBatch, shareApproved, type NewRow, type Store } from "./sync.ts";
+import { auditSharing, PersistenceError, runSync, selectBatch, shareApproved, type NewRow, type Store } from "./sync.ts";
 
 const PH = "1w3T_y09cILdUORwtXi9114CVp7liXymo";
 const CS = "1mDB9Q94Bod2AyiOtqCPWHI4Q4uR_zyoH";
@@ -17,11 +17,22 @@ const doc = (id: string, name: string): DriveFile => ({ id, name, mimeType: "app
 const noSleep = { sleep: async () => {} };
 
 // ---------- Fake Drive over a fake fetch ----------
-function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>, pageSize = 200) {
+type FakeOpts = { postStatus?: Record<string, number>; transient?: Record<string, number>; ignorePost?: Set<string>; readFail?: Set<string> };
+const posts = (c: string[]) => c.filter((x) => x.startsWith("POST"));
+function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>, pageSize = 200, fo: FakeOpts = {}) {
   const calls: string[] = [];
+  const perms = new Map<string, Array<{ type: string; role: string }>>();
   const f: FetchLike = async (url, init) => {
     calls.push(`${init?.method ?? "GET"} ${url}`);
     const u = new URL(url);
+    if (init?.method === "POST" && u.pathname.endsWith("/permissions")) {
+      const id = u.pathname.split("/files/")[1].split("/")[0];
+      if ((fo.transient?.[id] ?? 0) > 0) { fo.transient![id]--; return new Response("busy", { status: 503 }); }
+      const st = fo.postStatus?.[id];
+      if (st) return new Response(`{"error":"denied for owner@example.com"}`, { status: st });
+      if (!fo.ignorePost?.has(id)) publicIds.add(id);
+      return Response.json({ id: "anyoneWithLink", type: "anyone", role: "reader" });
+    }
     if (u.pathname.endsWith("/files")) {
       const folder = u.searchParams.get("q")!.match(/'([^']+)'/)![1];
       const all = folders[folder] ?? [];
@@ -31,20 +42,23 @@ function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>,
       return Response.json({ files, nextPageToken: next });
     }
     const id = u.pathname.split("/files/")[1];
-    return Response.json({ permissions: publicIds.has(id) ? [{ type: "anyone", role: "reader" }] : [{ type: "user", role: "owner" }] });
+    if (fo.readFail?.has(id)) return new Response("nope", { status: 404 });
+    const named = perms.get(id) ?? [{ type: "user", role: "owner" }, { type: "user", role: "writer" }];
+    perms.set(id, named);
+    return Response.json({ permissions: publicIds.has(id) ? [...named, { type: "anyone", role: "reader" }] : named });
   };
   const budget = new Budget(Date.now() + 60_000);
-  return { drive: makeDrive({}, { fetch: f, budget, ...noSleep }), calls };
+  return { drive: makeDrive({}, { fetch: f, budget, ...noSleep }), calls, publicIds };
 }
 
-function memStore(existing: Array<{ id: string; cls: string; date: string }> = [], opts: { failLookup?: boolean; locked?: boolean } = {}) {
+function memStore(existing: Array<{ id: string; cls: string; date: string; pub?: boolean }> = [], opts: { failLookup?: boolean; locked?: boolean } = {}) {
   const rows: NewRow[] = [];
   const runs: Record<string, unknown>[] = [];
   let writes = 0;
   const store: Store = {
     async loadExisting() {
       if (opts.failLookup) throw new Error("db down");
-      return existing.map((e) => ({ cloudflare_video_id: e.id, video_ref: `https://drive.google.com/file/d/${e.id}/view`, class_type: e.cls, recording_date: e.date }));
+      return existing.map((e) => ({ cloudflare_video_id: e.id, video_ref: `https://drive.google.com/file/d/${e.id}/view`, class_type: e.cls, recording_date: e.date, is_published: e.pub ?? true, video_source: "google_drive" }));
     },
     async acquireRun(m) { writes++; if (opts.locked) return null; runs.push({ ...m }); return "run1"; },
     async heartbeat() { writes++; },
@@ -100,7 +114,7 @@ Deno.test("dry run performs zero writes and zero permission mutations", async ()
   const r: any = await runSync(drive, m.store, { ...base, mode: "dry_run" });
   assertEquals(m.writes(), 0);
   assert(calls.every((c) => c.startsWith("GET ")));
-  assertEquals(r.items[0].disposition, "held_not_shared");
+  assertEquals(r.items[0].disposition, "import_needs_share");
 });
 
 Deno.test("lock is acquired before dedupe lookup; failed lookup persists a failed run and touches no Drive/rows", async () => {
@@ -257,8 +271,99 @@ Deno.test("shareApproved adds anyone-reader only to approved held_not_shared vid
   const m = memStore([{ id: "c", cls: "power_hour", date: "2026-09-03" }]);
   const res = await shareApproved(drive, m.store, ["a", "b", "c", "zzz"], "2026-01-01", "2026-12-31");
   assertEquals(res.map((x) => x.result), ["shared", "refused_held_short_clip", "refused_already_imported", "refused_not_in_mapped_folders"]);
+  assert(calls.some((c) => c.startsWith("GET") && c.includes("/files/a?")));
   const posts = calls.filter((c) => c.startsWith("POST"));
   assertEquals(posts.length, 1);
   assert(posts[0].includes("/files/a/permissions"));
   assertEquals(m.writes(), 0);
+});
+
+// ---------- Link-sharing on publish ----------
+const day = (d: number) => `ALP Power Hour - 2026/09/${String(d).padStart(2, "0")} 12:00 GMT-04:00 - Recording`;
+
+Deno.test("publish: unshared qualified video gets anyone-reader, read back, then inserted", async () => {
+  const fd = fakeDrive({ [PH]: [vid("n1", day(1))] }, new Set());
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([r.status, r.inserted], ["completed", 1]);
+  assertEquals(r.details.shared_drive_ids, ["n1"]);
+  assertEquals(posts(fd.calls).length, 1);
+  const body = fd.calls.find((c) => c.startsWith("POST"))!;
+  assert(body.includes("/files/n1/permissions"));
+  assertEquals(m.rows[0].is_published, true);
+});
+
+Deno.test("publish: already-shared video is verified with no permission write", async () => {
+  const fd = fakeDrive({ [PH]: [vid("s1", day(2))] }, new Set(["s1"]));
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([r.inserted, r.details.shared_drive_ids.length, posts(fd.calls).length], [1, 0, 0]);
+});
+
+Deno.test("publish: 403 denial fails closed, nothing inserted, run stops with actionable sanitized error", async () => {
+  const fd = fakeDrive({ [PH]: [vid("d1", day(3)), vid("d2", day(4))] }, new Set(), 200, { postStatus: { d1: 403 } });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals(m.rows.length, 0);
+  assertEquals(r.status, "failed");
+  assert(r.details.errors.some((e: string) => e.includes("403") && !e.includes("@example.com")));
+  assert(r.details.errors.some((e: string) => e.includes("edit rights")));
+  assertEquals(posts(fd.calls).length, 1); // d2 never attempted
+});
+
+Deno.test("publish: transient 503 on share is retried then succeeds", async () => {
+  const fd = fakeDrive({ [PH]: [vid("t1", day(5))] }, new Set(), 200, { transient: { t1: 2 } });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([r.inserted, posts(fd.calls).length], [1, 3]);
+});
+
+Deno.test("publish: read-back not confirming access blocks insert", async () => {
+  const fd = fakeDrive({ [PH]: [vid("r1", day(6))] }, new Set(), 200, { ignorePost: new Set(["r1"]) });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals(m.rows.length, 0);
+  assert(r.details.errors[0].includes("not confirmed"));
+});
+
+Deno.test("publish: short clips, unreadable access and other folders' files are never shared", async () => {
+  const fd = fakeDrive({
+    [PH]: [vid("sh", day(7), String(9_000)), vid("un", day(8)), vid("cs", "ALP Contractor School - 2026/09/09 19:00 GMT-04:00 - Recording")],
+  }, new Set(), 200, { readFail: new Set(["un"]) });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals(m.rows.length, 0);
+  assertEquals(posts(fd.calls).length, 0);
+  assertEquals(r.details.held_items.map((i: any) => [i.drive_id, i.disposition]).sort(), [["sh", "held_short_clip"], ["un", "held_access_unknown"]]);
+});
+
+Deno.test("audit: repairs only validated published rows; held/unrelated/short untouched; dry audit writes nothing", async () => {
+  const LEG = "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E";
+  const folders = {
+    [PH]: [vid("p_ok", day(10)), vid("p_shared", day(11)), vid("p_short", day(12), String(9_000)), vid("held", day(13), String(9_000))],
+    [CS]: [], [SM]: [],
+    [LEG]: [vid("leg", "ALP Sales and Marketing School - 2026/07/08 19:00 GMT-04:00 - Recording"), vid("priv", "1 on 1 with Marshall - 2026/08/19 13:00 GMT-04:00 - Recording")],
+  };
+  const rows = [
+    { id: "p_ok", cls: "power_hour", date: "2026-09-10" }, { id: "p_shared", cls: "power_hour", date: "2026-09-11" },
+    { id: "p_short", cls: "power_hour", date: "2026-09-12" }, { id: "leg", cls: "sales_marketing_school", date: "2026-07-08" },
+    { id: "priv", cls: "power_hour", date: "2026-08-19" }, { id: "gone", cls: "power_hour", date: "2026-09-01" },
+    { id: "unpub", cls: "power_hour", date: "2026-09-14", pub: false },
+  ];
+  const dry = fakeDrive(folders, new Set(["p_shared"]));
+  const a: any = await auditSharing(dry.drive, memStore(rows).store, false);
+  assertEquals(posts(dry.calls).length, 0);
+  assertEquals(a.counts, { needs_repair: 2, ok_already_shared: 1, skipped_short_or_no_duration: 1, skipped_class_mismatch: 1, skipped_not_in_source_folders: 1 });
+  const live = fakeDrive(folders, new Set(["p_shared"]));
+  const b: any = await auditSharing(live.drive, memStore(rows).store, true);
+  assertEquals(b.counts.repaired, 2);
+  assertEquals(posts(live.calls).map((c) => c.split("/files/")[1].split("/")[0]).sort(), ["leg", "p_ok"]);
+  for (const id of ["held", "p_short", "priv", "unpub"]) assert(!live.publicIds.has(id));
+});
+
+Deno.test("audit: stops at first 403 and reports the rest as not attempted", async () => {
+  const folders = { [PH]: [vid("x1", day(15)), vid("x2", day(16))], [CS]: [], [SM]: [], "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E": [] };
+  const fd = fakeDrive(folders, new Set(), 200, { postStatus: { x1: 403 } });
+  const r: any = await auditSharing(fd.drive, memStore([{ id: "x1", cls: "power_hour", date: "2026-09-15" }, { id: "x2", cls: "power_hour", date: "2026-09-16" }]).store, true);
+  assertEquals([r.ok, r.denied, r.counts.error, r.counts.not_attempted_after_denial], [false, true, 1, 1]);
 });
