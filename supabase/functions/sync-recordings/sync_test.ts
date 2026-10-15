@@ -24,7 +24,7 @@ type FakeOpts = {
 const posts = (c: string[]) => c.filter((x) => x.startsWith("POST"));
 function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>, pageSize = 200, fo: FakeOpts = {}) {
   const calls: string[] = [];
-  const perms = new Map<string, Array<{ type: string; role: string }>>();
+  const perms = new Map<string, Array<{ id?: string; type: string; role: string }>>();
   const f: FetchLike = async (url, init) => {
     calls.push(`${init?.method ?? "GET"} ${url}`);
     const u = new URL(url);
