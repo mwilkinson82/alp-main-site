@@ -27,7 +27,7 @@ export type DriveFile = {
   parents?: string[];
 };
 
-export type Access = "public_reader" | "not_public" | "unknown";
+export type Access = "public_reader" | "not_public" | "broader_public" | "unknown";
 
 export type Disposition =
   | "import"
@@ -35,6 +35,7 @@ export type Disposition =
   | "already_imported"
   | "held_not_shared"
   | "held_access_unknown"
+  | "held_broader_sharing" // anyone-writer/commenter, discoverable or domain-wide: reported, never changed
   | "held_short_clip"
   | "held_no_duration"
   | "held_day_partially_imported"
@@ -173,6 +174,7 @@ export function buildPlan(input: PlanInput): { items: PlanItem[]; ignored: Ignor
       else if (durationMs == null || !Number.isFinite(durationMs)) disposition = "held_no_duration";
       else if (durationMs < MIN_DURATION_MS) disposition = "held_short_clip";
       else if (access === "unknown") disposition = "held_access_unknown";
+      else if (access === "broader_public") disposition = "held_broader_sharing";
       else if (dayBlocked) disposition = "held_day_partially_imported";
       else if (access !== "public_reader") disposition = "import_needs_share";
       else disposition = "import";

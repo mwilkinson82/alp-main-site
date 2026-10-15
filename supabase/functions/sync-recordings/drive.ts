@@ -1,4 +1,6 @@
 // Drive gateway client with bounded timeouts, retries, backoff and a shared deadline.
+// Error messages are built only from allowlisted fields (operation, file ID, HTTP status, classification);
+// provider response bodies and network exception text are never included.
 import type { Access, DriveFile } from "./logic.ts";
 
 export const GATEWAY = "https://connector-gateway.lovable.dev/google_drive/drive/v3";
@@ -24,51 +26,96 @@ export type RetryOpts = {
 
 const defaultSleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export async function fetchWithRetry(url: string, init: RequestInit, o: RetryOpts): Promise<Response> {
+/** Safe, actionable classification of an HTTP status. */
+export function classifyStatus(status: number): string {
+  if (status === 0) return "network_error";
+  if (status === 401) return "auth_rejected";
+  if (status === 403) return "permission_denied";
+  if (status === 404) return "not_found";
+  if (status === 429) return "rate_limited";
+  if (status >= 500) return "provider_unavailable";
+  return "request_rejected";
+}
+
+/** Drive call failed. Message contains only op / file ID / status / classification. */
+export class DriveError extends Error {
+  constructor(public op: string, public fileId: string | null, public status: number, detail?: string) {
+    super(`Drive ${op} failed${fileId ? ` file=${fileId}` : ""} status=${status} class=${classifyStatus(status)}${detail ? ` ${detail}` : ""}`);
+  }
+}
+/** Sharing change refused or not confirmed. status 403 = permission denied. */
+export class ShareError extends DriveError {}
+
+/** Last-resort scrubber for any message that might still reach logs. */
+export function sanitize(t: string): string {
+  return t
+    .replace(/\bBearer\s+\S+/gi, "Bearer <redacted>")
+    .replace(/\beyJ[\w-]+\.[\w-]+\.[\w-]+/g, "<jwt>")
+    .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "<email>")
+    .replace(/\b(api[_-]?key|key|token|secret|password)(["':=\s]+)\S+/gi, "$1$2<redacted>")
+    .replace(/\s+/g, " ").slice(0, 300);
+}
+
+async function drain(res: Response) { try { await res.body?.cancel(); } catch { /* ignore */ } }
+
+/**
+ * GET-style retry for idempotent requests. Retries 429/5xx/network errors with backoff.
+ * Throws DriveError(op, id, status) with no provider text.
+ */
+export async function fetchWithRetry(url: string, init: RequestInit, o: RetryOpts, op = "request", fileId: string | null = null): Promise<Response> {
   const retries = o.retries ?? 3;
   const base = o.baseDelayMs ?? 500;
   const sleep = o.sleep ?? defaultSleep;
-  let lastErr = "";
+  let lastStatus = 0;
   for (let attempt = 0; attempt <= retries; attempt++) {
-    if (o.budget.expired()) throw new BudgetExceeded(`Time budget exhausted (${lastErr || "before request"})`);
+    if (o.budget.expired()) throw new BudgetExceeded(`Time budget exhausted during ${op}`);
     const timeout = Math.max(1, Math.min(o.timeoutMs ?? 20_000, o.budget.remaining()));
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), timeout);
     try {
       const res = await o.fetch(url, { ...init, signal: ctrl.signal });
-      if (res.status === 429 || res.status >= 500) {
-        lastErr = `HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`;
-      } else {
-        return res;
-      }
-    } catch (e) {
-      lastErr = `network: ${(e as Error).message ?? e}`;
+      if (res.status === 429 || res.status >= 500) { lastStatus = res.status; await drain(res); }
+      else return res;
+    } catch {
+      lastStatus = 0;
     } finally {
       clearTimeout(t);
     }
     if (attempt < retries) await sleep(base * 2 ** attempt);
   }
-  throw new Error(`Request failed after ${retries + 1} attempts: ${lastErr}`);
+  throw new DriveError(op, fileId, lastStatus, `after ${retries + 1} attempts`);
 }
 
-/** Drive refused or could not confirm a sharing change. status 403 = permission denied. */
-export class ShareError extends Error {
-  constructor(public status: number, msg: string) { super(msg); }
+export type Perm = { id?: string; type: string; role: string; allowFileDiscovery?: boolean };
+export type PermState = { access: Access; named: string[] };
+
+/**
+ * Exact policy: exactly one "anyone" permission, role reader, allowFileDiscovery === false.
+ * Any anyone writer/commenter, discoverable anyone, or extra anyone entry => "broader_public".
+ * Domain-wide entries are reported as broader too (owner approved link-reader only).
+ */
+export function classifyPerms(perms: unknown): Access {
+  if (!Array.isArray(perms)) return "unknown";
+  const ps = perms as Perm[];
+  if (ps.some((p) => typeof p?.type !== "string" || typeof p?.role !== "string")) return "unknown";
+  const anyone = ps.filter((p) => p.type === "anyone");
+  const domain = ps.filter((p) => p.type === "domain");
+  if (anyone.length === 0) return domain.length ? "broader_public" : "not_public";
+  if (anyone.length > 1 || domain.length) return "broader_public";
+  const a = anyone[0];
+  if (a.role !== "reader") return "broader_public";
+  if (a.allowFileDiscovery === false) return "public_reader";
+  if (a.allowFileDiscovery === true) return "broader_public";
+  return "unknown"; // policy not reported => fail closed
 }
 
-/** Keeps provider errors short and free of tokens/emails before logging or persisting. */
-export function sanitize(t: string): string {
-  return t.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "<email>").replace(/(Bearer|key|token)[^\s"]*/gi, "$1<redacted>").replace(/\s+/g, " ").slice(0, 300);
-}
+const namedKey = (ps: Perm[]) =>
+  ps.filter((p) => p.type !== "anyone").map((p) => `${p.id ?? "?"}:${p.type}:${p.role}`).sort();
 
 export type DriveClient = ReturnType<typeof makeDrive>;
 
 export function makeDrive(headers: Record<string, string>, o: RetryOpts) {
-  const get = async (url: string) => {
-    const res = await fetchWithRetry(url, { headers }, o);
-    if (!res.ok) throw new Error(`Drive ${res.status}: ${(await res.text()).slice(0, 500)}`);
-    return res;
-  };
+  const sleep = o.sleep ?? defaultSleep;
 
   const listFolder = async (folderId: string, maxPages = 50): Promise<DriveFile[]> => {
     const out: DriveFile[] = [];
@@ -83,62 +130,85 @@ export function makeDrive(headers: Record<string, string>, o: RetryOpts) {
         includeItemsFromAllDrives: "true",
       });
       if (token) p.set("pageToken", token);
-      const json = await (await get(`${GATEWAY}/files?${p}`)).json();
+      const res = await fetchWithRetry(`${GATEWAY}/files?${p}`, { headers }, o, "list", folderId);
+      if (!res.ok) { await drain(res); throw new DriveError("list", folderId, res.status); }
+      const json = await res.json();
       out.push(...((json.files ?? []) as DriveFile[]));
       token = json.nextPageToken;
       if (!token) return out;
     }
-    throw new Error(`Folder ${folderId} exceeded ${maxPages} pages`);
+    throw new DriveError("list", folderId, 0, `exceeded ${maxPages} pages`);
   };
 
-  const readAccess = async (fileId: string): Promise<Access> => {
+  const readPerms = async (fileId: string): Promise<PermState> => {
     try {
-      const p = new URLSearchParams({ fields: "permissions(type,role)", supportsAllDrives: "true" });
-      const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}?${p}`, { headers }, o);
-      if (!res.ok) { await res.text(); return "unknown"; }
+      const p = new URLSearchParams({ fields: "permissions(id,type,role,allowFileDiscovery)", supportsAllDrives: "true" });
+      const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}?${p}`, { headers }, o, "read_permissions", fileId);
+      if (!res.ok) { await drain(res); return { access: "unknown", named: [] }; }
       const json = await res.json();
-      if (!Array.isArray(json.permissions)) return "unknown";
-      const perms = json.permissions as Array<{ type: string; role: string }>;
-      return perms.some((x) => x.type === "anyone" && ["reader", "commenter", "writer"].includes(x.role))
-        ? "public_reader"
-        : "not_public";
+      const access = classifyPerms(json.permissions);
+      return { access, named: access === "unknown" ? [] : namedKey(json.permissions) };
     } catch (e) {
       if (e instanceof BudgetExceeded) throw e;
-      return "unknown";
+      return { access: "unknown", named: [] };
     }
   };
-
-  /** Adds ONLY an "anyone with link: reader" permission. Never removes or changes existing permissions. */
-  const addAnyoneReader = async (fileId: string): Promise<void> => {
-    const p = new URLSearchParams({ supportsAllDrives: "true", fields: "id,type,role" });
-    const res = await fetchWithRetry(`${GATEWAY}/files/${fileId}/permissions?${p}`, {
-      method: "POST", headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "anyone", role: "reader", allowFileDiscovery: false }),
-    }, o);
-    if (!res.ok) throw new ShareError(res.status, `Share ${fileId} failed ${res.status}: ${sanitize(await res.text())}`);
-    await res.text();
-  };
+  const readAccess = async (fileId: string): Promise<Access> => (await readPerms(fileId)).access;
 
   /**
-   * Idempotent: if anyone-reader already exists, does nothing. Otherwise adds it and reads it back.
-   * Throws (fail closed) unless the read-back confirms link access.
+   * Idempotent: does nothing if the exact link-reader policy already exists. Refuses (reports) broader
+   * or unknown sharing. Otherwise POSTs one anyone/reader/allowFileDiscovery=false permission — without
+   * blind retry: after any ambiguous outcome (network, 429, 5xx) permissions are re-read before another
+   * create. Confirms by read-back and that named permissions are unchanged.
    */
-  const ensureAnyoneReader = async (fileId: string): Promise<"already_present" | "added"> => {
-    const before = await readAccess(fileId);
-    if (before === "public_reader") return "already_present";
-    if (before === "unknown") throw new ShareError(0, `Could not read sharing for ${fileId}; not changed`);
-    await addAnyoneReader(fileId);
-    const after = await readAccess(fileId);
-    if (after !== "public_reader") throw new ShareError(0, `Sharing for ${fileId} not confirmed after add (read-back: ${after})`);
+  const ensureAnyoneReader = async (fileId: string, maxCreates = 3): Promise<"already_present" | "added"> => {
+    const before = await readPerms(fileId);
+    if (before.access === "public_reader") return "already_present";
+    if (before.access === "broader_public") throw new ShareError("share", fileId, 0, "existing sharing is broader than link-reader; left unchanged for review");
+    if (before.access === "unknown") throw new ShareError("share", fileId, 0, "sharing unreadable; not changed");
+
+    const p = new URLSearchParams({ supportsAllDrives: "true", fields: "id,type,role,allowFileDiscovery" });
+    let lastStatus = 0;
+    for (let attempt = 0; attempt < maxCreates; attempt++) {
+      if (o.budget.expired()) throw new BudgetExceeded("Time budget exhausted during share");
+      if (attempt > 0) {
+        await sleep((o.baseDelayMs ?? 500) * 2 ** (attempt - 1));
+        const mid = await readPerms(fileId); // did the previous (ambiguous) create land?
+        if (mid.access === "public_reader") { lastStatus = 200; break; }
+        if (mid.access !== "not_public") throw new ShareError("share", fileId, lastStatus, `ambiguous create; read-back ${mid.access}`);
+      }
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), Math.max(1, Math.min(o.timeoutMs ?? 20_000, o.budget.remaining())));
+      let res: Response | null = null;
+      try {
+        res = await o.fetch(`${GATEWAY}/files/${fileId}/permissions?${p}`, {
+          method: "POST", headers: { ...headers, "Content-Type": "application/json" }, signal: ctrl.signal,
+          body: JSON.stringify({ type: "anyone", role: "reader", allowFileDiscovery: false }),
+        });
+      } catch {
+        res = null;
+      } finally {
+        clearTimeout(t);
+      }
+      if (!res) { lastStatus = 0; continue; }
+      lastStatus = res.status;
+      await drain(res);
+      if (res.ok) break;
+      if (res.status === 429 || res.status >= 500) continue;
+      throw new ShareError("share", fileId, res.status); // 4xx: definitive, no retry
+    }
+    const after = await readPerms(fileId);
+    if (after.access !== "public_reader") throw new ShareError("share", fileId, lastStatus, `not confirmed after create (read-back ${after.access})`);
+    if (after.named.join("|") !== before.named.join("|")) throw new ShareError("share", fileId, lastStatus, "named permissions changed unexpectedly");
     return "added";
   };
 
   return {
-    listFolder, readAccess, addAnyoneReader, ensureAnyoneReader,
+    listFolder, readAccess, readPerms, ensureAnyoneReader,
     async exportText(docId: string): Promise<string | null> {
       try {
-        const res = await fetchWithRetry(`${GATEWAY}/files/${docId}/export?mimeType=text/plain`, { headers }, o);
-        if (!res.ok) { await res.text(); return null; }
+        const res = await fetchWithRetry(`${GATEWAY}/files/${docId}/export?mimeType=text/plain`, { headers }, o, "export", docId);
+        if (!res.ok) { await drain(res); return null; }
         return (await res.text()).replace(/\r\n/g, "\n").trim() || null;
       } catch (e) {
         if (e instanceof BudgetExceeded) throw e;

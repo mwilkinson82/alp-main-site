@@ -17,20 +17,25 @@ const doc = (id: string, name: string): DriveFile => ({ id, name, mimeType: "app
 const noSleep = { sleep: async () => {} };
 
 // ---------- Fake Drive over a fake fetch ----------
-type FakeOpts = { postStatus?: Record<string, number>; transient?: Record<string, number>; ignorePost?: Set<string>; readFail?: Set<string> };
+type FakeOpts = {
+  postStatus?: Record<string, number>; transient?: Record<string, number>; ignorePost?: Set<string>; readFail?: Set<string>;
+  lostResponse?: Set<string>; extraPerms?: Record<string, Array<Record<string, unknown>>>; noPolicy?: Set<string>; payload?: string; mutateNamed?: Set<string>;
+};
 const posts = (c: string[]) => c.filter((x) => x.startsWith("POST"));
 function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>, pageSize = 200, fo: FakeOpts = {}) {
   const calls: string[] = [];
-  const perms = new Map<string, Array<{ type: string; role: string }>>();
+  const perms = new Map<string, Array<{ id?: string; type: string; role: string }>>();
   const f: FetchLike = async (url, init) => {
     calls.push(`${init?.method ?? "GET"} ${url}`);
     const u = new URL(url);
     if (init?.method === "POST" && u.pathname.endsWith("/permissions")) {
       const id = u.pathname.split("/files/")[1].split("/")[0];
-      if ((fo.transient?.[id] ?? 0) > 0) { fo.transient![id]--; return new Response("busy", { status: 503 }); }
+      if ((fo.transient?.[id] ?? 0) > 0) { fo.transient![id]--; return new Response(fo.payload ?? "busy", { status: 503 }); }
       const st = fo.postStatus?.[id];
-      if (st) return new Response(`{"error":"denied for owner@example.com"}`, { status: st });
+      if (st) return new Response(fo.payload ?? `{"error":"denied for owner@example.com"}`, { status: st });
       if (!fo.ignorePost?.has(id)) publicIds.add(id);
+      if (fo.mutateNamed?.has(id)) perms.set(id, [...(perms.get(id) ?? []), { id: "z9", type: "user", role: "writer" }]);
+      if (fo.lostResponse?.has(id)) { fo.lostResponse.delete(id); throw new Error(fo.payload ?? "connection reset"); }
       return Response.json({ id: "anyoneWithLink", type: "anyone", role: "reader" });
     }
     if (u.pathname.endsWith("/files")) {
@@ -42,13 +47,14 @@ function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>,
       return Response.json({ files, nextPageToken: next });
     }
     const id = u.pathname.split("/files/")[1];
-    if (fo.readFail?.has(id)) return new Response("nope", { status: 404 });
-    const named = perms.get(id) ?? [{ type: "user", role: "owner" }, { type: "user", role: "writer" }];
+    if (fo.readFail?.has(id)) return new Response(fo.payload ?? "nope", { status: 404 });
+    const named = perms.get(id) ?? [{ id: "o1", type: "user", role: "owner" }, { id: "w1", type: "user", role: "writer" }];
     perms.set(id, named);
-    return Response.json({ permissions: publicIds.has(id) ? [...named, { type: "anyone", role: "reader" }] : named });
+    const anyone = publicIds.has(id) ? [fo.noPolicy?.has(id) ? { id: "anyoneWithLink", type: "anyone", role: "reader" } : { id: "anyoneWithLink", type: "anyone", role: "reader", allowFileDiscovery: false }] : [];
+    return Response.json({ permissions: [...named, ...anyone, ...(fo.extraPerms?.[id] ?? [])] });
   };
   const budget = new Budget(Date.now() + 60_000);
-  return { drive: makeDrive({}, { fetch: f, budget, ...noSleep }), calls, publicIds };
+  return { drive: makeDrive({}, { fetch: f, budget, ...noSleep }), calls, publicIds, perms };
 }
 
 function memStore(existing: Array<{ id: string; cls: string; date: string; pub?: boolean }> = [], opts: { failLookup?: boolean; locked?: boolean } = {}) {
@@ -157,7 +163,7 @@ Deno.test("retry with backoff then success; persistent 500 errors; budget stops"
   await assertRejects(() => fetchWithRetry("u", {}, { fetch: dead, budget: new Budget(Date.now() + 10_000), retries: 2, ...noSleep }), Error, "after 3 attempts");
   await assertRejects(() => fetchWithRetry("u", {}, { fetch: dead, budget: new Budget(Date.now() - 1), ...noSleep }), BudgetExceeded);
   const hang: FetchLike = (_u, init) => new Promise((_r, rej) => init!.signal!.addEventListener("abort", () => rej(new Error("aborted"))));
-  await assertRejects(() => fetchWithRetry("u", {}, { fetch: hang, budget: new Budget(Date.now() + 5_000), timeoutMs: 20, retries: 1, ...noSleep }), Error, "aborted");
+  await assertRejects(() => fetchWithRetry("u", {}, { fetch: hang, budget: new Budget(Date.now() + 5_000), timeoutMs: 20, retries: 1, ...noSleep }), Error, "network_error");
 });
 
 Deno.test("bounded batch reports partial + remaining, verification counted", async () => {
@@ -260,7 +266,7 @@ Deno.test("backfill allowlist imports only exact approved IDs; others stay unimp
   assertEquals([r.planned, r.inserted, r.status], [1, 1, "completed"]);
 });
 
-Deno.test("shareApproved adds anyone-reader only to approved held_not_shared videos; refuses short/unmapped/imported", async () => {
+Deno.test("shareApproved adds anyone-reader only to approved unshared qualified videos; refuses short/unmapped/imported", async () => {
   const files = [
     vid("a", "ALP Power Hour - 2026/09/01 12:00 GMT-04:00 - Recording"),
     vid("b", "ALP Power Hour - 2026/09/02 12:00 GMT-04:00 - Recording", String(60_000)),
@@ -298,6 +304,9 @@ Deno.test("publish: already-shared video is verified with no permission write", 
   const m = memStore();
   const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
   assertEquals([r.inserted, r.details.shared_drive_ids.length, posts(fd.calls).length], [1, 0, 0]);
+  // fresh permission read happens in the publish step itself (after planning), not from the cached plan value
+  const reads = fd.calls.filter((c) => c.startsWith("GET") && c.includes("/files/s1?"));
+  assertEquals(reads.length, 2);
 });
 
 Deno.test("publish: 403 denial fails closed, nothing inserted, run stops with actionable sanitized error", async () => {
@@ -354,12 +363,12 @@ Deno.test("audit: repairs only validated published rows; held/unrelated/short un
   const dry = fakeDrive(folders, new Set(["p_shared"]));
   const a: any = await auditSharing(dry.drive, memStore(rows).store, false);
   assertEquals(posts(dry.calls).length, 0);
-  assertEquals(a.counts, { needs_repair: 3, ok_already_shared: 1, skipped_short_or_no_duration: 1, skipped_class_mismatch: 1, skipped_not_in_source_folders: 1 });
+  assertEquals(a.counts, { needs_repair: 4, ok_already_shared: 1, skipped_class_mismatch: 1, skipped_not_in_source_folders: 1 });
   const live = fakeDrive(folders, new Set(["p_shared"]));
   const b: any = await auditSharing(live.drive, memStore(rows).store, true);
-  assertEquals(b.counts.repaired, 3);
-  assertEquals(posts(live.calls).map((c) => c.split("/files/")[1].split("/")[0]).sort(), ["leg", "p_ok", "p_url"]);
-  for (const id of ["held", "p_short", "priv", "unpub"]) assert(!live.publicIds.has(id));
+  assertEquals(b.counts.repaired, 4);
+  assertEquals(posts(live.calls).map((c) => c.split("/files/")[1].split("/")[0]).sort(), ["leg", "p_ok", "p_short", "p_url"]);
+  for (const id of ["held", "priv", "unpub"]) assert(!live.publicIds.has(id));
 });
 
 Deno.test("audit: stops at first 403 and reports the rest as not attempted", async () => {
@@ -367,4 +376,106 @@ Deno.test("audit: stops at first 403 and reports the rest as not attempted", asy
   const fd = fakeDrive(folders, new Set(), 200, { postStatus: { x1: 403 } });
   const r: any = await auditSharing(fd.drive, memStore([{ id: "x1", cls: "power_hour", date: "2026-09-15" }, { id: "x2", cls: "power_hour", date: "2026-09-16" }]).store, true);
   assertEquals([r.ok, r.denied, r.counts.error, r.counts.not_attempted_after_denial], [false, true, 1, 1]);
+});
+
+// ---------- Review corrections ----------
+import { classifyPerms, DriveError, sanitize } from "./drive.ts";
+
+Deno.test("policy: only exact anyone/reader/allowFileDiscovery=false counts; broader and unknown fail closed", () => {
+  const own = { type: "user", role: "owner" };
+  assertEquals(classifyPerms([own, { type: "anyone", role: "reader", allowFileDiscovery: false }]), "public_reader");
+  assertEquals(classifyPerms([own, { type: "anyone", role: "reader", allowFileDiscovery: true }]), "broader_public");
+  assertEquals(classifyPerms([own, { type: "anyone", role: "writer", allowFileDiscovery: false }]), "broader_public");
+  assertEquals(classifyPerms([own, { type: "anyone", role: "commenter", allowFileDiscovery: false }]), "broader_public");
+  assertEquals(classifyPerms([own, { type: "domain", role: "reader" }]), "broader_public");
+  assertEquals(classifyPerms([own, { type: "anyone", role: "reader" }]), "unknown");
+  assertEquals(classifyPerms([own]), "not_public");
+  assertEquals(classifyPerms(undefined), "unknown");
+});
+
+Deno.test("broader existing sharing is held on import and reported by audit, never changed", async () => {
+  const folders = { [PH]: [vid("bw", day(20))], [CS]: [], [SM]: [], "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E": [] };
+  const fo = { extraPerms: { bw: [{ id: "anyoneWithLink", type: "anyone", role: "writer", allowFileDiscovery: false }] } };
+  const fd = fakeDrive(folders, new Set(), 200, fo);
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([m.rows.length, posts(fd.calls).length, r.details.held_items[0].disposition], [0, 0, "held_broader_sharing"]);
+  const fd2 = fakeDrive(folders, new Set(), 200, fo);
+  const a: any = await auditSharing(fd2.drive, memStore([{ id: "bw", cls: "power_hour", date: "2026-09-20" }]).store, true);
+  assertEquals([a.counts.reported_broader_sharing, posts(fd2.calls).length], [1, 0]);
+});
+
+Deno.test("anyone reader without discovery policy reported is not trusted (no publish, no duplicate create)", async () => {
+  const fd = fakeDrive({ [PH]: [vid("np", day(21))] }, new Set(["np"]), 200, { noPolicy: new Set(["np"]) });
+  const m = memStore();
+  await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([m.rows.length, posts(fd.calls).length], [0, 0]);
+});
+
+Deno.test("lost response after successful create: re-reads, no duplicate create, named perms unchanged", async () => {
+  const fd = fakeDrive({ [PH]: [vid("lr", day(22))] }, new Set(), 200, { lostResponse: new Set(["lr"]) });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals([r.inserted, posts(fd.calls).length], [1, 1]);
+  assertEquals(fd.perms.get("lr"), [{ id: "o1", type: "user", role: "owner" }, { id: "w1", type: "user", role: "writer" }]);
+});
+
+Deno.test("named permission change during create fails closed (no publish)", async () => {
+  const fd = fakeDrive({ [PH]: [vid("nc", day(23))] }, new Set(), 200, { mutateNamed: new Set(["nc"]) });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals(m.rows.length, 0);
+  assert(r.details.errors[0].includes("named permissions changed"));
+});
+
+const PAYLOAD = `Bearer SECRET123 api_key=APIKEY456 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2lnbmF0dXJl leak@example.com`;
+const SECRETS = ["SECRET123", "APIKEY456", "eyJhbGci", "leak@example.com"];
+const clean = (t: string) => SECRETS.every((x) => !t.includes(x));
+
+Deno.test("no provider payload reaches errors/logs across retries, list, share, export and top-level", async () => {
+  const logs: string[] = [];
+  const orig = { e: console.error, w: console.warn, l: console.log };
+  console.error = (...a: unknown[]) => logs.push(a.map(String).join(" "));
+  console.warn = console.error; console.log = console.error;
+  try {
+    // retry path: 5xx body and network exception text
+    const boom: FetchLike = async () => new Response(PAYLOAD, { status: 500 });
+    const thrower: FetchLike = async () => { throw new Error(PAYLOAD); };
+    for (const f of [boom, thrower]) {
+      const e = await assertRejects(() => fetchWithRetry("u", {}, { fetch: f, budget: new Budget(Date.now() + 5000), retries: 1, ...noSleep }, "list", "F1"));
+      assert(clean((e as Error).message) && (e as Error).message.includes("status="));
+    }
+    // list failure (4xx body)
+    const listF: FetchLike = async () => new Response(PAYLOAD, { status: 400 });
+    const d = makeDrive({}, { fetch: listF, budget: new Budget(Date.now() + 5000), ...noSleep });
+    const le = await assertRejects(() => d.listFolder(PH));
+    assert(clean((le as Error).message) && le instanceof DriveError);
+    assertEquals(await d.exportText("doc"), null);
+    // share 403 with payload, persisted into run errors
+    const fd = fakeDrive({ [PH]: [vid("pp", day(25))] }, new Set(), 200, { postStatus: { pp: 403 }, payload: PAYLOAD });
+    const m = memStore();
+    const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+    assert(clean(JSON.stringify(r)) && clean(JSON.stringify(m.runs)));
+    assert(r.details.errors[0].includes("permission_denied"));
+    // lost response with payload exception text
+    const fd2 = fakeDrive({ [PH]: [vid("pl", day(26))] }, new Set(), 200, { lostResponse: new Set(["pl"]), payload: PAYLOAD });
+    const r2: any = await runSync(fd2.drive, memStore().store, { ...base, mode: "backfill" });
+    assert(clean(JSON.stringify(r2)));
+    // top-level failure message passes through sanitize
+    assert(clean(sanitize(`x ${PAYLOAD}`)));
+    assert(!sanitize("Authorization: Bearer abc.def").includes("abc.def"));
+  } finally {
+    console.error = orig.e; console.warn = orig.w; console.log = orig.l;
+  }
+  assert(logs.every(clean));
+});
+
+Deno.test("audit includes short published replays (exact ID/program/date/folder); new short imports still held", async () => {
+  const folders = { [PH]: [vid("sp", day(27), String(9_000)), vid("snew", day(28), String(9_000))], [CS]: [], [SM]: [], "1L6oYkecAzBPowfYfMZ82c8UF-Ctpgn2E": [] };
+  const fd = fakeDrive(folders, new Set());
+  const a: any = await auditSharing(fd.drive, memStore([{ id: "sp", cls: "power_hour", date: "2026-09-27" }]).store, true);
+  assertEquals(a.counts.repaired, 1);
+  assert(!fd.publicIds.has("snew"));
+  const r: any = await runSync(fakeDrive(folders, new Set()).drive, memStore().store, { ...base, mode: "backfill" });
+  assertEquals(r.inserted, 0);
 });
