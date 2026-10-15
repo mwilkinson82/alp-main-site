@@ -19,7 +19,7 @@ const noSleep = { sleep: async () => {} };
 // ---------- Fake Drive over a fake fetch ----------
 type FakeOpts = {
   postStatus?: Record<string, number>; transient?: Record<string, number>; ignorePost?: Set<string>; readFail?: Set<string>;
-  lostResponse?: Set<string>; extraPerms?: Record<string, Array<Record<string, unknown>>>; noPolicy?: Set<string>; payload?: string;
+  lostResponse?: Set<string>; extraPerms?: Record<string, Array<Record<string, unknown>>>; noPolicy?: Set<string>; payload?: string; mutateNamed?: Set<string>;
 };
 const posts = (c: string[]) => c.filter((x) => x.startsWith("POST"));
 function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>, pageSize = 200, fo: FakeOpts = {}) {
@@ -34,6 +34,7 @@ function fakeDrive(folders: Record<string, DriveFile[]>, publicIds: Set<string>,
       const st = fo.postStatus?.[id];
       if (st) return new Response(fo.payload ?? `{"error":"denied for owner@example.com"}`, { status: st });
       if (!fo.ignorePost?.has(id)) publicIds.add(id);
+      if (fo.mutateNamed?.has(id)) perms.set(id, [...(perms.get(id) ?? []), { id: "z9", type: "user", role: "writer" }]);
       if (fo.lostResponse?.has(id)) { fo.lostResponse.delete(id); throw new Error(fo.payload ?? "connection reset"); }
       return Response.json({ id: "anyoneWithLink", type: "anyone", role: "reader" });
     }
@@ -419,24 +420,12 @@ Deno.test("lost response after successful create: re-reads, no duplicate create,
   assertEquals(fd.perms.get("lr"), [{ id: "o1", type: "user", role: "owner" }, { id: "w1", type: "user", role: "writer" }]);
 });
 
-Deno.test("named permission change during create fails closed", async () => {
-  const fd = fakeDrive({ [PH]: [vid("nc", day(23))] }, new Set());
-  const orig = fd.drive.ensureAnyoneReader;
-  // simulate an unexpected named-permission change between before and after reads
-  let n = 0;
-  const realRead = fd.drive.readPerms;
-  (fd.drive as any).readPerms = async (id: string) => { const x = await realRead(id); return ++n > 1 ? { ...x, named: [...x.named, "x:user:writer"] } : x; };
-  void orig;
-  // readPerms is captured by closure, so instead verify via the exported behaviour using a mutated fake store of perms:
-  const fd2 = fakeDrive({ [PH]: [vid("nc2", day(24))] }, new Set());
-  const f2 = fd2.drive;
-  const p = fd2.perms;
-  const wrap = f2.ensureAnyoneReader;
-  await f2.readPerms("nc2"); // seed named perms
-  const ok = wrap("nc2").then(() => "ok", (e) => e.message);
-  p.set("nc2", [...p.get("nc2")!, { id: "z9", type: "user", role: "writer" }]); // changes before read-back
-  const res = await ok;
-  assert(res === "ok" || res.includes("named permissions changed"));
+Deno.test("named permission change during create fails closed (no publish)", async () => {
+  const fd = fakeDrive({ [PH]: [vid("nc", day(23))] }, new Set(), 200, { mutateNamed: new Set(["nc"]) });
+  const m = memStore();
+  const r: any = await runSync(fd.drive, m.store, { ...base, mode: "backfill" });
+  assertEquals(m.rows.length, 0);
+  assert(r.details.errors[0].includes("named permissions changed"));
 });
 
 const PAYLOAD = `Bearer SECRET123 api_key=APIKEY456 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.c2lnbmF0dXJl leak@example.com`;
