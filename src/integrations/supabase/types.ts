@@ -403,6 +403,10 @@ export type Database = {
         Returns: boolean
       }
       is_active_client: { Args: { _user_id: string }; Returns: boolean }
+      sync_cron_secret_matches: {
+        Args: { _candidate: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "user" | "client"
