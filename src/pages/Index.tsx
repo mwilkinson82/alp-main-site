@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import StructuredData from "@/components/StructuredData";
+import BookFeature from "@/components/BookFeature";
 import marshallHeroProfile from "@/assets/marshall-profile.jpg";
 import marginCrumble from "@/assets/margin-crumble.mp4";
 import { useEffect, useRef } from "react";
@@ -246,6 +247,8 @@ const Index = () => (
           </div>
         </div>
       </section>
+
+      <BookFeature />
 
       <section className="border-b border-border" id="circle">
         <div className="alp-shell py-20 md:py-28">

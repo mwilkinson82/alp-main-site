@@ -1,5 +1,7 @@
 # AGENTS.md
 
+- Keep the homepage book feature in its own component using existing site tokens and Button; isolate book-specific copy and links so the promotion does not change shared sections or purchase integrations.
+
 - Recording sync (`supabase/functions/sync-recordings`) reads only the explicit per-class folder map in `logic.ts` and requires the file name prefix to match the folder's class; never scan the parent meetings folder — it holds private meetings. The legacy folder in `LEGACY_AUDIT_FOLDERS` is listed only by admin `audit_sharing` to validate rows already published from it, never as an import source.
 - Recording sync publishes a class recording only after it has confirmed, by reading the permission back, that the file has exactly one anyone/reader permission with allowFileDiscovery=false and unchanged named permissions; broader or unreadable sharing is held and reported, never changed; it may add that one permission (re-reading before any repeat create) to files that pass the folder/prefix/date/duration guards but never removes or changes other permissions, and stops on a 403 — the owner approved link playback for program replays, and fail-closed read-back prevents broken replays.
 - Recording sync writes go through `recording_sync_runs` (one running row = lock, persisted counts); scheduled imports run only when `recording_sync_settings.scheduled_import_enabled` is true — makes runs auditable and lets imports be paused without touching cron.
