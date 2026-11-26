@@ -395,6 +395,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_stripe_webhook_signing_secret: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -403,6 +404,10 @@ export type Database = {
         Returns: boolean
       }
       is_active_client: { Args: { _user_id: string }; Returns: boolean }
+      portal_invite_secret_matches: {
+        Args: { _candidate: string }
+        Returns: boolean
+      }
       sync_cron_secret_matches: {
         Args: { _candidate: string }
         Returns: boolean
