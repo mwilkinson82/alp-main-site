@@ -11,24 +11,56 @@ const corsHeaders = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
-const ALLOW_TOKEN = "alp-resend-once-2026";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const FROM_ADDRESS = "ALP Client Portal <notifications@notifications.marshallwilkinson.com>";
+
+// Only an ALP admin may send portal invites. A caller qualifies with either
+// a signed-in admin's JWT, or the server-held invite secret, which lives only
+// in Vault (checked by a service-role-only RPC) and is never in source code.
+async function isAuthorized(req: Request, body: any, admin: any): Promise<boolean> {
+  const auth = req.headers.get("Authorization") ?? "";
+  const jwt = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (jwt && jwt !== SUPABASE_ANON_KEY) {
+    const { data, error } = await admin.auth.getUser(jwt);
+    if (!error && data?.user) {
+      const { data: isAdmin } = await admin.rpc("has_role", {
+        _user_id: data.user.id,
+        _role: "admin",
+      });
+      if (isAdmin === true) return true;
+    }
+  }
+  const candidate = typeof body?.token === "string" ? body.token : "";
+  if (candidate.length >= 32) {
+    const { data: ok, error } = await admin.rpc("portal_invite_secret_matches", {
+      _candidate: candidate,
+    });
+    if (!error && ok === true) return true;
+  }
+  return false;
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
-    const body = await req.json();
-    if (body.token !== ALLOW_TOKEN) {
+    const body = await req.json().catch(() => ({}));
+    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    if (!(await isAuthorized(req, body, admin))) {
       return new Response(JSON.stringify({ error: "forbidden" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const email = String(body.email).toLowerCase().trim();
+    const email = String(body.email ?? "").toLowerCase().trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new Response(JSON.stringify({ error: "valid email required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const fullName = body.fullName || null;
     const redirectTo = "https://altitudelogicpressure.com/portal/reset-password";
 
-    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     let rec: any; let recErr: any;
     ({ data: rec, error: recErr } = await admin.auth.admin.generateLink({
       type: "recovery",

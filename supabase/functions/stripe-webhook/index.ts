@@ -451,6 +451,73 @@ async function grantKajabiOffer(token: string, contactId: string, offerId: strin
   }
 }
 
+// --- Stripe signature verification ---
+// Every request must carry a valid Stripe-Signature header made with this
+// endpoint's signing secret. The secret is never in source: it comes from the
+// STRIPE_WEBHOOK_SECRET env var if set, otherwise from Vault through a
+// service-role-only RPC. Anything unsigned, badly signed or older than five
+// minutes is refused before any email, Kajabi grant or purchase log happens.
+const STRIPE_SIGNATURE_TOLERANCE_SECONDS = 300;
+let cachedSigningSecret: string | null = null;
+
+async function getStripeSigningSecret(): Promise<string | null> {
+  if (cachedSigningSecret) return cachedSigningSecret;
+  const fromEnv = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+  if (fromEnv && fromEnv.startsWith("whsec_")) {
+    cachedSigningSecret = fromEnv;
+    return cachedSigningSecret;
+  }
+  const { data, error } = await supabase.rpc("get_stripe_webhook_signing_secret");
+  if (error || typeof data !== "string" || !data.startsWith("whsec_")) {
+    console.error("Stripe signing secret unavailable:", error?.message ?? "missing");
+    return null;
+  }
+  cachedSigningSecret = data;
+  return cachedSigningSecret;
+}
+
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+async function isValidStripeSignature(
+  payload: string,
+  header: string | null,
+  secret: string,
+): Promise<boolean> {
+  if (!header) return false;
+  let timestamp = "";
+  const signatures: string[] = [];
+  for (const part of header.split(",")) {
+    const idx = part.indexOf("=");
+    if (idx < 0) continue;
+    const k = part.slice(0, idx).trim();
+    const v = part.slice(idx + 1).trim();
+    if (k === "t") timestamp = v;
+    else if (k === "v1") signatures.push(v);
+  }
+  if (!/^\d+$/.test(timestamp) || signatures.length === 0) return false;
+  const age = Math.abs(Math.floor(Date.now() / 1000) - Number(timestamp));
+  if (age > STRIPE_SIGNATURE_TOLERANCE_SECONDS) return false;
+
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const mac = await crypto.subtle.sign("HMAC", key, enc.encode(`${timestamp}.${payload}`));
+  const expected = Array.from(new Uint8Array(mac))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return signatures.some((sig) => timingSafeEqualHex(sig, expected));
+}
+
 // --- Main Handler ---
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -458,7 +525,31 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    if (req.method !== "POST") {
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const body = await req.text();
+
+    const signingSecret = await getStripeSigningSecret();
+    if (!signingSecret) {
+      // Fail closed. Stripe retries a 5xx, so real events are not lost.
+      return new Response(JSON.stringify({ error: "Webhook not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    if (!(await isValidStripeSignature(body, req.headers.get("stripe-signature"), signingSecret))) {
+      console.warn("Rejected webhook call with missing or invalid Stripe signature");
+      return new Response(JSON.stringify({ error: "Invalid signature" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const event = JSON.parse(body);
     
     console.log("Stripe webhook received:", event.type);
